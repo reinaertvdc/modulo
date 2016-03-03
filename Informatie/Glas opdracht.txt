@@ -1,0 +1,40 @@
+Glas shizzle
+------------
+Klanten 
+	eenmalig
+	Bedrijven/trouwe klanten
+		algemene gegevens
+		contactpersonen hun gegevens (per project)
+		historiek van alle offertes en bestellingen (evt alle digitale contact)
+
+
+Offertes 
+	Afhaling
+		Producten
+	Levering
+		Producten
+	Plaatsing
+		Alles interieur (deuren, spiegels)
+		Nieuw werk (ruiten in ramen plaatsen op nieuwbouw)
+		Oud werk (enkel glas vervangen door dubbel of drievoudig glas)
+		Reparatie (wat het zegt)
+
+Producten = stock, bestelling, productie -> moet op 1 of ander manier bijgehouden kunnen worden
+
+Opvolging
+	Bij offertes > 500€ automatisch mail sturen naar klant ter opvolging
+	Bedrijven bellen na offerte (takenlijst?)
+	offerte + calculatie moet toegankelijk zijn
+
+
+Prijscalculatie 
+	via verkoopprijzen met korting (voor iedereen)
+	tellen via aankoop/productieprijs + percentage voor bedrijf voor grote werven (enkel voor bepaalde toegestane mensen)
+	+ extra's (plaatsen, # man, verplaatsen, benodigdheden (kraan))
+	Evt commerciele korting (bep personen)
+	Marge tussen verkoop en aankoopprijs visualiseren (om te weten hoeveel korting gegeven kan worden)
+
+Opmeten adhv schets, standaard waarden die aangepast moeten kunnen worden (deurgehelen, douchegehelen)
+
+
+Flow: Offerte aanvrag -> calculatie -> offerte -> akkoord (afh, levering, plaatsing (opmeten, bij wijziging terug naar calculatie)) -> producten voorzien (stock, bestelling, productie) -> plaatsingsbon (details (aantal man, kraan, ...) + producten) -> facturatie (voorstel, gebruiker moet nakijken + zelf verzenden) -> betaling opvolgen

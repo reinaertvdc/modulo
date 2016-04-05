@@ -13,6 +13,6 @@ public class HelloWorldController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getHello() {
-        return "Hello, World";
+        return "Hello, Git";
     }
 }

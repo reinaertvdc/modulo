@@ -13,10 +13,9 @@
         <property name="password" value="root"/>
     </bean>
 
-    <!-- Definition for studentJDBCTemplate bean -->
-    <bean id="studentJDBCTemplate"
-          class="be.lambdaware.dao.StudentJDBCTemplate">
-        <property name="dataSource"  ref="dataSource" />
+    <!-- Definition for studentDAOImpl bean -->
+    <bean id="UserDAOImpl" class="be.lambdaware.jdbc.UserDAOImpl">
+        <property name="dataSource" ref="dataSource" />
     </bean>
 
 </beans>

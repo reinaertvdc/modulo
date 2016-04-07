@@ -105,7 +105,7 @@ CREATE TABLE sub_certificate_categories (
 ) ;
 CREATE TABLE grade (
   id   INT(10) NOT NULL AUTO_INCREMENT,
-  naam VARCHAR(255),
+  name VARCHAR(255),
   PRIMARY KEY (id)
 ) ;
 CREATE TABLE objective (

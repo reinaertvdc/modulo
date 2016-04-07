@@ -20,5 +20,8 @@
     <bean id="ClassesDAOImpl" class="be.lambdaware.jdbc.ClassesDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <bean id="GradeDAOImpl" class="be.lambdaware.jdbc.GradeDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
 </beans>

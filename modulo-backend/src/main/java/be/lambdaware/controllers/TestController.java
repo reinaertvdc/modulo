@@ -29,24 +29,27 @@ public class TestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> create(@RequestBody User user) {
+    public ResponseEntity<ClassEntity> create(@RequestBody ClassEntity entity) {
 
         //TODO process when dao.create fails with SQL Exception
 
         // create an entity using the DAO
-        int entityID = userDAO.create(user);
+        int entityID = classesDAO.create(entity);
         // id gets assigned after creation
-        user.setId(entityID);
+        entity.setId(entityID);
         // return entity
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<ClassEntity>(entity, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ClassEntity>> get() {
-        List<ClassEntity> classes = classesDAO.getAll();
 
-        System.out.println(classes.size());
+        // get a teacher
+        User teacher = userDAO.get(1);
+
+        // get all classes of said teacher
+        List<ClassEntity> classes = classesDAO.getAllByTeacher(teacher);
 
         return new ResponseEntity<List<ClassEntity>>(classes, HttpStatus.OK);
     }

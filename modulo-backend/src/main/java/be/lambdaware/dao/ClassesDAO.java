@@ -13,7 +13,9 @@ public interface ClassesDAO {
     // custom functions e.g.
     // public List<User> getUsersByCertificate();
 
-    int create(ClassEntity entity, User teacher);
+    int create(ClassEntity entity);
 
-    public List<ClassEntity> getAll();
+    List<ClassEntity> getAll();
+
+    List<ClassEntity> getAllByTeacher(User teacher);
 }

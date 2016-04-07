@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by martijn on 07/04/16.
  */
@@ -32,5 +34,14 @@ public class CertificateTestController {
         certificate.setId(entityID);
         // return entity
         return new ResponseEntity<CertificateEntity>(certificate, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<CertificateEntity>> get(@RequestParam(value="id") Integer certificateId ) {
+
+        List<CertificateEntity> certificates = certificateDAO.getAll();
+
+        return new ResponseEntity<List<CertificateEntity>>(certificates, HttpStatus.OK);
     }
 }

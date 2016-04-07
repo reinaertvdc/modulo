@@ -18,18 +18,15 @@ public class ClassesMapper implements RowMapper<ClassEntity> {
         this.userMapper = userMapper;
     }
 
-    // TODO implement mapRow
     @Override
     public ClassEntity mapRow(ResultSet resultSet, int row) throws SQLException {
         ClassEntity classEntity = new ClassEntity();
-        classEntity.setId(resultSet.getInt("id"));
-        classEntity.setName(resultSet.getString("name"));
-        classEntity.setType(resultSet.getString("type"));
+        classEntity.setId(resultSet.getInt("classes.id"));
+        classEntity.setName(resultSet.getString("classes.name"));
+        classEntity.setType(resultSet.getString("classes.type"));
 
         User teacher = this.userMapper.mapRow(resultSet, row);
         classEntity.setTeacher(teacher);
-
-        System.out.println(classEntity);
 
         return classEntity;
     }

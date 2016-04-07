@@ -32,7 +32,7 @@ public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDA
             }
         }, holder);
 
-        return 0;
+        return holder.getKey().intValue();
     }
 
 

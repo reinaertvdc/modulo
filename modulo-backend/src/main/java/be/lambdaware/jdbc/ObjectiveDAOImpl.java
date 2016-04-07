@@ -29,8 +29,8 @@ public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                 System.out.println(entity);
-                statement.setInt(1, entity.getGrade().getId());
-                statement.setInt(2, entity.getCourse_topic().getId());
+                statement.setInt(1, entity.getGrade());
+                statement.setInt(2, entity.getCourse_topic());
                 statement.setString(3, entity.getName());
                 statement.setString(4, entity.getCustom_name());
                 return statement;
@@ -76,7 +76,7 @@ public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
     @Override
     public void update(ObjectiveEntity entity) {
         String SQL = "UPDATE `sub_certificate` SET `certificate_id` = ?, `name` = ?, `description` = ?, `enabled` = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getGrade().getId(), entity.getCourse_topic().getId(), entity.getName(), entity.getCustom_name());
+        jdbcTemplate.update(SQL, entity.getGrade(), entity.getCourse_topic(), entity.getName(), entity.getCustom_name());
         //TODO catch SQL Exception
     }
 }

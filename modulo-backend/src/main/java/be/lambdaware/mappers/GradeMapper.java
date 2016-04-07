@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by Vincent on 07/04/16.
  */
-public class GradeEntityMapper implements RowMapper<GradeEntity> {
+public class GradeMapper implements RowMapper<GradeEntity> {
 
     @Override
     public GradeEntity mapRow(ResultSet resultSet, int row) throws SQLException {

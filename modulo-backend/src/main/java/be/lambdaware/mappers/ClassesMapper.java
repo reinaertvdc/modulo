@@ -14,8 +14,8 @@ public class ClassesMapper implements RowMapper<ClassEntity> {
 
     private UserMapper userMapper;
 
-    public ClassesMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public ClassesMapper() {
+        this.userMapper = new UserMapper();
     }
 
     @Override

@@ -36,8 +36,7 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
             }
         }, holder);
 
-//        return holder.getKey().intValue();
-        return 0;
+        return holder.getKey().intValue();
     }
 
     @Override

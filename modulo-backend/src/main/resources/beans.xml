@@ -13,8 +13,12 @@
         <property name="password" value="root"/>
     </bean>
 
-    <!-- Definition for studentDAOImpl bean -->
+    <!-- Definition for UserDAOImpl bean -->
     <bean id="UserDAOImpl" class="be.lambdaware.jdbc.UserDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- Definition for SubCertificateDAOImpl bean -->
+    <bean id="SubCertificateDAOImpl" class="be.lambdaware.jdbc.SubCertificateDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <bean id="ClassesDAOImpl" class="be.lambdaware.jdbc.ClassesDAOImpl">

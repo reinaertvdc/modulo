@@ -4,38 +4,37 @@ package be.lambdaware.entities;
  * Created by Vincent on 07/04/16.
  */
 public class ClassCertificateEntity {
-    private ClassEntity classEntity;
-    private CertificateEntity certificateEntity;
-
+    private Integer classId;
+    private Integer certificateId;
 
     public ClassCertificateEntity() {}
 
-    public ClassCertificateEntity(CertificateEntity certificateEntity, ClassEntity classEntity) {
-        this.certificateEntity = certificateEntity;
-        this.classEntity = classEntity;
+    public ClassCertificateEntity(Integer classId, Integer certificateId) {
+        this.classId = classId;
+        this.certificateId = certificateId;
     }
 
-    public ClassEntity getClassEntity() {
-        return classEntity;
+    public Integer getClassId() {
+        return classId;
     }
 
-    public void setClassEntity(ClassEntity classEntity) {
-        this.classEntity = classEntity;
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
-    public CertificateEntity getCertificateEntity() {
-        return certificateEntity;
+    public Integer getCertificateId() {
+        return certificateId;
     }
 
-    public void setCertificateEntity(CertificateEntity certificateEntity) {
-        this.certificateEntity = certificateEntity;
+    public void setCertificateId(Integer certificateId) {
+        this.certificateId = certificateId;
     }
 
     @Override
     public String toString() {
         return "ClassCertificateEntity{" +
-                "classEntity=" + classEntity +
-                ", certificateEntity=" + certificateEntity +
+                "classId=" + classId +
+                ", certificateId=" + certificateId +
                 '}';
     }
 }

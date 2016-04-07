@@ -32,13 +32,9 @@ public class ClassCertificateTestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ClassCertificateEntity> create(@RequestParam(value = "class_id") Integer class_id, @RequestParam(value = "certificate_id") Integer certificate_id) {
+    public ResponseEntity<ClassCertificateEntity> create(@RequestBody ClassCertificateEntity classCertificateEntity) {
         //TODO process when dao.create fails with SQL Exception
 
-        ClassEntity classEntity = classesDAO.get(class_id);
-        CertificateEntity certificateEntity = certificateDAO.get(certificate_id);
-
-        ClassCertificateEntity classCertificateEntity = new ClassCertificateEntity(certificateEntity, classEntity);
 
         // create an entity using the DAO
         classCertificateDAO.create(classCertificateEntity);
@@ -50,13 +46,30 @@ public class ClassCertificateTestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ClassCertificateEntity>> get(@RequestParam(value = "class_id") Integer class_id, @RequestParam(value = "certificate_id") Integer certificate_id) {
+    public ResponseEntity<ClassCertificateEntity> get(@RequestParam(value = "classId") Integer classId, @RequestParam(value = "certificateId") Integer certificateId) {
         //TODO process when dao.create fails with SQL Exception
 
-        ClassEntity classEntity = classesDAO.get(class_id);
-        CertificateEntity certificateEntity = certificateDAO.get(certificate_id);
+        ClassCertificateEntity classCertificateEntity = classCertificateDAO.get(classId, certificateId);
 
-        List<ClassCertificateEntity> classCertificateEntity = classCertificateDAO.get(classEntity, certificateEntity);
+        return new ResponseEntity<ClassCertificateEntity>(classCertificateEntity, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET,path = "/get_by_class")
+    public ResponseEntity<List<ClassCertificateEntity>> getByClass(@RequestParam(value = "classId") Integer classId) {
+        //TODO process when dao.create fails with SQL Exception
+
+        List<ClassCertificateEntity> classCertificateEntity = classCertificateDAO.getByClass(classId);
+
+        return new ResponseEntity<List<ClassCertificateEntity>>(classCertificateEntity, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET,path = "/get_by_certificate")
+    public ResponseEntity<List<ClassCertificateEntity>> getByCertificate(@RequestParam(value = "certificateId") Integer certificateId) {
+        //TODO process when dao.create fails with SQL Exception
+
+        List<ClassCertificateEntity> classCertificateEntity = classCertificateDAO.getByCertificate(certificateId);
 
         return new ResponseEntity<List<ClassCertificateEntity>>(classCertificateEntity, HttpStatus.OK);
     }

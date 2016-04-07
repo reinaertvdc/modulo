@@ -31,4 +31,14 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <!-- Definition for certificateDAOImpl bean -->
+    <bean id="CertificateDAOImpl" class="be.lambdaware.jdbc.CertificateDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- Definition for UserClassDAOImpl bean -->
+    <bean id="UserClassDAOImpl" class="be.lambdaware.jdbc.UserClassDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
 </beans>

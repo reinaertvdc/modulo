@@ -5,9 +5,10 @@ package be.lambdaware.entities;
  */
 public class ClassEntity {
     private Integer id;
-    private Integer teacher_id;
-    private String className;
-    private String classType;
+    private String name;
+    private String type;
+
+    private UserEntity teacher;
 
     public Integer getId() {
         return id;
@@ -17,37 +18,37 @@ public class ClassEntity {
         this.id = id;
     }
 
-    public Integer getTeacher_id() {
-        return teacher_id;
+    public String getName() {
+        return name;
     }
 
-    public void setTeacher_id(Integer teacher_id) {
-        this.teacher_id = teacher_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getClassName() {
-        return className;
+    public String getType() {
+        return type;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getClassType() {
-        return classType;
+    public UserEntity getTeacher() {
+        return teacher;
     }
 
-    public void setClassType(String classType) {
-        this.classType = classType;
+    public void setTeacher(UserEntity teacher) {
+        this.teacher = teacher;
     }
 
     @Override
     public String toString() {
         return "ClassEntity{" +
                 "id=" + id +
-                ", teacher_id=" + teacher_id +
-                ", className='" + className + '\'' +
-                ", classType='" + classType + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", teacher=" + teacher +
                 '}';
     }
 }

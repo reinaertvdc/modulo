@@ -1,8 +1,8 @@
 package be.lambdaware.jdbc;
 
-import be.lambdaware.dao.UserDAO;
-import be.lambdaware.entities.UserEntity;
-import be.lambdaware.mappers.UserMapper;
+import be.lambdaware.dao.CertificateDAO;
+import be.lambdaware.entities.CertificateEntity;
+import be.lambdaware.mappers.CertificateMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -13,13 +13,13 @@ import java.sql.Statement;
 import java.util.List;
 
 /**
- * @author hendrik
+ * Created by martijn on 07/04/16.
  */
-public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
+public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDAO {
 
     @Override
-    public int create(UserEntity entity) {
-        String SQL = "INSERT INTO `users` (`email`, `password`, `type`) VALUES (?, ?, ?)";
+    public int create(CertificateEntity entity) {
+        String SQL = "INSERT INTO `certificate` (`name`) VALUES (?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -27,9 +27,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setString(1, entity.getEmail());
-                statement.setString(2, entity.getPassword());
-                statement.setString(3, entity.getType());
+                statement.setString(1, entity.getName());
                 return statement;
             }
         }, holder);
@@ -38,32 +36,32 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
     }
 
     @Override
-    public UserEntity get(Integer id) {
-        String SQL = "SELECT * FROM `users` WHERE `id` = ?";
-        UserEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new UserMapper());
+    public CertificateEntity get(Integer id) {
+        String SQL = "SELECT * FROM `certificate` WHERE `id` = ?";
+        CertificateEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CertificateMapper());
         //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<UserEntity> getAll() {
-        String SQL = "SELECT * FROM `users`";
-        List<UserEntity> entities = jdbcTemplate.query(SQL, new UserMapper());
+    public List<CertificateEntity> getAll() {
+        String SQL = "SELECT * FROM `certificate`";
+        List<CertificateEntity> entities = jdbcTemplate.query(SQL, new CertificateMapper());
         //TODO catch SQL Exception
         return entities;
     }
 
     @Override
     public void delete(Integer id) {
-        String SQL = "DELETE FROM `users` WHERE `id` = ?";
+        String SQL = "DELETE FROM `certificate` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
         //TODO catch SQL Exception
     }
 
     @Override
-    public void update(UserEntity entity) {
-        String SQL = "UPDATE `users` SET email = ?, password = ?, type = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getEmail(), entity.getPassword(), entity.getType(),entity.getId());
+    public void update(CertificateEntity entity) {
+        String SQL = "UPDATE `certificate` SET name = ? where id = ?";
+        jdbcTemplate.update(SQL, entity.getName(),entity.getId());
         //TODO catch SQL Exception
     }
 }

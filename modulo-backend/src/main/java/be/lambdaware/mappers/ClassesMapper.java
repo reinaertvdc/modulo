@@ -1,8 +1,7 @@
 package be.lambdaware.mappers;
 
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.User;
-import be.lambdaware.model.AbstractClass;
+import be.lambdaware.entities.UserEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,15 +12,18 @@ import java.sql.SQLException;
  */
 public class ClassesMapper implements RowMapper<ClassEntity> {
 
-    // TODO implement mapRow
+
+
     @Override
     public ClassEntity mapRow(ResultSet resultSet, int row) throws SQLException {
-//        User user = new User();
-//        user.setId(resultSet.getInt("id"));
-//        user.setEmail(resultSet.getString("email"));
-//        user.setPassword(resultSet.getString("password"));
-//        return user;
-//        AbstractClass abstrClss = new AbstractClass() {};
-        return null;
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setId(resultSet.getInt("classes.id"));
+        classEntity.setName(resultSet.getString("classes.name"));
+        classEntity.setType(resultSet.getString("classes.type"));
+
+        UserEntity teacher = new UserMapper().mapRow(resultSet, row);
+        classEntity.setTeacher(teacher);
+
+        return classEntity;
     }
 }

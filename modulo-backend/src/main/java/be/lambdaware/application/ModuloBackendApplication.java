@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
 @ImportResource("classpath:beans.xml")
-@ComponentScan({"be.lambdaware.controllers"})
+@ComponentScan({"be.lambdaware.controllers","be.lambdaware.model"})
 public class ModuloBackendApplication {
 
     public static void main(String[] args) {

@@ -3,7 +3,7 @@ package be.lambdaware.entities;
 /**
  * @author hendrik
  */
-public class User {
+public class UserEntity {
 
     private Integer id;
     private String email;
@@ -44,7 +44,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserEntity{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

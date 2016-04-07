@@ -1,14 +1,11 @@
 package be.lambdaware.dao;
-import be.lambdaware.entities.ParentInfo;
 
+import be.lambdaware.entities.ParentInfoEntity;
 
 /**
- * Created by jensv on 06-Apr-16.
+ * @author hendrik
  */
-public interface ParentInfoDAO extends AbstractDAO<ParentInfo> {
+public interface ParentInfoDAO {
 
-    // define functions that are not within AbstractDAO
-    // custom functions e.g.
-    // public List<User> getUsersByCertificate();
-
+    ParentInfoEntity get(Integer id);
 }

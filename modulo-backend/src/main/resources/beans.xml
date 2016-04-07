@@ -17,5 +17,8 @@
     <bean id="UserDAOImpl" class="be.lambdaware.jdbc.UserDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <bean id="ClassesDAOImpl" class="be.lambdaware.jdbc.ClassesDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
 </beans>

@@ -75,7 +75,7 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
 
     @Override
     public void update(StudentInfo entity) {
-        String SQL = "UPDATE `users` SET user_id = ?, parent_id = ?, first_name = ?, last_name = ?, birthdate = ?, birth_place = ?, nationality = ?, national_identification_number = ?, street = ?, house_number = ?, postal_code = ?, city = ?, phone_parent = ?, phone_cell = ?, bank_account = ?";
+        String SQL = "UPDATE `users` SET user_id = ?, parent_id = ?, first_name = ?, last_name = ?, birthdate = ?, birth_place = ?, nationality = ?, national_identification_number = ?, street = ?, house_number = ?, postal_code = ?, city = ?, phone_parent = ?, phone_cell = ?, bank_account = ? where id = ?";
         jdbcTemplate.update(SQL, entity.getUser_id(), entity.getParent_id(), entity.getFirst_name(), entity.getLast_name(), entity.getBirthdate(), entity.getNationality(), entity.getNational_identification_number(), entity.getStreet(), entity.getHouse_number(), entity.getPostal_code(), entity.getCity(), entity.getPhone_parent(), entity.getPhone_cell(), entity.getBank_account());
         //TODO catch SQL Exception
     }

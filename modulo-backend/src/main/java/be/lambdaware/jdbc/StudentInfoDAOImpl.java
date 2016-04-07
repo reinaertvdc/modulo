@@ -59,5 +59,15 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
         return entity;
     }
 
+    @Override
+    public StudentInfoEntity getById(Integer id) {
+        System.out.println("TEST: " + id);
+        String SQL = "SELECT * FROM `student_info` JOIN `users` ON `student_info`.`id` = `users`.`id` JOIN `parent_info` ON `student_info`.`parent_id` = `parent_info`.`id` WHERE `student_info`.`id` = ?";
+        Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
+        StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
+        //TODO catch SQL Exception
+        return entity;
+    }
+
 
 }

@@ -37,7 +37,7 @@
     <bean id="CertificateDAO" class="be.lambdaware.jdbc.CertificateDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="UserClassDAO" class="be.lambdaware.jdbc.UserClassDAOImpl">
+    <bean id="UserClassDAO" class="be.lambdaware.jdbc.StudentClassDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <bean id="ClassCertificateDAO" class="be.lambdaware.jdbc.ClassCertificateDAOImpl">

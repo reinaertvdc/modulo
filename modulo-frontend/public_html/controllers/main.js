@@ -30,14 +30,14 @@ app.controller('MainController', function ($scope) {
         }),
 
         userCanOpen: function (panel) {
-            if ($scope.user.type == $scope.user.Type.ADMIN) {
-                return panel == $scope.location.Panel.USER_MANAGEMENT || panel == $scope.location.Panel.GRADES_CERTIFICATES;
-            } else if ($scope.user.type == $scope.user.Type.TEACHER) {
-                return panel == $scope.location.Panel.MY_CLASSES || panel == $scope.location.Panel.SCORES_MANAGEMENT || panel == $scope.location.Panel.STUDENT_PROGRESS;
-            } else if ($scope.user.type == $scope.user.Type.STUDENT) {
-                return panel == $scope.location.Panel.STUDENT_PROGRESS;
-            } else if ($scope.user.type == $scope.user.Type.PARENT) {
-                return panel == $scope.location.Panel.STUDENT_PROGRESS;
+            if ($scope.user.type === $scope.user.Type.ADMIN) {
+                return panel === $scope.location.Panel.USER_MANAGEMENT || panel === $scope.location.Panel.GRADES_CERTIFICATES;
+            } else if ($scope.user.type === $scope.user.Type.TEACHER) {
+                return panel === $scope.location.Panel.MY_CLASSES || panel === $scope.location.Panel.SCORES_MANAGEMENT || panel === $scope.location.Panel.STUDENT_PROGRESS;
+            } else if ($scope.user.type === $scope.user.Type.STUDENT) {
+                return panel === $scope.location.Panel.STUDENT_PROGRESS;
+            } else if ($scope.user.type === $scope.user.Type.PARENT) {
+                return panel === $scope.location.Panel.STUDENT_PROGRESS;
             }
             return false;
         },

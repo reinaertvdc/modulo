@@ -15,6 +15,8 @@ public interface ClassesDAO {
 
     int create(ClassEntity entity);
 
+    ClassEntity get(Integer id);
+
     List<ClassEntity> getAll();
 
     List<ClassEntity> getAllByTeacher(User teacher);

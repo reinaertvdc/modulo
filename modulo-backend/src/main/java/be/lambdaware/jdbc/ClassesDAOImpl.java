@@ -1,8 +1,10 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.ClassesDAO;
+import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.User;
+import be.lambdaware.mappers.CertificateMapper;
 import be.lambdaware.mappers.ClassesMapper;
 import be.lambdaware.mappers.UserMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -37,6 +39,14 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
         }, holder);
 
         return holder.getKey().intValue();
+    }
+
+    @Override
+    public ClassEntity get(Integer id) {
+        String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id` WHERE `classes`.`id` = ?";
+        ClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id},new ClassesMapper(new UserMapper()));
+        //TODO catch SQL Exception
+        return entity;
     }
 
     @Override

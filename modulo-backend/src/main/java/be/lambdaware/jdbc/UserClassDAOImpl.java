@@ -2,6 +2,8 @@ package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.UserClassDAO;
+import be.lambdaware.entities.ClassEntity;
+import be.lambdaware.entities.StudentInfo;
 import be.lambdaware.entities.UserClassEntity;
 import be.lambdaware.mappers.UserClassMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -28,8 +30,8 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1,entity.getStudent_id());
-                statement.setInt(2,entity.getClass_id());
+                statement.setInt(1,entity.getStudentInfo().getId());
+                statement.setInt(2,entity.getClassEntity().getId());
                 return statement;
             }
         }, holder);
@@ -37,9 +39,9 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
     }
 
     @Override
-    public UserClassEntity get(Integer student_id, Integer class_id) {
+    public UserClassEntity get(StudentInfo studentInfo, ClassEntity classEntity) {
         String SQL = "SELECT * FROM `user_class` WHERE `student_id` = ? AND `class_id` = ?";
-        UserClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{student_id, class_id}, new UserClassMapper());
+        UserClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{studentInfo.getId(), classEntity.getId()}, new UserClassMapper());
         //TODO catch SQL Exception
         return entity;
     }
@@ -53,18 +55,10 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
     }
 
     @Override
-    public void delete(Integer student_id, Integer class_id) {
+    public void delete(StudentInfo studentInfo, ClassEntity classEntity) {
         String SQL = "DELETE FROM `user_class` WHERE `student_id` = ? AND class_id = ?";
-        jdbcTemplate.update(SQL, student_id, class_id);
+        jdbcTemplate.update(SQL, studentInfo.getId(), classEntity.getId());
         //TODO catch SQL Exception
     }
 
-    @Override
-    public void update(UserClassEntity entity) {
-        /*
-        String SQL = "UPDATE `user_class` SET name = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getName(),entity.getId());
-        //TODO catch SQL Exception
-        */
-    }
 }

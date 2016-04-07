@@ -30,6 +30,9 @@
     <bean id="CourseTopicDAOImpl" class="be.lambdaware.jdbc.CourseTopicDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <bean id="StudentInfoDAOImpl" class="be.lambdaware.jdbc.StudentInfoDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
     <!-- Definition for certificateDAOImpl bean -->
     <bean id="CertificateDAOImpl" class="be.lambdaware.jdbc.CertificateDAOImpl">

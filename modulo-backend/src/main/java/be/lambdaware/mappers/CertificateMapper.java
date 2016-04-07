@@ -16,6 +16,7 @@ public class CertificateMapper implements RowMapper<CertificateEntity> {
         CertificateEntity certificate = new CertificateEntity();
         certificate.setId(resultSet.getInt("id"));
         certificate.setName(resultSet.getString("name"));
+        certificate.setEnabled(resultSet.getInt("enabled"));
         return certificate;
     }
 }

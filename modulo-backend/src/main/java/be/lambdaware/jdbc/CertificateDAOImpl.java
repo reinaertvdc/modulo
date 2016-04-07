@@ -19,7 +19,7 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
 
     @Override
     public int create(CertificateEntity entity) {
-        String SQL = "INSERT INTO `certificate` (`name`) VALUES (?)";
+        String SQL = "INSERT INTO `certificates` (`name`, `enabled`) VALUES (?,?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -28,6 +28,7 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, entity.getName());
+                statement.setInt(2,entity.getEnabled());
                 return statement;
             }
         }, holder);
@@ -37,7 +38,7 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
 
     @Override
     public CertificateEntity get(Integer id) {
-        String SQL = "SELECT * FROM `certificate` WHERE `id` = ?";
+        String SQL = "SELECT * FROM `certificates` WHERE `id` = ?";
         CertificateEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CertificateMapper());
         //TODO catch SQL Exception
         return entity;
@@ -45,7 +46,7 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
 
     @Override
     public List<CertificateEntity> getAll() {
-        String SQL = "SELECT * FROM `certificate`";
+        String SQL = "SELECT * FROM `certificates`";
         List<CertificateEntity> entities = jdbcTemplate.query(SQL, new CertificateMapper());
         //TODO catch SQL Exception
         return entities;
@@ -53,14 +54,14 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
 
     @Override
     public void delete(Integer id) {
-        String SQL = "DELETE FROM `certificate` WHERE `id` = ?";
+        String SQL = "DELETE FROM `certificates` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
         //TODO catch SQL Exception
     }
 
     @Override
     public void update(CertificateEntity entity) {
-        String SQL = "UPDATE `certificate` SET name = ? where id = ?";
+        String SQL = "UPDATE `certificates` SET name = ? where id = ?";
         jdbcTemplate.update(SQL, entity.getName(),entity.getId());
         //TODO catch SQL Exception
     }

@@ -47,4 +47,8 @@
     <bean id="ObjectiveDAOImpl" class="be.lambdaware.jdbc.ObjectiveDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <!-- Definition for ObjectiveDAOImpl bean -->
+    <bean id="StudentPAVScoreDAOImpl" class="be.lambdaware.jdbc.StudentPAVScoreDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 </beans>

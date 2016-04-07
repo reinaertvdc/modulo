@@ -36,6 +36,15 @@ CREATE TABLE IF NOT EXISTS `certificate` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Gegevens worden uitgevoerd voor tabel `certificate`
+--
+
+INSERT INTO `certificate` (`name`) VALUES
+('Certificaat1'),
+('Certificaat2'),
+('Certificaat3');
+
 -- --------------------------------------------------------
 
 --
@@ -264,10 +273,22 @@ CREATE TABLE IF NOT EXISTS `sub_certificate` (
   `certificate_id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `required` tinyint(4) NOT NULL,
+  `enabled` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKsub_certif481276` (`certificate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `sub_certificate`
+--
+
+INSERT INTO `sub_certificate` (`certificate_id`, `name`, `description`, `enabled`) VALUES
+(1, 'Subcertificaaat1', 'dit is subcertificaat 1 in certificaat 1', 1),
+(1, 'Subcertificaat 2', 'dit is subcertificaat 2 in certificaat 1', 1),
+(1, 'Subcertificaat 3', 'dit is subcertificaat 3 in certificaat 1', 0),
+(2, 'Subcertificaat 1', 'dit is subcertificaat 1 in certificaat 2', 1),
+(2, 'Subcertificaat 2', 'dit is subcertificaat 2 in certificaat 2', 0),
+(3, 'Subcertificaat 1', 'dit is subcertificaat 1 in certificaat 3', 1);
 
 -- --------------------------------------------------------
 

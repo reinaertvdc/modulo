@@ -25,5 +25,7 @@ public interface StudentInfoDAO {
      */
     StudentInfoEntity getByUserId(Integer id);
 
+    StudentInfoEntity getById(Integer id);
+
 
 }

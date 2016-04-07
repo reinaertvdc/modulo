@@ -5158,7 +5158,7 @@ angular.module('ui.bootstrap.popover', ['ui.bootstrap.tooltip'])
     replace: true,
     scope: { uibTitle: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
       originScope: '&' },
-    templateUrl: 'uib/template/popover/popover-index.html'
+    templateUrl: 'uib/template/popover/popover-my_classes.html'
   };
 })
 

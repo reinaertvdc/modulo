@@ -39,7 +39,12 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
 
     @Override
     public UserClassEntity get(StudentInfoEntity studentInfo, ClassEntity classEntity) {
-        String SQL = "SELECT * FROM `user_class` WHERE `student_id` = ? AND `class_id` = ?";
+        String SQL = "SELECT * FROM `user_class` " +
+                "JOIN `classes` ON `classes`.`id` = `user_class`.`class_id`" +
+                "JOIN `student_info` ON `student_info`.`id` = `user_class`.`student_id`" +
+                "JOIN `users` ON `users`.`id` = `student_info`.`user_id`" +
+                "JOIN `parent_info` ON `parent_info`.`id` = `student_info`.`parent_id` " +
+                "WHERE `student_id` = ? AND `class_id` = ?";
         UserClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{studentInfo.getId(), classEntity.getId()}, new UserClassMapper());
         //TODO catch SQL Exception
         return entity;
@@ -47,7 +52,11 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
 
     @Override
     public List<UserClassEntity> getAll() {
-        String SQL = "SELECT * FROM `user_class`";
+        String SQL = "SELECT * FROM `user_class` " +
+                "JOIN `classes` ON `classes`.`id` = `user_class`.`class_id`" +
+                "JOIN `student_info` ON `student_info`.`id` = `user_class`.`student_id`" +
+                "JOIN `users` ON `users`.`id` = `student_info`.`user_id`" +
+                "JOIN `parent_info` ON `parent_info`.`id` = `student_info`.`parent_id` ";
         List<UserClassEntity> entities = jdbcTemplate.query(SQL, new UserClassMapper());
         //TODO catch SQL Exception
         return entities;

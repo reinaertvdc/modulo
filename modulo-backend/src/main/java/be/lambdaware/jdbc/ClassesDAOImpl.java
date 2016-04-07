@@ -4,7 +4,6 @@ import be.lambdaware.dao.ClassesDAO;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.UserEntity;
 import be.lambdaware.mappers.ClassesMapper;
-import be.lambdaware.mappers.UserMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -29,7 +28,7 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, entity.getTeacher().getId());
+                statement.setInt(1, entity.getTeacherId());
                 statement.setString(2, entity.getName());
                 statement.setString(3, entity.getType());
                 return statement;

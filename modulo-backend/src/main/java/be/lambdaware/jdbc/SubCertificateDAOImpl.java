@@ -1,6 +1,7 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.SubCertificateDAO;
+import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.SubCertificateEntity;
 import be.lambdaware.mappers.SubCertificateMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -26,7 +27,7 @@ public class SubCertificateDAOImpl extends AbstractDAOImpl implements SubCertifi
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, entity.getCertificate_id());
+                statement.setInt(1, entity.getCertificate().getId());
                 statement.setString(2, entity.getName());
                 statement.setString(3, entity.getDescription());
                 statement.setBoolean(4, entity.getEnabled());
@@ -63,7 +64,15 @@ public class SubCertificateDAOImpl extends AbstractDAOImpl implements SubCertifi
     @Override
     public void update(SubCertificateEntity entity) {
         String SQL = "UPDATE `sub_certificate` SET `certificate_id` = ?, `name` = ?, `description` = ?, `enabled` = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getCertificate_id(), entity.getName(), entity.getDescription(), entity.getEnabled());
+        jdbcTemplate.update(SQL, entity.getCertificate().getId(), entity.getName(), entity.getDescription(), entity.getEnabled());
         //TODO catch SQL Exception
+    }
+
+    @Override
+    public List<SubCertificateEntity> getAllByCertificate(CertificateEntity certificate) {
+        String SQL = "SELECT * FROM `sub_certificate` JOIN `certificate` ON `sub_certificate`.`certificate_id` = `certificate`.`id` WHERE `certificate_id` = ?";
+        List<SubCertificateEntity> entities = jdbcTemplate.query(SQL, new SubCertificateMapper(), certificate.getId());
+        //TODO catch SQL Exception
+        return entities;
     }
 }

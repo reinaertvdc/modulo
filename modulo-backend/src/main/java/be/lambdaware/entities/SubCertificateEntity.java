@@ -6,7 +6,7 @@ package be.lambdaware.entities;
 public class SubCertificateEntity {
 
     private Integer id;
-    private Integer certificate_id;   // TODO replace with CertificateEntity
+    private CertificateEntity certificate;
     private String name;
     private String description;
     private Boolean enabled;
@@ -19,12 +19,12 @@ public class SubCertificateEntity {
         this.id = id;
     }
 
-    public Integer getCertificate_id() {
-        return certificate_id;
+    public CertificateEntity getCertificate() {
+        return certificate;
     }
 
-    public void setCertificate_id(Integer certificate_id) {
-        this.certificate_id = certificate_id;
+    public void setCertificate(CertificateEntity certificate) {
+        this.certificate = certificate;
     }
 
     public String getName() {
@@ -55,7 +55,7 @@ public class SubCertificateEntity {
     public String toString() {
         return "SubCertificateEntity{" +
                 "id=" + id +
-                ", certificate_id=" + certificate_id +
+                ", certificate=" + certificate +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", enabled=" + enabled +

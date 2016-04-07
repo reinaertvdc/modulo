@@ -1,5 +1,6 @@
 package be.lambdaware.dao;
 
+import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.SubCertificateEntity;
 
 import java.util.List;
@@ -43,4 +44,10 @@ public interface SubCertificateDAO {
      * @param entity the entity with the new values.
      */
     public void update(SubCertificateEntity entity);
+
+    /**
+     * Get a list of all the subcertificates for a given certificate.
+     * @param certificate the certificate to look for.
+     */
+    public List<SubCertificateEntity> getAllByCertificate(CertificateEntity certificate);
 }

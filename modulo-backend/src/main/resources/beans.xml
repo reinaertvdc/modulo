@@ -13,31 +13,31 @@
         <property name="password" value="root"/>
     </bean>
 
-    <!-- Definition for UserDAOImpl bean -->
-    <bean id="UserDAOImpl" class="be.lambdaware.jdbc.UserDAOImpl">
+    <bean id="UserDAO" class="be.lambdaware.jdbc.UserDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <!-- Definition for SubCertificateDAOImpl bean -->
-    <bean id="SubCertificateDAOImpl" class="be.lambdaware.jdbc.SubCertificateDAOImpl">
+    <bean id="SubCertificateDAO" class="be.lambdaware.jdbc.SubCertificateDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="ClassesDAOImpl" class="be.lambdaware.jdbc.ClassesDAOImpl">
+    <bean id="ClassesDAO" class="be.lambdaware.jdbc.ClassesDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="GradeDAOImpl" class="be.lambdaware.jdbc.GradeDAOImpl">
+    <bean id="GradeDAO" class="be.lambdaware.jdbc.GradeDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="CourseTopicDAOImpl" class="be.lambdaware.jdbc.CourseTopicDAOImpl">
+    <bean id="CourseTopicDAO" class="be.lambdaware.jdbc.CourseTopicDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
-    <!-- Definition for certificateDAOImpl bean -->
-    <bean id="CertificateDAOImpl" class="be.lambdaware.jdbc.CertificateDAOImpl">
+    <bean id="StudentInfoDAO" class="be.lambdaware.jdbc.StudentInfoDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
-    <!-- Definition for UserClassDAOImpl bean -->
-    <bean id="UserClassDAOImpl" class="be.lambdaware.jdbc.UserClassDAOImpl">
+    <bean id="ParentInfoDAO" class="be.lambdaware.jdbc.ParentInfoDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="CertificateDAO" class="be.lambdaware.jdbc.CertificateDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="UserClassDAO" class="be.lambdaware.jdbc.UserClassDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
 

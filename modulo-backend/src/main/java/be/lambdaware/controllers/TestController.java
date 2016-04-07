@@ -3,7 +3,7 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.ClassesDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.User;
+import be.lambdaware.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -43,10 +43,10 @@ public class TestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ClassEntity>> get() {
+    public ResponseEntity<List<ClassEntity>> get(@RequestParam(value="id") int teacherId) {
 
         // get a teacher
-        User teacher = userDAO.get(1);
+        UserEntity teacher = userDAO.get(teacherId);
 
         // get all classes of said teacher
         List<ClassEntity> classes = classesDAO.getAllByTeacher(teacher);

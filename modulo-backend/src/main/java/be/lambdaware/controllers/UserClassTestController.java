@@ -1,14 +1,12 @@
 package be.lambdaware.controllers;
 
+import be.lambdaware.dao.ClassesDAO;
+import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserClassDAO;
-import be.lambdaware.entities.UserClassEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by martijn on 07/04/16.
@@ -22,28 +20,40 @@ public class UserClassTestController {
         private ApplicationContext context;
         @Autowired
         private UserClassDAO userClassDAO;
+        @Autowired
+        private StudentInfoDAO studentInfoDAO;
+        @Autowired
+        private ClassesDAO classesDAO;
 
-        @CrossOrigin
-        @RequestMapping(method = RequestMethod.POST)
-        public ResponseEntity<UserClassEntity> create(@RequestBody UserClassEntity userClass) {
+//        @CrossOrigin
+//        @RequestMapping(method = RequestMethod.POST)
+//        public ResponseEntity<UserClassEntity> create(@RequestParam(value="student_id") Integer student_id, @RequestParam(value="class_id") Integer class_id) {
+//
+//            //TODO process when dao.create fails with SQL Exception
+//
+//            StudentInfoEntity studentInfo = studentInfoDAO..get(student_id);
+//            ClassEntity classEntity = classesDAO.get(class_id);
+//
+//            UserClassEntity userClass = new UserClassEntity(studentInfo, classEntity);
+//
+//            // create an entity using the DAO
+//            userClassDAO.create(userClass);
+//
+//            // return entity
+//            return new ResponseEntity<UserClassEntity>(userClass, HttpStatus.OK);
+//        }
 
-            //TODO process when dao.create fails with SQL Exception
-
-            // create an entity using the DAO
-            userClassDAO.create(userClass);
-
-            // return entity
-            return new ResponseEntity<UserClassEntity>(userClass, HttpStatus.OK);
-        }
-
-        @CrossOrigin
-        @RequestMapping(method = RequestMethod.GET)
-        public ResponseEntity<UserClassEntity> get(@RequestParam(value="student_id") Integer student_id, @RequestParam(value="class_id") Integer class_id) {
-
-            UserClassEntity userClass = userClassDAO.get(student_id, class_id);
-
-            return new ResponseEntity<UserClassEntity>(userClass, HttpStatus.OK);
-        }
+//        @CrossOrigin
+//        @RequestMapping(method = RequestMethod.GET)
+//        public ResponseEntity<UserClassEntity> get(@RequestParam(value="student_id") Integer student_id, @RequestParam(value="class_id") Integer class_id) {
+//
+//            StudentInfoEntity studentInfo = studentInfoDAO.get(student_id);
+//            ClassEntity classEntity = classesDAO.get(class_id);
+//
+//            UserClassEntity userClass = userClassDAO.get(studentInfo, classEntity);
+//
+//            return new ResponseEntity<UserClassEntity>(userClass, HttpStatus.OK);
+//        }
     /*
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)

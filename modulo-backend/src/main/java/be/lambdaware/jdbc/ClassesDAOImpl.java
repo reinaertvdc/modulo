@@ -2,8 +2,9 @@ package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.ClassesDAO;
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.User;
+import be.lambdaware.entities.UserEntity;
 import be.lambdaware.mappers.ClassesMapper;
+import be.lambdaware.mappers.UserMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -39,6 +40,14 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
     }
 
     @Override
+    public ClassEntity get(Integer id) {
+        String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id` WHERE `classes`.`id` = ?";
+        ClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id},new ClassesMapper());
+        //TODO catch SQL Exception
+        return entity;
+    }
+
+    @Override
     public List<ClassEntity> getAll() {
         String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id`";
         List<ClassEntity> entities = jdbcTemplate.query(SQL, new ClassesMapper());
@@ -46,7 +55,7 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
         return entities;
     }
 
-    public List<ClassEntity> getAllByTeacher(User teacher) {
+    public List<ClassEntity> getAllByTeacher(UserEntity teacher) {
         String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id` WHERE `teacher_id` = ?";
         List<ClassEntity> entities = jdbcTemplate.query(SQL, new ClassesMapper(),teacher.getId());
         return entities;

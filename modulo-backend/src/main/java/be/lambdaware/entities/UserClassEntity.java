@@ -4,30 +4,35 @@ package be.lambdaware.entities;
  * Created by martijn on 07/04/16.
  */
 public class UserClassEntity {
-    private Integer student_id;
-    private Integer class_id;
+    private StudentInfoEntity studentInfo;
+    private ClassEntity classEntity;
 
-    public Integer getStudent_id() {
-        return student_id;
+    public UserClassEntity(){}
+
+    public UserClassEntity(StudentInfoEntity studentInfo, ClassEntity classEntity){
+        this.studentInfo = studentInfo;
+        this.classEntity = classEntity;
     }
 
-    public void setStudent_id(Integer student_id) {
-        this.student_id = student_id;
+    public StudentInfoEntity getStudentInfo() { return studentInfo; }
+
+    public void setStudentInfo(StudentInfoEntity student) {
+        this.studentInfo = student;
     }
 
-    public Integer getClass_id() {
-        return class_id;
+    public ClassEntity getClassEntity() {
+        return classEntity;
     }
 
-    public void setClass_id(Integer class_id) {
-        this.class_id = class_id;
+    public void setClassEntity(ClassEntity classEntity) {
+        this.classEntity = classEntity;
     }
 
     @Override
     public String toString() {
         return "UserClassEntity{" +
-                "student_id=" + student_id +
-                ", class_id=" + class_id +
+                "studentInfo=" + studentInfo +
+                ", classEntity=" + classEntity +
                 '}';
     }
 }

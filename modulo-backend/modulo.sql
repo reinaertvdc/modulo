@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: localhost
--- Genereertijd: 07 apr 2016 om 09:24
+-- Genereertijd: 07 apr 2016 om 11:38
 -- Serverversie: 5.5.46-0ubuntu0.14.04.2
 -- PHP-versie: 5.6.14-1+deb.sury.org~trusty+1
 
@@ -166,15 +166,17 @@ CREATE TABLE IF NOT EXISTS `parent_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `parent_info`
 --
 
-INSERT INTO `parent_info` (`id`, `first_name`, `last_name`) VALUES
-  (1, 'Ouder', 'De Ouder');
+INSERT INTO `parent_info` (`id`, `first_name`, `last_name`, `user_id`) VALUES
+  (1, 'Ouder', 'Pouder', 10);
 
 -- --------------------------------------------------------
 
@@ -208,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `student_info` (
   `parent_id` int(10) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `birthdate` date NOT NULL,
+  `birth_date` date NOT NULL,
   `birth_place` varchar(255) NOT NULL,
   `nationality` varchar(255) NOT NULL,
   `national_identification_number` char(11) NOT NULL,
@@ -223,6 +225,13 @@ CREATE TABLE IF NOT EXISTS `student_info` (
   KEY `FKstudent_in636242` (`user_id`),
   KEY `FKstudent_in145199` (`parent_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `student_info`
+--
+
+INSERT INTO `student_info` (`id`, `user_id`, `parent_id`, `first_name`, `last_name`, `birthdate`, `birth_place`, `nationality`, `national_identification_number`, `street`, `house_number`, `postal_code`, `city`, `phone_parent`, `phone_cell`, `bank_account`) VALUES
+  (1, 2, 1, 'Student', 'Naam', '2016-04-13', 'Hasselt', 'Belgisch', '654654', 'Straat', '10', '3000', 'Hasselt', '04654897', '048797098', 'BE646879546897');
 
 -- --------------------------------------------------------
 
@@ -353,6 +362,12 @@ ALTER TABLE `competence`
 ALTER TABLE `objective`
   ADD CONSTRAINT `FKobjective223514` FOREIGN KEY (`course_topic_id`) REFERENCES `course_topic` (`id`),
   ADD CONSTRAINT `FKobjective442663` FOREIGN KEY (`grade_id`) REFERENCES `grade` (`id`);
+
+--
+-- Beperkingen voor tabel `parent_info`
+--
+ALTER TABLE `parent_info`
+  ADD CONSTRAINT `FKusersparent` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Beperkingen voor tabel `student_bgv_score`

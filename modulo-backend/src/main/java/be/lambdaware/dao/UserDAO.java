@@ -1,6 +1,6 @@
 package be.lambdaware.dao;
 
-import be.lambdaware.entities.User;
+import be.lambdaware.entities.UserEntity;
 
 import java.util.List;
 
@@ -14,20 +14,20 @@ public interface UserDAO {
      * @param entity the entity to create.
      * @return the id of the newly created entity.
      */
-    public int create(User entity);
+    public int create(UserEntity entity);
 
     /**
      * Get an entity, based on it's id.
      * @param id the entity's id.
      * @return the entity.
      */
-    public User get(Integer id);
+    public UserEntity get(Integer id);
 
     /**
      * Get a list of all the entities.
      * @return a list containing all entities.
      */
-    public List<User> getAll();
+    public List<UserEntity> getAll();
 
     /**
      * Delete a certain entity.
@@ -39,6 +39,6 @@ public interface UserDAO {
      * Updates an entity/
      * @param entity the entity with the new values.
      */
-    public void update(User entity);
+    public void update(UserEntity entity);
 
 }

@@ -1,8 +1,9 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.entities.StudentInfo;
+import be.lambdaware.entities.StudentInfoEntity;
 import be.lambdaware.mappers.StudentInfoMapper;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -10,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 /**
  * Created by Vincent on 06/04/16.
@@ -18,8 +18,8 @@ import java.util.List;
 public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDAO{
 
     @Override
-    public int create(StudentInfo entity) {
-        String SQL = "INSERT INTO `student_info` (`user_id`, `parent_id`, `first_name`, `last_name`, `birthdate`, `birth_place`, `nationality`, `national_identification_number`, `street`, `house_number`, `postal_code`, `city`, `phone_parent`, `phone_cell`, `bank_account`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int create(StudentInfoEntity entity) {
+        String SQL = "INSERT INTO `student_info` (`user_id`, `parent_id`, `first_name`, `last_name`, `birth_date`, `birth_place`, `nationality`, `national_identification_number`, `street`, `house_number`, `postal_code`, `city`, `phone_parent`, `phone_cell`, `bank_account`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -27,21 +27,21 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, entity.getUser_id());
-                statement.setInt(2, entity.getParent_id());
-                statement.setString(3, entity.getFirst_name());
-                statement.setString(4, entity.getLast_name());
-                statement.setDate(5, entity.getBirthdate());
-                statement.setString(6, entity.getBirth_place());
+                statement.setInt(1, entity.getUser().getId());
+                statement.setInt(2, entity.getParent().getId());
+                statement.setString(3, entity.getFirstName());
+                statement.setString(4, entity.getLastName());
+                statement.setDate(5, entity.getBirthDate());
+                statement.setString(6, entity.getBirthPlace());
                 statement.setString(7, entity.getNationality());
-                statement.setString(8, entity.getNational_identification_number());
+                statement.setString(8, entity.getNationalIdentificationNumber());
                 statement.setString(9, entity.getStreet());
-                statement.setString(10, entity.getHouse_number());
-                statement.setString(11, entity.getPostal_code());
+                statement.setString(10, entity.getHouseNumber());
+                statement.setString(11, entity.getPostalCode());
                 statement.setString(12, entity.getCity());
-                statement.setString(13, entity.getPhone_parent());
-                statement.setString(14, entity.getPhone_cell());
-                statement.setString(15, entity.getBank_account());
+                statement.setString(13, entity.getPhoneParent());
+                statement.setString(14, entity.getPhoneCell());
+                statement.setString(15, entity.getBankAccount());
 
                 return statement;
             }
@@ -51,32 +51,13 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
     }
 
     @Override
-    public StudentInfo get(Integer id) {
-        String SQL = "SELECT * FROM `student_info` WHERE `id` = ?";
-        StudentInfo entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
+    public StudentInfoEntity getByUserId(Integer id) {
+        String SQL = "SELECT * FROM `student_info` JOIN `users` ON `student_info`.`id` = `users`.`id` JOIN `parent_info` ON `student_info`.`parent_id` = `parent_info`.`id` WHERE `student_info`.`user_id` = ?";
+        Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
+        StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
         //TODO catch SQL Exception
         return entity;
     }
 
-    @Override
-    public List<StudentInfo> getAll() {
-        String SQL = "SELECT * FROM `student_info`";
-        List<StudentInfo> entities = jdbcTemplate.query(SQL, new StudentInfoMapper());
-        //TODO catch SQL Exception
-        return entities;
-    }
 
-    @Override
-    public void delete(Integer id) {
-        String SQL = "DELETE FROM `student_info` WHERE `id` = ?";
-        jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
-    }
-
-    @Override
-    public void update(StudentInfo entity) {
-        String SQL = "UPDATE `users` SET user_id = ?, parent_id = ?, first_name = ?, last_name = ?, birthdate = ?, birth_place = ?, nationality = ?, national_identification_number = ?, street = ?, house_number = ?, postal_code = ?, city = ?, phone_parent = ?, phone_cell = ?, bank_account = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getUser_id(), entity.getParent_id(), entity.getFirst_name(), entity.getLast_name(), entity.getBirthdate(), entity.getNationality(), entity.getNational_identification_number(), entity.getStreet(), entity.getHouse_number(), entity.getPostal_code(), entity.getCity(), entity.getPhone_parent(), entity.getPhone_cell(), entity.getBank_account());
-        //TODO catch SQL Exception
-    }
 }

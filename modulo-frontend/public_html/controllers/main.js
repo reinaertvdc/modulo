@@ -22,11 +22,11 @@ app.controller('MainController', function ($scope) {
 
     $scope.location = {
         Panel: Object.freeze({
-            USER_MANAGEMENT: 0,
-            GRADES_CERTIFICATES: 1,
-            MY_CLASSES: 2,
-            SCORES_MANAGEMENT: 3,
-            STUDENT_PROGRESS: 4
+            USER_MANAGEMENT: 1,
+            GRADES_CERTIFICATES: 2,
+            MY_CLASSES: 3,
+            SCORES_MANAGEMENT: 4,
+            STUDENT_PROGRESS: 5
         }),
 
         userCanOpen: function (panel) {

@@ -2,7 +2,7 @@ package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.entities.GradeEntity;
-import be.lambdaware.mappers.GradeEntityMapper;
+import be.lambdaware.mappers.GradeMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -38,7 +38,7 @@ public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
     @Override
     public GradeEntity get(Integer id) {
         String SQL = "SELECT * FROM `grade` WHERE `id` = ?";
-        GradeEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new GradeEntityMapper());
+        GradeEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new GradeMapper());
         //TODO catch SQL Exception
         return entity;
     }
@@ -46,7 +46,7 @@ public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
     @Override
     public List<GradeEntity> getAll() {
         String SQL = "SELECT * FROM `grade`";
-        List<GradeEntity> grades = jdbcTemplate.query(SQL, new GradeEntityMapper());
+        List<GradeEntity> grades = jdbcTemplate.query(SQL, new GradeMapper());
         //TODO catch SQL Exception
         return grades;
     }

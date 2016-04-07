@@ -19,7 +19,7 @@ public class ObjectiveMapper implements RowMapper<ObjectiveEntity> {
     public ObjectiveEntity mapRow(ResultSet resultSet, int row) throws SQLException {
         ObjectiveEntity entity = new ObjectiveEntity();
         Logger.getLogger("objectiveMapper").info("test");
-        GradeEntity grade = new GradeEntityMapper().mapRow(resultSet, row);
+        GradeEntity grade = new GradeMapper().mapRow(resultSet, row);
         entity.setGrade(grade);
         CourseTopicEntity courseTopic = new CourseTopicMapper().mapRow(resultSet, row);
         entity.setCourse_topic(courseTopic);

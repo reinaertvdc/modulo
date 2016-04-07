@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: localhost
--- Genereertijd: 07 apr 2016 om 11:38
+-- Genereertijd: 07 apr 2016 om 11:50
 -- Serverversie: 5.5.46-0ubuntu0.14.04.2
 -- PHP-versie: 5.6.14-1+deb.sury.org~trusty+1
 
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `student_info` (
   `parent_id` int(10) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `birth_date` date NOT NULL,
+  `birthdate` date NOT NULL,
   `birth_place` varchar(255) NOT NULL,
   `nationality` varchar(255) NOT NULL,
   `national_identification_number` char(11) NOT NULL,

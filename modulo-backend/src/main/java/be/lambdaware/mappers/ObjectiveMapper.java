@@ -18,14 +18,11 @@ public class ObjectiveMapper implements RowMapper<ObjectiveEntity> {
     @Override
     public ObjectiveEntity mapRow(ResultSet resultSet, int row) throws SQLException {
         ObjectiveEntity entity = new ObjectiveEntity();
-        Logger.getLogger("objectiveMapper").info("test");
-        GradeEntity grade = new GradeMapper().mapRow(resultSet, row);
-        entity.setGrade(grade);
-        CourseTopicEntity courseTopic = new CourseTopicMapper().mapRow(resultSet, row);
-        entity.setCourse_topic(courseTopic);
 
         entity.setName(resultSet.getString("objective.name"));
         entity.setCustom_name(resultSet.getString("objective.custom_name"));
+        entity.setGrade(resultSet.getInt("objective.grade_id"));
+        entity.setCourse_topic(resultSet.getInt("objective.course_topic_id"));
 
 
         return entity;

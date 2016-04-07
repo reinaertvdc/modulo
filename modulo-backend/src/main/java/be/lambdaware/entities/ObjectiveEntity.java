@@ -8,8 +8,8 @@ public class ObjectiveEntity {
     private String name;
     private String custom_name;
 
-    private GradeEntity grade;
-    private CourseTopicEntity course_topic;
+    private Integer grade;
+    private Integer course_topic;
 
     public Integer getId() {
         return id;
@@ -35,19 +35,19 @@ public class ObjectiveEntity {
         this.custom_name = custom_name;
     }
 
-    public GradeEntity getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(GradeEntity grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
-    public CourseTopicEntity getCourse_topic() {
+    public Integer getCourse_topic() {
         return course_topic;
     }
 
-    public void setCourse_topic(CourseTopicEntity course_topic) {
+    public void setCourse_topic(Integer course_topic) {
         this.course_topic = course_topic;
     }
 

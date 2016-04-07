@@ -1,7 +1,7 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.StudentInfo;
+import be.lambdaware.entities.StudentInfoEntity;
 import be.lambdaware.entities.UserClassEntity;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface UserClassDAO {
      * @param classEntity the class
      * @return the entity.
      */
-    public UserClassEntity get(StudentInfo studentInfo, ClassEntity classEntity);
+    public UserClassEntity get(StudentInfoEntity studentInfo, ClassEntity classEntity);
 
     /**
      * Get a list of all the entities.
@@ -37,6 +37,6 @@ public interface UserClassDAO {
      * @param studentInfo the students info
      * @param classEntity the class
      */
-    public void delete(StudentInfo studentInfo, ClassEntity classEntity);
+    public void delete(StudentInfoEntity studentInfo, ClassEntity classEntity);
 
 }

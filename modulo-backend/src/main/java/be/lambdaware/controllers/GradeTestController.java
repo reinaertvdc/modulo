@@ -1,16 +1,12 @@
 package be.lambdaware.controllers;
 
 import be.lambdaware.dao.GradeDAO;
-import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.GradeEntity;
-import be.lambdaware.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Vincent on 07/04/16.

@@ -1,9 +1,8 @@
 package be.lambdaware.jdbc;
 
-import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.UserClassDAO;
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.StudentInfo;
+import be.lambdaware.entities.StudentInfoEntity;
 import be.lambdaware.entities.UserClassEntity;
 import be.lambdaware.mappers.UserClassMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -39,7 +38,7 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
     }
 
     @Override
-    public UserClassEntity get(StudentInfo studentInfo, ClassEntity classEntity) {
+    public UserClassEntity get(StudentInfoEntity studentInfo, ClassEntity classEntity) {
         String SQL = "SELECT * FROM `user_class` WHERE `student_id` = ? AND `class_id` = ?";
         UserClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{studentInfo.getId(), classEntity.getId()}, new UserClassMapper());
         //TODO catch SQL Exception
@@ -55,7 +54,7 @@ public class UserClassDAOImpl extends AbstractDAOImpl implements UserClassDAO {
     }
 
     @Override
-    public void delete(StudentInfo studentInfo, ClassEntity classEntity) {
+    public void delete(StudentInfoEntity studentInfo, ClassEntity classEntity) {
         String SQL = "DELETE FROM `user_class` WHERE `student_id` = ? AND class_id = ?";
         jdbcTemplate.update(SQL, studentInfo.getId(), classEntity.getId());
         //TODO catch SQL Exception

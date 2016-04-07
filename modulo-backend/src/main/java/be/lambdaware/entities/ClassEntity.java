@@ -8,7 +8,7 @@ public class ClassEntity {
     private String name;
     private String type;
 
-    private User teacher;
+    private UserEntity teacher;
 
     public Integer getId() {
         return id;
@@ -34,11 +34,11 @@ public class ClassEntity {
         this.type = type;
     }
 
-    public User getTeacher() {
+    public UserEntity getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(User teacher) {
+    public void setTeacher(UserEntity teacher) {
         this.teacher = teacher;
     }
 

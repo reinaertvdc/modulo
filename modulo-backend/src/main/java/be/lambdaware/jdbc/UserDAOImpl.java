@@ -1,7 +1,7 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.UserDAO;
-import be.lambdaware.entities.User;
+import be.lambdaware.entities.UserEntity;
 import be.lambdaware.mappers.UserMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -18,7 +18,7 @@ import java.util.List;
 public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 
     @Override
-    public int create(User entity) {
+    public int create(UserEntity entity) {
         String SQL = "INSERT INTO `users` (`email`, `password`, `type`) VALUES (?, ?, ?)";
 
         //TODO process result our catch SQL Exception
@@ -38,17 +38,17 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
     }
 
     @Override
-    public User get(Integer id) {
+    public UserEntity get(Integer id) {
         String SQL = "SELECT * FROM `users` WHERE `id` = ?";
-        User entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new UserMapper());
+        UserEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new UserMapper());
         //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<User> getAll() {
+    public List<UserEntity> getAll() {
         String SQL = "SELECT * FROM `users`";
-        List<User> entities = jdbcTemplate.query(SQL, new UserMapper());
+        List<UserEntity> entities = jdbcTemplate.query(SQL, new UserMapper());
         //TODO catch SQL Exception
         return entities;
     }
@@ -61,7 +61,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
     }
 
     @Override
-    public void update(User entity) {
+    public void update(UserEntity entity) {
         String SQL = "UPDATE `users` SET email = ?, password = ?, type = ? where id = ?";
         jdbcTemplate.update(SQL, entity.getEmail(), entity.getPassword(), entity.getType(),entity.getId());
         //TODO catch SQL Exception

@@ -4,19 +4,19 @@ package be.lambdaware.entities;
  * Created by martijn on 07/04/16.
  */
 public class UserClassEntity {
-    private StudentInfo studentInfo;
+    private StudentInfoEntity studentInfo;
     private ClassEntity classEntity;
 
     public UserClassEntity(){}
 
-    public UserClassEntity(StudentInfo studentInfo, ClassEntity classEntity){
+    public UserClassEntity(StudentInfoEntity studentInfo, ClassEntity classEntity){
         this.studentInfo = studentInfo;
         this.classEntity = classEntity;
     }
 
-    public StudentInfo getStudentInfo() { return studentInfo; }
+    public StudentInfoEntity getStudentInfo() { return studentInfo; }
 
-    public void setStudentInfo(StudentInfo student) {
+    public void setStudentInfo(StudentInfoEntity student) {
         this.studentInfo = student;
     }
 

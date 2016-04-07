@@ -29,6 +29,27 @@ app.controller('MainController', function ($scope) {
             STUDENT_PROGRESS: 5
         }),
 
+        getPanel: function () {
+            var result = 'views/panels/';
+
+            if ($scope.location.panel == $scope.location.Panel.USER_MANAGEMENT) {
+                result += 'user_management';
+            } else if ($scope.location.panel == $scope.location.Panel.GRADES_CERTIFICATES) {
+                result += 'grades_certificates';
+            } else if ($scope.location.panel == $scope.location.Panel.MY_CLASSES) {
+                result += 'my_classes';
+            } else if ($scope.location.panel == $scope.location.Panel.SCORES_MANAGEMENT) {
+                result += 'scores_management';
+            } else if ($scope.location.panel == $scope.location.Panel.STUDENT_PROGRESS) {
+                result += 'student_progress';
+            } else {
+                result += 'home';
+            }
+            
+            result += '.html';
+            return result;
+        },
+
         userCanOpen: function (panel) {
             if ($scope.user.type === $scope.user.Type.ADMIN) {
                 return panel === $scope.location.Panel.USER_MANAGEMENT || panel === $scope.location.Panel.GRADES_CERTIFICATES;

@@ -17,6 +17,7 @@
                 <li id="navbar-my-classes" data-ng-class="{active: location.panel===location.Panel.MY_CLASSES, hidden: !location.userCanOpen(location.Panel.MY_CLASSES)}"><a href="#" data-ng-click="navigate(location.Panel.MY_CLASSES)">Mijn klassen</a></li>
                 <li id="navbar-scores-management" data-ng-class="{active: location.panel===location.Panel.SCORES_MANAGEMENT, hidden: !location.userCanOpen(location.Panel.SCORES_MANAGEMENT)}"><a href="#" data-ng-click="navigate(location.Panel.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
                 <li id="navbar-student-progress" data-ng-class="{active: location.panel===location.Panel.STUDENT_PROGRESS, hidden: !location.userCanOpen(location.Panel.STUDENT_PROGRESS)}"><a href="#" data-ng-click="navigate(location.Panel.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
+                <li id="navbar-log-out" data-ng-class="{hidden: !user.isLoggedIn()}"><a href="#" data-ng-click="user.logOut();navigate(null);">Afmelden</a></li>
             </ul>
         </div>
     </div>

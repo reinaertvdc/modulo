@@ -1,6 +1,5 @@
 package be.lambdaware.dao;
 
-import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.SubCertificateEntity;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public interface SubCertificateDAO {
 
     /**
      * Get a list of all the subcertificates for a given certificate.
-     * @param certificate the certificate to look for.
+     * @param certificateId the id of the certificate to look for.
      */
-    public List<SubCertificateEntity> getAllByCertificate(CertificateEntity certificate);
+    public List<SubCertificateEntity> getAllByCertificate(Integer certificateId);
 }

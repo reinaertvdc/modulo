@@ -13,25 +13,13 @@ import java.sql.SQLException;
  */
 public class ClassCertificateMapper implements RowMapper<ClassCertificateEntity>{
 
-    private ClassesMapper classesMapper;
-    private CertificateMapper certificateMapper;
-
-    public ClassCertificateMapper() {
-        classesMapper = new ClassesMapper();
-        certificateMapper = new CertificateMapper();
-    }
-
-
     @Override
     public ClassCertificateEntity mapRow(ResultSet resultSet, int row) throws SQLException {
 
         ClassCertificateEntity classCertificateEntity = new ClassCertificateEntity();
 
-        ClassEntity classEntity = this.classesMapper.mapRow(resultSet, row);
-        CertificateEntity certificateEntity = this.certificateMapper.mapRow(resultSet, row);
-
-        classCertificateEntity.setClassEntity(classEntity);
-        classCertificateEntity.setCertificateEntity(certificateEntity);
+        classCertificateEntity.setClassId(resultSet.getInt("class_id"));
+        classCertificateEntity.setCertificateId(resultSet.getInt("certificate_id"));
 
         return classCertificateEntity;
     }

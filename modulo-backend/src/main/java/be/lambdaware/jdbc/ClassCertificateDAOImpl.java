@@ -30,8 +30,8 @@ public class ClassCertificateDAOImpl extends AbstractDAOImpl implements ClassCer
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, entity.getClassEntity().getId());
-                statement.setInt(2, entity.getCertificateEntity().getId());
+                statement.setInt(1, entity.getClassId());
+                statement.setInt(2, entity.getCertificateId());
 
                 return statement;
             }
@@ -41,48 +41,52 @@ public class ClassCertificateDAOImpl extends AbstractDAOImpl implements ClassCer
     }
 
     @Override
-    public List<ClassCertificateEntity> getByClass(ClassEntity classEntity) {
-        String SQL = "SELECT * " +
-                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificate` ON `class_certificate`.`certificate_id` = `certificate`.`id`"  +
-                "WHERE `class_id` = ?";
-        List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), classEntity.getId());
+    public List<ClassCertificateEntity> getByClass(Integer classId) {
+//        String SQL = "SELECT * " +
+//                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
+//                "WHERE `class_id` = ?";
+        String SQL = "SELECT * FROM `class_certificate` WHERE `class_id` = ?";
+        List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), classId);
         //TODO catch SQL Exception
         return classCertificates;
     }
 
     @Override
-    public List<ClassCertificateEntity> getByCertificate(CertificateEntity certificateEntity) {
-        String SQL = "SELECT * " +
-                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificate` ON `class_certificate`.`certificate_id` = `certificate`.`id`"  +
-                "WHERE `certificate_id` = ?";
-        List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), certificateEntity.getId());
+    public List<ClassCertificateEntity> getByCertificate(Integer certificateId) {
+//        String SQL = "SELECT * " +
+//                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
+//                "WHERE `certificate_id` = ?";
+        String SQL = "SELECT * FROM `class_certificate` WHERE `certificate_id` = ?";
+        List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), certificateId);
         //TODO catch SQL Exception
         return classCertificates;
     }
 
     @Override
-    public List<ClassCertificateEntity>get(ClassEntity classEntity, CertificateEntity certificateEntity) {
-        String SQL = "SELECT * " +
-                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificate` ON `class_certificate`.`certificate_id` = `certificate`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
-                "WHERE `certificate_id` = ? AND `class_id` = ?";
-        List<ClassCertificateEntity> classCertificate = jdbcTemplate.query(SQL, new ClassCertificateMapper(), classEntity.getId(), certificateEntity.getId());
+    public ClassCertificateEntity get(Integer classId, Integer certificateId) {
+//        String SQL = "SELECT * " +
+//                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
+//                "WHERE `certificate_id` = ? AND `class_id` = ?";
+        String SQL = "SELECT * FROM `class_certificate` WHERE `certificate_id` = ? AND `class_id` = ?";
+        ClassCertificateEntity classCertificate = jdbcTemplate.queryForObject(SQL, new ClassCertificateMapper(), classId, certificateId);
         //TODO catch SQL Exception
         return classCertificate;
     }
 
     @Override
     public List<ClassCertificateEntity> getAll() {
-        String SQL = "SELECT * " +
-                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificate` ON `class_certificate`.`certificate_id` = `certificate`.`id`";
+//        String SQL = "SELECT * " +
+//                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificate` ON `class_certificate`.`certificate_id` = `certificate`.`id`";
+        String SQL = "SELECT * FROM `class_certificate`";
         List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper());
         //TODO catch SQL Exception
         return classCertificates;
     }
 
     @Override
-    public void delete(ClassEntity classEntity, CertificateEntity certificateEntity) {
+    public void delete(Integer classId, Integer certificateId) {
         String SQL = "DELETE FROM `class_certificate` WHERE `class_id` = ? AND `certificate_id` = ? ";
-        jdbcTemplate.update(SQL, classEntity.getId(), certificateEntity.getId());
+        jdbcTemplate.update(SQL, classId, certificateId);
         //TODO catch SQL Exception
     }
 }

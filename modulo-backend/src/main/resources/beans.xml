@@ -37,7 +37,7 @@
     <bean id="CertificateDAO" class="be.lambdaware.jdbc.CertificateDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="UserClassDAO" class="be.lambdaware.jdbc.UserClassDAOImpl">
+    <bean id="UserClassDAO" class="be.lambdaware.jdbc.StudentClassDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <bean id="ClassCertificateDAO" class="be.lambdaware.jdbc.ClassCertificateDAOImpl">
@@ -45,6 +45,14 @@
     </bean>
     <!-- Definition for ObjectiveDAOImpl bean -->
     <bean id="ObjectiveDAOImpl" class="be.lambdaware.jdbc.ObjectiveDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- Definition for StudentPAVScoreDAOImpl bean -->
+    <bean id="StudentPAVScoreDAOImpl" class="be.lambdaware.jdbc.StudentPAVScoreDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- Definition for StudentBGVScoreDAOImpl bean -->
+    <bean id="StudentBGVScoreDAOImpl" class="be.lambdaware.jdbc.StudentBGVScoreDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
 </beans>

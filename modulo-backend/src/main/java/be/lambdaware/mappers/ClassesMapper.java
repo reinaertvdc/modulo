@@ -1,7 +1,6 @@
 package be.lambdaware.mappers;
 
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.UserEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -20,9 +19,7 @@ public class ClassesMapper implements RowMapper<ClassEntity> {
         classEntity.setId(resultSet.getInt("classes.id"));
         classEntity.setName(resultSet.getString("classes.name"));
         classEntity.setType(resultSet.getString("classes.type"));
-
-        UserEntity teacher = new UserMapper().mapRow(resultSet, row);
-        classEntity.setTeacher(teacher);
+        classEntity.setTeacherId(resultSet.getInt("classes.teacher_id"));
 
         return classEntity;
     }

@@ -6,9 +6,11 @@ package be.lambdaware.entities;
 public class SubCertificateEntity {
 
     private Integer id;
-    private CertificateEntity certificate;
+    private Integer certificateId;
     private String name;
     private String description;
+    private String customName;
+    private String customDescription;
     private Boolean enabled;
 
     public Integer getId() {
@@ -19,12 +21,12 @@ public class SubCertificateEntity {
         this.id = id;
     }
 
-    public CertificateEntity getCertificate() {
-        return certificate;
+    public Integer getCertificateId() {
+        return certificateId;
     }
 
-    public void setCertificate(CertificateEntity certificate) {
-        this.certificate = certificate;
+    public void setCertificateId(Integer certificateId) {
+        this.certificateId = certificateId;
     }
 
     public String getName() {
@@ -43,6 +45,22 @@ public class SubCertificateEntity {
         this.description = description;
     }
 
+    public String getCustomName() {
+        return customName;
+    }
+
+    public void setCustomName(String customName) {
+        this.customName = customName;
+    }
+
+    public String getCustomDescription() {
+        return customDescription;
+    }
+
+    public void setCustomDescription(String customDescription) {
+        this.customDescription = customDescription;
+    }
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -55,9 +73,11 @@ public class SubCertificateEntity {
     public String toString() {
         return "SubCertificateEntity{" +
                 "id=" + id +
-                ", certificate=" + certificate +
+                ", certificateId=" + certificateId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", customName='" + customName + '\'' +
+                ", customDescription='" + customDescription + '\'' +
                 ", enabled=" + enabled +
                 '}';
     }

@@ -7,8 +7,7 @@ public class ClassEntity {
     private Integer id;
     private String name;
     private String type;
-
-    private UserEntity teacher;
+    private Integer teacherId;
 
     public Integer getId() {
         return id;
@@ -34,12 +33,12 @@ public class ClassEntity {
         this.type = type;
     }
 
-    public UserEntity getTeacher() {
-        return teacher;
+    public Integer getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher(UserEntity teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class ClassEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", teacher=" + teacher +
+                ", teacherId=" + teacherId +
                 '}';
     }
 }

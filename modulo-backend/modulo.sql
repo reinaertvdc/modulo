@@ -116,10 +116,10 @@ CREATE TABLE `certificates` (
 
 INSERT INTO `certificates` VALUES (1, 'Metselaar', '1');
 INSERT INTO `certificates` VALUES (2, 'Elektricien', '1');
-INSERT INTO `certificates` VALUES (3, 'Loodgieter', '2');
+INSERT INTO `certificates` VALUES (3, 'Loodgieter', '0');
 
 CREATE TABLE `sub_certificates` (
-  `id`                 INT          NOT NULL,
+  `id`                 INT          NOT NULL AUTO_INCREMENT,
   `certificate_id`     INT          NOT NULL,
   `name`               VARCHAR(255) NOT NULL,
   `description`        VARCHAR(255) NOT NULL,
@@ -138,7 +138,7 @@ INSERT INTO `sub_certificates` VALUES (5, 2, 'Isolatie', 'De leerling leert isol
 INSERT INTO `sub_certificates` VALUES (6, 2, 'Belichting', 'De leerling leert belichten', NULL, NULL, 0);
 
 CREATE TABLE `sub_certificate_categories` (
-  `id`                 INT          NOT NULL,
+  `id`                 INT          NOT NULL AUTO_INCREMENT,
   `sub_certificate_id` INT          NOT NULL,
   `name`               VARCHAR(255) NOT NULL,
   `description`        VARCHAR(255) NOT NULL,

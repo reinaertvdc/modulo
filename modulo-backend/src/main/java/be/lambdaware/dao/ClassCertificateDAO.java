@@ -21,12 +21,20 @@ public interface ClassCertificateDAO {
     public void create(ClassCertificateEntity entity);
 
     /**
-     * Get an entity, based on it's id.
+     * Get an entity, based on the classId
      *
-     * @param id the entity's id.
-     * @return the entity.
+     * @param classId the entity's classId.
+     * @return a list containing the entities with classId
      */
-    public List<ClassCertificateEntity> getByClass(ClassEntity classEntity);
+    public List<ClassCertificateEntity> getByClass(Integer classId);
+
+    /**
+     * Get an entity, based on it's certificateId.
+     *
+     * @param certificateId the entity's certificateId.
+     * @return a list containing the entities with certificateId.
+     */
+    public List<ClassCertificateEntity> getByCertificate(Integer certificateId);
 
     /**
      * Get an entity, based on it's id.
@@ -34,15 +42,7 @@ public interface ClassCertificateDAO {
      * @param id the entity's id.
      * @return the entity.
      */
-    public List<ClassCertificateEntity> getByCertificate(CertificateEntity certificateEntity);
-
-    /**
-     * Get an entity, based on it's id.
-     *
-     * @param id the entity's id.
-     * @return the entity.
-     */
-    public List<ClassCertificateEntity> get(ClassEntity classEntity, CertificateEntity certificateEntity);
+    public ClassCertificateEntity get(Integer classId, Integer certificateId);
 
     /**
      * Get a list of all the entities.
@@ -56,5 +56,5 @@ public interface ClassCertificateDAO {
      *
      * @param id the entity's id
      */
-    public void delete(ClassEntity classEntity, CertificateEntity certificateEntity);
+    public void delete(Integer classId, Integer certificateId);
 }

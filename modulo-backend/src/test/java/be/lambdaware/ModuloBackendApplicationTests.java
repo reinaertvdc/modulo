@@ -268,13 +268,13 @@ public class ModuloBackendApplicationTests {
         int insertedId = studentBGVScoreDAO.create(entity);
         entity.setId(insertedId);
         Assert.assertEquals(entity,studentBGVScoreDAO.get(insertedId));
-        Logger.getLogger("Test StudentBGVScoreDAO").info("Inserted student_bgv_score matches our desired sub_certificate - pass");
+        Logger.getLogger("Test StudentBGVScoreDAO").info("Inserted student_bgv_score matches our desired student_bgv_score - pass");
 
 
         entity.setScore("A");
         studentBGVScoreDAO.update(entity);
         Assert.assertEquals(entity,studentBGVScoreDAO.get(insertedId));
-        Logger.getLogger("Test StudentBGVScoreDAO").info("Updated student_bgv_score matches our desired sub_certificate - pass");
+        Logger.getLogger("Test StudentBGVScoreDAO").info("Updated student_bgv_score matches our desired student_bgv_score - pass");
 
         studentBGVScoreDAO.delete(insertedId);
         try {
@@ -285,6 +285,53 @@ public class ModuloBackendApplicationTests {
         }
     }
 
+
+    @Autowired
+    private StudentPAVScoreDAO studentPAVScoreDAO;
+
+    @Test
+    public void testStudentPAVScoreDAO() {
+        // test autowire
+        Assert.assertNotNull(studentPAVScoreDAO);
+        Logger.getLogger("Test StudentPAVScoreDAO").info("StudentPAVScoreDAO injected succesfully - pass");
+
+        StudentPAVScoreEntity entity = new StudentPAVScoreEntity();
+        entity.setId(1);
+        entity.setStudentId(1);
+        entity.setObjectiveId(1);
+        entity.setScore("V");
+        entity.setGradedDate(Date.valueOf("2016-04-08"));
+        entity.setRemarks("Remarks test");
+
+        Assert.assertEquals(studentPAVScoreDAO.get(1),entity);
+        Logger.getLogger("Test StudentPAVScoreDAO").info("Expected student_pav_score with ID=1 matches student_pav_score from database - pass");
+
+
+        entity = new StudentPAVScoreEntity();
+        entity.setStudentId(1);
+        entity.setObjectiveId(1);
+        entity.setScore("V");
+        entity.setGradedDate(Date.valueOf("2016-04-08"));
+        entity.setRemarks("Remarks test");
+        int insertedId = studentPAVScoreDAO.create(entity);
+        entity.setId(insertedId);
+        Assert.assertEquals(entity,studentPAVScoreDAO.get(insertedId));
+        Logger.getLogger("Test StudentPAVScoreDAO").info("Inserted student_pav_score matches our desired student_pav_score - pass");
+
+
+        entity.setScore("A");
+        studentPAVScoreDAO.update(entity);
+        Assert.assertEquals(entity,studentPAVScoreDAO.get(insertedId));
+        Logger.getLogger("Test StudentPAVScoreDAO").info("Updated student_pav_score matches our desired student_pav_score - pass");
+
+        studentPAVScoreDAO.delete(insertedId);
+        try {
+            entity = studentPAVScoreDAO.get(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test StudentPAVScoreDAO").info("Inserted student_pav_score was deleted succesfully - pass");
+        }
+    }
 
     @Autowired
     ClassCertificateDAO classCertificateDAO;

@@ -267,6 +267,8 @@ CREATE TABLE `student_pav_score` (
   FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`)
 );
 
+INSERT INTO `student_pav_score` VALUES (1, 1, 1, 'V', '2016-04-08', 'Remarks test');
+
 CREATE TABLE `class_topics` (
   `course_topic_id` INT NOT NULL,
   `class_id`        INT NOT NULL,

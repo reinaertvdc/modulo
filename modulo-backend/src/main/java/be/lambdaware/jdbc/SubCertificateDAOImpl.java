@@ -64,8 +64,8 @@ public class SubCertificateDAOImpl extends AbstractDAOImpl implements SubCertifi
 
     @Override
     public void update(SubCertificateEntity entity) {
-        String SQL = "UPDATE `sub_certificates` SET `certificate_id` = ?, `name` = ?, `description` = ?, `custom_name` = ?, `description` = ?, `enabled` = ? WHERE id = ?";
-        jdbcTemplate.update(SQL, entity.getCertificateId(), entity.getName(), entity.getDescription(), entity.getEnabled());
+        String SQL = "UPDATE `sub_certificates` SET `certificate_id` = ?, `name` = ?, `description` = ?, `custom_name` = ?, `custom_description` = ?, `enabled` = ? WHERE id = ?";
+        jdbcTemplate.update(SQL, entity.getCertificateId(), entity.getName(), entity.getDescription(), entity.getCustomName(), entity.getCustomDescription(), entity.getEnabled(), entity.getId());
         //TODO catch SQL Exception
     }
 

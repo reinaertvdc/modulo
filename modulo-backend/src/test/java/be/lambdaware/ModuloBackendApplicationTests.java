@@ -80,40 +80,46 @@ public class ModuloBackendApplicationTests {
         Logger.getLogger("Test SubCertificateDAO").info("SubCertificateDAO injected succesfully - pass");
 
 
-        SubCertificateEntity subCertificateEntity = new SubCertificateEntity();
-        subCertificateEntity.setId(1);
-        subCertificateEntity.setCertificateId(1);
-        subCertificateEntity.setName("Bekisting");
-        subCertificateEntity.setDescription("De leerling leert bekisten");
-        subCertificateEntity.setEnabled(true);
-        Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(1));
+        SubCertificateEntity entity = new SubCertificateEntity();
+        entity.setId(1);
+        entity.setCertificateId(1);
+        entity.setName("Bekisting");
+        entity.setDescription("De leerling leert bekisten");
+        entity.setEnabled(true);
+        Assert.assertEquals(entity, subCertificateDAO.get(1));
         Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=1 matches sub_certificate from database - pass");
 
-        subCertificateEntity = new SubCertificateEntity();
-        subCertificateEntity.setId(6);
-        subCertificateEntity.setCertificateId(2);
-        subCertificateEntity.setName("Belichting");
-        subCertificateEntity.setDescription("De leerling leert belichten");
-        subCertificateEntity.setEnabled(false);
-        Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(6));
+        entity = new SubCertificateEntity();
+        entity.setId(6);
+        entity.setCertificateId(2);
+        entity.setName("Belichting");
+        entity.setDescription("De leerling leert belichten");
+        entity.setEnabled(false);
+        Assert.assertEquals(entity, subCertificateDAO.get(6));
         Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=6 matches sub_certificate from database - pass");
 
-        subCertificateEntity = new SubCertificateEntity();
-        subCertificateEntity.setCertificateId(1);
-        subCertificateEntity.setName("test name");
-        subCertificateEntity.setCustomName("test custom name");
-        subCertificateEntity.setDescription("test description");
-        subCertificateEntity.setCustomDescription("test custom description");
-        subCertificateEntity.setEnabled(true);
 
-        int insertedId = subCertificateDAO.create(subCertificateEntity);
-        subCertificateEntity.setId(insertedId);
-        Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(insertedId));
+        entity = new SubCertificateEntity();
+        entity.setCertificateId(1);
+        entity.setName("test name");
+        entity.setCustomName("test custom name");
+        entity.setDescription("test description");
+        entity.setCustomDescription("test custom description");
+        entity.setEnabled(true);
+
+        int insertedId = subCertificateDAO.create(entity);
+        entity.setId(insertedId);
+        Assert.assertEquals(entity, subCertificateDAO.get(insertedId));
         Logger.getLogger("Test SubCertificateDAO").info("Inserted sub_certificate matches our desired sub_certificate - pass");
+
+        entity.setCustomName("de custom name");
+        subCertificateDAO.update(entity);
+        Assert.assertEquals(entity,subCertificateDAO.get(insertedId));
+        Logger.getLogger("Test SubCertificateDAO").info("Updated sub_certificate_category.custom_name matches our desired custom_name - pass");
 
         subCertificateDAO.delete(insertedId);
         try {
-            subCertificateEntity = subCertificateDAO.get(insertedId);
+            entity = subCertificateDAO.get(insertedId);
             Assert.fail();
         } catch (Exception e) {
             Logger.getLogger("Test SubCertificateDAO").info("Inserted sub_certificate was deleted succesfully - pass");
@@ -122,29 +128,29 @@ public class ModuloBackendApplicationTests {
 
         List<SubCertificateEntity> entities = new ArrayList<>();
 
-        subCertificateEntity = new SubCertificateEntity();
-        subCertificateEntity.setId(1);
-        subCertificateEntity.setCertificateId(1);
-        subCertificateEntity.setName("Bekisting");
-        subCertificateEntity.setDescription("De leerling leert bekisten");
-        subCertificateEntity.setEnabled(true);
-        entities.add(subCertificateEntity);
+        entity = new SubCertificateEntity();
+        entity.setId(1);
+        entity.setCertificateId(1);
+        entity.setName("Bekisting");
+        entity.setDescription("De leerling leert bekisten");
+        entity.setEnabled(true);
+        entities.add(entity);
 
-        subCertificateEntity = new SubCertificateEntity();
-        subCertificateEntity.setId(2);
-        subCertificateEntity.setCertificateId(1);
-        subCertificateEntity.setName("Fundering");
-        subCertificateEntity.setDescription("De leerling leert funderen");
-        subCertificateEntity.setEnabled(true);
-        entities.add(subCertificateEntity);
+        entity = new SubCertificateEntity();
+        entity.setId(2);
+        entity.setCertificateId(1);
+        entity.setName("Fundering");
+        entity.setDescription("De leerling leert funderen");
+        entity.setEnabled(true);
+        entities.add(entity);
 
-        subCertificateEntity = new SubCertificateEntity();
-        subCertificateEntity.setId(3);
-        subCertificateEntity.setCertificateId(1);
-        subCertificateEntity.setName("Cement");
-        subCertificateEntity.setDescription("De leerling leert cement");
-        subCertificateEntity.setEnabled(true);
-        entities.add(subCertificateEntity);
+        entity = new SubCertificateEntity();
+        entity.setId(3);
+        entity.setCertificateId(1);
+        entity.setName("Cement");
+        entity.setDescription("De leerling leert cement");
+        entity.setEnabled(true);
+        entities.add(entity);
 
         Object[] converted = entities.toArray();
         Object[] arrayFromDatabase = subCertificateDAO.getAllByCertificate(1).toArray();
@@ -164,77 +170,75 @@ public class ModuloBackendApplicationTests {
         Logger.getLogger("Test subCertificateCategoryDAO").info("SubCertificateCategoryDAO injected succesfully - pass");
 
 
-        SubCertificateCategoryEntity subCertificateCategoryEntity = new SubCertificateCategoryEntity();
-        subCertificateCategoryEntity.setId(1);
-        subCertificateCategoryEntity.setSubCertificateId(1);
-        subCertificateCategoryEntity.setName("Afwerking");
-        subCertificateCategoryEntity.setDescription("Leerling kan afwerken");
-        subCertificateCategoryEntity.setEnabled(true);
-        Assert.assertEquals(subCertificateCategoryEntity, subCertificateCategoryDAO.get(1));
+        SubCertificateCategoryEntity entity = new SubCertificateCategoryEntity();
+        entity.setId(1);
+        entity.setSubCertificateId(1);
+        entity.setName("Afwerking");
+        entity.setDescription("Leerling kan afwerken");
+        entity.setEnabled(true);
+        Assert.assertEquals(entity, subCertificateCategoryDAO.get(1));
         Logger.getLogger("Test SubCertificateCategoryDAO").info("Expected sub_certificate_category with ID=1 matches subcertificatecategory from database - pass");
 
-//        subCertificateEntity = new SubCertificateEntity();
-//        subCertificateEntity.setId(6);
-//        subCertificateEntity.setCertificateId(2);
-//        subCertificateEntity.setName("Belichting");
-//        subCertificateEntity.setDescription("De leerling leert belichten");
-//        subCertificateEntity.setEnabled(false);
-//        Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(6));
-//        Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=6 matches certificate from database - pass");
-//
-//        subCertificateEntity = new SubCertificateEntity();
-//        subCertificateEntity.setCertificateId(1);
-//        subCertificateEntity.setName("test name");
-//        subCertificateEntity.setCustomName("test custom name");
-//        subCertificateEntity.setDescription("test description");
-//        subCertificateEntity.setCustomDescription("test custom description");
-//        subCertificateEntity.setEnabled(true);
-//
-//        int insertedId = subCertificateDAO.create(subCertificateEntity);
-//        subCertificateEntity.setId(insertedId);
-//        Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(insertedId));
-//        Logger.getLogger("Test SubCertificateDAO").info("Inserted sub_certificate matches our desired certificate - pass");
-//
-//        subCertificateDAO.delete(insertedId);
-//        try {
-//            subCertificateEntity = subCertificateDAO.get(insertedId);
-//            Assert.fail();
-//        } catch (Exception e) {
-//            Logger.getLogger("Test SubCertificateDAO").info("Inserted sub_certificate was deleted succesfully - pass");
-//        }
-//
-//
-//        List<SubCertificateEntity> entities = new ArrayList<>();
-//
-//        subCertificateEntity = new SubCertificateEntity();
-//        subCertificateEntity.setId(1);
-//        subCertificateEntity.setCertificateId(1);
-//        subCertificateEntity.setName("Bekisting");
-//        subCertificateEntity.setDescription("De leerling leert bekisten");
-//        subCertificateEntity.setEnabled(true);
-//        entities.add(subCertificateEntity);
-//
-//        subCertificateEntity = new SubCertificateEntity();
-//        subCertificateEntity.setId(2);
-//        subCertificateEntity.setCertificateId(1);
-//        subCertificateEntity.setName("Fundering");
-//        subCertificateEntity.setDescription("De leerling leert funderen");
-//        subCertificateEntity.setEnabled(true);
-//        entities.add(subCertificateEntity);
-//
-//        subCertificateEntity = new SubCertificateEntity();
-//        subCertificateEntity.setId(3);
-//        subCertificateEntity.setCertificateId(1);
-//        subCertificateEntity.setName("Cement");
-//        subCertificateEntity.setDescription("De leerling leert cement");
-//        subCertificateEntity.setEnabled(true);
-//        entities.add(subCertificateEntity);
-//
-//        Object[] converted = entities.toArray();
-//        Object[] arrayFromDatabase = subCertificateDAO.getAllByCertificate(1).toArray();
-//
-//        Assert.assertArrayEquals(converted,arrayFromDatabase);
-//        Logger.getLogger("Test SubCertificateDAO").info("All sub_certificates match the database - pass");
+        entity = new SubCertificateCategoryEntity();
+        entity.setId(6);
+        entity.setSubCertificateId(3);
+        entity.setName("Ordelijk");
+        entity.setDescription("Leerling kan ordelijk werken");
+        entity.setEnabled(true);
+        Assert.assertEquals(entity, subCertificateCategoryDAO.get(6));
+        Logger.getLogger("Test SubCertificateCategoryDAO").info("Expected sub_certificate_category with ID=6 matches subcertificatecategory from database - pass");
+
+
+        entity = new SubCertificateCategoryEntity();
+        entity.setSubCertificateId(5);
+        entity.setName("test name");
+        entity.setCustomName("test custom name");
+        entity.setDescription("test description");
+        entity.setCustomDescription("test custom description");
+        entity.setEnabled(false);
+
+        int insertedId = subCertificateCategoryDAO.create(entity);
+        entity.setId(insertedId);
+        Assert.assertEquals(entity, subCertificateCategoryDAO.get(insertedId));
+        Logger.getLogger("Test SubCertificateCategoryDAO").info("Inserted sub_certificate_category matches our desired subcertificatecategory - pass");
+
+        entity.setCustomName("de custom name");
+        subCertificateCategoryDAO.update(entity);
+        Assert.assertEquals(entity,subCertificateCategoryDAO.get(insertedId));
+        Logger.getLogger("Test SubCertificateCategoryDAO").info("Updated sub_certificate_category.custom_name matches our desired custom_name - pass");
+
+        subCertificateCategoryDAO.delete(insertedId);
+        try {
+            entity = subCertificateCategoryDAO.get(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test SubCertificateCategoryDAO").info("Inserted sub_certificate_category was deleted succesfully - pass");
+        }
+
+
+        List<SubCertificateCategoryEntity> entities = new ArrayList<>();
+
+        entity = new SubCertificateCategoryEntity();
+        entity.setId(1);
+        entity.setSubCertificateId(1);
+        entity.setName("Afwerking");
+        entity.setDescription("Leerling kan afwerken");
+        entity.setEnabled(true);
+        entities.add(entity);
+
+        entity = new SubCertificateCategoryEntity();
+        entity.setId(2);
+        entity.setSubCertificateId(1);
+        entity.setName("Ordelijk");
+        entity.setDescription("Leerling kan ordelijk werken");
+        entity.setEnabled(true);
+        entities.add(entity);
+
+        Object[] converted = entities.toArray();
+        Object[] arrayFromDatabase = subCertificateCategoryDAO.getAllBySubCertificate(1).toArray();
+
+        Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Logger.getLogger("Test SubCertificateCategoryDAO").info("All sub_certificates_categories match the database - pass");
     }
 
 
@@ -374,6 +378,8 @@ public class ModuloBackendApplicationTests {
 //            Logger.getLogger("Test UserDAO").info("Inserted user was deleted succesfully - pass");
 //        }
     }
+
+
     @Autowired
     private CompetencesDAO competencesDAO;
 

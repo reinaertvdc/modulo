@@ -534,7 +534,7 @@ public class ModuloBackendApplicationTests {
         userEntity.setPassword("b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86");
         userEntity.setType("STUDENT");
         Assert.assertEquals(userEntity, userDAO.get(12));
-        Logger.getLogger("Test UserDAO").info("Expected user with ID=11 matches user from database - pass");
+        Logger.getLogger("Test UserDAO").info("Expected user with ID=12 matches user from database - pass");
 
         // create user
         userEntity = new UserEntity();
@@ -555,6 +555,56 @@ public class ModuloBackendApplicationTests {
             Assert.fail();
         } catch (Exception e) {
             Logger.getLogger("Test UserDAO").info("Inserted user was deleted succesfully - pass");
+        }
+    }
+
+    @Autowired
+    private CourseTopicDAO courseTopicDAO;
+
+    @Test
+    public void testCourseTopicDAO() {
+        // test autowire
+        Assert.assertNotNull(courseTopicDAO);
+        Logger.getLogger("Test CourseTopicDAO").info("CourseTopicDAO injected succesfully - pass");
+
+        // test get course topic 1
+        CourseTopicEntity entity = new CourseTopicEntity();
+        entity.setId(1);
+        entity.setName("Vakthema 1");
+        Assert.assertEquals(entity, courseTopicDAO.get(1));
+        Logger.getLogger("Test CourseTopicDAO").info("Expected course topic with ID=1 matches user from database - pass");
+
+        // test get course topic 2
+        entity = new CourseTopicEntity();
+        entity.setId(2);
+        entity.setName("Vakthema 2");
+        Assert.assertEquals(entity, courseTopicDAO.get(2));
+        Logger.getLogger("Test CourseTopicDAO").info("Expected course topic with ID=2 matches user from database - pass");
+
+        // create course topic
+        entity = new CourseTopicEntity();
+        entity.setName("vakthema 30");
+
+        int insertedId = courseTopicDAO.create(entity);
+        entity.setId(insertedId);
+        CourseTopicEntity insertedEntity = courseTopicDAO.get(insertedId);
+
+        Assert.assertEquals(entity, insertedEntity);
+        Logger.getLogger("Test CourseTopicDAO").info("Inserted course topic matches our desired course topic - pass");
+
+        //Test update
+        entity.setName("Update Test");
+        courseTopicDAO.update(entity);
+        CourseTopicEntity updatedEnity = courseTopicDAO.get(entity.getId());
+        Assert.assertEquals(entity,updatedEnity);
+        Logger.getLogger("Test CompetencesDAO").info("Updated competence matches our desired course topic - pass");
+
+        courseTopicDAO.delete(insertedId);
+        try {
+            insertedEntity = courseTopicDAO.get(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test CourseTopicDAO").info("Inserted course topic was deleted succesfully - pass");
         }
     }
 }

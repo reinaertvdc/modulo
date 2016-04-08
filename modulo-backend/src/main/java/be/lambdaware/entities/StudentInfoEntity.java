@@ -178,5 +178,32 @@ public class StudentInfoEntity {
                 ", bankAccount='" + bankAccount + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StudentInfoEntity that = (StudentInfoEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+        if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
+        if (birthPlace != null ? !birthPlace.equals(that.birthPlace) : that.birthPlace != null) return false;
+        if (nationality != null ? !nationality.equals(that.nationality) : that.nationality != null) return false;
+        if (nationalIdentificationNumber != null ? !nationalIdentificationNumber.equals(that.nationalIdentificationNumber) : that.nationalIdentificationNumber != null)
+            return false;
+        if (street != null ? !street.equals(that.street) : that.street != null) return false;
+        if (houseNumber != null ? !houseNumber.equals(that.houseNumber) : that.houseNumber != null) return false;
+        if (postalCode != null ? !postalCode.equals(that.postalCode) : that.postalCode != null) return false;
+        if (city != null ? !city.equals(that.city) : that.city != null) return false;
+        if (phoneParent != null ? !phoneParent.equals(that.phoneParent) : that.phoneParent != null) return false;
+        if (phoneCell != null ? !phoneCell.equals(that.phoneCell) : that.phoneCell != null) return false;
+        return bankAccount != null ? bankAccount.equals(that.bankAccount) : that.bankAccount == null;
+
+    }
 }
 

@@ -61,4 +61,19 @@ public class ObjectiveEntity {
                 ", course_topic=" + course_topic +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ObjectiveEntity that = (ObjectiveEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (custom_name != null ? !custom_name.equals(that.custom_name) : that.custom_name != null) return false;
+        if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
+        return course_topic != null ? course_topic.equals(that.course_topic) : that.course_topic == null;
+
+    }
 }

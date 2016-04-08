@@ -65,13 +65,4 @@ public class UserEntity {
         return type != null ? type.equals(that.type) : that.type == null;
 
     }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
-    }
 }

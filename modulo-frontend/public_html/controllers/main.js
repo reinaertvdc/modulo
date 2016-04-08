@@ -1,4 +1,4 @@
-app.controller('MainController', function ($scope) {
+app.controller('MainController', function ($scope, $location) {
     $scope.user = {
         Type: Object.freeze({
             ADMIN: 0,
@@ -8,7 +8,6 @@ app.controller('MainController', function ($scope) {
         }),
 
         type: null,
-        email: null,
 
         isLoggedIn: function () {
             return this.type !== null;
@@ -16,53 +15,86 @@ app.controller('MainController', function ($scope) {
 
         logOut: function () {
             this.type = null;
-            this.email = null;
         }
     };
 
+    $scope.user.type = $scope.user.Type.ADMIN;
+
     $scope.location = {
-        Panel: Object.freeze({
-            USER_MANAGEMENT: 1,
-            GRADES_CERTIFICATES: 2,
-            MY_CLASSES: 3,
-            SCORES_MANAGEMENT: 4,
-            STUDENT_PROGRESS: 5
-        }),
+        HOME: 'startpagina',
+        NOT_FOUND: 'pagina_niet_gevonden',
+        ACCESS_DENIED: 'toegang_geweigerd',
+        USER_MANAGEMENT: 'gebruikersbeheer',
+        GRADES_CERTIFICATES: 'graden_opleidingen',
+        MY_CLASSES: 'mijn_klassen',
+        SCORES_MANAGEMENT: 'puntenbeheer',
+        STUDENT_PROGRESS: 'voortgang_studenten',
 
-        getPanel: function () {
-            var result = 'views/panels/';
-
-            if ($scope.location.panel == $scope.location.Panel.USER_MANAGEMENT) {
-                result += 'user_management';
-            } else if ($scope.location.panel == $scope.location.Panel.GRADES_CERTIFICATES) {
-                result += 'grades_certificates';
-            } else if ($scope.location.panel == $scope.location.Panel.MY_CLASSES) {
-                result += 'my_classes';
-            } else if ($scope.location.panel == $scope.location.Panel.SCORES_MANAGEMENT) {
-                result += 'scores_management';
-            } else if ($scope.location.panel == $scope.location.Panel.STUDENT_PROGRESS) {
-                result += 'student_progress';
-            } else {
-                result += 'home';
-            }
-            
-            result += '.html';
-            return result;
+        pathToPanel: function (path) {
+            return path.replace(/\//g, '');
         },
 
-        userCanOpen: function (panel) {
-            if ($scope.user.type === $scope.user.Type.ADMIN) {
-                return panel === $scope.location.Panel.USER_MANAGEMENT || panel === $scope.location.Panel.GRADES_CERTIFICATES;
-            } else if ($scope.user.type === $scope.user.Type.TEACHER) {
-                return panel === $scope.location.Panel.MY_CLASSES || panel === $scope.location.Panel.SCORES_MANAGEMENT || panel === $scope.location.Panel.STUDENT_PROGRESS;
-            } else if ($scope.user.type === $scope.user.Type.STUDENT) {
-                return panel === $scope.location.Panel.STUDENT_PROGRESS;
-            } else if ($scope.user.type === $scope.user.Type.PARENT) {
-                return panel === $scope.location.Panel.STUDENT_PROGRESS;
+        getRequestedPanel: function () {
+            return this.pathToPanel($location.path());
+        },
+
+        panelExists: function (panel) {
+            return panel === ''
+                || panel === this.USER_MANAGEMENT
+                || panel === this.GRADES_CERTIFICATES
+                || panel === this.MY_CLASSES
+                || panel === this.SCORES_MANAGEMENT
+                || panel === this.STUDENT_PROGRESS
+        },
+
+        userCanAccessPanel: function (panel) {
+            if (panel === '') {
+                return true;
+            } else if (panel === this.USER_MANAGEMENT) {
+                return $scope.user.type === $scope.user.Type.ADMIN;
+            } else if (panel === this.GRADES_CERTIFICATES) {
+                return $scope.user.type === $scope.user.Type.ADMIN;
+            } else if (panel === this.MY_CLASSES) {
+                return $scope.user.type === $scope.user.Type.TEACHER;
+            } else if (panel === this.SCORES_MANAGEMENT) {
+                return $scope.user.type === $scope.user.Type.TEACHER;
+            } else if (panel === this.STUDENT_PROGRESS) {
+                return $scope.user.type === $scope.user.Type.TEACHER
+                    || $scope.user.type === $scope.user.Type.STUDENT
+                    || $scope.user.type === $scope.user.Type.PARENT;
             }
+
             return false;
         },
 
-        panel: null
-    }
+        getPanelToOpen: function () {
+            if (!this.panelExists(this.getRequestedPanel())) {
+                return this.NOT_FOUND;
+            } else if (!this.userCanAccessPanel(this.getRequestedPanel())) {
+                return this.ACCESS_DENIED;
+            } else if (this.getRequestedPanel() === '') {
+                return this.HOME;
+            }
+
+            return this.getRequestedPanel();
+        },
+
+        getUrlToPanelToOpen: function() {
+            return 'views/panels/' + this.getPanelToOpen() + '.html';
+        },
+
+        openPanel: function (panel) {
+            $location.path(panel);
+        }
+    };
+
+    $scope.form = {
+        isValidEmail: function (value) {
+            return value.length > 0;
+        },
+
+        isValidPassword: function (value) {
+            return value.length > 0;
+        }
+    };
 });

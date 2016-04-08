@@ -161,6 +161,39 @@ public class ModuloBackendApplicationTests {
 
 
     @Autowired
+    private StudentClassDAO studentClassDAO;
+
+    @Test
+    public void testStudentClassDAO() {
+        // test autowire
+        Assert.assertNotNull(studentClassDAO);
+        Logger.getLogger("Test StudentClassDAO").info("StudentClassDAO injected succesfully - pass");
+
+        StudentClassEntity entity = new StudentClassEntity();
+        entity.setStudentInfoId(4);
+        entity.setClassId(2);
+        Assert.assertEquals(entity, studentClassDAO.get(4,2));
+        Logger.getLogger("Test StudentClassDAO").info("Expected student_class matches studentclass from database - pass");
+
+
+        entity = new StudentClassEntity();
+        entity.setStudentInfoId(3);
+        entity.setClassId(2);
+        studentClassDAO.create(entity);
+        Assert.assertEquals(entity, studentClassDAO.get(3,2));
+        Logger.getLogger("Test StudentClassDAO").info("Inserted student_class matches our desired studenclass - pass");
+
+        studentClassDAO.delete(3,2);
+        try {
+            entity = studentClassDAO.get(3,2);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test StudentClassDAO").info("Inserted sub_certificate_category was deleted succesfully - pass");
+        }
+    }
+
+
+    @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
 
     @Test
@@ -337,6 +370,7 @@ public class ModuloBackendApplicationTests {
         }
     }
 
+
     @Autowired
     GradeDAO gradeDAO;
 
@@ -356,6 +390,7 @@ public class ModuloBackendApplicationTests {
         entity.setId(insertedId);
         Assert.assertEquals(entity, gradeDAO.get(insertedId));
     }
+
 
     @Autowired
     ClassCertificateDAO classCertificateDAO;
@@ -558,6 +593,7 @@ public class ModuloBackendApplicationTests {
         }
     }
 
+
     @Autowired
     private CourseTopicDAO courseTopicDAO;
 
@@ -607,6 +643,7 @@ public class ModuloBackendApplicationTests {
             Logger.getLogger("Test CourseTopicDAO").info("Inserted course topic was deleted succesfully - pass");
         }
     }
+
 
     @Autowired
     private ParentInfoDAO parentInfoDAO;

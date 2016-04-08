@@ -19,7 +19,7 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
 
     @Override
     public void create(StudentClassEntity entity) {
-        String SQL = "INSERT INTO `student_class` (`student_id`, `class_id`) VALUES (?,?)";
+        String SQL = "INSERT INTO `student_class` (`student_info_id`, `class_id`) VALUES (?,?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -37,13 +37,7 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
 
     @Override
     public StudentClassEntity get(Integer studentInfoId, Integer classEntityId) {
-        /*String SQL = "SELECT * FROM `student_class` " +
-                "JOIN `classes` ON `classes`.`id` = `student_class`.`class_id`" +
-                "JOIN `student_info` ON `student_info`.`id` = `student_class`.`student_id`" +
-                "JOIN `users` ON `users`.`id` = `student_info`.`user_id`" +
-                "JOIN `parent_info` ON `parent_info`.`id` = `student_info`.`parent_id` " +
-                "WHERE `student_id` = ? AND `class_id` = ?";*/
-        String SQL = "SELECT * FROM `student_class` WHERE `student_id` = ? AND `class_id` = ?";
+        String SQL = "SELECT * FROM `student_class` WHERE `student_info_id` = ? AND `class_id` = ?";
         StudentClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{studentInfoId, classEntityId}, new StudentClassMapper());
         //TODO catch SQL Exception
         return entity;
@@ -51,11 +45,6 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
 
     @Override
     public List<StudentClassEntity> getAll() {
-        /*String SQL = "SELECT * FROM `student_class` " +
-                "JOIN `classes` ON `classes`.`id` = `student_class`.`class_id`" +
-                "JOIN `student_info` ON `student_info`.`id` = `student_class`.`student_id`" +
-                "JOIN `users` ON `users`.`id` = `student_info`.`user_id`" +
-                "JOIN `parent_info` ON `parent_info`.`id` = `student_info`.`parent_id` ";*/
         String SQL = "SELECT * FROM `student_class`";
         List<StudentClassEntity> entities = jdbcTemplate.query(SQL, new StudentClassMapper());
         //TODO catch SQL Exception
@@ -64,7 +53,7 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
 
     @Override
     public void delete(Integer studentInfoId, Integer classEntityId) {
-        String SQL = "DELETE FROM `student_class` WHERE `student_id` = ? AND class_id = ?";
+        String SQL = "DELETE FROM `student_class` WHERE `student_info_id` = ? AND class_id = ?";
         jdbcTemplate.update(SQL, studentInfoId, classEntityId);
         //TODO catch SQL Exception
     }

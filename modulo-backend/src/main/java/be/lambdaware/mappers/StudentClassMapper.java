@@ -1,7 +1,5 @@
 package be.lambdaware.mappers;
 
-import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.StudentInfoEntity;
 import be.lambdaware.entities.StudentClassEntity;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -18,19 +16,8 @@ public class StudentClassMapper implements RowMapper<StudentClassEntity> {
 
     @Override
     public StudentClassEntity mapRow(ResultSet resultSet, int row) throws SQLException {
-        /*StudentClassEntity userClass = new StudentClassEntity();
-
-        this.studentInfoMapper = new StudentInfoMapper();
-        this.classesMapper = new ClassesMapper();
-
-        StudentInfoEntity studentInfo = this.studentInfoMapper.mapRow(resultSet, row);
-        ClassEntity classEntity = this.classesMapper.mapRow(resultSet, row);
-
-        userClass.setStudentInfo(studentInfo);
-        userClass.setClassEntity(classEntity);
-        */
         StudentClassEntity userClass = new StudentClassEntity();
-        userClass.setStudentInfoId(resultSet.getInt("student_id"));
+        userClass.setStudentInfoId(resultSet.getInt("student_info_id"));
         userClass.setClassId(resultSet.getInt("class_id"));
 
         return userClass;

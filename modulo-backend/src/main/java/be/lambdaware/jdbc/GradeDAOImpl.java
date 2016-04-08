@@ -18,7 +18,7 @@ import java.util.List;
 public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
     @Override
     public int create(GradeEntity entity) {
-        String SQL = "INSERT INTO `grade` (`name`) VALUES (?)";
+        String SQL = "INSERT INTO `grades` (`name`) VALUES (?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -37,7 +37,7 @@ public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
 
     @Override
     public GradeEntity get(Integer id) {
-        String SQL = "SELECT * FROM `grade` WHERE `id` = ?";
+        String SQL = "SELECT * FROM `grades` WHERE `id` = ?";
         GradeEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new GradeMapper());
         //TODO catch SQL Exception
         return entity;
@@ -45,7 +45,7 @@ public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
 
     @Override
     public List<GradeEntity> getAll() {
-        String SQL = "SELECT * FROM `grade`";
+        String SQL = "SELECT * FROM `grades`";
         List<GradeEntity> grades = jdbcTemplate.query(SQL, new GradeMapper());
         //TODO catch SQL Exception
         return grades;
@@ -53,14 +53,14 @@ public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
 
     @Override
     public void delete(Integer id) {
-        String SQL = "DELETE FROM `grade` WHERE `id` = ?";
+        String SQL = "DELETE FROM `grades` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
         //TODO catch SQL Exception
     }
 
     @Override
     public void update(GradeEntity entity) {
-        String SQL = "UPDATE `grade` SET name = ? WHERE id = ?";
+        String SQL = "UPDATE `grades` SET name = ? WHERE id = ?";
         jdbcTemplate.update(SQL, entity.getName(), entity.getId());
         //TODO catch SQL Exception
     }

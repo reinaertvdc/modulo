@@ -18,8 +18,6 @@ app.controller('MainController', function ($scope, $location) {
         }
     };
 
-    $scope.user.type = $scope.user.Type.ADMIN;
-
     $scope.location = {
         HOME: 'startpagina',
         NOT_FOUND: 'pagina_niet_gevonden',

@@ -9,8 +9,10 @@ public abstract class AccountModel {
 
     protected UserEntity userEntity;
 
-    public AccountModel() {
+    public AccountModel() {}
 
+    public AccountModel(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     public UserEntity getUserEntity() {

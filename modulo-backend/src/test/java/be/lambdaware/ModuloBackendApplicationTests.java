@@ -4,7 +4,6 @@ package be.lambdaware;
 import be.lambdaware.application.ModuloBackendApplication;
 import be.lambdaware.dao.*;
 import be.lambdaware.entities.*;
-import com.sun.tools.javac.code.Attribute;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -134,7 +133,7 @@ public class ModuloBackendApplicationTests {
         subCertificateEntity.setDescription("De leerling leert bekisten");
         subCertificateEntity.setEnabled(true);
         Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(1));
-        Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=1 matches certificate from database - pass");
+        Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=1 matches sub_certificate from database - pass");
 
         subCertificateEntity = new SubCertificateEntity();
         subCertificateEntity.setId(6);
@@ -143,7 +142,7 @@ public class ModuloBackendApplicationTests {
         subCertificateEntity.setDescription("De leerling leert belichten");
         subCertificateEntity.setEnabled(false);
         Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(6));
-        Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=6 matches certificate from database - pass");
+        Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=6 matches sub_certificate from database - pass");
 
         subCertificateEntity = new SubCertificateEntity();
         subCertificateEntity.setCertificateId(1);
@@ -156,7 +155,7 @@ public class ModuloBackendApplicationTests {
         int insertedId = subCertificateDAO.create(subCertificateEntity);
         subCertificateEntity.setId(insertedId);
         Assert.assertEquals(subCertificateEntity, subCertificateDAO.get(insertedId));
-        Logger.getLogger("Test SubCertificateDAO").info("Inserted sub_certificate matches our desired certificate - pass");
+        Logger.getLogger("Test SubCertificateDAO").info("Inserted sub_certificate matches our desired sub_certificate - pass");
 
         subCertificateDAO.delete(insertedId);
         try {
@@ -210,17 +209,41 @@ public class ModuloBackendApplicationTests {
         Logger.getLogger("Test StudentBGVScoreDAO").info("StudentBGVScoreDAO injected succesfully - pass");
 
         StudentBGVScoreEntity entity = new StudentBGVScoreEntity();
+        entity.setId(1);
         entity.setStudentId(1);
         entity.setCompetenceId(1);
         entity.setScore("V");
-        entity.setGradedDate(new Date(System.currentTimeMillis()));
+        entity.setGradedDate(Date.valueOf("2016-04-08"));
         entity.setRemarks("Remarks test");
 
+        Assert.assertEquals(studentBGVScoreDAO.get(1),entity);
+        Logger.getLogger("Test StudentBGVScoreDAO").info("Expected student_bgv_score with ID=1 matches student_bgv_score from database - pass");
+
+
+        entity = new StudentBGVScoreEntity();
+        entity.setStudentId(1);
+        entity.setCompetenceId(1);
+        entity.setScore("V");
+        entity.setGradedDate(Date.valueOf("2016-04-08"));
+        entity.setRemarks("Remarks test");
         int insertedId = studentBGVScoreDAO.create(entity);
         entity.setId(insertedId);
-
         Assert.assertEquals(entity,studentBGVScoreDAO.get(insertedId));
+        Logger.getLogger("Test StudentBGVScoreDAO").info("Inserted student_bgv_score matches our desired sub_certificate - pass");
 
+
+        entity.setScore("A");
+        studentBGVScoreDAO.update(entity);
+        Assert.assertEquals(entity,studentBGVScoreDAO.get(insertedId));
+        Logger.getLogger("Test StudentBGVScoreDAO").info("Updated student_bgv_score matches our desired sub_certificate - pass");
+
+        studentBGVScoreDAO.delete(insertedId);
+        try {
+            entity = studentBGVScoreDAO.get(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test StudentBGVScoreDAO").info("Inserted student_bgv_score was deleted succesfully - pass");
+        }
     }
 
     @Autowired

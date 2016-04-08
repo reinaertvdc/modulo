@@ -13,6 +13,14 @@ public class StudentBGVScoreEntity {
     private Date gradedDate;
     private String remarks;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getStudentId() {
         return studentId;
     }
@@ -25,8 +33,8 @@ public class StudentBGVScoreEntity {
         return competenceId;
     }
 
-    public void setCompetenceId(Integer objective_id) {
-        this.competenceId = objective_id;
+    public void setCompetenceId(Integer competenceId) {
+        this.competenceId = competenceId;
     }
 
     public String getScore() {
@@ -51,14 +59,6 @@ public class StudentBGVScoreEntity {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     @Override
@@ -88,5 +88,5 @@ public class StudentBGVScoreEntity {
         return remarks != null ? remarks.equals(that.remarks) : that.remarks == null;
 
     }
-
+    
 }

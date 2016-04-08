@@ -404,6 +404,21 @@ public class ModuloBackendApplicationTests {
         Assert.assertEquals(competence, competencesDAO.get(7));
         Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=6 matches competence from database - pass");
 
+        competence =  new CompetencesEntity();
+        competence.setId(7);
+        competence.setSubCertificateCategoryId(3);
+        competence.setName("Afwerk Competentie");
+        competence.setDescription("Leerling ruimt werkt volledig af");
+        competence.setEnabled(true);
+
+        List<CompetencesEntity> entities = new ArrayList<>();
+        entities.add(competence);
+
+        Object[] converted = entities.toArray();
+        Object[] arrayFromDatabase = competencesDAO.getBySubCertificateCategory(3).toArray();
+
+        Assert.assertArrayEquals(converted,arrayFromDatabase);
+
         // create competence
         competence = new CompetencesEntity();
         competence.setSubCertificateCategoryId(1);

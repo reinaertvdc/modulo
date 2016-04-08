@@ -19,7 +19,7 @@ public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDA
 
     public int create(CourseTopicEntity entity) {
 
-        String SQL = "INSERT INTO `course_topic`(`name`) VALUES (?)";
+        String SQL = "INSERT INTO `course_topics`(`name`) VALUES (?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -37,7 +37,7 @@ public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDA
 
 
     public CourseTopicEntity get(Integer id) {
-        String SQL = "SELECT * FROM `course_topic` WHERE `id` = ?";
+        String SQL = "SELECT * FROM `course_topics` WHERE `id` = ?";
         CourseTopicEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CourseTopicMapper());
         //TODO catch SQL Exception
 
@@ -46,7 +46,7 @@ public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDA
 
 
     public List<CourseTopicEntity> getAll() {
-        String SQL = "SELECT * FROM `course_topic`";
+        String SQL = "SELECT * FROM `course_topics`";
         List<CourseTopicEntity> entities = jdbcTemplate.query(SQL, new CourseTopicMapper());
         //TODO catch SQL Exception
         return entities;
@@ -54,14 +54,14 @@ public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDA
 
 
     public void delete(Integer id) {
-        String SQL = "DELETE FROM `course_topic` WHERE `id` = ?";
+        String SQL = "DELETE FROM `course_topics` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
         //TODO catch SQL Exception
     }
 
 
     public void update(CourseTopicEntity entity) {
-        String SQL = "UPDATE `users` SET `name` = ? where id = ?";
+        String SQL = "UPDATE `course_topics` SET `name` = ? where id = ?";
         jdbcTemplate.update(SQL, entity.getName(), entity.getId());
         //TODO catch SQL Exception
     }

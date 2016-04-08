@@ -50,4 +50,19 @@ public class ClassEntity {
                 ", teacherId=" + teacherId +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassEntity that = (ClassEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        return teacherId != null ? teacherId.equals(that.teacherId) : that.teacherId == null;
+
+    }
+
 }

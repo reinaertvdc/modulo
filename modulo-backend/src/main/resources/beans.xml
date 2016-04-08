@@ -62,4 +62,8 @@
     <bean id="SubCertificateCategoryDAO" class="be.lambdaware.jdbc.SubCertificateCategoryDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <!-- Definition for ClassTopicsDAOImpl bean -->
+    <bean id="ClassTopicsDAO" class="be.lambdaware.jdbc.ClassTopicsDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 </beans>

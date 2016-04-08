@@ -99,16 +99,4 @@ public class CompetencesEntity {
         return enabled != null ? enabled.equals(that.enabled) : that.enabled == null;
 
     }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (subCertificateCategoryId != null ? subCertificateCategoryId.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (customName != null ? customName.hashCode() : 0);
-        result = 31 * result + (customDescription != null ? customDescription.hashCode() : 0);
-        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
-        return result;
-    }
 }

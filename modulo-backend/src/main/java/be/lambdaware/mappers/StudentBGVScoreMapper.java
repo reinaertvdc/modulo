@@ -13,10 +13,11 @@ public class StudentBGVScoreMapper implements RowMapper<StudentBGVScoreEntity> {
     @Override
     public StudentBGVScoreEntity mapRow(ResultSet resultSet, int i) throws SQLException {
         StudentBGVScoreEntity entity = new StudentBGVScoreEntity();
-        entity.setStudent_id(resultSet.getInt("student_id"));
-        entity.setCompetence_id(resultSet.getInt("competence_id"));
+        entity.setId(resultSet.getInt("id"));
+        entity.setStudentId(resultSet.getInt("student_id"));
+        entity.setCompetenceId(resultSet.getInt("competence_id"));
         entity.setScore(resultSet.getString("score"));
-        entity.setGraded_date(resultSet.getDate("graded_date"));
+        entity.setGradedDate(resultSet.getDate("graded_date"));
         entity.setRemarks(resultSet.getString("remarks"));
         return entity;
     }

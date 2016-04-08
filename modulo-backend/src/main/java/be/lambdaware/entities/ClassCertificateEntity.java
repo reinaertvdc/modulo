@@ -37,4 +37,16 @@ public class ClassCertificateEntity {
                 ", certificateId=" + certificateId +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassCertificateEntity that = (ClassCertificateEntity) o;
+
+        if (classId != null ? !classId.equals(that.classId) : that.classId != null) return false;
+        return certificateId != null ? certificateId.equals(that.certificateId) : that.certificateId == null;
+
+    }
 }

@@ -2,14 +2,9 @@ package be.lambdaware;
 
 
 import be.lambdaware.application.ModuloBackendApplication;
-import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.dao.StudentBGVScoreDAO;
-import be.lambdaware.dao.SubCertificateDAO;
-import be.lambdaware.dao.UserDAO;
-import be.lambdaware.entities.CertificateEntity;
-import be.lambdaware.entities.StudentBGVScoreEntity;
-import be.lambdaware.entities.SubCertificateEntity;
-import be.lambdaware.entities.UserEntity;
+import be.lambdaware.dao.*;
+import be.lambdaware.entities.*;
+import com.sun.tools.javac.code.Attribute;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -228,5 +223,45 @@ public class ModuloBackendApplicationTests {
 
     }
 
+    @Autowired
+    ClassCertificateDAO classCertificateDAO;
 
+    @Test
+    public void testClassCertificateDAO() {
+        // test autowire
+        Assert.assertNotNull(certificateDAO);
+        Logger.getLogger("Test ClassCertificateDAO").info("ClassCertificateDAO injected succesfully - pass");
+
+        // test get class 1 & certificate 1
+        ClassCertificateEntity classCertificateEntity = new ClassCertificateEntity(1,1);
+        Assert.assertEquals(classCertificateEntity, classCertificateDAO.get(1,1));
+        Logger.getLogger("Test ClassCertificateDAO").info("Expected classCertificate with class_id=1 and certificate_id=1. Matches classCertificate from database - pass");
+
+        // test get class 4 & certificate 2
+        classCertificateEntity = new ClassCertificateEntity(4,2);
+        Assert.assertEquals(classCertificateEntity, classCertificateDAO.get(4,2));
+        Logger.getLogger("Test ClassCertificateDAO").info("Expected classCertificate with class_id=4 and certificate_id=2. Matches classCertificate from database - pass");
+
+
+//        // create user
+//        userEntity = new UserEntity();
+//        userEntity.setEmail("test@unit.com");
+//        userEntity.setPassword("test");
+//        userEntity.setType("STUDENT");
+//
+//        int insertedId = userDAO.create(userEntity);
+//        userEntity.setId(insertedId);
+//        UserEntity insertedEntity = userDAO.get(insertedId);
+//
+//        Assert.assertEquals(userEntity, insertedEntity);
+//        Logger.getLogger("Test UserDAO").info("Inserted user matches our desired user - pass");
+//
+//        userDAO.delete(insertedId);
+//        try {
+//            insertedEntity = userDAO.get(insertedId);
+//            Assert.fail();
+//        } catch (Exception e) {
+//            Logger.getLogger("Test UserDAO").info("Inserted user was deleted succesfully - pass");
+//        }
+    }
 }

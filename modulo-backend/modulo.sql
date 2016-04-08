@@ -171,7 +171,7 @@ INSERT INTO `grades` VALUES (2, 'Graad 2');
 
 CREATE TABLE `student_class` (
   `student_info_id` INT NOT NULL,
-  `class_id`   INT NOT NULL,
+  `class_id`        INT NOT NULL,
   PRIMARY KEY (`student_info_id`, `class_id`),
   FOREIGN KEY (`student_info_id`) REFERENCES `student_info` (`id`),
   FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
@@ -213,11 +213,11 @@ INSERT INTO `competences` VALUES (2, 4, 'Gereedschap opruimen', 'Leerling ruimt 
 INSERT INTO `competences` VALUES (3, 6, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
 INSERT INTO `competences` VALUES (4, 8, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
 INSERT INTO `competences` VALUES (5, 10, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (6, 1, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (7, 3, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (8, 5, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (9, 7, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (10, 9, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (6, 1, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (7, 3, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (8, 5, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (9, 7, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (10, 9, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
 
 CREATE TABLE `course_topics` (
   `id`   INT          NOT NULL AUTO_INCREMENT,
@@ -243,25 +243,27 @@ INSERT INTO `objectives` VALUES (2, 2, 1, 'Kent Vakthema 2', NULL);
 
 CREATE TABLE `student_bgv_score` (
   `id`            INT     NOT NULL AUTO_INCREMENT,
-  `studentId`    INT     NOT NULL,
+  `student_id`     INT     NOT NULL,
   `competence_id` INT     NOT NULL,
   `score`         CHAR(1) NOT NULL,
-  `gradedDate`   DATE    NOT NULL,
+  `graded_date`    DATE    NOT NULL,
   `remarks`       VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`studentId`) REFERENCES `student_info` (`id`),
+  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`),
   FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`)
 );
 
+INSERT INTO `student_bgv_score` VALUES (1, 1, 1, 'V', '2016-04-08', 'Remarks test');
+
 CREATE TABLE `student_pav_score` (
   `id`           INT     NOT NULL AUTO_INCREMENT,
-  `studentId`   INT     NOT NULL,
+  `student_id`    INT     NOT NULL,
   `objective_id` INT     NOT NULL,
   `score`        CHAR(1) NOT NULL,
-  `gradedDate`  DATE    NOT NULL,
+  `graded_date`   DATE    NOT NULL,
   `remarks`      VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`studentId`) REFERENCES `student_info` (`id`),
+  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`),
   FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`)
 );
 

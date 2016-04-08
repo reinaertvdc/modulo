@@ -1,11 +1,9 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificateDAO;
+import be.lambdaware.dao.CertificatesDAO;
 import be.lambdaware.dao.ClassCertificateDAO;
 import be.lambdaware.dao.ClassesDAO;
-import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.ClassCertificateEntity;
-import be.lambdaware.entities.ClassEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -28,7 +26,7 @@ public class ClassCertificateTestController {
     @Autowired
     private ClassesDAO classesDAO;
     @Autowired
-    private CertificateDAO certificateDAO;
+    private CertificatesDAO certificatesDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)

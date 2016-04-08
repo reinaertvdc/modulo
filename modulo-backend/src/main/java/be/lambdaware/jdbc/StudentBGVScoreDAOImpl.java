@@ -64,8 +64,8 @@ public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBG
 
     @Override
     public void update(StudentBGVScoreEntity entity) {
-        String SQL = "UPDATE `student_bgv_score` SET `student_id` = ?, `objective_id` = ?, `score` = ?, `graded_date`, `remarks` = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getStudentId(), entity.getCompetenceId(), entity.getScore(), entity.getGradedDate(), entity.getRemarks());
+        String SQL = "UPDATE `student_bgv_score` SET `student_id` = ?, `competence_id` = ?, `score` = ?, `graded_date` =  ?, `remarks` = ? WHERE id = ?";
+        jdbcTemplate.update(SQL, entity.getStudentId(), entity.getCompetenceId(), entity.getScore(), entity.getGradedDate(), entity.getRemarks(),entity.getId());
         //TODO catch SQL Exception
     }
 }

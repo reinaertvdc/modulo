@@ -1,9 +1,6 @@
 package be.lambdaware.dao;
 
-import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.ClassCertificateEntity;
-import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.GradeEntity;
 
 import java.util.List;
 
@@ -39,7 +36,8 @@ public interface ClassCertificateDAO {
     /**
      * Get an entity, based on it's id.
      *
-     * @param id the entity's id.
+     * @param classId the class id.
+     * @param certificateId the certificate id.
      * @return the entity.
      */
     public ClassCertificateEntity get(Integer classId, Integer certificateId);
@@ -54,7 +52,8 @@ public interface ClassCertificateDAO {
     /**
      * Delete a certain entity.
      *
-     * @param id the entity's id
+     * @param classId the class id.
+     * @param certificateId the certificate id.
      */
     public void delete(Integer classId, Integer certificateId);
 }

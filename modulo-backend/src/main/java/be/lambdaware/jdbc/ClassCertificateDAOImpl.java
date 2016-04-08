@@ -1,10 +1,7 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.ClassCertificateDAO;
-import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.ClassCertificateEntity;
-import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.GradeEntity;
 import be.lambdaware.mappers.ClassCertificateMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

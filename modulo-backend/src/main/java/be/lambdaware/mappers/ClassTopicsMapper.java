@@ -13,8 +13,8 @@ public class ClassTopicsMapper implements RowMapper<ClassTopicsEntity> {
     @Override
     public ClassTopicsEntity mapRow(ResultSet resultSet, int i) throws SQLException {
         ClassTopicsEntity entity = new ClassTopicsEntity();
-        entity.setCourse_topic_id(resultSet.getInt("course_topic_id"));
-        entity.setClass_id(resultSet.getInt("class_id"));
+        entity.setCourseTopicId(resultSet.getInt("course_topic_id"));
+        entity.setClassId(resultSet.getInt("class_id"));
         return entity;
     }
 }

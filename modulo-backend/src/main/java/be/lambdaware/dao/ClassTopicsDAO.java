@@ -19,7 +19,7 @@ public interface ClassTopicsDAO {
      * Get an entity, based on it's id.
      * @return the entity.
      */
-    public ClassTopicsEntity get(Integer course_topic_id, Integer class_id);
+    public ClassTopicsEntity get(Integer courseTopicId, Integer classId);
 
     /**
      * Get a list of all the entities.
@@ -30,6 +30,6 @@ public interface ClassTopicsDAO {
     /**
      * Delete a certain entity.
      */
-    public void delete(Integer course_topic_id, Integer class_id);
+    public void delete(Integer courseTopicId, Integer classId);
 
 }

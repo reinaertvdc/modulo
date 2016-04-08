@@ -38,9 +38,9 @@ public class ClassTopicsController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ClassTopicsEntity> get(@RequestParam(value="course_topic_id") Integer course_topic_id, @RequestParam(value="class_id") Integer class_id) {
+    public ResponseEntity<ClassTopicsEntity> get(@RequestParam(value="courseTopicId") Integer courseTopicId, @RequestParam(value="classId") Integer classId) {
 
-        ClassTopicsEntity studentClass = classTopicsDAO.get(course_topic_id, class_id);
+        ClassTopicsEntity studentClass = classTopicsDAO.get(courseTopicId, classId);
 
         return new ResponseEntity<ClassTopicsEntity>(studentClass, HttpStatus.OK);
     }

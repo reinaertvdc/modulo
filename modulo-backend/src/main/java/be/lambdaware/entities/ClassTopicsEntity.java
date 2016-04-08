@@ -4,30 +4,43 @@ package be.lambdaware.entities;
  * Created by jensv on 08-Apr-16.
  */
 public class ClassTopicsEntity {
-    private Integer course_topic_id;
-    private Integer class_id;
+    private Integer courseTopicId;
+    private Integer classId;
 
-    public Integer getCourse_topic_id() {
-        return course_topic_id;
+    public Integer getCourseTopicId() {
+        return courseTopicId;
     }
 
-    public void setCourse_topic_id(Integer course_topic_id) {
-        this.course_topic_id = course_topic_id;
+    public void setCourseTopicId(Integer courseTopicId) {
+        this.courseTopicId = courseTopicId;
     }
 
-    public Integer getClass_id() {
-        return class_id;
+    public Integer getClassId() {
+        return classId;
     }
 
-    public void setClass_id(Integer class_id) {
-        this.class_id = class_id;
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     @Override
     public String toString() {
         return "ClassTopicsEntity{" +
-                "course_topic_id=" + course_topic_id +
-                ", class_id=" + class_id +
+                "courseTopicId=" + courseTopicId +
+                ", classId=" + classId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassTopicsEntity that = (ClassTopicsEntity) o;
+
+        if (courseTopicId != null ? !courseTopicId.equals(that.courseTopicId) : that.courseTopicId != null)
+            return false;
+        return classId != null ? classId.equals(that.classId) : that.classId == null;
+
     }
 }

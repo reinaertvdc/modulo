@@ -713,4 +713,45 @@ public class ModuloBackendApplicationTests {
         }
 
     }
+
+    @Autowired
+    private ClassTopicsDAO classTopicsDAO;
+
+    @Test
+    public void testClassTopicsDAO() {
+
+        // test autowire
+        Assert.assertNotNull(classTopicsDAO);
+        Logger.getLogger("Test ClassTopicsDAO").info("ClassTopicsDAO injected succesfully - pass");
+
+        // test get classTopic 1
+        ClassTopicsEntity classTopic = new ClassTopicsEntity();
+        classTopic.setCourseTopicId(1);
+        classTopic.setClassId(1);
+        Assert.assertEquals(classTopic, classTopicsDAO.get(1,1));
+        Logger.getLogger("Test ClassTopicsDAO").info("Expected classTopic with ID=1 matches classTopic from database - pass");
+
+        // create classTopic
+        classTopic = new ClassTopicsEntity();
+        classTopic.setCourseTopicId(2);
+        classTopic.setClassId(2);
+
+        classTopicsDAO.create(classTopic);
+        ClassTopicsEntity insertedEntity = classTopicsDAO.get(2,2);
+
+        Assert.assertEquals(classTopic,insertedEntity);
+        Logger.getLogger("Test ClassTopicsDAO").info("Inserted classTopic matches our desired classTopic - pass");
+
+        //Test delete
+        classTopicsDAO.delete(2,2);
+        try {
+            insertedEntity = classTopicsDAO.get(2,2);
+            Assert.fail();
+        }
+        catch (Exception e) {
+            Logger.getLogger("Test ClassTopicsDAO").info("Inserted classTopic was deleted succesfully - pass");
+        }
+
+    }
+
 }

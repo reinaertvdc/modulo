@@ -8,11 +8,9 @@ import java.sql.Date;
  */
 public class StudentInfoEntity {
     private Integer id;
-//    private Integer user_id;
-//    private Integer parent_id;
 
-    private UserEntity user;
-    private ParentInfoEntity parent;
+    private Integer user;
+    private Integer parent;
 
     private String firstName;
     private String lastName;
@@ -28,7 +26,6 @@ public class StudentInfoEntity {
     private String phoneCell;
     private String bankAccount;
 
-
     public Integer getId() {
         return id;
     }
@@ -37,19 +34,19 @@ public class StudentInfoEntity {
         this.id = id;
     }
 
-    public UserEntity getUser() {
+    public Integer getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(Integer user) {
         this.user = user;
     }
 
-    public ParentInfoEntity getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(ParentInfoEntity parent) {
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 
@@ -205,5 +202,6 @@ public class StudentInfoEntity {
         return bankAccount != null ? bankAccount.equals(that.bankAccount) : that.bankAccount == null;
 
     }
+
 }
 

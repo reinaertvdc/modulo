@@ -799,6 +799,7 @@ public class ModuloBackendApplicationTests {
 
     }
 
+
     @Autowired
     private ObjectiveDAO objectiveDAO;
 
@@ -888,6 +889,7 @@ public class ModuloBackendApplicationTests {
         }
     }
 
+
     @Autowired
     private ClassTopicsDAO classTopicsDAO;
 
@@ -928,4 +930,114 @@ public class ModuloBackendApplicationTests {
 
     }
 
+
+    @Autowired
+    private StudentInfoDAO studentInfoDAO;
+
+    @Test
+    public void testStudentInfoDAO(){
+
+        // test autowire
+        Assert.assertNotNull(studentInfoDAO);
+        Logger.getLogger("Test StudentInfoDAO").info("StudentInfoDAO injected succesfully - pass");
+
+        // test get studentInfo 1
+        StudentInfoEntity entity = new StudentInfoEntity();
+        entity.setId(1);
+        entity.setUser(11);
+        entity.setParent(1);
+        entity.setFirstName("Pieter");
+        entity.setLastName("Leerling1");
+        entity.setBirthDate(Date.valueOf("2012-01-01"));
+        entity.setBirthPlace("Hasselt");
+        entity.setNationality("Belgium");
+        entity.setNationalIdentificationNumber("12345678900");
+        entity.setStreet("Straat");
+        entity.setHouseNumber("10");
+        entity.setPostalCode("3000");
+        entity.setCity("Hasselt");
+        entity.setPhoneParent("012857496");
+        entity.setPhoneCell("085479621");
+        entity.setBankAccount("BE67-500-555-9685");
+
+        Assert.assertEquals(entity, studentInfoDAO.getById(1));
+        Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfo with ID=1 matches StudentInfo from database - pass");
+
+        // test get studentInfo 2
+        entity = new StudentInfoEntity();
+        entity.setId(2);
+        entity.setUser(12);
+        entity.setParent(2);
+        entity.setFirstName("Joris");
+        entity.setLastName("Leerling2");
+        entity.setBirthDate(Date.valueOf("2012-01-01"));
+        entity.setBirthPlace("Hasselt");
+        entity.setNationality("Belgium");
+        entity.setNationalIdentificationNumber("12345678900");
+        entity.setStreet("Straat");
+        entity.setHouseNumber("10");
+        entity.setPostalCode("3000");
+        entity.setCity("Hasselt");
+        entity.setPhoneParent("012857496");
+        entity.setPhoneCell("085479621");
+        entity.setBankAccount("BE67-500-555-9685");
+
+        Assert.assertEquals(entity, studentInfoDAO.getById(2));
+        Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfo with ID=2 matches StudentInfo from database - pass");
+
+        // create course topic
+        entity = new StudentInfoEntity();
+        entity.setId(20);
+        entity.setUser(41);
+        entity.setParent(2);
+        entity.setFirstName("Jan");
+        entity.setLastName("Leerling20");
+        entity.setBirthDate(Date.valueOf("2012-01-01"));
+        entity.setBirthPlace("Hasselt");
+        entity.setNationality("Belgium");
+        entity.setNationalIdentificationNumber("12345678900");
+        entity.setStreet("Straat");
+        entity.setHouseNumber("10");
+        entity.setPostalCode("3000");
+        entity.setCity("Hasselt");
+        entity.setPhoneParent("012857496");
+        entity.setPhoneCell("085479621");
+        entity.setBankAccount("BE67-500-555-9685");
+
+
+        int insertedId = studentInfoDAO.create(entity);
+        entity.setId(insertedId);
+        StudentInfoEntity insertedEntity = studentInfoDAO.getById(insertedId);
+
+        Assert.assertEquals(entity, insertedEntity);
+        Logger.getLogger("Test StudentInfoDAO").info("Inserted StudentInfo matches our desired StudentInfo - pass");
+
+        //Test update
+        entity.setFirstName("Pieter");
+        entity.setLastName("Leerling1");
+        entity.setBirthDate(Date.valueOf("2012-01-01"));
+        entity.setBirthPlace("Hasselt");
+        entity.setNationality("Belgium");
+        entity.setNationalIdentificationNumber("12345678900");
+        entity.setStreet("stapelstraat");
+        entity.setHouseNumber("20");
+        entity.setPostalCode("3800");
+        entity.setCity("Sint-Truiden");
+        entity.setPhoneParent("55255555");
+        entity.setPhoneCell("085475621");
+        entity.setBankAccount("BE67-500-555-9225");
+
+        studentInfoDAO.update(entity);
+        StudentInfoEntity updatedEnity = studentInfoDAO.getById(entity.getId());
+        Assert.assertEquals(entity,updatedEnity);
+        Logger.getLogger("Test StudentInfoDAO").info("Updated StudentInfo matches our desired StudentInfo - pass");
+
+        studentInfoDAO.delete(insertedId);
+        try {
+            insertedEntity = studentInfoDAO.getById(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test StudentInfoDAO").info("Inserted StudentInfo was deleted succesfully - pass");
+        }
+    }
 }

@@ -27,5 +27,16 @@ public interface StudentInfoDAO {
 
     StudentInfoEntity getById(Integer id);
 
+    /**
+     * Updates an entity/
+     * @param entity the entity with the new values.
+     */
+    public void update(StudentInfoEntity entity);
+
+    /**
+     * Delete a certain entity.
+     * @param id the entity's id
+     */
+    public void delete(Integer id);
 
 }

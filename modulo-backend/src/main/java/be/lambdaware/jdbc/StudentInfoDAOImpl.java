@@ -19,7 +19,7 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
 
     @Override
     public int create(StudentInfoEntity entity) {
-        String SQL = "INSERT INTO `student_info` (`user_id`, `parent_id`, `first_name`, `last_name`, `birth_date`, `birth_place`, `nationality`, `national_identification_number`, `street`, `house_number`, `postal_code`, `city`, `phone_parent`, `phone_cell`, `bank_account`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO `student_info` (`user_id`, `parent_id`, `first_name`, `last_name`, `birthdate`, `birth_place`, `nationality`, `national_identification_number`, `street`, `house_number`, `postal_code`, `city`, `phone_parent`, `phone_cell`, `bank_account`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -27,8 +27,8 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, entity.getUser().getId());
-                statement.setInt(2, entity.getParent().getId());
+                statement.setInt(1, entity.getUser());
+                statement.setInt(2, entity.getParent());
                 statement.setString(3, entity.getFirstName());
                 statement.setString(4, entity.getLastName());
                 statement.setDate(5, entity.getBirthDate());
@@ -52,7 +52,7 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
 
     @Override
     public StudentInfoEntity getByUserId(Integer id) {
-        String SQL = "SELECT * FROM `student_info` JOIN `users` ON `student_info`.`id` = `users`.`id` JOIN `parent_info` ON `student_info`.`parent_id` = `parent_info`.`id` WHERE `student_info`.`user_id` = ?";
+        String SQL = "SELECT * FROM `student_info` WHERE `student_info`.`user_id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
         StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
         //TODO catch SQL Exception
@@ -61,12 +61,24 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
 
     @Override
     public StudentInfoEntity getById(Integer id) {
-        System.out.println("TEST: " + id);
-        String SQL = "SELECT * FROM `student_info` JOIN `users` ON `student_info`.`id` = `users`.`id` JOIN `parent_info` ON `student_info`.`parent_id` = `parent_info`.`id` WHERE `student_info`.`id` = ?";
+        String SQL = "SELECT * FROM `student_info` WHERE `student_info`.`id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
         StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
         //TODO catch SQL Exception
         return entity;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        String SQL = "DELETE FROM `student_info` WHERE `id` = ?";
+        jdbcTemplate.update(SQL, id);
+    }
+
+    @Override
+    public void update(StudentInfoEntity entity) {
+        String SQL = "UPDATE `student_info` SET `user_id` = ?, `parent_id` = ?, `first_name` = ?, `last_name` =  ?, `birthdate` = ?, `birth_place` = ?, `nationality` = ?, `national_identification_number` =  ?, `street` = ?, `house_number` =  ?, `postal_code` = ?, `city` = ?, `phone_parent` = ?, `phone_cell` =  ?, `bank_account` = ? WHERE `id` = ?";
+        jdbcTemplate.update(SQL, entity.getUser(), entity.getParent(), entity.getFirstName(), entity.getLastName(), entity.getBirthDate(),entity.getBirthPlace(), entity.getNationality(),entity.getNationalIdentificationNumber(), entity.getStreet(), entity.getHouseNumber(), entity.getPostalCode(), entity.getCity(), entity.getPhoneParent(), entity.getPhoneCell(), entity.getBankAccount(), entity.getId());
+        //TODO catch SQL Exception
     }
 
 

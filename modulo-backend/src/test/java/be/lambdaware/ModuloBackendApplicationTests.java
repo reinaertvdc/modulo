@@ -4,7 +4,6 @@ package be.lambdaware;
 import be.lambdaware.application.ModuloBackendApplication;
 import be.lambdaware.dao.*;
 import be.lambdaware.entities.*;
-import com.sun.tools.javac.code.Attribute;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;

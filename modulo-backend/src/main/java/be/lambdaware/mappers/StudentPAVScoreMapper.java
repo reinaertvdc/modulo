@@ -14,10 +14,11 @@ public class StudentPAVScoreMapper implements RowMapper<StudentPAVScoreEntity> {
     public StudentPAVScoreEntity mapRow(ResultSet resultSet, int i) throws SQLException {
 
         StudentPAVScoreEntity entity = new StudentPAVScoreEntity();
-        entity.setStudent_id(resultSet.getInt("student_id"));
-        entity.setObjective_id(resultSet.getInt("objective_id"));
+        entity.setId(resultSet.getInt("id"));
+        entity.setStudentId(resultSet.getInt("student_id"));
+        entity.setObjectiveId(resultSet.getInt("objective_id"));
         entity.setScore(resultSet.getString("score"));
-        entity.setGraded_date(resultSet.getDate("graded_date"));
+        entity.setGradedDate(resultSet.getDate("graded_date"));
         entity.setRemarks(resultSet.getString("remarks"));
         return entity;
     }

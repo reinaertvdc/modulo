@@ -1,10 +1,7 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.ClassCertificateDAO;
-import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.ClassCertificateEntity;
-import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.GradeEntity;
 import be.lambdaware.mappers.ClassCertificateMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -67,7 +64,7 @@ public class ClassCertificateDAOImpl extends AbstractDAOImpl implements ClassCer
 //        String SQL = "SELECT * " +
 //                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
 //                "WHERE `certificate_id` = ? AND `class_id` = ?";
-        String SQL = "SELECT * FROM `class_certificate` WHERE `certificate_id` = ? AND `class_id` = ?";
+        String SQL = "SELECT * FROM `class_certificate` WHERE `class_id` = ? AND `certificate_id` = ?";
         ClassCertificateEntity classCertificate = jdbcTemplate.queryForObject(SQL, new ClassCertificateMapper(), classId, certificateId);
         //TODO catch SQL Exception
         return classCertificate;

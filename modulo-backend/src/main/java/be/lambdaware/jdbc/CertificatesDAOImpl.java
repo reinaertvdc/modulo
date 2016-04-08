@@ -1,8 +1,8 @@
 package be.lambdaware.jdbc;
 
-import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.entities.CertificateEntity;
-import be.lambdaware.mappers.CertificateMapper;
+import be.lambdaware.dao.CertificatesDAO;
+import be.lambdaware.entities.CertificatesEntity;
+import be.lambdaware.mappers.CertificatesMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -15,10 +15,10 @@ import java.util.List;
 /**
  * Created by martijn on 07/04/16.
  */
-public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDAO {
+public class CertificatesDAOImpl extends AbstractDAOImpl implements CertificatesDAO {
 
     @Override
-    public int create(CertificateEntity entity) {
+    public int create(CertificatesEntity entity) {
         String SQL = "INSERT INTO `certificates` (`name`, `enabled`) VALUES (?,?)";
 
         //TODO process result our catch SQL Exception
@@ -28,7 +28,7 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, entity.getName());
-                statement.setInt(2,entity.getEnabled());
+                statement.setBoolean(2,entity.getEnabled());
                 return statement;
             }
         }, holder);
@@ -37,17 +37,17 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
     }
 
     @Override
-    public CertificateEntity get(Integer id) {
+    public CertificatesEntity get(Integer id) {
         String SQL = "SELECT * FROM `certificates` WHERE `id` = ?";
-        CertificateEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CertificateMapper());
+        CertificatesEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CertificatesMapper());
         //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<CertificateEntity> getAll() {
+    public List<CertificatesEntity> getAll() {
         String SQL = "SELECT * FROM `certificates`";
-        List<CertificateEntity> entities = jdbcTemplate.query(SQL, new CertificateMapper());
+        List<CertificatesEntity> entities = jdbcTemplate.query(SQL, new CertificatesMapper());
         //TODO catch SQL Exception
         return entities;
     }
@@ -60,9 +60,9 @@ public class CertificateDAOImpl extends AbstractDAOImpl implements CertificateDA
     }
 
     @Override
-    public void update(CertificateEntity entity) {
-        String SQL = "UPDATE `certificates` SET name = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getName(),entity.getId());
+    public void update(CertificatesEntity entity) {
+        String SQL = "UPDATE `certificates` SET `name` = ?, `enabled` =? WHERE `id` = ?";
+        jdbcTemplate.update(SQL, entity.getName(), entity.getEnabled(),entity.getId());
         //TODO catch SQL Exception
     }
 }

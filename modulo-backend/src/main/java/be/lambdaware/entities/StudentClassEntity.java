@@ -32,4 +32,17 @@ public class StudentClassEntity {
                 ", classId=" + classId +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StudentClassEntity that = (StudentClassEntity) o;
+
+        if (studentInfoId != null ? !studentInfoId.equals(that.studentInfoId) : that.studentInfoId != null)
+            return false;
+        return classId != null ? classId.equals(that.classId) : that.classId == null;
+
+    }
 }

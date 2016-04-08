@@ -34,13 +34,16 @@
     <bean id="ParentInfoDAO" class="be.lambdaware.jdbc.ParentInfoDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="CertificateDAO" class="be.lambdaware.jdbc.CertificateDAOImpl">
+    <bean id="CertificatesDAO" class="be.lambdaware.jdbc.CertificatesDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <bean id="UserClassDAO" class="be.lambdaware.jdbc.StudentClassDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <bean id="ClassCertificateDAO" class="be.lambdaware.jdbc.ClassCertificateDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="CompetencesDAO" class="be.lambdaware.jdbc.CompetencesDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <!-- Definition for ObjectiveDAOImpl bean -->

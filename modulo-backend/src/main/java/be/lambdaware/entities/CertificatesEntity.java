@@ -3,10 +3,10 @@ package be.lambdaware.entities;
 /**
  * Created by martijn on 07/04/16.
  */
-public class CertificateEntity {
+public class CertificatesEntity {
     private Integer id;
     private String name;
-    private int enabled;
+    private Boolean enabled;
 
     public Integer getId() {
         return id;
@@ -24,11 +24,11 @@ public class CertificateEntity {
         this.name = name;
     }
 
-    public int getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(int enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -37,7 +37,7 @@ public class CertificateEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CertificateEntity that = (CertificateEntity) o;
+        CertificatesEntity that = (CertificatesEntity) o;
 
         if (enabled != that.enabled) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
@@ -49,13 +49,13 @@ public class CertificateEntity {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + enabled;
+        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "CertificateEntity{" +
+        return "CertificatesEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", enabled=" + enabled +

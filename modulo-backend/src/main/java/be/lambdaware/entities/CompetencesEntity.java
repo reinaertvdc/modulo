@@ -1,11 +1,11 @@
 package be.lambdaware.entities;
 
 /**
- * Created by MichielVM on 8/04/2016.
+ * Created by martijn on 08/04/16.
  */
-public class SubCertificateCategoryEntity {
+public class CompetencesEntity {
     private Integer id;
-    private Integer subCertificateId;
+    private Integer subCertificateCategoryId;
     private String name;
     private String description;
     private String customName;
@@ -20,12 +20,12 @@ public class SubCertificateCategoryEntity {
         this.id = id;
     }
 
-    public Integer getSubCertificateId() {
-        return subCertificateId;
+    public Integer getSubCertificateCategoryId() {
+        return subCertificateCategoryId;
     }
 
-    public void setSubCertificateId(Integer subCertificateId) {
-        this.subCertificateId = subCertificateId;
+    public void setSubCertificateCategoryId(Integer subCertificateCategoryId) {
+        this.subCertificateCategoryId = subCertificateCategoryId;
     }
 
     public String getName() {
@@ -70,8 +70,9 @@ public class SubCertificateCategoryEntity {
 
     @Override
     public String toString() {
-        return "SubCertificateCategoryEntity{" +
-                "subCertificateId=" + subCertificateId +
+        return "CompetencesEntity{" +
+                "id=" + id +
+                ", subCertificateCategoryId=" + subCertificateCategoryId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", customName='" + customName + '\'' +
@@ -85,10 +86,10 @@ public class SubCertificateCategoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SubCertificateCategoryEntity that = (SubCertificateCategoryEntity) o;
+        CompetencesEntity that = (CompetencesEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (subCertificateId != null ? !subCertificateId.equals(that.subCertificateId) : that.subCertificateId != null)
+        if (subCertificateCategoryId != null ? !subCertificateCategoryId.equals(that.subCertificateCategoryId) : that.subCertificateCategoryId != null)
             return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
@@ -97,5 +98,17 @@ public class SubCertificateCategoryEntity {
             return false;
         return enabled != null ? enabled.equals(that.enabled) : that.enabled == null;
 
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (subCertificateCategoryId != null ? subCertificateCategoryId.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (customName != null ? customName.hashCode() : 0);
+        result = 31 * result + (customDescription != null ? customDescription.hashCode() : 0);
+        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
+        return result;
     }
 }

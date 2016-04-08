@@ -213,11 +213,11 @@ INSERT INTO `competences` VALUES (2, 4, 'Gereedschap opruimen', 'Leerling ruimt 
 INSERT INTO `competences` VALUES (3, 6, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
 INSERT INTO `competences` VALUES (4, 8, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
 INSERT INTO `competences` VALUES (5, 10, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (6, 1, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (7, 3, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (8, 5, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (9, 7, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (10, 9, 'Afwerk Comptentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (6, 1, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (7, 3, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (8, 5, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (9, 7, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (10, 9, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
 
 CREATE TABLE `course_topics` (
   `id`   INT          NOT NULL AUTO_INCREMENT,

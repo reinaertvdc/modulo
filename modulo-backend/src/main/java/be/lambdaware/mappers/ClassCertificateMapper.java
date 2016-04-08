@@ -1,8 +1,6 @@
 package be.lambdaware.mappers;
 
-import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.ClassCertificateEntity;
-import be.lambdaware.entities.ClassEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

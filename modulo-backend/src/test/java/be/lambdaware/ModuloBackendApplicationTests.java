@@ -72,47 +72,49 @@ public class ModuloBackendApplicationTests {
     }
 
     @Autowired
-    private CertificateDAO certificateDAO;
+    private CertificatesDAO certificatesDAO;
 
     @Test
     public void testCertificateDAO() {
         // test autowire
-        Assert.assertNotNull(certificateDAO);
-        Logger.getLogger("Test CertificateDAO").info("CertificateDAO injected succesfully - pass");
+        Assert.assertNotNull(certificatesDAO);
+        Logger.getLogger("Test CertificatesDAO").info("CertificatesDAO injected succesfully - pass");
 
-        // test get user 11
-        CertificateEntity certificateEntity = new CertificateEntity();
-        certificateEntity.setId(1);
-        certificateEntity.setName("Metselaar");
-        certificateEntity.setEnabled(1);
-        Assert.assertEquals(certificateEntity, certificateDAO.get(1));
-        Logger.getLogger("Test CertificateDAO").info("Expected certificate with ID=1 matches certificate from database - pass");
+        // test get certificate 1
+        CertificatesEntity certificatesEntity = new CertificatesEntity();
+        certificatesEntity.setId(1);
+        certificatesEntity.setName("Metselaar");
+        certificatesEntity.setEnabled(true);
+        Assert.assertEquals(certificatesEntity, certificatesDAO.get(1));
+        Logger.getLogger("Test CertificatesDAO").info("Expected certificate with ID=1 matches certificate from database - pass");
 
-        // test get user 12
-        certificateEntity = new CertificateEntity();
-        certificateEntity.setId(2);
-        certificateEntity.setName("Elektricien");
-        certificateEntity.setEnabled(1);
-        Assert.assertEquals(certificateEntity, certificateDAO.get(2));
-        Logger.getLogger("Test CertificateDAO").info("Expected certificate with ID=2 matches certificate from database - pass");
+        // test get certificate 2
+        certificatesEntity = new CertificatesEntity();
+        certificatesEntity.setId(2);
+        certificatesEntity.setName("Elektricien");
+        certificatesEntity.setEnabled(true);
+        Assert.assertEquals(certificatesEntity, certificatesDAO.get(2));
+        Logger.getLogger("Test CertificatesDAO").info("Expected certificate with ID=2 matches certificate from database - pass");
 
-        // create user
-        certificateEntity = new CertificateEntity();
-        certificateEntity.setName("Kassier");
+        // create certificate
+        certificatesEntity = new CertificatesEntity();
+        certificatesEntity.setName("Kassier");
+        certificatesEntity.setEnabled(true);
 
-        int insertedId = certificateDAO.create(certificateEntity);
-        certificateEntity.setId(insertedId);
-        CertificateEntity insertedEntity = certificateDAO.get(insertedId);
+        int insertedId = certificatesDAO.create(certificatesEntity);
+        certificatesEntity.setId(insertedId);
+        CertificatesEntity insertedEntity = certificatesDAO.get(insertedId);
 
-        Assert.assertEquals(certificateEntity, insertedEntity);
-        Logger.getLogger("Test CertificateDAO").info("Inserted certificate matches our desired certificate - pass");
+        Assert.assertEquals(certificatesEntity,insertedEntity);
+        Logger.getLogger("Test CertificatesDAO").info("Inserted certificate matches our desired certificate - pass");
 
-        certificateDAO.delete(insertedId);
+        certificatesDAO.delete(insertedId);
         try {
-            insertedEntity = certificateDAO.get(insertedId);
+            insertedEntity = certificatesDAO.get(insertedId);
             Assert.fail();
-        } catch (Exception e) {
-            Logger.getLogger("Test UserDAO").info("Inserted certificate was deleted succesfully - pass");
+        }
+        catch (Exception e) {
+            Logger.getLogger("Test CertificateDAO").info("Inserted certificate was deleted succesfully - pass");
         }
     }
 
@@ -252,7 +254,7 @@ public class ModuloBackendApplicationTests {
     @Test
     public void testClassCertificateDAO() {
         // test autowire
-        Assert.assertNotNull(certificateDAO);
+        Assert.assertNotNull(classCertificateDAO);
         Logger.getLogger("Test ClassCertificateDAO").info("ClassCertificateDAO injected succesfully - pass");
 
         // test get class 1 & certificate 1
@@ -286,5 +288,59 @@ public class ModuloBackendApplicationTests {
 //        } catch (Exception e) {
 //            Logger.getLogger("Test UserDAO").info("Inserted user was deleted succesfully - pass");
 //        }
+    }
+    @Autowired
+    private CompetencesDAO competencesDAO;
+
+    @Test
+    public void testCompetencesDAO() {
+
+        // test autowire
+        Assert.assertNotNull(competencesDAO);
+        Logger.getLogger("Test CompetencesDAO").info("CompetencesDAO injected succesfully - pass");
+
+        // test get competence 1
+        CompetencesEntity competence = new CompetencesEntity();
+        competence.setId(1);
+        competence.setSubCertificateCategoryId(2);
+        competence.setName("Gereedschap opruimen");
+        competence.setDescription("Leerling ruimt gereedschap op");
+        competence.setEnabled(true);
+        Assert.assertEquals(competence, competencesDAO.get(1));
+        Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=1 matches competence from database - pass");
+
+        // test get competence 6
+        competence =  new CompetencesEntity();
+        competence.setId(7);
+        competence.setSubCertificateCategoryId(3);
+        competence.setName("Afwerk Competentie");
+        competence.setDescription("Leerling ruimt werkt volledig af");
+        competence.setEnabled(true);
+        Assert.assertEquals(competence, competencesDAO.get(7));
+        Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=6 matches competence from database - pass");
+
+        // create competence
+        competence = new CompetencesEntity();
+        competence.setSubCertificateCategoryId(1);
+        competence.setName("Test Competentie");
+        competence.setDescription("Leerling test");
+        competence.setEnabled(true);
+
+        int insertedId = competencesDAO.create(competence);
+        competence.setId(insertedId);
+        CompetencesEntity insertedEntity = competencesDAO.get(insertedId);
+
+        Assert.assertEquals(competence,insertedEntity);
+        Logger.getLogger("Test CompetencesDAO").info("Inserted competence matches our desired competence - pass");
+
+        competencesDAO.delete(insertedId);
+        try {
+            insertedEntity = competencesDAO.get(insertedId);
+            Assert.fail();
+        }
+        catch (Exception e) {
+            Logger.getLogger("Test CompetencesDAO").info("Inserted competence was deleted succesfully - pass");
+        }
+
     }
 }

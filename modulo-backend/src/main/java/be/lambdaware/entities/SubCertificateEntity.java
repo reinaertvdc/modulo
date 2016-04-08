@@ -81,4 +81,24 @@ public class SubCertificateEntity {
                 ", enabled=" + enabled +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SubCertificateEntity that = (SubCertificateEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (certificateId != null ? !certificateId.equals(that.certificateId) : that.certificateId != null)
+            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (customName != null ? !customName.equals(that.customName) : that.customName != null) return false;
+        if (customDescription != null ? !customDescription.equals(that.customDescription) : that.customDescription != null)
+            return false;
+        return enabled != null ? enabled.equals(that.enabled) : that.enabled == null;
+
+    }
+
 }

@@ -27,10 +27,10 @@ public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBG
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, entity.getStudent_id());
-                statement.setInt(2, entity.getCompetence_id());
+                statement.setInt(1, entity.getStudentId());
+                statement.setInt(2, entity.getCompetenceId());
                 statement.setString(3, entity.getScore());
-                statement.setDate(4, entity.getGraded_date());
+                statement.setDate(4, entity.getGradedDate());
                 statement.setString(5, entity.getRemarks());
                 return statement;
             }
@@ -65,7 +65,7 @@ public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBG
     @Override
     public void update(StudentBGVScoreEntity entity) {
         String SQL = "UPDATE `student_bgv_score` SET `student_id` = ?, `objective_id` = ?, `score` = ?, `graded_date`, `remarks` = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getStudent_id(), entity.getCompetence_id(), entity.getScore(), entity.getGraded_date(), entity.getRemarks());
+        jdbcTemplate.update(SQL, entity.getStudentId(), entity.getCompetenceId(), entity.getScore(), entity.getGradedDate(), entity.getRemarks());
         //TODO catch SQL Exception
     }
 }

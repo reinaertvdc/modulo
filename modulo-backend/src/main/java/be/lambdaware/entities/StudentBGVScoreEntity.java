@@ -7,26 +7,26 @@ import java.sql.Date;
  */
 public class StudentBGVScoreEntity {
     private Integer id;
-    private Integer student_id;
-    private Integer competence_id;
+    private Integer studentId;
+    private Integer competenceId;
     private String score;
-    private Date graded_date;
+    private Date gradedDate;
     private String remarks;
 
-    public Integer getStudent_id() {
-        return student_id;
+    public Integer getStudentId() {
+        return studentId;
     }
 
-    public void setStudent_id(Integer student_id) {
-        this.student_id = student_id;
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
-    public Integer getCompetence_id() {
-        return competence_id;
+    public Integer getCompetenceId() {
+        return competenceId;
     }
 
-    public void setCompetence_id(Integer objective_id) {
-        this.competence_id = objective_id;
+    public void setCompetenceId(Integer objective_id) {
+        this.competenceId = objective_id;
     }
 
     public String getScore() {
@@ -37,12 +37,12 @@ public class StudentBGVScoreEntity {
         this.score = score;
     }
 
-    public Date getGraded_date() {
-        return graded_date;
+    public Date getGradedDate() {
+        return gradedDate;
     }
 
-    public void setGraded_date(Date graded_date) {
-        this.graded_date = graded_date;
+    public void setGradedDate(Date gradedDate) {
+        this.gradedDate = gradedDate;
     }
 
     public String getRemarks() {
@@ -63,13 +63,30 @@ public class StudentBGVScoreEntity {
 
     @Override
     public String toString() {
-        return "StudentPAVScoreEntity{" +
+        return "StudentBGVScoreEntity{" +
                 "id=" + id +
-                ", student_id=" + student_id +
-                ", competence_id=" + competence_id +
+                ", studentId=" + studentId +
+                ", competenceId=" + competenceId +
                 ", score='" + score + '\'' +
-                ", graded_date=" + graded_date +
+                ", gradedDate=" + gradedDate +
                 ", remarks='" + remarks + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StudentBGVScoreEntity that = (StudentBGVScoreEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (studentId != null ? !studentId.equals(that.studentId) : that.studentId != null) return false;
+        if (competenceId != null ? !competenceId.equals(that.competenceId) : that.competenceId != null) return false;
+        if (score != null ? !score.equals(that.score) : that.score != null) return false;
+        if (gradedDate != null ? !gradedDate.equals(that.gradedDate) : that.gradedDate != null) return false;
+        return remarks != null ? remarks.equals(that.remarks) : that.remarks == null;
+
+    }
+
 }

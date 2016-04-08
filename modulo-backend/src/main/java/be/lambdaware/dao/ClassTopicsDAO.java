@@ -17,7 +17,6 @@ public interface ClassTopicsDAO {
 
     /**
      * Get an entity, based on it's id.
-     * @param id the entity's id.
      * @return the entity.
      */
     public ClassTopicsEntity get(Integer course_topic_id, Integer class_id);
@@ -30,7 +29,6 @@ public interface ClassTopicsDAO {
 
     /**
      * Delete a certain entity.
-     * @param id the entity's id
      */
     public void delete(Integer course_topic_id, Integer class_id);
 

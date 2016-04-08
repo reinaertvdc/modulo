@@ -16,7 +16,6 @@ public class StudentModel extends AccountModel{
     }
 
     private StudentInfoEntity studentInfoEntity;
-
     public ParentModel parentModel;
 
 

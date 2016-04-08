@@ -69,6 +69,68 @@ public class ModuloBackendApplicationTests {
         }
     }
 
+    @Autowired
+    ClassesDAO classesDAO;
+
+    @Test
+    public void testClassesDAO() {
+        // test autowire
+        Assert.assertNotNull(classesDAO);
+        Logger.getLogger("Test ClassesDAO").info("ClassesDAO injected succesfully - pass");
+
+        ClassEntity entity = new ClassEntity();
+        entity.setId(1);
+        entity.setTeacherId(21);
+        entity.setName("Metselaar 1");
+        entity.setType("BGV");
+
+        Assert.assertEquals(entity,classesDAO.get(1));
+        Logger.getLogger("Test ClassesDAO").info("Expected class with ID=1 matches class from database - pass");
+
+        entity = new ClassEntity();
+        entity.setName("Test klas");
+        entity.setTeacherId(22);
+        entity.setType("PAV");
+        int insertedId = classesDAO.create(entity);
+        entity.setId(insertedId);
+        Assert.assertEquals(entity, classesDAO.get(insertedId));
+        Logger.getLogger("Test ClassesDAO").info("Inserted class matches our desired class - pass");
+
+        entity.setName("Test Update Klas");
+        entity.setType("BGV");
+        classesDAO.update(entity);
+        Assert.assertEquals(entity, classesDAO.get(insertedId));
+        Logger.getLogger("Test ClassesDAO").info("Updated class matches our desired class - pass");
+
+        classesDAO.delete(insertedId);
+        try {
+            classesDAO.get(insertedId);
+            Assert.fail();;
+        } catch(Exception e) {
+            Logger.getLogger("Test ClassesDAO").info("Inserted class was deleted successfully - pass");
+        }
+
+        List<ClassEntity> entities = new ArrayList<>();
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setId(1);
+        classEntity.setName("Metselaar 1");
+        classEntity.setType("BGV");
+        classEntity.setTeacherId(21);
+        entities.add(classEntity);
+
+        classEntity = new ClassEntity();
+        classEntity.setId(2);
+        classEntity.setName("Metselaar 2");
+        classEntity.setType("BGV");
+        classEntity.setTeacherId(21);
+        entities.add(classEntity);
+
+        Object [] fromDatabase = classesDAO.getAllByTeacher(21).toArray();
+        Object [] objectArray = entities.toArray();
+
+        Assert.assertArrayEquals(objectArray,fromDatabase);
+        Logger.getLogger("Test ClassesDAO").info("Get all classes by teacher id - pass");
+    }
 
     @Autowired
     private SubCertificateDAO subCertificateDAO;
@@ -383,12 +445,29 @@ public class ModuloBackendApplicationTests {
         entity.setId(1);
         entity.setName("Graad 1");
         Assert.assertEquals(entity, gradeDAO.get(1));
+        Logger.getLogger("Test GradeDAO").info("Expected grade with ID=1 matches grade from database - pass");
+
 
         entity = new GradeEntity();
         entity.setName("Test Graad");
         int insertedId = gradeDAO.create(entity);
         entity.setId(insertedId);
         Assert.assertEquals(entity, gradeDAO.get(insertedId));
+        Logger.getLogger("Test GradeDAO").info("Inserted grade matches our desired grade - pass");
+
+        entity.setName("Test Graad 2");
+        gradeDAO.update(entity);
+        Assert.assertEquals(entity, gradeDAO.get(insertedId));
+        Logger.getLogger("Test GradeDAO").info("Updated grade matches our desired grade - pass");
+
+        gradeDAO.delete(insertedId);
+        try
+        {
+            gradeDAO.get(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test GradeDAO").info("Deleted grade successfully.");
+        }
     }
 
 
@@ -583,6 +662,12 @@ public class ModuloBackendApplicationTests {
 
         Assert.assertEquals(userEntity, insertedEntity);
         Logger.getLogger("Test UserDAO").info("Inserted user matches our desired user - pass");
+
+
+        userEntity.setEmail("changeder@email.com");
+        userDAO.update(userEntity);
+        Assert.assertEquals(userEntity, userDAO.get(insertedId));
+        Logger.getLogger("Test UserDAO").info("Updated user matches our desired user - pass");
 
         userDAO.delete(insertedId);
         try {

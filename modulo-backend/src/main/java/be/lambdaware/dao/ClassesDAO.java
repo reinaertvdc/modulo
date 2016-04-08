@@ -1,7 +1,6 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.UserEntity;
 
 import java.util.List;
 
@@ -17,7 +16,11 @@ public interface ClassesDAO {
 
     ClassEntity get(Integer id);
 
+    void delete(Integer id);
+
+    void update(ClassEntity entity);
+
     List<ClassEntity> getAll();
 
-    List<ClassEntity> getAllByTeacher(UserEntity teacher);
+    List<ClassEntity> getAllByTeacher(Integer teacherId);
 }

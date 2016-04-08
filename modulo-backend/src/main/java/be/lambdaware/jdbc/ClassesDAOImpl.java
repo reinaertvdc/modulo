@@ -2,7 +2,6 @@ package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.ClassesDAO;
 import be.lambdaware.entities.ClassEntity;
-import be.lambdaware.entities.UserEntity;
 import be.lambdaware.mappers.ClassesMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -54,9 +53,23 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
         return entities;
     }
 
-    public List<ClassEntity> getAllByTeacher(UserEntity teacher) {
+    public List<ClassEntity> getAllByTeacher(Integer teacherId) {
         String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id` WHERE `teacher_id` = ?";
-        List<ClassEntity> entities = jdbcTemplate.query(SQL, new ClassesMapper(),teacher.getId());
+        List<ClassEntity> entities = jdbcTemplate.query(SQL, new ClassesMapper(),teacherId);
         return entities;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        String SQL = "DELETE FROM `classes` WHERE `id` = ?";
+        jdbcTemplate.update(SQL, id);
+        //TODO catch SQL Exception
+    }
+
+    @Override
+    public void update(ClassEntity entity) {
+        String SQL = "UPDATE `classes` SET `name` = ?,`type` = ?,`teacher_id` = ? WHERE `id` = ?";
+        jdbcTemplate.update(SQL, entity.getName(),entity.getType(),entity.getTeacherId(),entity.getId());
+        //TODO catch SQL Exception
     }
 }

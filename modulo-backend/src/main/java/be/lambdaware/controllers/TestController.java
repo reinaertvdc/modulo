@@ -49,7 +49,7 @@ public class TestController {
         UserEntity teacher = userDAO.get(teacherId);
 
         // get all classes of said teacher
-        List<ClassEntity> classes = classesDAO.getAllByTeacher(teacher);
+        List<ClassEntity> classes = classesDAO.getAllByTeacher(teacher.getId());
 
         return new ResponseEntity<List<ClassEntity>>(classes, HttpStatus.OK);
     }

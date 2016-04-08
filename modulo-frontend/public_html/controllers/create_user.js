@@ -1,9 +1,9 @@
 app.controller('CreateUserController', function ($scope, $http, $window) {
-    $scope.formData = {};
-    $scope.formData.type = 'ADMIN';
+    $scope.formData = {
+        type: 'ADMIN'
+    };
 
     $scope.resetForm = function () {
-        $scope.formData = {};
         $scope.formData.type = 'ADMIN';
     };
 

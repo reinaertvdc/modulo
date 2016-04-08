@@ -4,8 +4,7 @@
         <div class="form-group">
             <label for="input-email">E-mailadres</label>
             <input id="input-email" type="email" name="email" class="form-control" placeholder="naam@voorbeeld.com"
-                   data-ng-model="formData.email" title="E-mailadres van de gebruiker" required>
-            <div class="alert alert-success" role="alert">...</div>
+                   data-ng-model="formData.email" title="E-mailadres voor de gebruiker" required>
         </div>
 
         <div class="form-group">
@@ -16,7 +15,7 @@
 
         <div class="form-group">
             <label for="select-type">Type gebruiker</label>
-            <select id="select-type" class="form-control" data-ng-model="formData.type" title="Type van de gebruiker"
+            <select id="select-type" class="form-control" data-ng-model="formData.type" title="Type voor de gebruiker"
                     required>
                 <option value="ADMIN">Administrator</option>
                 <option value="TEACHER">Leerkracht</option>
@@ -25,7 +24,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-lg btn-block">
+        <button type="submit" class="btn btn-success btn-lg btn-block">
             <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken
         </button>
     </form>

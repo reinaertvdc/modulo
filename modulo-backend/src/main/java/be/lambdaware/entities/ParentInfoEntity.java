@@ -1,7 +1,7 @@
 package be.lambdaware.entities;
 
 /**
- * @author hendrik
+ * @author martijn
  */
 public class ParentInfoEntity {
 
@@ -9,7 +9,7 @@ public class ParentInfoEntity {
     private String firstName;
     private String lastName;
 
-    private UserEntity user;
+    private Integer userId;
 
     public int getId() {
         return id;
@@ -35,12 +35,12 @@ public class ParentInfoEntity {
         this.lastName = lastName;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ParentInfoEntity {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", user=" + user +
+                ", userId=" + userId +
                 '}';
     }
 
@@ -63,7 +63,7 @@ public class ParentInfoEntity {
         if (id != that.id) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        return user != null ? user.equals(that.user) : that.user == null;
+        return userId != null ? userId.equals(that.userId) : that.userId == null;
 
     }
 }

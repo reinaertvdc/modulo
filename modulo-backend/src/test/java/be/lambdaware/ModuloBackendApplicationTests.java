@@ -452,7 +452,7 @@ public class ModuloBackendApplicationTests {
         Assert.assertEquals(competence, competencesDAO.get(1));
         Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=1 matches competence from database - pass");
 
-        // test get competence 6
+        // test get competence 7
         competence =  new CompetencesEntity();
         competence.setId(7);
         competence.setSubCertificateCategoryId(3);
@@ -462,13 +462,7 @@ public class ModuloBackendApplicationTests {
         Assert.assertEquals(competence, competencesDAO.get(7));
         Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=6 matches competence from database - pass");
 
-        competence =  new CompetencesEntity();
-        competence.setId(7);
-        competence.setSubCertificateCategoryId(3);
-        competence.setName("Afwerk Competentie");
-        competence.setDescription("Leerling ruimt werkt volledig af");
-        competence.setEnabled(true);
-
+        //test getBySubCertificateCategory
         List<CompetencesEntity> entities = new ArrayList<>();
         entities.add(competence);
 
@@ -491,6 +485,14 @@ public class ModuloBackendApplicationTests {
         Assert.assertEquals(competence,insertedEntity);
         Logger.getLogger("Test CompetencesDAO").info("Inserted competence matches our desired competence - pass");
 
+        //Test update
+        competence.setName("Update Test");
+        competencesDAO.update(competence);
+        CompetencesEntity updatedEnity = competencesDAO.get(competence.getId());
+        Assert.assertEquals(competence,updatedEnity);
+        Logger.getLogger("Test CompetencesDAO").info("Updated competence matches our desired competence - pass");
+
+        //Test delete
         competencesDAO.delete(insertedId);
         try {
             insertedEntity = competencesDAO.get(insertedId);

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.matchers.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -693,14 +694,14 @@ public class ModuloBackendApplicationTests {
         entity.setId(1);
         entity.setName("Vakthema 1");
         Assert.assertEquals(entity, courseTopicDAO.get(1));
-        Logger.getLogger("Test CourseTopicDAO").info("Expected course topic with ID=1 matches user from database - pass");
+        Logger.getLogger("Test CourseTopicDAO").info("Expected course topic with ID=1 matches course topic from database - pass");
 
         // test get course topic 2
         entity = new CourseTopicEntity();
         entity.setId(2);
         entity.setName("Vakthema 2");
         Assert.assertEquals(entity, courseTopicDAO.get(2));
-        Logger.getLogger("Test CourseTopicDAO").info("Expected course topic with ID=2 matches user from database - pass");
+        Logger.getLogger("Test CourseTopicDAO").info("Expected course topic with ID=2 matches course topic from database - pass");
 
         // create course topic
         entity = new CourseTopicEntity();
@@ -797,6 +798,67 @@ public class ModuloBackendApplicationTests {
             Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo was deleted succesfully - pass");
         }
 
+    }
+
+    @Autowired
+    private ObjectiveDAO objectiveDAO;
+
+    public void testObjectiveDAO(){
+        // test autowire
+        Assert.assertNotNull(objectiveDAO);
+        Logger.getLogger("Test ObjectiveDAO").info("ObjectiveDAO injected succesfully - pass");
+
+        // test get Objective 1
+        ObjectiveEntity entity = new ObjectiveEntity();
+        entity.setId(1);
+        entity.setGrade(1);
+        entity.setCourse_topic(1);
+        entity.setName("Kent Vakthema 1");
+        entity.setCustom_name(null);
+        Assert.assertEquals(entity, objectiveDAO.get(1));
+        Logger.getLogger("Test ObjectiveDAO").info("Expected objective with ID=1 matches objective from database - pass");
+
+        // test get Objective 2
+        entity = new ObjectiveEntity();
+        entity.setId(2);
+        entity.setGrade(2);
+        entity.setCourse_topic(1);
+        entity.setName("Kent Vakthema 2");
+        entity.setCustom_name(null);
+        Assert.assertEquals(entity, objectiveDAO.get(2));
+        Logger.getLogger("Test ObjectiveDAO").info("Expected objective with ID=2 matches objective from database - pass");
+
+        // create course topic
+        entity = new ObjectiveEntity();
+        entity.setGrade(1);
+        entity.setCourse_topic(2);
+        entity.setName("wiskunde");
+        entity.setCustom_name(null);
+
+        int insertedId = objectiveDAO.create(entity);
+        entity.setId(insertedId);
+        ObjectiveEntity insertedEntity = objectiveDAO.get(insertedId);
+
+        Assert.assertEquals(entity, insertedEntity);
+        Logger.getLogger("Test ObjectiveDAO").info("Inserted Objective matches our desired Objective - pass");
+
+        //Test update
+        entity.setName("Update Test");
+        entity.setGrade(2);
+        entity.setCourse_topic(1);
+        entity.setCustom_name("taal");
+        objectiveDAO.update(entity);
+        ObjectiveEntity updatedEnity = objectiveDAO.get(entity.getId());
+        Assert.assertEquals(entity,updatedEnity);
+        Logger.getLogger("Test ObjectiveDAO").info("Updated Objective matches our desired Objective - pass");
+
+        objectiveDAO.delete(insertedId);
+        try {
+            insertedEntity = objectiveDAO.get(insertedId);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test ObjectiveDAO").info("Inserted Objective was deleted succesfully - pass");
+        }
     }
 
     @Autowired

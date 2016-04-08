@@ -2,6 +2,8 @@ package be.lambdaware.dao;
 
 import be.lambdaware.entities.StudentInfoEntity;
 
+import java.util.List;
+
 /**
  * Created by Vincent on 06/04/16.
  */
@@ -18,14 +20,16 @@ public interface StudentInfoDAO {
      */
     int create(StudentInfoEntity entity);
 
+    StudentInfoEntity get(Integer id);
+
     /**
      * Get an entity, based on it's id.
      * @param id the entity's id.
      * @return the entity.
      */
-    StudentInfoEntity getByUserId(Integer id);
+    List<StudentInfoEntity> getByUserId(Integer id);
 
-    StudentInfoEntity getById(Integer id);
+    List<StudentInfoEntity> getByParentId(Integer id);
 
     /**
      * Updates an entity/

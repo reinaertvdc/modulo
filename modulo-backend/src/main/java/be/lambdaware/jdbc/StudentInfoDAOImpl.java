@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Created by Vincent on 06/04/16.
@@ -50,9 +51,10 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
         return holder.getKey().intValue();
     }
 
+
     @Override
-    public StudentInfoEntity getByUserId(Integer id) {
-        String SQL = "SELECT * FROM `student_info` WHERE `student_info`.`user_id` = ?";
+    public StudentInfoEntity get(Integer id) {
+        String SQL = "SELECT * FROM `student_info` WHERE `id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
         StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
         //TODO catch SQL Exception
@@ -60,10 +62,19 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
     }
 
     @Override
-    public StudentInfoEntity getById(Integer id) {
-        String SQL = "SELECT * FROM `student_info` WHERE `student_info`.`id` = ?";
+    public List<StudentInfoEntity> getByUserId(Integer id) {
+        String SQL = "SELECT * FROM `student_info` WHERE `user_id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
-        StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
+        List<StudentInfoEntity> entity = jdbcTemplate.query(SQL, new Object[]{id}, new StudentInfoMapper());
+        //TODO catch SQL Exception
+        return entity;
+    }
+
+    @Override
+    public List<StudentInfoEntity> getByParentId(Integer id) {
+        String SQL = "SELECT * FROM `student_info` WHERE `parent_id` = ?";
+        Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
+        List<StudentInfoEntity> entity = jdbcTemplate.query(SQL, new Object[]{id}, new StudentInfoMapper());
         //TODO catch SQL Exception
         return entity;
     }

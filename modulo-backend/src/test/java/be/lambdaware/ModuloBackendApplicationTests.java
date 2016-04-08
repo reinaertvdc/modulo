@@ -960,7 +960,7 @@ public class ModuloBackendApplicationTests {
         entity.setPhoneCell("085479621");
         entity.setBankAccount("BE67-500-555-9685");
 
-        Assert.assertEquals(entity, studentInfoDAO.getById(1));
+        Assert.assertEquals(entity, studentInfoDAO.get(1));
         Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfo with ID=1 matches StudentInfo from database - pass");
 
         // test get studentInfo 2
@@ -982,8 +982,43 @@ public class ModuloBackendApplicationTests {
         entity.setPhoneCell("085479621");
         entity.setBankAccount("BE67-500-555-9685");
 
-        Assert.assertEquals(entity, studentInfoDAO.getById(2));
+        Assert.assertEquals(entity, studentInfoDAO.get(2));
         Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfo with ID=2 matches StudentInfo from database - pass");
+
+        //getByGradeId
+        List<StudentInfoEntity> entities = new ArrayList<>();
+        entities.add(entity);
+
+        Object[] converted = entities.toArray();
+        Object[] arrayFromDatabase = studentInfoDAO.getByUserId(12).toArray();
+        Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfoList by userId matches StudentInfoList from database - pass");
+
+        //getByParentId
+        entity = new StudentInfoEntity();
+        entity.setId(4);
+        entity.setUser(14);
+        entity.setParent(2);
+        entity.setFirstName("Marcel");
+        entity.setLastName("Leerling4");
+        entity.setBirthDate(Date.valueOf("2012-01-01"));
+        entity.setBirthPlace("Hasselt");
+        entity.setNationality("Belgium");
+        entity.setNationalIdentificationNumber("12345678900");
+        entity.setStreet("Straat");
+        entity.setHouseNumber("10");
+        entity.setPostalCode("3000");
+        entity.setCity("Hasselt");
+        entity.setPhoneParent("012857496");
+        entity.setPhoneCell("085479621");
+        entity.setBankAccount("BE67-500-555-9685");
+        entities.add(entity);
+
+        converted = entities.toArray();
+        arrayFromDatabase = studentInfoDAO.getByParentId(2).toArray();
+        Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfoList by parentId matches StudentInfoList from database - pass");
+
 
         // create course topic
         entity = new StudentInfoEntity();
@@ -1007,7 +1042,7 @@ public class ModuloBackendApplicationTests {
 
         int insertedId = studentInfoDAO.create(entity);
         entity.setId(insertedId);
-        StudentInfoEntity insertedEntity = studentInfoDAO.getById(insertedId);
+        StudentInfoEntity insertedEntity = studentInfoDAO.get(insertedId);
 
         Assert.assertEquals(entity, insertedEntity);
         Logger.getLogger("Test StudentInfoDAO").info("Inserted StudentInfo matches our desired StudentInfo - pass");
@@ -1028,13 +1063,13 @@ public class ModuloBackendApplicationTests {
         entity.setBankAccount("BE67-500-555-9225");
 
         studentInfoDAO.update(entity);
-        StudentInfoEntity updatedEnity = studentInfoDAO.getById(entity.getId());
+        StudentInfoEntity updatedEnity = studentInfoDAO.get(entity.getId());
         Assert.assertEquals(entity,updatedEnity);
         Logger.getLogger("Test StudentInfoDAO").info("Updated StudentInfo matches our desired StudentInfo - pass");
 
         studentInfoDAO.delete(insertedId);
         try {
-            insertedEntity = studentInfoDAO.getById(insertedId);
+            insertedEntity = studentInfoDAO.get(insertedId);
             Assert.fail();
         } catch (Exception e) {
             Logger.getLogger("Test StudentInfoDAO").info("Inserted StudentInfo was deleted succesfully - pass");

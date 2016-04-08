@@ -1,10 +1,10 @@
 app.controller('MainController', function ($scope, $location) {
     $scope.user = {
         Type: Object.freeze({
-            ADMIN: 0,
-            TEACHER: 1,
-            STUDENT: 2,
-            PARENT: 3
+            ADMIN: 'Administrator',
+            TEACHER: 'Leerkracht',
+            STUDENT: 'Student',
+            PARENT: 'Ouder'
         }),
 
         type: null,
@@ -16,7 +16,11 @@ app.controller('MainController', function ($scope, $location) {
         logOut: function () {
             this.type = null;
         }
+        
+        
     };
+
+    $scope.user.type = $scope.user.Type.ADMIN;
 
     $scope.location = {
         HOME: 'startpagina',

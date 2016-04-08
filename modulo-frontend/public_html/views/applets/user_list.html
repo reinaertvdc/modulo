@@ -1,0 +1,31 @@
+<h3>Gebruikersbeheer</h3>
+
+<div data-ng-controller="UserListController">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Zoeken...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+    </div>
+
+    <br/>
+
+    <div class="panel panel-default">
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>Naam</th>
+                <th>E-mailadres</th>
+                <th>Rol</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="table-user-list-body"></tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-success pull-right">
+        <span class="glyphicon glyphicon-plus-sign"></span> Toevoegen
+    </button>
+</div>

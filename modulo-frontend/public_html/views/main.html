@@ -8,19 +8,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" data-ng-click="navigate(null)">Modulo</a>
+            <a class="navbar-brand" href="#" data-ng-click="location.openPanel('')">Modulo</a>
         </div>
         <div id="navbar" class="navbar-collapse bs-js-navbar-collapse" data-ng-class="{collapse: isCollapsed || !user.isLoggedIn()}">
             <ul class="nav navbar-nav">
-                <li id="navbar-user-management" data-ng-class="{active: location.panel===location.Panel.USER_MANAGEMENT, hidden: !location.userCanOpen(location.Panel.USER_MANAGEMENT)}"><a href="#" data-ng-click="navigate(location.Panel.USER_MANAGEMENT)">Gebruikersbeheer</a></li>
-                <li id="navbar-grades-certificates" data-ng-class="{active: location.panel===location.Panel.GRADES_CERTIFICATES, hidden: !location.userCanOpen(location.Panel.GRADES_CERTIFICATES)}"><a href="#" data-ng-click="navigate(location.Panel.GRADES_CERTIFICATES)">Graden/opleidingen</a></li>
-                <li id="navbar-my-classes" data-ng-class="{active: location.panel===location.Panel.MY_CLASSES, hidden: !location.userCanOpen(location.Panel.MY_CLASSES)}"><a href="#" data-ng-click="navigate(location.Panel.MY_CLASSES)">Mijn klassen</a></li>
-                <li id="navbar-scores-management" data-ng-class="{active: location.panel===location.Panel.SCORES_MANAGEMENT, hidden: !location.userCanOpen(location.Panel.SCORES_MANAGEMENT)}"><a href="#" data-ng-click="navigate(location.Panel.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
-                <li id="navbar-student-progress" data-ng-class="{active: location.panel===location.Panel.STUDENT_PROGRESS, hidden: !location.userCanOpen(location.Panel.STUDENT_PROGRESS)}"><a href="#" data-ng-click="navigate(location.Panel.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
-                <li id="navbar-log-out" data-ng-class="{hidden: !user.isLoggedIn()}"><a href="#" data-ng-click="user.logOut();navigate(null);"><span class="glyphicon glyphicon-log-out"></span> Afmelden</a></li>
+                <li id="navbar-user-management" data-ng-class="{active: location.getRequestedPanel()===location.USER_MANAGEMENT, hidden: !location.userCanAccessPanel(location.USER_MANAGEMENT)}"><a href="" data-ng-click="location.openPanel(location.USER_MANAGEMENT)">Gebruikersbeheer</a></li>
+                <li id="navbar-grades-certificates" data-ng-class="{active: location.getRequestedPanel()===location.GRADES_CERTIFICATES, hidden: !location.userCanAccessPanel(location.GRADES_CERTIFICATES)}"><a href="" data-ng-click="location.openPanel(location.GRADES_CERTIFICATES)">Graden/opleidingen</a></li>
+                <li id="navbar-my-classes" data-ng-class="{active: location.getRequestedPanel()===location.MY_CLASSES, hidden: !location.userCanAccessPanel(location.MY_CLASSES)}"><a href="" data-ng-click="location.openPanel(location.MY_CLASSES)">Mijn klassen</a></li>
+                <li id="navbar-scores-management" data-ng-class="{active: location.getRequestedPanel()===location.SCORES_MANAGEMENT, hidden: !location.userCanAccessPanel(location.SCORES_MANAGEMENT)}"><a href="" data-ng-click="location.openPanel(location.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
+                <li id="navbar-student-progress" data-ng-class="{active: location.getRequestedPanel()===location.STUDENT_PROGRESS, hidden: !location.userCanAccessPanel(location.STUDENT_PROGRESS)}"><a href="" data-ng-click="location.openPanel(location.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
+                <li id="navbar-log-out" data-ng-class="{hidden: !user.isLoggedIn()}"><a href="#" data-ng-click="user.logOut();navigate('');"><span class="glyphicon glyphicon-log-out"></span> Afmelden</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container" data-ng-include="location.getPanel()"></div>
+<div class="container" data-ng-include="location.getUrlToPanelToOpen()"></div>

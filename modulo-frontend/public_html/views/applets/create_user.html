@@ -5,14 +5,13 @@
             <label for="input-email">E-mailadres</label>
             <input id="input-email" type="email" name="email" class="form-control" placeholder="naam@voorbeeld.com"
                    data-ng-model="formData.email" title="E-mailadres van de gebruiker" required>
-            <span class="help-block"></span>
+            <div class="alert alert-success" role="alert">...</div>
         </div>
 
         <div class="form-group">
             <label for="input-password">Wachtwoord</label>
             <input id="input-password" type="password" name="password" class="form-control"
                    data-ng-model="formData.password" title="Wachtwoord voor de gebruiker" required>
-            <span class="help-block"></span>
         </div>
 
         <div class="form-group">
@@ -24,10 +23,9 @@
                 <option value="STUDENT">Student</option>
                 <option value="PARENT">Ouder</option>
             </select>
-            <span class="help-block"></span>
         </div>
 
-        <button type="submit" class="btn btn-success btn-lg btn-block">
+        <button type="submit" class="btn btn-lg btn-block">
             <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken
         </button>
     </form>

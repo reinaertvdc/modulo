@@ -6,10 +6,10 @@ package be.lambdaware.entities;
 public class ObjectiveEntity {
     private Integer id;
     private String name;
-    private String custom_name;
+    private String customName;
 
-    private Integer grade;
-    private Integer course_topic;
+    private Integer gradeId;
+    private Integer courseTopicId;
 
     public Integer getId() {
         return id;
@@ -27,28 +27,28 @@ public class ObjectiveEntity {
         this.name = name;
     }
 
-    public String getCustom_name() {
-        return custom_name;
+    public String getCustomName() {
+        return customName;
     }
 
-    public void setCustom_name(String custom_name) {
-        this.custom_name = custom_name;
+    public void setCustomName(String customName) {
+        this.customName = customName;
     }
 
-    public Integer getGrade() {
-        return grade;
+    public Integer getGradeId() {
+        return gradeId;
     }
 
-    public void setGrade(Integer grade) {
-        this.grade = grade;
+    public void setGradeId(Integer gradeId) {
+        this.gradeId = gradeId;
     }
 
-    public Integer getCourse_topic() {
-        return course_topic;
+    public Integer getCourseTopicId() {
+        return courseTopicId;
     }
 
-    public void setCourse_topic(Integer course_topic) {
-        this.course_topic = course_topic;
+    public void setCourseTopicId(Integer courseTopicId) {
+        this.courseTopicId = courseTopicId;
     }
 
     @Override
@@ -56,9 +56,9 @@ public class ObjectiveEntity {
         return "ObjectiveEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", custom_name='" + custom_name + '\'' +
-                ", grade=" + grade +
-                ", course_topic=" + course_topic +
+                ", customName='" + customName + '\'' +
+                ", gradeId=" + gradeId +
+                ", courseTopicId=" + courseTopicId +
                 '}';
     }
 
@@ -71,9 +71,9 @@ public class ObjectiveEntity {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (custom_name != null ? !custom_name.equals(that.custom_name) : that.custom_name != null) return false;
-        if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
-        return course_topic != null ? course_topic.equals(that.course_topic) : that.course_topic == null;
+        if (customName != null ? !customName.equals(that.customName) : that.customName != null) return false;
+        if (gradeId != null ? !gradeId.equals(that.gradeId) : that.gradeId != null) return false;
+        return courseTopicId != null ? courseTopicId.equals(that.courseTopicId) : that.courseTopicId == null;
 
     }
 }

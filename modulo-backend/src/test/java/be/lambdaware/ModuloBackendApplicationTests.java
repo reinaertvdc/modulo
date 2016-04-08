@@ -762,11 +762,10 @@ public class ModuloBackendApplicationTests {
         //test getByUserId
         List<ParentInfoEntity> entities = new ArrayList<>();
         entities.add(parentInfo);
-
         Object[] converted = entities.toArray();
         Object[] arrayFromDatabase = parentInfoDAO.getByUserId(32).toArray();
-
         Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfoList matches parentInfoList from database - pass");
 
         // create parentInfo
         parentInfo = new ParentInfoEntity();
@@ -803,6 +802,7 @@ public class ModuloBackendApplicationTests {
     @Autowired
     private ObjectiveDAO objectiveDAO;
 
+    @Test
     public void testObjectiveDAO(){
         // test autowire
         Assert.assertNotNull(objectiveDAO);
@@ -811,29 +811,56 @@ public class ModuloBackendApplicationTests {
         // test get Objective 1
         ObjectiveEntity entity = new ObjectiveEntity();
         entity.setId(1);
-        entity.setGrade(1);
-        entity.setCourse_topic(1);
+        entity.setGradeId(1);
+        entity.setCourseTopicId(1);
         entity.setName("Kent Vakthema 1");
-        entity.setCustom_name(null);
         Assert.assertEquals(entity, objectiveDAO.get(1));
         Logger.getLogger("Test ObjectiveDAO").info("Expected objective with ID=1 matches objective from database - pass");
 
         // test get Objective 2
         entity = new ObjectiveEntity();
         entity.setId(2);
-        entity.setGrade(2);
-        entity.setCourse_topic(1);
+        entity.setGradeId(2);
+        entity.setCourseTopicId(1);
         entity.setName("Kent Vakthema 2");
-        entity.setCustom_name(null);
         Assert.assertEquals(entity, objectiveDAO.get(2));
         Logger.getLogger("Test ObjectiveDAO").info("Expected objective with ID=2 matches objective from database - pass");
 
+        //getByGradeId
+        List<ObjectiveEntity> entities = new ArrayList<>();
+        entities.add(entity);
+
+        Object[] converted = entities.toArray();
+        Object[] arrayFromDatabase = objectiveDAO.getByGradeId(2).toArray();
+        Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Logger.getLogger("Test ObjectivesDAO").info("Expected ObjectivesList matches ObjectivesList from database - pass");
+
+        //getByCourseTopicId
+        entities = new ArrayList<>();
+        entity = new ObjectiveEntity();
+        entity.setId(1);
+        entity.setGradeId(1);
+        entity.setCourseTopicId(1);
+        entity.setName("Kent Vakthema 1");
+        entities.add(entity);
+
+        entity = new ObjectiveEntity();
+        entity.setId(2);
+        entity.setGradeId(2);
+        entity.setCourseTopicId(1);
+        entity.setName("Kent Vakthema 2");
+        entities.add(entity);
+
+        converted = entities.toArray();
+        arrayFromDatabase = objectiveDAO.getByCourseTopicId(1).toArray();
+        Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Logger.getLogger("Test ObjectivesDAO").info("Expected ObjectivesList matches ObjectivesList from database - pass");
+
         // create course topic
         entity = new ObjectiveEntity();
-        entity.setGrade(1);
-        entity.setCourse_topic(2);
+        entity.setGradeId(1);
+        entity.setCourseTopicId(2);
         entity.setName("wiskunde");
-        entity.setCustom_name(null);
 
         int insertedId = objectiveDAO.create(entity);
         entity.setId(insertedId);
@@ -844,9 +871,9 @@ public class ModuloBackendApplicationTests {
 
         //Test update
         entity.setName("Update Test");
-        entity.setGrade(2);
-        entity.setCourse_topic(1);
-        entity.setCustom_name("taal");
+        entity.setGradeId(2);
+        entity.setCourseTopicId(1);
+        entity.setCustomName("taal");
         objectiveDAO.update(entity);
         ObjectiveEntity updatedEnity = objectiveDAO.get(entity.getId());
         Assert.assertEquals(entity,updatedEnity);

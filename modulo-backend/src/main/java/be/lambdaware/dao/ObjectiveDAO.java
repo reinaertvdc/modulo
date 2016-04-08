@@ -24,6 +24,10 @@ public interface ObjectiveDAO {
      */
     public ObjectiveEntity get(Integer id);
 
+    public List<ObjectiveEntity> getByGradeId(Integer gradeId);
+
+    public List<ObjectiveEntity> getByCourseTopicId(Integer courseTopicId);
+
     /**
      * Get a list of all the entities.
      * @return a list containing all entities.
@@ -41,7 +45,4 @@ public interface ObjectiveDAO {
      * @param entity the entity with the new values.
      */
     public void update(ObjectiveEntity entity);
-
-    public List<ObjectiveEntity> getAllByGrade(GradeEntity grade);
-    public List<ObjectiveEntity> getAllByCourseTopic(CourseTopicEntity courseTopic);
 }

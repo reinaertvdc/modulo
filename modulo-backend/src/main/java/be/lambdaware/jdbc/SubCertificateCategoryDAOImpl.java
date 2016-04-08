@@ -1,7 +1,8 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.SubCertificateCategoryDAO;
-import be.lambdaware.entities.SubCertificateCategorieEntity;
+import be.lambdaware.entities.SubCertificateCategoryEntity;
+import be.lambdaware.mappers.SubCertificateCategoryMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class SubCertificateCategoryDAOImpl extends AbstractDAOImpl implements SubCertificateCategoryDAO {
     @Override
-    public int create(SubCertificateCategorieEntity entity) {
+    public int create(SubCertificateCategoryEntity entity) {
         String SQL = "INSERT INTO `sub_certificate_categories` (`sub_certificate_id`, `name`, `description`, `custom_name`, `custom_description`, `enabled`) VALUES (?, ?, ?, ?, ?, ?)";
 
         //TODO process result our catch SQL Exception
@@ -39,39 +40,39 @@ public class SubCertificateCategoryDAOImpl extends AbstractDAOImpl implements Su
     }
 
     @Override
-    public SubCertificateCategorieEntity get(Integer id) {
+    public SubCertificateCategoryEntity get(Integer id) {
         String SQL = "SELECT * FROM `sub_certificate_categories` WHERE `id` = ?";
-        SubCertificateEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new SubCertificateMapper());
+        SubCertificateCategoryEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new SubCertificateCategoryMapper());
         //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<SubCertificateCategorieEntity> getAll() {
+    public List<SubCertificateCategoryEntity> getAll() {
         String SQL = "SELECT * FROM `sub_certificate_categories`";
-        List<SubCertificateEntity> entities = jdbcTemplate.query(SQL, new SubCertificateMapper());
+        List<SubCertificateCategoryEntity> entities = jdbcTemplate.query(SQL, new SubCertificateCategoryMapper());
         //TODO catch SQL Exception
         return entities;
     }
 
     @Override
     public void delete(Integer id) {
-        String SQL = "DELETE FROM `sub_certificates` WHERE `id` = ?";
+        String SQL = "DELETE FROM `sub_certificate_categories` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
         //TODO catch SQL Exception
     }
 
     @Override
-    public void update(SubCertificateCategorieEntity entity) {
-        String SQL = "UPDATE `sub_certificates` SET `certificate_id` = ?, `name` = ?, `description` = ?, `custom_name` = ?, `description` = ?, `enabled` = ? WHERE id = ?";
-        jdbcTemplate.update(SQL, entity.getCertificateId(), entity.getName(), entity.getDescription(), entity.getEnabled());
+    public void update(SubCertificateCategoryEntity entity) {
+        String SQL = "UPDATE `sub_certificate_categories` SET `sub_certificate_id` = ?, `name` = ?, `description` = ?, `custom_name` = ?, `description` = ?, `enabled` = ? WHERE id = ?";
+        jdbcTemplate.update(SQL, entity.getSubCertificateId(), entity.getName(), entity.getDescription(), entity.getEnabled());
         //TODO catch SQL Exception
     }
 
     @Override
-    public List<SubCertificateCategorieEntity> getAllBySubCertificate(Integer subCertificateId) {
-        String SQL = "SELECT * FROM `sub_certificate_categories` JOIN `sub_certificates` ON `sub_certificates`.`certificate_id` = `certificates`.`id` WHERE `certificate_id` = ?";
-        List<SubCertificateEntity> entities = jdbcTemplate.query(SQL, new SubCertificateMapper(), certificateId);
+    public List<SubCertificateCategoryEntity> getAllBySubCertificate(Integer subCertificateId) {
+        String SQL = "SELECT * FROM `sub_certificate_categories` JOIN `sub_certificates` ON `sub_certificate_categories`.`sub_certificate_id` = `sub_certificates`.`id` WHERE `sub_certificate_id` = ?";
+        List<SubCertificateCategoryEntity> entities = jdbcTemplate.query(SQL, new SubCertificateCategoryMapper(), subCertificateId);
         //TODO catch SQL Exception
         return entities;
     }

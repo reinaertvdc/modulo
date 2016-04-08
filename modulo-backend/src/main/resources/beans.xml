@@ -51,8 +51,13 @@
     <bean id="StudentPAVScoreDAOImpl" class="be.lambdaware.jdbc.StudentPAVScoreDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+<<<<<<< Updated upstream
     <!-- Definition for StudentBGVScoreDAOImpl bean -->
     <bean id="StudentBGVScoreDAOImpl" class="be.lambdaware.jdbc.StudentBGVScoreDAOImpl">
+	        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- Definition for SubCertificateCategoryDAOImpl bean -->
+    <bean id="SubCertificateCategoryDAOImpl" class="be.lambdaware.jdbc.SubCertificateCategoryDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
 </beans>

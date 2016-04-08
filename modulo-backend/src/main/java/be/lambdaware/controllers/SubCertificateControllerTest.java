@@ -56,10 +56,10 @@ public class SubCertificateControllerTest {
 
     @CrossOrigin
     @RequestMapping(value="/all", method = RequestMethod.GET)
-    public ResponseEntity<List<SubCertificateEntity>> getAllByCertificate(@RequestParam(value="certificateId") Integer certificate_id) {
+    public ResponseEntity<List<SubCertificateEntity>> getAllByCertificate(@RequestParam(value="certificateId") Integer certificateId) {
 
         // get all subcertificates belonging to this certificate
-        List<SubCertificateEntity> subs = subCertificateDAO.getAllByCertificate(certificate_id);
+        List<SubCertificateEntity> subs = subCertificateDAO.getAllByCertificate(certificateId);
 
         // return entity
         return new ResponseEntity<List<SubCertificateEntity>>(subs, HttpStatus.OK);

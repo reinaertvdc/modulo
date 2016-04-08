@@ -334,6 +334,26 @@ public class ModuloBackendApplicationTests {
     }
 
     @Autowired
+    GradeDAO gradeDAO;
+
+    @Test
+    public void testGradeDAO() {
+        Assert.assertNotNull(gradeDAO);
+        Logger.getLogger("Test GradeDAO").info("GradeDO injected successfully - pass");
+
+        GradeEntity entity = new GradeEntity();
+        entity.setId(1);
+        entity.setName("Graad 1");
+        Assert.assertEquals(entity, gradeDAO.get(1));
+
+        entity = new GradeEntity();
+        entity.setName("Test Graad");
+        int insertedId = gradeDAO.create(entity);
+        entity.setId(insertedId);
+        Assert.assertEquals(entity, gradeDAO.get(insertedId));
+    }
+
+    @Autowired
     ClassCertificateDAO classCertificateDAO;
 
     @Test
@@ -368,7 +388,7 @@ public class ModuloBackendApplicationTests {
         Assert.assertEquals(classCertificateEntity, insertedEntity);
         Logger.getLogger("Test ClassCertificateDAO").info("Inserted classCertificate matches desired classCertificate - pass");
 
-        
+
         // Test getByClass
         List<ClassCertificateEntity> entities = new ArrayList<>();
         classCertificateEntity = new ClassCertificateEntity(2,1);

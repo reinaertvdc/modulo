@@ -44,19 +44,19 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     <!-- Definition for ObjectiveDAOImpl bean -->
-    <bean id="ObjectiveDAOImpl" class="be.lambdaware.jdbc.ObjectiveDAOImpl">
+    <bean id="ObjectiveDAO" class="be.lambdaware.jdbc.ObjectiveDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <!-- Definition for StudentPAVScoreDAOImpl bean -->
-    <bean id="StudentPAVScoreDAOImpl" class="be.lambdaware.jdbc.StudentPAVScoreDAOImpl">
+    <bean id="StudentPAVScoreDAO" class="be.lambdaware.jdbc.StudentPAVScoreDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
     <!-- Definition for StudentBGVScoreDAOImpl bean -->
-    <bean id="StudentBGVScoreDAOImpl" class="be.lambdaware.jdbc.StudentBGVScoreDAOImpl">
+    <bean id="StudentBGVScoreDAO" class="be.lambdaware.jdbc.StudentBGVScoreDAOImpl">
 	        <property name="dataSource" ref="dataSource" />
     </bean>
     <!-- Definition for SubCertificateCategoryDAOImpl bean -->
-    <bean id="SubCertificateCategoryDAOImpl" class="be.lambdaware.jdbc.SubCertificateCategoryDAOImpl">
+    <bean id="SubCertificateCategoryDAO" class="be.lambdaware.jdbc.SubCertificateCategoryDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
 </beans>

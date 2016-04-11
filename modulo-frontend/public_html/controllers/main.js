@@ -32,6 +32,12 @@ app.controller('MainController', function ($scope, $location) {
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',
 
+        PARAM_EDIT_USER_ID: 'id',
+        PARAM_CREATE_NEW_USER: 'nieuw',
+
+        PARAM_LIST_COURSES: 'opleidingen',
+        PARAM_LIST_GRADES: 'graden',
+
         pathToPage: function (path) {
             return path.replace(/\//g, '');
         },
@@ -86,6 +92,7 @@ app.controller('MainController', function ($scope, $location) {
         },
 
         openPage: function (page) {
+            this.removeAllParameters();
             $location.path(page);
         },
 
@@ -95,6 +102,10 @@ app.controller('MainController', function ($scope, $location) {
 
         setParameter: function (name, value) {
             return $location.search(name, value);
+        },
+
+        removeAllParameters: function () {
+            $location.url($location.path());
         }
     };
 

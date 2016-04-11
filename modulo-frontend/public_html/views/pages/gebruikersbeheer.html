@@ -1,2 +1,1 @@
-<!-- TODO also link to edit_user -->
-<div data-ng-include="location.getParameter('id') ? 'views/panels/edit_user.html' : 'views/panels/list_users.html'"></div>
+<div data-ng-include="location.getParameter(location.PARAM_EDIT_USER_ID) || location.getParameter(location.PARAM_CREATE_NEW_USER) ? 'views/panels/edit_user.html' : 'views/panels/list_users.html'"></div>

@@ -32,8 +32,13 @@ app.controller('MainController', function ($scope, $location) {
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',
 
-        PARAM_EDIT_USER_ID: 'id',
+        PARAM_EDIT_USER_ID: 'gebruiker',
         PARAM_CREATE_NEW_USER: 'nieuw',
+
+        PARAM_MANAGE_CLASS_ID: 'klas',
+        PARAM_CREATE_NEW_CLASS: 'nieuw',
+        PARAM_MANAGE_COURSE_THEME_ID: 'vakthema',
+        PARAM_CREATE_NEW_COURSE_THEME: 'nieuw',
 
         pathToPage: function (path) {
             return path.replace(/\//g, '');

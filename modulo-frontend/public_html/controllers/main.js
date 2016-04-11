@@ -1,4 +1,5 @@
 app.controller('MainController', function ($scope, $location) {
+    // TODO finish controller
     $scope.user = {
         Type: Object.freeze({
             ADMIN: 'Administrator',
@@ -16,10 +17,9 @@ app.controller('MainController', function ($scope, $location) {
         logOut: function () {
             this.type = null;
         }
-        
-        
     };
 
+    // TODO remove when finished developing
     $scope.user.type = $scope.user.Type.ADMIN;
 
     $scope.location = {
@@ -32,35 +32,35 @@ app.controller('MainController', function ($scope, $location) {
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',
 
-        pathToPanel: function (path) {
+        pathToPage: function (path) {
             return path.replace(/\//g, '');
         },
 
-        getRequestedPanel: function () {
-            return this.pathToPanel($location.path());
+        getRequestedPage: function () {
+            return this.pathToPage($location.path());
         },
 
-        panelExists: function (panel) {
-            return panel === ''
-                || panel === this.USER_MANAGEMENT
-                || panel === this.GRADES_CERTIFICATES
-                || panel === this.MY_CLASSES
-                || panel === this.SCORES_MANAGEMENT
-                || panel === this.STUDENT_PROGRESS
+        pageExists: function (page) {
+            return page === ''
+                || page === this.USER_MANAGEMENT
+                || page === this.GRADES_CERTIFICATES
+                || page === this.MY_CLASSES
+                || page === this.SCORES_MANAGEMENT
+                || page === this.STUDENT_PROGRESS
         },
 
-        userCanAccessPanel: function (panel) {
-            if (panel === '') {
+        userCanAccessPage: function (page) {
+            if (page === '') {
                 return true;
-            } else if (panel === this.USER_MANAGEMENT) {
+            } else if (page === this.USER_MANAGEMENT) {
                 return $scope.user.type === $scope.user.Type.ADMIN;
-            } else if (panel === this.GRADES_CERTIFICATES) {
+            } else if (page === this.GRADES_CERTIFICATES) {
                 return $scope.user.type === $scope.user.Type.ADMIN;
-            } else if (panel === this.MY_CLASSES) {
+            } else if (page === this.MY_CLASSES) {
                 return $scope.user.type === $scope.user.Type.TEACHER;
-            } else if (panel === this.SCORES_MANAGEMENT) {
+            } else if (page === this.SCORES_MANAGEMENT) {
                 return $scope.user.type === $scope.user.Type.TEACHER;
-            } else if (panel === this.STUDENT_PROGRESS) {
+            } else if (page === this.STUDENT_PROGRESS) {
                 return $scope.user.type === $scope.user.Type.TEACHER
                     || $scope.user.type === $scope.user.Type.STUDENT
                     || $scope.user.type === $scope.user.Type.PARENT;
@@ -69,24 +69,32 @@ app.controller('MainController', function ($scope, $location) {
             return false;
         },
 
-        getPanelToOpen: function () {
-            if (!this.panelExists(this.getRequestedPanel())) {
+        getPageToOpen: function () {
+            if (!this.pageExists(this.getRequestedPage())) {
                 return this.NOT_FOUND;
-            } else if (!this.userCanAccessPanel(this.getRequestedPanel())) {
+            } else if (!this.userCanAccessPage(this.getRequestedPage())) {
                 return this.ACCESS_DENIED;
-            } else if (this.getRequestedPanel() === '') {
+            } else if (this.getRequestedPage() === '') {
                 return this.HOME;
             }
 
-            return this.getRequestedPanel();
+            return this.getRequestedPage();
         },
 
-        getUrlToPanelToOpen: function() {
-            return 'views/panels/' + this.getPanelToOpen() + '.html';
+        getUrlToPageToOpen: function() {
+            return 'views/pages/' + this.getPageToOpen() + '.html';
         },
 
-        openPanel: function (panel) {
-            $location.path(panel);
+        openPage: function (page) {
+            $location.path(page);
+        },
+
+        getParameter: function (name) {
+            return $location.search()[name];
+        },
+
+        setParameter: function (name, value) {
+            return $location.search(name, value);
         }
     };
 

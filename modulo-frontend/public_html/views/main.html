@@ -1,4 +1,5 @@
 <nav class="navbar navbar-default navbar-static-top" data-ng-controller="NavbarController">
+    <!-- TODO maybe add animation to navbar open and close -->
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar"
@@ -8,21 +9,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" data-ng-click="location.openPanel('')">Modulo</a>
+            <a class="navbar-brand" href="#" data-ng-click="location.openPage('')">Modulo</a>
         </div>
         <div id="navbar" class="navbar-collapse bs-js-navbar-collapse" data-ng-class="{collapse: isCollapsed || !user.isLoggedIn()}">
             <ul class="nav navbar-nav">
-                <li id="navbar-user-management" data-ng-class="{active: location.getRequestedPanel()===location.USER_MANAGEMENT, hidden: !location.userCanAccessPanel(location.USER_MANAGEMENT)}"><a href="" data-ng-click="location.openPanel(location.USER_MANAGEMENT)">Gebruikersbeheer</a></li>
-                <li id="navbar-grades-certificates" data-ng-class="{active: location.getRequestedPanel()===location.GRADES_CERTIFICATES, hidden: !location.userCanAccessPanel(location.GRADES_CERTIFICATES)}"><a href="" data-ng-click="location.openPanel(location.GRADES_CERTIFICATES)">Graden/opleidingen</a></li>
-                <li id="navbar-my-classes" data-ng-class="{active: location.getRequestedPanel()===location.MY_CLASSES, hidden: !location.userCanAccessPanel(location.MY_CLASSES)}"><a href="" data-ng-click="location.openPanel(location.MY_CLASSES)">Mijn klassen</a></li>
-                <li id="navbar-scores-management" data-ng-class="{active: location.getRequestedPanel()===location.SCORES_MANAGEMENT, hidden: !location.userCanAccessPanel(location.SCORES_MANAGEMENT)}"><a href="" data-ng-click="location.openPanel(location.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
-                <li id="navbar-student-progress" data-ng-class="{active: location.getRequestedPanel()===location.STUDENT_PROGRESS, hidden: !location.userCanAccessPanel(location.STUDENT_PROGRESS)}"><a href="" data-ng-click="location.openPanel(location.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
+                <li id="navbar-user-management" data-ng-class="{active: location.getRequestedPage()===location.USER_MANAGEMENT, hidden: !location.userCanAccessPage(location.USER_MANAGEMENT)}"><a href="" data-ng-click="location.openPage(location.USER_MANAGEMENT)">Gebruikersbeheer</a></li>
+                <li id="navbar-grades-certificates" data-ng-class="{active: location.getRequestedPage()===location.GRADES_CERTIFICATES, hidden: !location.userCanAccessPage(location.GRADES_CERTIFICATES)}"><a href="" data-ng-click="location.openPage(location.GRADES_CERTIFICATES)">Graden/opleidingen</a></li>
+                <li id="navbar-my-classes" data-ng-class="{active: location.getRequestedPage()===location.MY_CLASSES, hidden: !location.userCanAccessPage(location.MY_CLASSES)}"><a href="" data-ng-click="location.openPage(location.MY_CLASSES)">Mijn klassen</a></li>
+                <li id="navbar-scores-management" data-ng-class="{active: location.getRequestedPage()===location.SCORES_MANAGEMENT, hidden: !location.userCanAccessPage(location.SCORES_MANAGEMENT)}"><a href="" data-ng-click="location.openPage(location.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
+                <li id="navbar-student-progress" data-ng-class="{active: location.getRequestedPage()===location.STUDENT_PROGRESS, hidden: !location.userCanAccessPage(location.STUDENT_PROGRESS)}"><a href="" data-ng-click="location.openPage(location.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
                 <li id="navbar-log-out" data-ng-class="{hidden: !user.isLoggedIn()}"><a href="#" data-ng-click="user.logOut();navigate('');"><span class="glyphicon glyphicon-log-out"></span> Afmelden</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container" data-ng-include="location.getUrlToPanelToOpen()"></div>
+<div class="container" data-ng-include="location.getUrlToPageToOpen()"></div>
 
 <br/>

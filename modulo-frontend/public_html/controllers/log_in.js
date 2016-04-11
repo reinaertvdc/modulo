@@ -1,4 +1,5 @@
 app.controller('LogInController', function ($scope) {
+    // TODO finish controller
     $scope.formData = {};
 
     $scope.submitForm = function () {

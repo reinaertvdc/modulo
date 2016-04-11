@@ -1,4 +1,5 @@
 app.controller('CreateUserController', function ($scope, $http, $window) {
+    // TODO finish controller
     $scope.formData = {
         type: 'ADMIN'
     };

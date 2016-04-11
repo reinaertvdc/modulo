@@ -27,16 +27,13 @@ app.controller('MainController', function ($scope, $location) {
         NOT_FOUND: 'pagina_niet_gevonden',
         ACCESS_DENIED: 'toegang_geweigerd',
         USER_MANAGEMENT: 'gebruikersbeheer',
-        GRADES_CERTIFICATES: 'graden_opleidingen',
+        COURSES: 'opleidingen',
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',
 
         PARAM_EDIT_USER_ID: 'id',
         PARAM_CREATE_NEW_USER: 'nieuw',
-
-        PARAM_LIST_COURSES: 'opleidingen',
-        PARAM_LIST_GRADES: 'graden',
 
         pathToPage: function (path) {
             return path.replace(/\//g, '');
@@ -49,18 +46,21 @@ app.controller('MainController', function ($scope, $location) {
         pageExists: function (page) {
             return page === ''
                 || page === this.USER_MANAGEMENT
-                || page === this.GRADES_CERTIFICATES
+                || page === this.COURSES
                 || page === this.MY_CLASSES
                 || page === this.SCORES_MANAGEMENT
                 || page === this.STUDENT_PROGRESS
         },
 
         userCanAccessPage: function (page) {
+            // TODO remove when finished developing
+            return true;
+
             if (page === '') {
                 return true;
             } else if (page === this.USER_MANAGEMENT) {
                 return $scope.user.type === $scope.user.Type.ADMIN;
-            } else if (page === this.GRADES_CERTIFICATES) {
+            } else if (page === this.COURSES) {
                 return $scope.user.type === $scope.user.Type.ADMIN;
             } else if (page === this.MY_CLASSES) {
                 return $scope.user.type === $scope.user.Type.TEACHER;

@@ -1,5 +1,6 @@
 package be.lambdaware.controllers;
 
+import be.lambdaware.dao.UserDAO;
 import be.lambdaware.model.AccountModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,30 +19,21 @@ public class AccountModelTestController {
     private ApplicationContext context;
 
     @Autowired
-    private AccountModel accountModel;
+    private UserDAO userDAO;
 
-//    @Autowired
-//    private UserDAO userDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<AccountModel> create(@RequestBody AccountModel am) {
-
-//        am.setUserDAO(accountModel.getUserDAO());
-//
-//        //TODO process when dao.create fails with SQL Exception
-//        System.out.println("controller: " + am);
-//        am.createInDB();
-//        System.out.println("controller: " + am);
-//
-//        // return model
-//        return new ResponseEntity<AccountModel>(am, HttpStatus.OK);
-        return null;
+        am.setUserDAO(userDAO);
+        am.createInDB();
+        return new ResponseEntity<AccountModel>(am, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<AccountModel> get(@RequestParam(value="id") Integer userId ) {
+        AccountModel accountModel = new AccountModel(userDAO);
         accountModel.getFromDB(userId);
         return new ResponseEntity<AccountModel>(accountModel, HttpStatus.OK);
     }

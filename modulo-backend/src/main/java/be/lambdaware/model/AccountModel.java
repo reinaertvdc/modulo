@@ -2,23 +2,20 @@ package be.lambdaware.model;
 
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @author hendrik
  */
 
-@Component
-public  class AccountModel {
+public class AccountModel {
 
     protected UserEntity userEntity;
-
-    @Autowired
     protected UserDAO userDAO;
 
 
-//    public AccountModel(UserEntity userEntity) { this.userEntity = userEntity; }
+    public AccountModel() {}
+
+    public AccountModel(UserDAO userDAO) { this.userDAO = userDAO; }
 
     public boolean createInDB() {
         int entityID = userDAO.create(userEntity);
@@ -63,10 +60,6 @@ public  class AccountModel {
         this.userEntity = userEntity;
     }
 
-
-    public UserDAO getUserDAO() {
-        return userDAO;
-    }
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }

@@ -19,8 +19,6 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 
     @Override
     public int create(UserEntity entity) {
-        System.out.println("Impl: " + entity);
-
         String SQL = "INSERT INTO `users` (`email`, `password`, `type`) VALUES (?, ?, ?)";
 
         //TODO process result our catch SQL Exception

@@ -36,9 +36,9 @@ public class StudentModel extends AccountModel {
         if (!super.createInDB())
             return false;
 
+        studentInfoEntity.setUser(userEntity.getId());
         int id = studentInfoDAO.create(studentInfoEntity);
         studentInfoEntity.setId(id);
-        studentInfoEntity.setUser(userEntity.getId());
 
         return true;
     }

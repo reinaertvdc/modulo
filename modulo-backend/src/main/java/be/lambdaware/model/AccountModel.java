@@ -62,4 +62,17 @@ public abstract class AccountModel {
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AccountModel that = (AccountModel) o;
+
+        return userEntity.equals(that.userEntity);
+
+    }
+
+
 }

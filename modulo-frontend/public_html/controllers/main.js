@@ -16,6 +16,7 @@ app.controller('MainController', function ($scope, $location) {
         },
 
         logOut: function () {
+            backend.logOut();
             this.user = null;
         }
     };

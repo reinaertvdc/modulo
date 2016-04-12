@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.ClassCertificateDAO;
 import be.lambdaware.entities.ClassCertificateEntity;
 import be.lambdaware.mappers.ClassCertificateMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class ClassCertificateDAOImpl extends AbstractDAOImpl implements ClassCertificateDAO {
 
     @Override
-    public void create(ClassCertificateEntity entity) {
+    public void create(ClassCertificateEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `class_certificate` (`class_id`, `certificate_id`) VALUES (?, ?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -38,52 +38,47 @@ public class ClassCertificateDAOImpl extends AbstractDAOImpl implements ClassCer
     }
 
     @Override
-    public List<ClassCertificateEntity> getByClass(Integer classId) {
+    public List<ClassCertificateEntity> getByClass(Integer classId) throws DataAccessException {
 //        String SQL = "SELECT * " +
 //                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
 //                "WHERE `class_id` = ?";
         String SQL = "SELECT * FROM `class_certificate` WHERE `class_id` = ?";
         List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), classId);
-        //TODO catch SQL Exception
         return classCertificates;
     }
 
     @Override
-    public List<ClassCertificateEntity> getByCertificate(Integer certificateId) {
+    public List<ClassCertificateEntity> getByCertificate(Integer certificateId) throws DataAccessException {
 //        String SQL = "SELECT * " +
 //                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
 //                "WHERE `certificate_id` = ?";
         String SQL = "SELECT * FROM `class_certificate` WHERE `certificate_id` = ?";
         List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), certificateId);
-        //TODO catch SQL Exception
         return classCertificates;
     }
 
     @Override
-    public ClassCertificateEntity get(Integer classId, Integer certificateId) {
+    public ClassCertificateEntity get(Integer classId, Integer certificateId) throws DataAccessException {
 //        String SQL = "SELECT * " +
 //                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
 //                "WHERE `certificate_id` = ? AND `class_id` = ?";
         String SQL = "SELECT * FROM `class_certificate` WHERE `class_id` = ? AND `certificate_id` = ?";
         ClassCertificateEntity classCertificate = jdbcTemplate.queryForObject(SQL, new ClassCertificateMapper(), classId, certificateId);
-        //TODO catch SQL Exception
         return classCertificate;
     }
 
     @Override
-    public List<ClassCertificateEntity> getAll() {
+    public List<ClassCertificateEntity> getAll() throws DataAccessException {
 //        String SQL = "SELECT * " +
 //                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificate` ON `class_certificate`.`certificate_id` = `certificate`.`id`";
         String SQL = "SELECT * FROM `class_certificate`";
         List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper());
-        //TODO catch SQL Exception
         return classCertificates;
     }
 
     @Override
-    public void delete(Integer classId, Integer certificateId) {
+    public void delete(Integer classId, Integer certificateId) throws DataAccessException {
         String SQL = "DELETE FROM `class_certificate` WHERE `class_id` = ? AND `certificate_id` = ? ";
         jdbcTemplate.update(SQL, classId, certificateId);
-        //TODO catch SQL Exception
     }
 }

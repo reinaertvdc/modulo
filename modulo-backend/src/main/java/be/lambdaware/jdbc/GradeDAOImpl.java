@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.entities.GradeEntity;
 import be.lambdaware.mappers.GradeMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -17,10 +18,9 @@ import java.util.List;
  */
 public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
     @Override
-    public int create(GradeEntity entity) {
+    public int create(GradeEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `grades` (`name`) VALUES (?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -36,32 +36,28 @@ public class GradeDAOImpl extends AbstractDAOImpl implements GradeDAO {
     }
 
     @Override
-    public GradeEntity get(Integer id) {
+    public GradeEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `grades` WHERE `id` = ?";
         GradeEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new GradeMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<GradeEntity> getAll() {
+    public List<GradeEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `grades`";
         List<GradeEntity> grades = jdbcTemplate.query(SQL, new GradeMapper());
-        //TODO catch SQL Exception
         return grades;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `grades` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(GradeEntity entity) {
+    public void update(GradeEntity entity) throws DataAccessException {
         String SQL = "UPDATE `grades` SET name = ? WHERE id = ?";
         jdbcTemplate.update(SQL, entity.getName(), entity.getId());
-        //TODO catch SQL Exception
     }
 }

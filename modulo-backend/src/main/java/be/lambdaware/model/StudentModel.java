@@ -55,8 +55,8 @@ public class StudentModel extends AccountModel {
         return true;
     }
 
-    public boolean getFromDBByStudentId(Integer studentId) {
-        studentInfoEntity = studentInfoDAO.get(studentId);
+    public boolean getFromDBByStudentInfoId(Integer studentInfoId) {
+        studentInfoEntity = studentInfoDAO.get(studentInfoId);
         if (studentInfoEntity == null)
             return false;
 
@@ -92,5 +92,18 @@ public class StudentModel extends AccountModel {
                 "userEntity=" + userEntity +
                 "studentInfoEntity=" + studentInfoEntity +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        StudentModel that = (StudentModel) o;
+
+        return studentInfoEntity.equals(that.studentInfoEntity);
+
     }
 }

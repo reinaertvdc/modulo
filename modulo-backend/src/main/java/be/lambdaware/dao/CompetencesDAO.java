@@ -1,6 +1,7 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.CompetencesEntity;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -9,16 +10,16 @@ import java.util.List;
  */
 public interface CompetencesDAO {
 
-    public int create(CompetencesEntity entity);
+    public int create(CompetencesEntity entity) throws DataAccessException;
 
-    public CompetencesEntity get(Integer id);
+    public CompetencesEntity get(Integer id) throws DataAccessException;
 
-    public List<CompetencesEntity> getAll();
+    public List<CompetencesEntity> getAll() throws DataAccessException;
 
-    public List<CompetencesEntity> getBySubCertificateCategory(Integer id);
+    public List<CompetencesEntity> getBySubCertificateCategory(Integer id) throws DataAccessException;
 
-    public void delete(Integer id);
+    public void delete(Integer id) throws DataAccessException;
 
-    public void update(CompetencesEntity entity);
+    public void update(CompetencesEntity entity) throws DataAccessException;
 
 }

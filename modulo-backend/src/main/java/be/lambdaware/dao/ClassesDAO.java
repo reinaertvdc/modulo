@@ -1,6 +1,7 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.ClassEntity;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -12,15 +13,15 @@ public interface ClassesDAO {
     // custom functions e.g.
     // public List<UserEntity> getUsersByCertificate();
 
-    int create(ClassEntity entity);
+    int create(ClassEntity entity) throws DataAccessException;
 
-    ClassEntity get(Integer id);
+    ClassEntity get(Integer id) throws DataAccessException;
 
-    void delete(Integer id);
+    void delete(Integer id) throws DataAccessException;
 
-    void update(ClassEntity entity);
+    void update(ClassEntity entity) throws DataAccessException;
 
-    List<ClassEntity> getAll();
+    List<ClassEntity> getAll() throws DataAccessException;
 
-    List<ClassEntity> getAllByTeacher(Integer teacherId);
+    List<ClassEntity> getAllByTeacher(Integer teacherId) throws DataAccessException;
 }

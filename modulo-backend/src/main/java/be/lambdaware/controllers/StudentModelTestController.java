@@ -32,7 +32,10 @@ public class StudentModelTestController {
     public ResponseEntity<StudentModel> create(@RequestBody StudentModel studentModel) {
         studentModel.setUserDAO(userDAO);
         studentModel.setStudentInfoDAO(studentInfoDAO);
-        studentModel.createInDB();
+        if (studentModel.getUserEntity().getId() == null)
+            studentModel.createInDB();
+        else
+            studentModel.updateInDB();
         return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
     }
 
@@ -41,8 +44,7 @@ public class StudentModelTestController {
     public ResponseEntity<StudentModel> get(@RequestParam(value="userID") Integer userId ) {
         StudentModel studentModel = new StudentModel(userDAO, studentInfoDAO);
         studentModel.getFromDB(userId);
-        //return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
-        return null;
+        return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
     }
 
     @CrossOrigin

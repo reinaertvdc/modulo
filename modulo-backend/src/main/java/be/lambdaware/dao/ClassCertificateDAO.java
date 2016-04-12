@@ -1,6 +1,8 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.ClassCertificateEntity;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface ClassCertificateDAO {
      * @param entity the entity to create.
      * @return the id of the newly created entity.
      */
-    public void create(ClassCertificateEntity entity);
+    public void create(ClassCertificateEntity entity) throws DataAccessException;
 
     /**
      * Get an entity, based on the classId
@@ -23,7 +25,7 @@ public interface ClassCertificateDAO {
      * @param classId the entity's classId.
      * @return a list containing the entities with classId
      */
-    public List<ClassCertificateEntity> getByClass(Integer classId);
+    public List<ClassCertificateEntity> getByClass(Integer classId) throws DataAccessException;
 
     /**
      * Get an entity, based on it's certificateId.
@@ -31,7 +33,7 @@ public interface ClassCertificateDAO {
      * @param certificateId the entity's certificateId.
      * @return a list containing the entities with certificateId.
      */
-    public List<ClassCertificateEntity> getByCertificate(Integer certificateId);
+    public List<ClassCertificateEntity> getByCertificate(Integer certificateId) throws DataAccessException;
 
     /**
      * Get an entity, based on it's id.
@@ -40,14 +42,14 @@ public interface ClassCertificateDAO {
      * @param certificateId the certificate id.
      * @return the entity.
      */
-    public ClassCertificateEntity get(Integer classId, Integer certificateId);
+    public ClassCertificateEntity get(Integer classId, Integer certificateId) throws DataAccessException;
 
     /**
      * Get a list of all the entities.
      *
      * @return a list containing all entities.
      */
-    public List<ClassCertificateEntity> getAll();
+    public List<ClassCertificateEntity> getAll() throws DataAccessException;
 
     /**
      * Delete a certain entity.
@@ -55,5 +57,5 @@ public interface ClassCertificateDAO {
      * @param classId the class id.
      * @param certificateId the certificate id.
      */
-    public void delete(Integer classId, Integer certificateId);
+    public void delete(Integer classId, Integer certificateId) throws DataAccessException;
 }

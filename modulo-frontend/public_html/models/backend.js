@@ -59,7 +59,19 @@ var backend = {
         return this.user !== null;
     },
 
-    getUser: function() {
-        return this.user;
+    getUserId: function() {
+        return this.isLoggedIn() ? this.user.id : undefined;
+    },
+
+    getUserName: function() {
+        return this.isLoggedIn() ? this.user.name : undefined;
+    },
+
+    getUserEmail: function() {
+        return this.isLoggedIn() ? this.user.email : undefined;
+    },
+
+    getUserDetails: function() {
+        return this.isLoggedIn() ? this.user.details : undefined;
     }
 };

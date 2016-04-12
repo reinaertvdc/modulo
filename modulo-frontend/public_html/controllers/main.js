@@ -1,26 +1,27 @@
 app.controller('MainController', function ($scope, $location) {
     // TODO finish controller
-    $scope.user = {
-        Type: Object.freeze({
-            ADMIN: 'Administrator',
-            TEACHER: 'Leerkracht',
-            STUDENT: 'Student',
-            PARENT: 'Ouder'
-        }),
-
-        type: null,
+    $scope.account = {
+        user: null,
+        
+        attemptLogin: function(email, password) {
+            if (backend.attemptLogin(email, password)) {
+                this.user = backend.getUser();
+                return true;
+            }
+            return false;
+        },
 
         isLoggedIn: function () {
-            return this.type !== null;
+            return this.user !== null;
         },
 
         logOut: function () {
-            this.type = null;
+            this.user = null;
         }
     };
 
     // TODO remove when finished developing
-    $scope.user.type = $scope.user.Type.ADMIN;
+    $scope.account.attemptLogin('hilde.beerten@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
@@ -58,23 +59,22 @@ app.controller('MainController', function ($scope, $location) {
         },
 
         userCanAccessPage: function (page) {
-            // TODO remove when finished developing
-            return true;
-
             if (page === '') {
                 return true;
+            } else if (!$scope.account.isLoggedIn()) {
+                return false;
             } else if (page === this.USER_MANAGEMENT) {
-                return $scope.user.type === $scope.user.Type.ADMIN;
+                return $scope.account.user.details.type === UserType.ADMIN;
             } else if (page === this.COURSES) {
-                return $scope.user.type === $scope.user.Type.ADMIN;
+                return $scope.account.user.details.type === UserType.ADMIN;
             } else if (page === this.MY_CLASSES) {
-                return $scope.user.type === $scope.user.Type.TEACHER;
+                return $scope.account.user.details.type === UserType.TEACHER;
             } else if (page === this.SCORES_MANAGEMENT) {
-                return $scope.user.type === $scope.user.Type.TEACHER;
+                return $scope.account.user.details.type === UserType.TEACHER;
             } else if (page === this.STUDENT_PROGRESS) {
-                return $scope.user.type === $scope.user.Type.TEACHER
-                    || $scope.user.type === $scope.user.Type.STUDENT
-                    || $scope.user.type === $scope.user.Type.PARENT;
+                return $scope.account.user.details.type === UserType.TEACHER
+                    || $scope.account.user.details.type === UserType.STUDENT
+                    || $scope.account.user.details.type === UserType.PARENT;
             }
 
             return false;

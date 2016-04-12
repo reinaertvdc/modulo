@@ -61,5 +61,13 @@ var backend = {
 
     getUser: function () {
         return this.isLoggedIn() ? new User(this.user.id, this.user.name, this.user.email, null, this.user.details) : null;
+    },
+
+    getUsers: function () {
+        if (this.isLoggedIn() && this.user.details.type === UserType.ADMIN) {
+            return this.users;
+        } else {
+            return [];
+        }
     }
 };

@@ -51,7 +51,6 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
         return holder.getKey().intValue();
     }
 
-
     @Override
     public StudentInfoEntity get(Integer id) {
         String SQL = "SELECT * FROM `student_info` WHERE `id` = ?";
@@ -62,10 +61,10 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
     }
 
     @Override
-    public List<StudentInfoEntity> getByUserId(Integer id) {
+    public StudentInfoEntity getByUserId(Integer id) {
         String SQL = "SELECT * FROM `student_info` WHERE `user_id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
-        List<StudentInfoEntity> entity = jdbcTemplate.query(SQL, new Object[]{id}, new StudentInfoMapper());
+        StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
         //TODO catch SQL Exception
         return entity;
     }

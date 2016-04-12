@@ -27,7 +27,7 @@ public interface StudentInfoDAO {
      * @param id the entity's id.
      * @return the entity.
      */
-    List<StudentInfoEntity> getByUserId(Integer id);
+    StudentInfoEntity getByUserId(Integer id);
 
     List<StudentInfoEntity> getByParentId(Integer id);
 

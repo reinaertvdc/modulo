@@ -7,11 +7,10 @@ import be.lambdaware.entities.UserEntity;
  * @author hendrik
  */
 
-public class AccountModel {
+public abstract class AccountModel {
 
     protected UserEntity userEntity;
     protected UserDAO userDAO;
-
 
     public AccountModel() {}
 

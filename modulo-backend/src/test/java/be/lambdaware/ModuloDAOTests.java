@@ -21,7 +21,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ModuloBackendApplication.class)
 @WebAppConfiguration
-public class ModuloBackendApplicationTests {
+public class ModuloDAOTests {
 
     @Autowired
     private CertificatesDAO certificatesDAO;
@@ -985,16 +985,14 @@ public class ModuloBackendApplicationTests {
         Assert.assertEquals(entity, studentInfoDAO.get(2));
         Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfo with ID=2 matches StudentInfo from database - pass");
 
-        //getByGradeId
+        //getByUserId
+        Assert.assertEquals(entity, studentInfoDAO.getByUserId(12));
+        Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfo by userId matches StudentInfo from database - pass");
+
+        //getByParentId
         List<StudentInfoEntity> entities = new ArrayList<>();
         entities.add(entity);
 
-        Object[] converted = entities.toArray();
-        Object[] arrayFromDatabase = studentInfoDAO.getByUserId(12).toArray();
-        Assert.assertArrayEquals(converted,arrayFromDatabase);
-        Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfoList by userId matches StudentInfoList from database - pass");
-
-        //getByParentId
         entity = new StudentInfoEntity();
         entity.setId(4);
         entity.setUser(14);
@@ -1014,9 +1012,9 @@ public class ModuloBackendApplicationTests {
         entity.setBankAccount("BE67-500-555-9685");
         entities.add(entity);
 
-        converted = entities.toArray();
-        arrayFromDatabase = studentInfoDAO.getByParentId(2).toArray();
-        Assert.assertArrayEquals(converted,arrayFromDatabase);
+        Object[] converted = entities.toArray();
+        Object[] arrayFromDatabase = studentInfoDAO.getByParentId(2).toArray();
+        Assert.assertArrayEquals(converted, arrayFromDatabase);
         Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfoList by parentId matches StudentInfoList from database - pass");
 
 

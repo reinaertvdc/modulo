@@ -7,7 +7,7 @@ var backend = {
         new User(3, new Name('André', 'Coenen'), 'andre.coenen@gmail.com', '1234', new TeacherDetails()),
         new User(4, new Name('Rembert', 'Henderix'), 'rembert.henderix@tihh.be', '1234', new TeacherDetails()),
         new User(5, new Name('Chana', 'Lauwers'), 'chana.lauwers@tihh.be', '1234', new TeacherDetails()),
-        
+
         new User(6, new Name('Aaron', 'Charlier'), 'aaroncharlier@hotmail.com', '1234', new StudentDetails()),
         new User(7, new Name('Ellen', 'Copermans'), 'ellencoper@hotmail.com', '1234', new StudentDetails()),
         new User(8, new Name('Frederik', 'De Ridder'), 'frederikderidder@hotmail.com', '1234', new StudentDetails()),
@@ -39,9 +39,9 @@ var backend = {
 
     user: null,
 
-    attemptLogin: function(email, password) {
+    attemptLogin: function (email, password) {
         var matchFound = false;
-        this.users.forEach(function(item) {
+        this.users.forEach(function (item) {
             if (item.email === email && item.password === password) {
                 matchFound = true;
                 backend.user = item;
@@ -51,27 +51,23 @@ var backend = {
         return matchFound;
     },
 
-    logOut: function() {
+    logOut: function () {
         this.user = null;
     },
 
-    isLoggedIn: function() {
+    isLoggedIn: function () {
         return this.user !== null;
     },
 
-    getUserId: function() {
-        return this.isLoggedIn() ? this.user.id : undefined;
+    getUser: function () {
+        return this.isLoggedIn() ? new User(this.user.id, this.user.name, this.user.email, null, this.user.details) : null;
     },
 
-    getUserName: function() {
-        return this.isLoggedIn() ? this.user.name : undefined;
-    },
-
-    getUserEmail: function() {
-        return this.isLoggedIn() ? this.user.email : undefined;
-    },
-
-    getUserDetails: function() {
-        return this.isLoggedIn() ? this.user.details : undefined;
+    getUsers: function () {
+        if (this.isLoggedIn() && this.user.details.type === UserType.ADMIN) {
+            return this.users;
+        } else {
+            return [];
+        }
     }
 };

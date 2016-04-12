@@ -3,7 +3,7 @@
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar" data-ng-click="isCollapsed = !isCollapsed" data-ng-class="{hidden: !user.isLoggedIn()}">
+                    aria-expanded="false" aria-controls="navbar" data-ng-click="isCollapsed = !isCollapsed" data-ng-class="{hidden: !account.isLoggedIn()}">
                 <span class="sr-only">Open of sluit navigatiemenu</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -11,14 +11,14 @@
             </button>
             <a class="navbar-brand" href="#" data-ng-click="location.openPage('')">Modulo</a>
         </div>
-        <div id="navbar" class="navbar-collapse bs-js-navbar-collapse" data-ng-class="{collapse: isCollapsed || !user.isLoggedIn()}">
+        <div id="navbar" class="navbar-collapse bs-js-navbar-collapse" data-ng-class="{collapse: isCollapsed || !account.isLoggedIn()}">
             <ul class="nav navbar-nav">
                 <li id="navbar-user-management" data-ng-class="{active: location.getRequestedPage()===location.USER_MANAGEMENT, hidden: !location.userCanAccessPage(location.USER_MANAGEMENT)}"><a href="" data-ng-click="location.openPage(location.USER_MANAGEMENT)">Gebruikersbeheer</a></li>
                 <li id="navbar-courses" data-ng-class="{active: location.getRequestedPage()===location.COURSES, hidden: !location.userCanAccessPage(location.COURSES)}"><a href="" data-ng-click="location.openPage(location.COURSES)">Opleidingen</a></li>
                 <li id="navbar-my-classes" data-ng-class="{active: location.getRequestedPage()===location.MY_CLASSES, hidden: !location.userCanAccessPage(location.MY_CLASSES)}"><a href="" data-ng-click="location.openPage(location.MY_CLASSES)">Mijn klassen</a></li>
                 <li id="navbar-scores-management" data-ng-class="{active: location.getRequestedPage()===location.SCORES_MANAGEMENT, hidden: !location.userCanAccessPage(location.SCORES_MANAGEMENT)}"><a href="" data-ng-click="location.openPage(location.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
                 <li id="navbar-student-progress" data-ng-class="{active: location.getRequestedPage()===location.STUDENT_PROGRESS, hidden: !location.userCanAccessPage(location.STUDENT_PROGRESS)}"><a href="" data-ng-click="location.openPage(location.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
-                <li id="navbar-log-out" data-ng-class="{hidden: !user.isLoggedIn()}"><a href="#" data-ng-click="user.logOut();navigate('');"><span class="glyphicon glyphicon-log-out"></span> Afmelden</a></li>
+                <li id="navbar-log-out" data-ng-class="{hidden: !account.isLoggedIn()}"><a href="#" data-ng-click="account.logOut();navigate('');"><span class="glyphicon glyphicon-log-out"></span> Afmelden</a></li>
             </ul>
         </div>
     </div>

@@ -1,8 +1,7 @@
 package be.lambdaware.dao;
 
-import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.StudentClassEntity;
-import be.lambdaware.entities.StudentInfoEntity;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -12,12 +11,12 @@ import java.util.List;
 public interface StudentClassDAO {
 
 
-    public void create(StudentClassEntity entity);
+    public void create(StudentClassEntity entity) throws DataAccessException;
 
-    public StudentClassEntity get(Integer studentInfoId, Integer classId);
+    public StudentClassEntity get(Integer studentInfoId, Integer classId) throws DataAccessException;
 
-    public List<StudentClassEntity> getAll();
+    public List<StudentClassEntity> getAll() throws DataAccessException;
 
-    public void delete(Integer studentInfoId, Integer classId);
+    public void delete(Integer studentInfoId, Integer classId) throws DataAccessException;
 
 }

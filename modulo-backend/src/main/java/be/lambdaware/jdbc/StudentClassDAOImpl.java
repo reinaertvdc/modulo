@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.StudentClassDAO;
 import be.lambdaware.entities.StudentClassEntity;
 import be.lambdaware.mappers.StudentClassMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClassDAO {
 
     @Override
-    public void create(StudentClassEntity entity) {
+    public void create(StudentClassEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `student_class` (`student_info_id`, `class_id`) VALUES (?,?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -36,26 +36,23 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
     }
 
     @Override
-    public StudentClassEntity get(Integer studentInfoId, Integer classEntityId) {
+    public StudentClassEntity get(Integer studentInfoId, Integer classEntityId) throws DataAccessException {
         String SQL = "SELECT * FROM `student_class` WHERE `student_info_id` = ? AND `class_id` = ?";
         StudentClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{studentInfoId, classEntityId}, new StudentClassMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<StudentClassEntity> getAll() {
+    public List<StudentClassEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `student_class`";
         List<StudentClassEntity> entities = jdbcTemplate.query(SQL, new StudentClassMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public void delete(Integer studentInfoId, Integer classEntityId) {
+    public void delete(Integer studentInfoId, Integer classEntityId) throws DataAccessException {
         String SQL = "DELETE FROM `student_class` WHERE `student_info_id` = ? AND class_id = ?";
         jdbcTemplate.update(SQL, studentInfoId, classEntityId);
-        //TODO catch SQL Exception
     }
 
 }

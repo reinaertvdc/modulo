@@ -4,6 +4,7 @@ import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.entities.StudentInfoEntity;
 import be.lambdaware.mappers.StudentInfoMapper;
 import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -19,10 +20,9 @@ import java.util.List;
 public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDAO{
 
     @Override
-    public int create(StudentInfoEntity entity) {
+    public int create(StudentInfoEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `student_info` (`user_id`, `parent_id`, `first_name`, `last_name`, `birthdate`, `birth_place`, `nationality`, `national_identification_number`, `street`, `house_number`, `postal_code`, `city`, `phone_parent`, `phone_cell`, `bank_account`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -52,43 +52,39 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
     }
 
     @Override
-    public StudentInfoEntity get(Integer id) {
+    public StudentInfoEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `student_info` WHERE `id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
         StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public StudentInfoEntity getByUserId(Integer id) {
+    public StudentInfoEntity getByUserId(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `student_info` WHERE `user_id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
         StudentInfoEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentInfoMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<StudentInfoEntity> getByParentId(Integer id) {
+    public List<StudentInfoEntity> getByParentId(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `student_info` WHERE `parent_id` = ?";
         Logger.getRootLogger().info("Performing query: "+SQL+" with ? = " + id);
         List<StudentInfoEntity> entity = jdbcTemplate.query(SQL, new Object[]{id}, new StudentInfoMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `student_info` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
     }
 
     @Override
-    public void update(StudentInfoEntity entity) {
+    public void update(StudentInfoEntity entity) throws DataAccessException {
         String SQL = "UPDATE `student_info` SET `user_id` = ?, `parent_id` = ?, `first_name` = ?, `last_name` =  ?, `birthdate` = ?, `birth_place` = ?, `nationality` = ?, `national_identification_number` =  ?, `street` = ?, `house_number` =  ?, `postal_code` = ?, `city` = ?, `phone_parent` = ?, `phone_cell` =  ?, `bank_account` = ? WHERE `id` = ?";
         jdbcTemplate.update(SQL, entity.getUser(), entity.getParent(), entity.getFirstName(), entity.getLastName(), entity.getBirthDate(),entity.getBirthPlace(), entity.getNationality(),entity.getNationalIdentificationNumber(), entity.getStreet(), entity.getHouseNumber(), entity.getPostalCode(), entity.getCity(), entity.getPhoneParent(), entity.getPhoneCell(), entity.getBankAccount(), entity.getId());
-        //TODO catch SQL Exception
     }
 
 

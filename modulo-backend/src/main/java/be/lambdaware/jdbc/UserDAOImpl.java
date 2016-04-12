@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.UserEntity;
 import be.lambdaware.mappers.UserMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 
     @Override
-    public int create(UserEntity entity) {
+    public int create(UserEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `users` (`email`, `password`, `type`) VALUES (?, ?, ?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -38,32 +38,28 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
     }
 
     @Override
-    public UserEntity get(Integer id) {
+    public UserEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `users` WHERE `id` = ?";
         UserEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new UserMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<UserEntity> getAll() {
+    public List<UserEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `users`";
         List<UserEntity> entities = jdbcTemplate.query(SQL, new UserMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `users` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(UserEntity entity) {
+    public void update(UserEntity entity) throws DataAccessException {
         String SQL = "UPDATE `users` SET email = ?, password = ?, type = ? where id = ?";
         jdbcTemplate.update(SQL, entity.getEmail(), entity.getPassword(), entity.getType(),entity.getId());
-        //TODO catch SQL Exception
     }
 }

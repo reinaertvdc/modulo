@@ -41,7 +41,8 @@ public class StudentControllerTest {
     public ResponseEntity<StudentModel> get(@RequestParam(value="userID") Integer userId ) {
         StudentModel studentModel = new StudentModel(userDAO, studentInfoDAO);
         studentModel.getFromDB(userId);
-        return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
+        //return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
+        return null;
     }
 
     @CrossOrigin

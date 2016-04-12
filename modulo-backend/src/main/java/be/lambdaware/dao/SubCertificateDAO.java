@@ -1,6 +1,7 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.SubCertificateEntity;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -17,36 +18,36 @@ public interface SubCertificateDAO {
      * @param entity the entity to create.
      * @return the id of the newly created entity.
      */
-    public int create(SubCertificateEntity entity);
+    public int create(SubCertificateEntity entity) throws DataAccessException;
 
     /**
      * Get an entity, based on it's id.
      * @param id the entity's id.
      * @return the entity.
      */
-    public SubCertificateEntity get(Integer id);
+    public SubCertificateEntity get(Integer id) throws DataAccessException;
 
     /**
      * Get a list of all the entities.
      * @return a list containing all entities.
      */
-    public List<SubCertificateEntity> getAll();
+    public List<SubCertificateEntity> getAll() throws DataAccessException;
 
     /**
      * Delete a certain entity.
      * @param id the entity's id
      */
-    public void delete(Integer id);
+    public void delete(Integer id) throws DataAccessException;
 
     /**
      * Updates an entity/
      * @param entity the entity with the new values.
      */
-    public void update(SubCertificateEntity entity);
+    public void update(SubCertificateEntity entity) throws DataAccessException;
 
     /**
      * Get a list of all the subcertificates for a given certificate.
      * @param certificateId the id of the certificate to look for.
      */
-    public List<SubCertificateEntity> getAllByCertificate(Integer certificateId);
+    public List<SubCertificateEntity> getAllByCertificate(Integer certificateId) throws DataAccessException;
 }

@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.CertificatesDAO;
 import be.lambdaware.entities.CertificatesEntity;
 import be.lambdaware.mappers.CertificatesMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class CertificatesDAOImpl extends AbstractDAOImpl implements CertificatesDAO {
 
     @Override
-    public int create(CertificatesEntity entity) {
+    public int create(CertificatesEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `certificates` (`name`, `enabled`) VALUES (?,?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -37,32 +37,28 @@ public class CertificatesDAOImpl extends AbstractDAOImpl implements Certificates
     }
 
     @Override
-    public CertificatesEntity get(Integer id) {
+    public CertificatesEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `certificates` WHERE `id` = ?";
         CertificatesEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CertificatesMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<CertificatesEntity> getAll() {
+    public List<CertificatesEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `certificates`";
         List<CertificatesEntity> entities = jdbcTemplate.query(SQL, new CertificatesMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `certificates` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(CertificatesEntity entity) {
+    public void update(CertificatesEntity entity) throws DataAccessException {
         String SQL = "UPDATE `certificates` SET `name` = ?, `enabled` =? WHERE `id` = ?";
         jdbcTemplate.update(SQL, entity.getName(), entity.getEnabled(),entity.getId());
-        //TODO catch SQL Exception
     }
 }

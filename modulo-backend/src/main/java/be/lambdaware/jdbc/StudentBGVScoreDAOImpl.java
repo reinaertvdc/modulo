@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.StudentBGVScoreDAO;
 import be.lambdaware.entities.StudentBGVScoreEntity;
 import be.lambdaware.mappers.StudentBGVScoreMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBGVScoreDAO {
 
     @Override
-    public int create(StudentBGVScoreEntity entity) {
+    public int create(StudentBGVScoreEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `student_bgv_score` (`student_id`, `competence_id`, `score`, `graded_date`, `remarks`) VALUES (?, ?, ?, ?, ?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -40,32 +40,28 @@ public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBG
     }
 
     @Override
-    public StudentBGVScoreEntity get(Integer id) {
+    public StudentBGVScoreEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `student_bgv_score` WHERE `id` = ?";
         StudentBGVScoreEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new StudentBGVScoreMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<StudentBGVScoreEntity> getAll() {
+    public List<StudentBGVScoreEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `student_bgv_score`";
         List<StudentBGVScoreEntity> entities = jdbcTemplate.query(SQL, new StudentBGVScoreMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `student_bgv_score` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(StudentBGVScoreEntity entity) {
+    public void update(StudentBGVScoreEntity entity) throws DataAccessException {
         String SQL = "UPDATE `student_bgv_score` SET `student_id` = ?, `competence_id` = ?, `score` = ?, `graded_date` =  ?, `remarks` = ? WHERE id = ?";
         jdbcTemplate.update(SQL, entity.getStudentId(), entity.getCompetenceId(), entity.getScore(), entity.getGradedDate(), entity.getRemarks(),entity.getId());
-        //TODO catch SQL Exception
     }
 }

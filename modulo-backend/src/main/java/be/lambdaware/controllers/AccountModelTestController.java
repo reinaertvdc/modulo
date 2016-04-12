@@ -1,15 +1,11 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificatesDAO;
-import be.lambdaware.entities.CertificatesEntity;
 import be.lambdaware.model.AccountModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Vincent on 12/04/16.
@@ -21,33 +17,32 @@ public class AccountModelTestController {
     @Autowired
     private ApplicationContext context;
 
+    @Autowired
+    private AccountModel accountModel;
+
+//    @Autowired
+//    private UserDAO userDAO;
+
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<AccountModel> create(@RequestBody AccountModel accountModel) {
+    public ResponseEntity<AccountModel> create(@RequestBody AccountModel am) {
 
-        //TODO process when dao.create fails with SQL Exception
-
-//        accountModel.createInDB();
-
-        System.out.println(accountModel);
-
-
-        // return model
-        return new ResponseEntity<AccountModel>(accountModel, HttpStatus.OK);
+//        am.setUserDAO(accountModel.getUserDAO());
+//
+//        //TODO process when dao.create fails with SQL Exception
+//        System.out.println("controller: " + am);
+//        am.createInDB();
+//        System.out.println("controller: " + am);
+//
+//        // return model
+//        return new ResponseEntity<AccountModel>(am, HttpStatus.OK);
+        return null;
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<AccountModel> get(@RequestParam(value="id") Integer userId ) {
-
-        System.out.println(userId);
-
-        AccountModel accountModel = new AccountModel();
-
         accountModel.getFromDB(userId);
-
-        System.out.println(accountModel);
-
         return new ResponseEntity<AccountModel>(accountModel, HttpStatus.OK);
     }
 }

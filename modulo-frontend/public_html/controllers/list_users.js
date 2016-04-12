@@ -37,6 +37,7 @@ app.controller('ListUsersController', function ($scope, $compile) {
         }
     };
 
+    // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {
         $compile(USER_LIST_ELEMENT)($scope);
     };

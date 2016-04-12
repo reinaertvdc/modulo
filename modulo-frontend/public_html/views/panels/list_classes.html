@@ -1,4 +1,53 @@
 <div data-ng-controller="ListClassesController">
     <!-- TODO create page -->
     <h3>Mijn klassen</h3>
+
+        <div class="col-md-6">
+            <h2 class="sub-header">PAV</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>PAV 1</td>
+                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+                    </tr>
+                    <tr>
+                        <td>PAV 2</td>
+                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-success pull-right">
+                <span class="glyphicon glyphicon-plus-sign"></span> Toevoegen
+            </button>
+        </div>
+        <div class="col-md-6">
+            <h2 class="sub-header">BGV</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td>Metselaar 1</td>
+                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Metselaar 2</td>
+                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Metselaar 3</td>
+                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-success pull-right" data-ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_ID, ''); location.setParameter(location.PARAM_CREATE_NEW_CLASS, '')">
+                <span class="glyphicon glyphicon-plus-sign"></span> Toevoegen
+            </button>
+    </div>
 </div>

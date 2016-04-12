@@ -22,7 +22,7 @@ app.controller('MainController', function ($scope, $location) {
     };
 
     // TODO remove when finished developing
-    $scope.account.attemptLogin('hilde.beerten@tihh.be', '1234');
+    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
@@ -60,6 +60,9 @@ app.controller('MainController', function ($scope, $location) {
         },
 
         userCanAccessPage: function (page) {
+
+            return true;
+
             if (page === '') {
                 return true;
             } else if (!$scope.account.isLoggedIn()) {
@@ -107,6 +110,7 @@ app.controller('MainController', function ($scope, $location) {
         },
 
         setParameter: function (name, value) {
+            console.log(name + " " + value);
             return $location.search(name, value);
         },
 

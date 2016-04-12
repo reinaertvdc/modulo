@@ -1,6 +1,7 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.ParentInfoEntity;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -9,15 +10,15 @@ import java.util.List;
  */
 public interface ParentInfoDAO {
 
-    public int create(ParentInfoEntity entity);
+    public int create(ParentInfoEntity entity) throws DataAccessException;
 
-    public ParentInfoEntity get(Integer id);
+    public ParentInfoEntity get(Integer id) throws DataAccessException;
 
-    public List<ParentInfoEntity> getAll();
+    public List<ParentInfoEntity> getAll() throws DataAccessException;
 
-    public List<ParentInfoEntity> getByUserId(Integer id);
+    public List<ParentInfoEntity> getByUserId(Integer id) throws DataAccessException;
 
-    public void delete(Integer id);
+    public void delete(Integer id) throws DataAccessException;
 
-    public void update(ParentInfoEntity entity);
+    public void update(ParentInfoEntity entity) throws DataAccessException;
 }

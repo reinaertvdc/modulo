@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.ClassesDAO;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.mappers.ClassesMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
 
     @Override
-    public int create(ClassEntity entity) {
+    public int create(ClassEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `classes`(`teacher_id`, `name`, `type`) VALUES (?, ?, ?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -38,38 +38,34 @@ public class ClassesDAOImpl extends AbstractDAOImpl implements ClassesDAO {
     }
 
     @Override
-    public ClassEntity get(Integer id) {
+    public ClassEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id` WHERE `classes`.`id` = ?";
         ClassEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id},new ClassesMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<ClassEntity> getAll() {
+    public List<ClassEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id`";
         List<ClassEntity> entities = jdbcTemplate.query(SQL, new ClassesMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
-    public List<ClassEntity> getAllByTeacher(Integer teacherId) {
+    public List<ClassEntity> getAllByTeacher(Integer teacherId) throws DataAccessException {
         String SQL = "SELECT * FROM `classes` JOIN `users` ON `classes`.`teacher_id` = `users`.`id` WHERE `teacher_id` = ?";
         List<ClassEntity> entities = jdbcTemplate.query(SQL, new ClassesMapper(),teacherId);
         return entities;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `classes` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(ClassEntity entity) {
+    public void update(ClassEntity entity) throws DataAccessException {
         String SQL = "UPDATE `classes` SET `name` = ?,`type` = ?,`teacher_id` = ? WHERE `id` = ?";
         jdbcTemplate.update(SQL, entity.getName(),entity.getType(),entity.getTeacherId(),entity.getId());
-        //TODO catch SQL Exception
     }
 }

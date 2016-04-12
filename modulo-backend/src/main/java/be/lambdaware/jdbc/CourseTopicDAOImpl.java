@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.CourseTopicDAO;
 import be.lambdaware.entities.CourseTopicEntity;
 import be.lambdaware.mappers.CourseTopicMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -17,11 +18,10 @@ import java.util.List;
  */
 public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDAO {
 
-    public int create(CourseTopicEntity entity) {
+    public int create(CourseTopicEntity entity) throws DataAccessException {
 
         String SQL = "INSERT INTO `course_topics`(`name`) VALUES (?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -36,33 +36,29 @@ public class CourseTopicDAOImpl extends AbstractDAOImpl implements CourseTopicDA
     }
 
 
-    public CourseTopicEntity get(Integer id) {
+    public CourseTopicEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `course_topics` WHERE `id` = ?";
         CourseTopicEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CourseTopicMapper());
-        //TODO catch SQL Exception
 
         return entity;
     }
 
 
-    public List<CourseTopicEntity> getAll() {
+    public List<CourseTopicEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `course_topics`";
         List<CourseTopicEntity> entities = jdbcTemplate.query(SQL, new CourseTopicMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
 
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `course_topics` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
 
-    public void update(CourseTopicEntity entity) {
+    public void update(CourseTopicEntity entity) throws DataAccessException {
         String SQL = "UPDATE `course_topics` SET `name` = ? where id = ?";
         jdbcTemplate.update(SQL, entity.getName(), entity.getId());
-        //TODO catch SQL Exception
     }
 }

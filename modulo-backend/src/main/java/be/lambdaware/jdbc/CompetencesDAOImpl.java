@@ -3,6 +3,7 @@ package be.lambdaware.jdbc;
 import be.lambdaware.dao.CompetencesDAO;
 import be.lambdaware.entities.CompetencesEntity;
 import be.lambdaware.mappers.CompetencesMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -18,10 +19,9 @@ import java.util.List;
 public class CompetencesDAOImpl extends AbstractDAOImpl implements CompetencesDAO {
 
     @Override
-    public int create(CompetencesEntity entity) {
+    public int create(CompetencesEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `competences` (`sub_certificate_category_id`,`name`,`description`,`custom_name`,`custom_description`,`enabled`) VALUES (?,?,?,?,?,?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -41,40 +41,35 @@ public class CompetencesDAOImpl extends AbstractDAOImpl implements CompetencesDA
     }
 
     @Override
-    public CompetencesEntity get(Integer id) {
+    public CompetencesEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `competences` WHERE `id` = ?";
         CompetencesEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CompetencesMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<CompetencesEntity> getAll() {
+    public List<CompetencesEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `competences`";
         List<CompetencesEntity> entities = jdbcTemplate.query(SQL, new CompetencesMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public List<CompetencesEntity> getBySubCertificateCategory(Integer id) {
+    public List<CompetencesEntity> getBySubCertificateCategory(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `competences` WHERE `sub_certificate_category_id` = ?";
         List<CompetencesEntity> entities = jdbcTemplate.query(SQL, new Object[]{id},new CompetencesMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `competences` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(CompetencesEntity entity) {
+    public void update(CompetencesEntity entity) throws DataAccessException {
         String SQL = "UPDATE `competences` SET `sub_certificate_category_id` = ?, `name` = ?,`description` = ?,`custom_name` = ?,`custom_description` = ?,`enabled` = ? WHERE `id` = ?";
         jdbcTemplate.update(SQL, entity.getSubCertificateCategoryId(),entity.getName(), entity.getDescription(), entity.getCustomName(),entity.getCustomDescription(), entity.getEnabled(),entity.getId());
-        //TODO catch SQL Exception
     }
 }

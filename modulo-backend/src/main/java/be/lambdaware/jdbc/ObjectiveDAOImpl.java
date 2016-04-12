@@ -5,6 +5,7 @@ import be.lambdaware.entities.CourseTopicEntity;
 import be.lambdaware.entities.GradeEntity;
 import be.lambdaware.entities.ObjectiveEntity;
 import be.lambdaware.mappers.ObjectiveMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
@@ -19,10 +20,9 @@ import java.util.List;
  */
 public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
     @Override
-    public int create(ObjectiveEntity entity) {
+    public int create(ObjectiveEntity entity) throws DataAccessException  {
         String SQL = "INSERT INTO `objectives`(`grade_id`, `course_topic_id`, `name`, `custom_name`) VALUES (?,?,?,?)";
 
-        //TODO process result our catch SQL Exception
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -40,24 +40,22 @@ public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
     }
 
     @Override
-    public ObjectiveEntity get(Integer id) {
+    public ObjectiveEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `objectives` WHERE `id` = ?";
         ObjectiveEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new ObjectiveMapper());
-        //TODO catch SQL Exception
         return entity;
     }
 
     @Override
-    public List<ObjectiveEntity> getAll() {
+    public List<ObjectiveEntity> getAll() throws DataAccessException {
         //String SQL = "SELECT * FROM `objectives` JOIN `grades` ON `objectives`.`grade_id` = `grades`.`id` JOIN `course_topic` ON `objectives`.`course_topic_id` = `course_topic`.`id`";
         String SQL = "SELECT * FROM `objectives`";
         List<ObjectiveEntity> entities = jdbcTemplate.query(SQL, new ObjectiveMapper());
-        //TODO catch SQL Exception
         return entities;
     }
 
     @Override
-    public List<ObjectiveEntity> getByGradeId(Integer gradeId) {
+    public List<ObjectiveEntity> getByGradeId(Integer gradeId) throws DataAccessException {
         //String SQL = "SELECT * FROM `objtectives` JOIN `grade` ON `objtectives`.`grade_id` = `grade`.`id` WHERE `grade_id` = ?";
         String SQL = "SELECT * FROM `objectives` WHERE `grade_id` = ?";
         List<ObjectiveEntity> entities = jdbcTemplate.query(SQL, new Object[]{gradeId},new ObjectiveMapper());
@@ -65,7 +63,7 @@ public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
     }
 
     @Override
-    public List<ObjectiveEntity> getByCourseTopicId(Integer courseTopicId){
+    public List<ObjectiveEntity> getByCourseTopicId(Integer courseTopicId) throws DataAccessException{
         //String SQL = "SELECT * FROM `objtectives` JOIN `course_topic` ON `objtectives`.`course_topic_id` = `course_topic`.`id` WHERE `course_topic_id` = ?";
         String SQL = "SELECT * FROM `objectives` WHERE `course_topic_id` = ?";
         List<ObjectiveEntity> entities = jdbcTemplate.query(SQL, new Object[]{courseTopicId},new ObjectiveMapper());
@@ -73,16 +71,14 @@ public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `objectives` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);
-        //TODO catch SQL Exception
     }
 
     @Override
-    public void update(ObjectiveEntity entity) {
+    public void update(ObjectiveEntity entity) throws DataAccessException {
         String SQL = "UPDATE `objectives` SET `grade_id` = ?, `course_topic_id` = ?, `name` = ?, `custom_name` = ? where `id` = ?";
         jdbcTemplate.update(SQL, entity.getGradeId(), entity.getCourseTopicId(), entity.getName(), entity.getCustomName(), entity.getId());
-        //TODO catch SQL Exception
     }
 }

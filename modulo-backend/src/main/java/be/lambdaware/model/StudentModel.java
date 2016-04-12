@@ -69,10 +69,11 @@ public class StudentModel extends AccountModel {
 
     @Override
     public boolean deleteFromDB() {
+        studentInfoDAO.delete(studentInfoEntity.getId());
+
         if (!super.deleteFromDB())
             return false;
 
-        studentInfoDAO.delete(studentInfoEntity.getId());
         return true;
     }
 

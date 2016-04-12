@@ -32,9 +32,9 @@ function ParentDetails(firstName, lastName) {
 }
 
 function StudentDetails(firstName, lastName, parent, birthdate, birthPlace, nationality, nationalIdentificationNumber, street, houseNumber, postalCode, city, phoneParent, phoneCell, bankAccount) {
-    // TODO only one parent?
     this.firstName = firstName;
     this.lastName = lastName;
+    // TODO only one parent?
     // TODO not also the other way around?
     this.parent = parent;
     this.birthdate = birthdate;

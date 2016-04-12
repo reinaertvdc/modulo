@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user/student")
-public class StudentControllerTest {
+public class StudentModelTestController {
 
     @Autowired
     private ApplicationContext context;

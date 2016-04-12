@@ -52,10 +52,10 @@ public class ParentInfoDAOImpl extends AbstractDAOImpl implements ParentInfoDAO 
     }
 
     @Override
-    public List<ParentInfoEntity> getByUserId(Integer id) throws DataAccessException {
+    public ParentInfoEntity getByUserId(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `parent_info` WHERE `user_id` = ?";
-        List<ParentInfoEntity> parentInfoEntities = jdbcTemplate.query(SQL, new Object[]{id}, new ParentInfoMapper());
-        return parentInfoEntities;
+        ParentInfoEntity parentInfoEntity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new ParentInfoMapper());
+        return parentInfoEntity;
     }
 
     @Override

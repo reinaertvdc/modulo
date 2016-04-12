@@ -1,7 +1,9 @@
 package be.lambdaware.model;
 
+import be.lambdaware.dao.ParentInfoDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
+import be.lambdaware.entities.ParentInfoEntity;
 import be.lambdaware.entities.StudentInfoEntity;
 
 /**
@@ -84,6 +86,12 @@ public class StudentModel extends AccountModel {
 
         studentInfoDAO.update(studentInfoEntity);
         return true;
+    }
+
+    public ParentModel getParent(ParentInfoDAO parentInfoDAO) {
+        ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
+        parentModel.getFromDB(studentInfoEntity.getParent());
+        return parentModel;
     }
 
     @Override

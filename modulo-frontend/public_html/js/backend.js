@@ -113,5 +113,9 @@ var backend = {
         } else {
             return [];
         }
+    },
+    
+    getCertificates: function() {
+        
     }
 };

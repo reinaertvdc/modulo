@@ -1,11 +1,7 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassesDAO;
-import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.StudentClassDAO;
-import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.StudentClassEntity;
-import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -30,7 +26,7 @@ public class StudentClassTestController {
     @Autowired
     private StudentInfoDAO studentInfoDAO;
     @Autowired
-    private ClassesDAO classesDAO;
+    private ClassDAO classesDAO;
     */
 
 

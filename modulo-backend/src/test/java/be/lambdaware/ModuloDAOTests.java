@@ -23,45 +23,45 @@ import java.util.List;
 public class ModuloDAOTests {
 
     @Autowired
-    private CertificatesDAO certificatesDAO;
+    private CertificateDAO certificateDAO;
 
     @Test
     public void testCertificateDAO() {
         // test autowire
-        Assert.assertNotNull(certificatesDAO);
-        Logger.getLogger("Test CertificatesDAO").info("CertificatesDAO injected succesfully - pass");
+        Assert.assertNotNull(certificateDAO);
+        Logger.getLogger("Test CertificateDAO").info("CertificateDAO injected succesfully - pass");
 
         // test get certificate 1
-        CertificatesEntity certificatesEntity = new CertificatesEntity();
-        certificatesEntity.setId(1);
-        certificatesEntity.setName("Metselaar");
-        certificatesEntity.setEnabled(true);
-        Assert.assertEquals(certificatesEntity, certificatesDAO.get(1));
-        Logger.getLogger("Test CertificatesDAO").info("Expected certificate with ID=1 matches certificate from database - pass");
+        CertificateEntity certificateEntity = new CertificateEntity();
+        certificateEntity.setId(1);
+        certificateEntity.setName("Metselaar");
+        certificateEntity.setEnabled(true);
+        Assert.assertEquals(certificateEntity, certificateDAO.get(1));
+        Logger.getLogger("Test CertificateDAO").info("Expected certificate with ID=1 matches certificate from database - pass");
 
         // test get certificate 2
-        certificatesEntity = new CertificatesEntity();
-        certificatesEntity.setId(2);
-        certificatesEntity.setName("Elektricien");
-        certificatesEntity.setEnabled(true);
-        Assert.assertEquals(certificatesEntity, certificatesDAO.get(2));
-        Logger.getLogger("Test CertificatesDAO").info("Expected certificate with ID=2 matches certificate from database - pass");
+        certificateEntity = new CertificateEntity();
+        certificateEntity.setId(2);
+        certificateEntity.setName("Elektricien");
+        certificateEntity.setEnabled(true);
+        Assert.assertEquals(certificateEntity, certificateDAO.get(2));
+        Logger.getLogger("Test CertificateDAO").info("Expected certificate with ID=2 matches certificate from database - pass");
 
         // create certificate
-        certificatesEntity = new CertificatesEntity();
-        certificatesEntity.setName("Kassier");
-        certificatesEntity.setEnabled(true);
+        certificateEntity = new CertificateEntity();
+        certificateEntity.setName("Kassier");
+        certificateEntity.setEnabled(true);
 
-        int insertedId = certificatesDAO.create(certificatesEntity);
-        certificatesEntity.setId(insertedId);
-        CertificatesEntity insertedEntity = certificatesDAO.get(insertedId);
+        int insertedId = certificateDAO.create(certificateEntity);
+        certificateEntity.setId(insertedId);
+        CertificateEntity insertedEntity = certificateDAO.get(insertedId);
 
-        Assert.assertEquals(certificatesEntity,insertedEntity);
-        Logger.getLogger("Test CertificatesDAO").info("Inserted certificate matches our desired certificate - pass");
+        Assert.assertEquals(certificateEntity,insertedEntity);
+        Logger.getLogger("Test CertificateDAO").info("Inserted certificate matches our desired certificate - pass");
 
-        certificatesDAO.delete(insertedId);
+        certificateDAO.delete(insertedId);
         try {
-            insertedEntity = certificatesDAO.get(insertedId);
+            insertedEntity = certificateDAO.get(insertedId);
             Assert.fail();
         }
         catch (Exception e) {
@@ -70,13 +70,13 @@ public class ModuloDAOTests {
     }
 
     @Autowired
-    ClassesDAO classesDAO;
+    ClassDAO classDAO;
 
     @Test
     public void testClassesDAO() {
         // test autowire
-        Assert.assertNotNull(classesDAO);
-        Logger.getLogger("Test ClassesDAO").info("ClassesDAO injected succesfully - pass");
+        Assert.assertNotNull(classDAO);
+        Logger.getLogger("Test ClassDAO").info("ClassDAO injected succesfully - pass");
 
         ClassEntity entity = new ClassEntity();
         entity.setId(1);
@@ -84,30 +84,30 @@ public class ModuloDAOTests {
         entity.setName("Metselaar 1");
         entity.setType("BGV");
 
-        Assert.assertEquals(entity,classesDAO.get(1));
-        Logger.getLogger("Test ClassesDAO").info("Expected class with ID=1 matches class from database - pass");
+        Assert.assertEquals(entity, classDAO.get(1));
+        Logger.getLogger("Test ClassDAO").info("Expected class with ID=1 matches class from database - pass");
 
         entity = new ClassEntity();
         entity.setName("Test klas");
         entity.setTeacherId(22);
         entity.setType("PAV");
-        int insertedId = classesDAO.create(entity);
+        int insertedId = classDAO.create(entity);
         entity.setId(insertedId);
-        Assert.assertEquals(entity, classesDAO.get(insertedId));
-        Logger.getLogger("Test ClassesDAO").info("Inserted class matches our desired class - pass");
+        Assert.assertEquals(entity, classDAO.get(insertedId));
+        Logger.getLogger("Test ClassDAO").info("Inserted class matches our desired class - pass");
 
         entity.setName("Test Update Klas");
         entity.setType("BGV");
-        classesDAO.update(entity);
-        Assert.assertEquals(entity, classesDAO.get(insertedId));
-        Logger.getLogger("Test ClassesDAO").info("Updated class matches our desired class - pass");
+        classDAO.update(entity);
+        Assert.assertEquals(entity, classDAO.get(insertedId));
+        Logger.getLogger("Test ClassDAO").info("Updated class matches our desired class - pass");
 
-        classesDAO.delete(insertedId);
+        classDAO.delete(insertedId);
         try {
-            classesDAO.get(insertedId);
+            classDAO.get(insertedId);
             Assert.fail();;
         } catch(Exception e) {
-            Logger.getLogger("Test ClassesDAO").info("Inserted class was deleted successfully - pass");
+            Logger.getLogger("Test ClassDAO").info("Inserted class was deleted successfully - pass");
         }
 
         List<ClassEntity> entities = new ArrayList<>();
@@ -125,11 +125,11 @@ public class ModuloDAOTests {
         classEntity.setTeacherId(21);
         entities.add(classEntity);
 
-        Object [] fromDatabase = classesDAO.getAllByTeacher(21).toArray();
+        Object [] fromDatabase = classDAO.getAllByTeacher(21).toArray();
         Object [] objectArray = entities.toArray();
 
         Assert.assertArrayEquals(objectArray,fromDatabase);
-        Logger.getLogger("Test ClassesDAO").info("Get all classes by teacher id - pass");
+        Logger.getLogger("Test ClassDAO").info("Get all classes by teacher id - pass");
     }
 
     @Autowired
@@ -551,73 +551,73 @@ public class ModuloDAOTests {
 
 
     @Autowired
-    private CompetencesDAO competencesDAO;
+    private CompetenceDAO competenceDAO;
 
     @Test
     public void testCompetencesDAO() {
 
         // test autowire
-        Assert.assertNotNull(competencesDAO);
-        Logger.getLogger("Test CompetencesDAO").info("CompetencesDAO injected succesfully - pass");
+        Assert.assertNotNull(competenceDAO);
+        Logger.getLogger("Test CompetenceDAO").info("CompetenceDAO injected succesfully - pass");
 
         // test get competence 1
-        CompetencesEntity competence = new CompetencesEntity();
+        CompetenceEntity competence = new CompetenceEntity();
         competence.setId(1);
         competence.setSubCertificateCategoryId(2);
         competence.setName("Gereedschap opruimen");
 //        competence.setDescription("Leerling ruimt gereedschap op");
         competence.setEnabled(true);
-        Assert.assertEquals(competence, competencesDAO.get(1));
-        Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=1 matches competence from database - pass");
+        Assert.assertEquals(competence, competenceDAO.get(1));
+        Logger.getLogger("Test CompetenceDAO").info("Expected competence with ID=1 matches competence from database - pass");
 
         // test get competence 7
-        competence =  new CompetencesEntity();
+        competence =  new CompetenceEntity();
         competence.setId(7);
         competence.setSubCertificateCategoryId(3);
         competence.setName("Afwerk Competentie");
 //        competence.setDescription("Leerling ruimt werkt volledig af");
         competence.setEnabled(true);
-        Assert.assertEquals(competence, competencesDAO.get(7));
-        Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=7 matches competence from database - pass");
+        Assert.assertEquals(competence, competenceDAO.get(7));
+        Logger.getLogger("Test CompetenceDAO").info("Expected competence with ID=7 matches competence from database - pass");
 
         //test getBySubCertificateCategory
-        List<CompetencesEntity> entities = new ArrayList<>();
+        List<CompetenceEntity> entities = new ArrayList<>();
         entities.add(competence);
 
         Object[] converted = entities.toArray();
-        Object[] arrayFromDatabase = competencesDAO.getBySubCertificateCategory(3).toArray();
+        Object[] arrayFromDatabase = competenceDAO.getBySubCertificateCategory(3).toArray();
 
         Assert.assertArrayEquals(converted,arrayFromDatabase);
 
         // create competence
-        competence = new CompetencesEntity();
+        competence = new CompetenceEntity();
         competence.setSubCertificateCategoryId(1);
         competence.setName("Test Competentie");
 //        competence.setDescription("Leerling test");
         competence.setEnabled(true);
 
-        int insertedId = competencesDAO.create(competence);
+        int insertedId = competenceDAO.create(competence);
         competence.setId(insertedId);
-        CompetencesEntity insertedEntity = competencesDAO.get(insertedId);
+        CompetenceEntity insertedEntity = competenceDAO.get(insertedId);
 
         Assert.assertEquals(competence,insertedEntity);
-        Logger.getLogger("Test CompetencesDAO").info("Inserted competence matches our desired competence - pass");
+        Logger.getLogger("Test CompetenceDAO").info("Inserted competence matches our desired competence - pass");
 
         //Test update
         competence.setName("Update Test");
-        competencesDAO.update(competence);
-        CompetencesEntity updatedEnity = competencesDAO.get(competence.getId());
+        competenceDAO.update(competence);
+        CompetenceEntity updatedEnity = competenceDAO.get(competence.getId());
         Assert.assertEquals(competence,updatedEnity);
-        Logger.getLogger("Test CompetencesDAO").info("Updated competence matches our desired competence - pass");
+        Logger.getLogger("Test CompetenceDAO").info("Updated competence matches our desired competence - pass");
 
         //Test delete
-        competencesDAO.delete(insertedId);
+        competenceDAO.delete(insertedId);
         try {
-            insertedEntity = competencesDAO.get(insertedId);
+            insertedEntity = competenceDAO.get(insertedId);
             Assert.fail();
         }
         catch (Exception e) {
-            Logger.getLogger("Test CompetencesDAO").info("Inserted competence was deleted succesfully - pass");
+            Logger.getLogger("Test CompetenceDAO").info("Inserted competence was deleted succesfully - pass");
         }
 
     }
@@ -718,7 +718,7 @@ public class ModuloDAOTests {
         courseTopicDAO.update(entity);
         CourseTopicEntity updatedEnity = courseTopicDAO.get(entity.getId());
         Assert.assertEquals(entity,updatedEnity);
-        Logger.getLogger("Test CompetencesDAO").info("Updated competence matches our desired course topic - pass");
+        Logger.getLogger("Test CompetenceDAO").info("Updated competence matches our desired course topic - pass");
 
         courseTopicDAO.delete(insertedId);
         try {
@@ -887,41 +887,41 @@ public class ModuloDAOTests {
 
 
     @Autowired
-    private ClassTopicsDAO classTopicsDAO;
+    private ClassTopicDAO classTopicDAO;
 
     @Test
     public void testClassTopicsDAO() {
 
         // test autowire
-        Assert.assertNotNull(classTopicsDAO);
-        Logger.getLogger("Test ClassTopicsDAO").info("ClassTopicsDAO injected succesfully - pass");
+        Assert.assertNotNull(classTopicDAO);
+        Logger.getLogger("Test ClassTopicDAO").info("ClassTopicDAO injected succesfully - pass");
 
         // test get classTopic 1
-        ClassTopicsEntity classTopic = new ClassTopicsEntity();
+        ClassTopicEntity classTopic = new ClassTopicEntity();
         classTopic.setCourseTopicId(1);
         classTopic.setClassId(1);
-        Assert.assertEquals(classTopic, classTopicsDAO.get(1,1));
-        Logger.getLogger("Test ClassTopicsDAO").info("Expected classTopic with ID=1 matches classTopic from database - pass");
+        Assert.assertEquals(classTopic, classTopicDAO.get(1,1));
+        Logger.getLogger("Test ClassTopicDAO").info("Expected classTopic with ID=1 matches classTopic from database - pass");
 
         // create classTopic
-        classTopic = new ClassTopicsEntity();
+        classTopic = new ClassTopicEntity();
         classTopic.setCourseTopicId(2);
         classTopic.setClassId(2);
 
-        classTopicsDAO.create(classTopic);
-        ClassTopicsEntity insertedEntity = classTopicsDAO.get(2,2);
+        classTopicDAO.create(classTopic);
+        ClassTopicEntity insertedEntity = classTopicDAO.get(2,2);
 
         Assert.assertEquals(classTopic,insertedEntity);
-        Logger.getLogger("Test ClassTopicsDAO").info("Inserted classTopic matches our desired classTopic - pass");
+        Logger.getLogger("Test ClassTopicDAO").info("Inserted classTopic matches our desired classTopic - pass");
 
         //Test delete
-        classTopicsDAO.delete(2,2);
+        classTopicDAO.delete(2,2);
         try {
-            insertedEntity = classTopicsDAO.get(2,2);
+            insertedEntity = classTopicDAO.get(2,2);
             Assert.fail();
         }
         catch (Exception e) {
-            Logger.getLogger("Test ClassTopicsDAO").info("Inserted classTopic was deleted succesfully - pass");
+            Logger.getLogger("Test ClassTopicDAO").info("Inserted classTopic was deleted succesfully - pass");
         }
 
     }

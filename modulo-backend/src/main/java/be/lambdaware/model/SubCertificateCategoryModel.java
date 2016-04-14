@@ -1,9 +1,9 @@
 package be.lambdaware.model;
 
-import be.lambdaware.dao.CompetencesDAO;
+import be.lambdaware.dao.CompetenceDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
 import be.lambdaware.dao.SubCertificateDAO;
-import be.lambdaware.entities.CompetencesEntity;
+import be.lambdaware.entities.CompetenceEntity;
 import be.lambdaware.entities.SubCertificateCategoryEntity;
 import org.springframework.dao.DataAccessException;
 
@@ -77,11 +77,11 @@ public class SubCertificateCategoryModel {
     }
 
 
-    public ArrayList<CompetenceModel> getCompetences(CompetencesDAO competencesDAO) throws DataAccessException {
+    public ArrayList<CompetenceModel> getCompetences(CompetenceDAO competenceDAO) throws DataAccessException {
         ArrayList<CompetenceModel> competences = new ArrayList<CompetenceModel>();
 
-        for(CompetencesEntity entity : competencesDAO.getBySubCertificateCategory(subCertificateCategoryEntity.getId())) {
-            CompetenceModel competence = new CompetenceModel(competencesDAO);
+        for(CompetenceEntity entity : competenceDAO.getBySubCertificateCategory(subCertificateCategoryEntity.getId())) {
+            CompetenceModel competence = new CompetenceModel(competenceDAO);
             competence.getFromDB(entity.getId());
             competences.add(competence);
         }

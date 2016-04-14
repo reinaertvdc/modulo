@@ -1,6 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CompetencesDAO;
+import be.lambdaware.dao.CompetenceDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
 import be.lambdaware.model.CompetenceModel;
 import be.lambdaware.model.SubCertificateCategoryModel;
@@ -21,7 +21,7 @@ public class CompetenceModelTestController {
     private ApplicationContext context;
 
     @Autowired
-    private CompetencesDAO competencesDAO;
+    private CompetenceDAO competenceDAO;
     @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
 
@@ -29,7 +29,7 @@ public class CompetenceModelTestController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CompetenceModel> create(@RequestBody CompetenceModel competenceModel) {
-        competenceModel.setCompetencesDAO(competencesDAO);
+        competenceModel.setCompetenceDAO(competenceDAO);
         competenceModel.createInDB();
         return new ResponseEntity<CompetenceModel>(competenceModel, HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public class CompetenceModelTestController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<CompetenceModel> get(@RequestParam(value="id") Integer competenceId ) {
-        CompetenceModel competenceModel = new CompetenceModel(competencesDAO);
+        CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
         competenceModel.getFromDB(competenceId);
         return new ResponseEntity<CompetenceModel>(competenceModel, HttpStatus.OK);
     }
@@ -45,7 +45,7 @@ public class CompetenceModelTestController {
     @CrossOrigin
     @RequestMapping(value="/subcertificatecategory", method = RequestMethod.GET)
     public ResponseEntity<SubCertificateCategoryModel> getSubCertificateCategory(@RequestParam(value="id") Integer competenceId ) {
-        CompetenceModel competenceModel = new CompetenceModel(competencesDAO);
+        CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
         competenceModel.getFromDB(competenceId);
         SubCertificateCategoryModel subCertificateCategory = competenceModel.getSubCertificateCategory(subCertificateCategoryDAO);
         return new ResponseEntity<SubCertificateCategoryModel>(subCertificateCategory, HttpStatus.OK);

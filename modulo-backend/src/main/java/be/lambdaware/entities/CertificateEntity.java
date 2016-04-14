@@ -3,7 +3,7 @@ package be.lambdaware.entities;
 /**
  * Created by martijn on 07/04/16.
  */
-public class CertificatesEntity {
+public class CertificateEntity {
     private Integer id;
     private String name;
     private Boolean enabled;
@@ -34,7 +34,7 @@ public class CertificatesEntity {
 
     @Override
     public String toString() {
-        return "CertificatesEntity{" +
+        return "CertificateEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", enabled=" + enabled +
@@ -46,7 +46,7 @@ public class CertificatesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CertificatesEntity that = (CertificatesEntity) o;
+        CertificateEntity that = (CertificateEntity) o;
 
         if (enabled != that.enabled) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;

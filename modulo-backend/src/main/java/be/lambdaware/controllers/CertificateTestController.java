@@ -1,7 +1,7 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificatesDAO;
-import be.lambdaware.entities.CertificatesEntity;
+import be.lambdaware.dao.CertificateDAO;
+import be.lambdaware.entities.CertificateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -15,33 +15,33 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/certificate")
-public class CertificatesTestController {
+public class CertificateTestController {
 
     @Autowired
     private ApplicationContext context;
     @Autowired
-    private CertificatesDAO certificatesDAO;
+    private CertificateDAO certificateDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<CertificatesEntity> create(@RequestBody CertificatesEntity certificate) {
+    public ResponseEntity<CertificateEntity> create(@RequestBody CertificateEntity certificate) {
 
         //TODO process when dao.create fails with SQL Exception
 
         // create an entity using the DAO
-        int entityID = certificatesDAO.create(certificate);
+        int entityID = certificateDAO.create(certificate);
         // id gets assigned after creation
         certificate.setId(entityID);
         // return entity
-        return new ResponseEntity<CertificatesEntity>(certificate, HttpStatus.OK);
+        return new ResponseEntity<CertificateEntity>(certificate, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<CertificatesEntity>> get(@RequestParam(value="id") Integer certificateId ) {
+    public ResponseEntity<List<CertificateEntity>> get(@RequestParam(value="id") Integer certificateId ) {
 
-        List<CertificatesEntity> certificates = certificatesDAO.getAll();
+        List<CertificateEntity> certificates = certificateDAO.getAll();
 
-        return new ResponseEntity<List<CertificatesEntity>>(certificates, HttpStatus.OK);
+        return new ResponseEntity<List<CertificateEntity>>(certificates, HttpStatus.OK);
     }
 }

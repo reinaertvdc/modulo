@@ -1,6 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CompetencesDAO;
+import be.lambdaware.dao.CompetenceDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
 import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.model.CompetenceModel;
@@ -27,7 +27,7 @@ public class SubCertificateCategoryModelTestController {
     @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
     @Autowired
-    private CompetencesDAO competencesDAO;
+    private CompetenceDAO competenceDAO;
     @Autowired
     private SubCertificateDAO subCertificateDAO;
 
@@ -53,7 +53,7 @@ public class SubCertificateCategoryModelTestController {
     public ResponseEntity<ArrayList<CompetenceModel>> getCompetences(@RequestParam(value="id") Integer subCertificateCategoryId ) {
         SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
-        ArrayList<CompetenceModel> competences = subCertificateCategoryModel.getCompetences(competencesDAO);
+        ArrayList<CompetenceModel> competences = subCertificateCategoryModel.getCompetences(competenceDAO);
         return new ResponseEntity<ArrayList<CompetenceModel>>(competences, HttpStatus.OK);
     }
 

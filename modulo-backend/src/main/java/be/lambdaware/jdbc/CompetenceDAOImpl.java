@@ -1,8 +1,8 @@
 package be.lambdaware.jdbc;
 
-import be.lambdaware.dao.CompetencesDAO;
-import be.lambdaware.entities.CompetencesEntity;
-import be.lambdaware.mappers.CompetencesMapper;
+import be.lambdaware.dao.CompetenceDAO;
+import be.lambdaware.entities.CompetenceEntity;
+import be.lambdaware.mappers.CompetenceMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,10 +16,10 @@ import java.util.List;
 /**
  * Created by martijn on 08/04/16.
  */
-public class CompetencesDAOImpl extends AbstractDAOImpl implements CompetencesDAO {
+public class CompetenceDAOImpl extends AbstractDAOImpl implements CompetenceDAO {
 
     @Override
-    public int create(CompetencesEntity entity) throws DataAccessException {
+    public int create(CompetenceEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `competences` (`sub_certificate_category_id`,`name`,`custom_name`,`enabled`) VALUES (?,?,?,?)";
 
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -39,23 +39,23 @@ public class CompetencesDAOImpl extends AbstractDAOImpl implements CompetencesDA
     }
 
     @Override
-    public CompetencesEntity get(Integer id) throws DataAccessException {
+    public CompetenceEntity get(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `competences` WHERE `id` = ?";
-        CompetencesEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CompetencesMapper());
+        CompetenceEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{id}, new CompetenceMapper());
         return entity;
     }
 
     @Override
-    public List<CompetencesEntity> getAll() throws DataAccessException {
+    public List<CompetenceEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `competences`";
-        List<CompetencesEntity> entities = jdbcTemplate.query(SQL, new CompetencesMapper());
+        List<CompetenceEntity> entities = jdbcTemplate.query(SQL, new CompetenceMapper());
         return entities;
     }
 
     @Override
-    public List<CompetencesEntity> getBySubCertificateCategory(Integer id) throws DataAccessException {
+    public List<CompetenceEntity> getBySubCertificateCategory(Integer id) throws DataAccessException {
         String SQL = "SELECT * FROM `competences` WHERE `sub_certificate_category_id` = ?";
-        List<CompetencesEntity> entities = jdbcTemplate.query(SQL, new Object[]{id},new CompetencesMapper());
+        List<CompetenceEntity> entities = jdbcTemplate.query(SQL, new Object[]{id},new CompetenceMapper());
         return entities;
     }
 
@@ -66,7 +66,7 @@ public class CompetencesDAOImpl extends AbstractDAOImpl implements CompetencesDA
     }
 
     @Override
-    public void update(CompetencesEntity entity) throws DataAccessException {
+    public void update(CompetenceEntity entity) throws DataAccessException {
         String SQL = "UPDATE `competences` SET `sub_certificate_category_id` = ?, `name` = ?,`custom_name` = ?,`enabled` = ? WHERE `id` = ?";
         jdbcTemplate.update(SQL, entity.getSubCertificateCategoryId(),entity.getName(),  entity.getCustomName(), entity.getEnabled(),entity.getId());
     }

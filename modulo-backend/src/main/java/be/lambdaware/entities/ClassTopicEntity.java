@@ -3,7 +3,7 @@ package be.lambdaware.entities;
 /**
  * Created by jensv on 08-Apr-16.
  */
-public class ClassTopicsEntity {
+public class ClassTopicEntity {
     private Integer courseTopicId;
     private Integer classId;
 
@@ -25,7 +25,7 @@ public class ClassTopicsEntity {
 
     @Override
     public String toString() {
-        return "ClassTopicsEntity{" +
+        return "ClassTopicEntity{" +
                 "courseTopicId=" + courseTopicId +
                 ", classId=" + classId +
                 '}';
@@ -36,7 +36,7 @@ public class ClassTopicsEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ClassTopicsEntity that = (ClassTopicsEntity) o;
+        ClassTopicEntity that = (ClassTopicEntity) o;
 
         if (courseTopicId != null ? !courseTopicId.equals(that.courseTopicId) : that.courseTopicId != null)
             return false;

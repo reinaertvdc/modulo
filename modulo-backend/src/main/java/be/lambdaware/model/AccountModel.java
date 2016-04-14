@@ -2,6 +2,7 @@ package be.lambdaware.model;
 
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.UserEntity;
+import org.springframework.dao.DataAccessException;
 
 /**
  * @author hendrik
@@ -16,13 +17,13 @@ public abstract class AccountModel {
 
     public AccountModel(UserDAO userDAO) { this.userDAO = userDAO; }
 
-    public boolean createInDB() {
+    public boolean createInDB() throws DataAccessException {
         int entityID = userDAO.create(userEntity);
         userEntity.setId(entityID);
         return true;
     }
 
-    public boolean getFromDB(Integer id) {
+    public boolean getFromDB(Integer id) throws DataAccessException {
         userEntity = userDAO.get(id);
         if (userEntity != null)
             return true;
@@ -30,14 +31,14 @@ public abstract class AccountModel {
             return false;
     }
 
-    public boolean deleteFromDB() {
+    public boolean deleteFromDB() throws DataAccessException {
         if (userEntity == null)
             return false;
         userDAO.delete(userEntity.getId());
         return true;
     }
 
-    public boolean updateInDB() {
+    public boolean updateInDB() throws DataAccessException {
         if (userEntity == null)
             return false;
         userDAO.update(userEntity);

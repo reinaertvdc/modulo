@@ -1,11 +1,10 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassesDAO;
+import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +19,10 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    private ApplicationContext context;
-    @Autowired
     private UserDAO userDAO;
 
     @Autowired
-    private ClassesDAO classesDAO;
+    private ClassDAO classDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
@@ -34,7 +31,7 @@ public class TestController {
         //TODO process when dao.create fails with SQL Exception
 
         // create an entity using the DAO
-        int entityID = classesDAO.create(entity);
+        int entityID = classDAO.create(entity);
         // id gets assigned after creation
         entity.setId(entityID);
         // return entity
@@ -49,7 +46,7 @@ public class TestController {
         UserEntity teacher = userDAO.get(teacherId);
 
         // get all classes of said teacher
-        List<ClassEntity> classes = classesDAO.getAllByTeacher(teacher.getId());
+        List<ClassEntity> classes = classDAO.getAllByTeacher(teacher.getId());
 
         return new ResponseEntity<List<ClassEntity>>(classes, HttpStatus.OK);
     }

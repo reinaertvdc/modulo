@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by Vincent on 06/04/16.
  */
-public class ClassesMapper implements RowMapper<ClassEntity> {
+public class ClassMapper implements RowMapper<ClassEntity> {
 
 
 

@@ -1,11 +1,10 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificatesDAO;
+import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.SubCertificateDAO;
-import be.lambdaware.entities.CertificatesEntity;
+import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.SubCertificateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,9 @@ import java.util.List;
 public class SubCertificateControllerTest {
 
     @Autowired
-    private ApplicationContext context;
-    @Autowired
     private SubCertificateDAO subCertificateDAO;
     @Autowired
-    private CertificatesDAO certificatesDAO;
+    private CertificateDAO certificateDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
@@ -60,7 +57,7 @@ public class SubCertificateControllerTest {
     public ResponseEntity<List<SubCertificateEntity>> getAllByCertificate(@RequestParam(value="certificateId") Integer certificateId) {
 
         // get the certificate
-        CertificatesEntity certificate = certificatesDAO.get(certificateId);
+        CertificateEntity certificate = certificateDAO.get(certificateId);
 
         // get all subcertificates belonging to this certificate
         List<SubCertificateEntity> subs = subCertificateDAO.getAllByCertificate(certificateId);

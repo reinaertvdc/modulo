@@ -1,11 +1,12 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CompetencesDAO;
+import be.lambdaware.dao.CompetenceDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
+import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.model.CompetenceModel;
 import be.lambdaware.model.SubCertificateCategoryModel;
+import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,11 @@ import java.util.ArrayList;
 public class SubCertificateCategoryModelTestController {
 
     @Autowired
-    private ApplicationContext context;
-
-    @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
     @Autowired
-    private CompetencesDAO competencesDAO;
+    private CompetenceDAO competenceDAO;
+    @Autowired
+    private SubCertificateDAO subCertificateDAO;
 
 
     @CrossOrigin
@@ -49,7 +49,16 @@ public class SubCertificateCategoryModelTestController {
     public ResponseEntity<ArrayList<CompetenceModel>> getCompetences(@RequestParam(value="id") Integer subCertificateCategoryId ) {
         SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
-        ArrayList<CompetenceModel> competences = subCertificateCategoryModel.getCompetences(competencesDAO);
+        ArrayList<CompetenceModel> competences = subCertificateCategoryModel.getCompetences(competenceDAO);
         return new ResponseEntity<ArrayList<CompetenceModel>>(competences, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value="/subcertificate", method = RequestMethod.GET)
+    public ResponseEntity<SubCertificateModel> getSubCertificateCategory(@RequestParam(value="id") Integer subCertificateCategoryId ) {
+        SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
+        subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
+        SubCertificateModel subCertificate = subCertificateCategoryModel.getSubCertificate(subCertificateDAO);
+        return new ResponseEntity<SubCertificateModel>(subCertificate, HttpStatus.OK);
     }
 }

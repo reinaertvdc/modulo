@@ -1,13 +1,8 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassesDAO;
-import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.StudentClassDAO;
-import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.StudentClassEntity;
-import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +16,13 @@ import java.util.List;
 @RequestMapping("/student_class")
 public class StudentClassTestController {
 
-
-    @Autowired
-    private ApplicationContext context;
     @Autowired
     private StudentClassDAO studentClassDAO;
     /*
     @Autowired
     private StudentInfoDAO studentInfoDAO;
     @Autowired
-    private ClassesDAO classesDAO;
+    private ClassDAO classesDAO;
     */
 
 

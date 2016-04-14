@@ -3,7 +3,7 @@ package be.lambdaware.entities;
 /**
  * Created by martijn on 08/04/16.
  */
-public class CompetencesEntity {
+public class CompetenceEntity {
     private Integer id;
     private Integer subCertificateCategoryId;
     private String name;
@@ -56,7 +56,7 @@ public class CompetencesEntity {
 
     @Override
     public String toString() {
-        return "CompetencesEntity{" +
+        return "CompetenceEntity{" +
                 "id=" + id +
                 ", subCertificateCategoryId=" + subCertificateCategoryId +
                 ", name='" + name + '\'' +
@@ -70,7 +70,7 @@ public class CompetencesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CompetencesEntity that = (CompetencesEntity) o;
+        CompetenceEntity that = (CompetenceEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (subCertificateCategoryId != null ? !subCertificateCategoryId.equals(that.subCertificateCategoryId) : that.subCertificateCategoryId != null)

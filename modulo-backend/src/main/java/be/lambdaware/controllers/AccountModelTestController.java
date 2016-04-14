@@ -1,12 +1,7 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.UserDAO;
-import be.lambdaware.model.AccountModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Vincent on 12/04/16.
@@ -14,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/accountmodel")
 public class AccountModelTestController {
-//
-//    @Autowired
-//    private ApplicationContext context;
 //
 //    @Autowired
 //    private UserDAO userDAO;

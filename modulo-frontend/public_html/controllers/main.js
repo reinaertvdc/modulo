@@ -22,7 +22,7 @@ app.controller('MainController', function ($scope, $location) {
     };
 
     // TODO remove when finished developing
-    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
+    $scope.account.attemptLogin('hilde.beerten@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',

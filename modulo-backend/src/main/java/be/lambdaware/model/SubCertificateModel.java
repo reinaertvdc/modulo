@@ -58,8 +58,8 @@ public class SubCertificateModel {
         return true;
     }
 
-    public boolean getFromDB(Integer subCertificateCategoryId) throws DataAccessException {
-        subCertificateEntity = subCertificateDAO.get(subCertificateCategoryId);
+    public boolean getFromDB(Integer subCertificateId) throws DataAccessException {
+        subCertificateEntity = subCertificateDAO.get(subCertificateId);
         if (subCertificateEntity == null)
             return false;
         return true;

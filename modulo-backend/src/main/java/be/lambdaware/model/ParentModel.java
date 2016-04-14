@@ -5,6 +5,7 @@ import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ParentInfoEntity;
 import be.lambdaware.entities.StudentInfoEntity;
+import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class ParentModel extends AccountModel {
     }
 
     @Override
-    public boolean createInDB() {
+    public boolean createInDB() throws DataAccessException {
         if (!super.createInDB())
             return false;
 
@@ -47,7 +48,7 @@ public class ParentModel extends AccountModel {
     }
 
     @Override
-    public boolean getFromDB(Integer userId) {
+    public boolean getFromDB(Integer userId) throws DataAccessException {
         if (!super.getFromDB(userId))
             return false;
 
@@ -58,7 +59,7 @@ public class ParentModel extends AccountModel {
         return true;
     }
 
-    public boolean getFromDBByParentInfoId(Integer parentInfoId) {
+    public boolean getFromDBByParentInfoId(Integer parentInfoId) throws DataAccessException {
         parentInfoEntity = parentInfoDAO.get(parentInfoId);
         if (parentInfoEntity == null)
             return false;
@@ -71,7 +72,7 @@ public class ParentModel extends AccountModel {
     }
 
     @Override
-    public boolean deleteFromDB() {
+    public boolean deleteFromDB() throws DataAccessException {
         parentInfoDAO.delete(parentInfoEntity.getId());
 
         if (!super.deleteFromDB())
@@ -81,7 +82,7 @@ public class ParentModel extends AccountModel {
     }
 
     @Override
-    public boolean updateInDB() {
+    public boolean updateInDB() throws DataAccessException {
         if (!super.updateInDB())
             return false;
 
@@ -89,7 +90,7 @@ public class ParentModel extends AccountModel {
         return true;
     }
 
-    public ArrayList<StudentModel> getChildren(StudentInfoDAO studentInfoDAO) {
+    public ArrayList<StudentModel> getChildren(StudentInfoDAO studentInfoDAO) throws DataAccessException {
         ArrayList<StudentModel> children = new ArrayList<>();
 
         // lus over alle entiteiten die teruggekregen zijn

@@ -1,4 +1,51 @@
 <div data-ng-controller="ManageCourseTopicController">
     <!-- TODO create page -->
     <h3 ng-bind="panelCaption"></h3>
+
+    <form role="form" data-ng-submit="submitForm()">
+        <div class="form-group">
+            <label for="usr">Naam:</label>
+            <input type="text" class="form-control" id="usr">
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Beschrijving:</label>
+            <textarea class="form-control" rows="5" id="comment"></textarea>
+        </div>
+
+        <br/>
+        <br/>
+
+        <label>Aangeboden doelstelling:</label>
+        <div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Zoeken...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+            </div>
+        </div>
+
+        <div>
+            <table id="mytb" class="table table-hover table-condensed">
+                <tbody>
+                <tr>
+                    <td class="vcenter"><input type="checkbox" id="blahA" value="1"/></td>
+                    <td>Doelstelling 1</td>
+                </tr>
+                <tr>
+                    <td class="vcenter"><input type="checkbox" id="blahB" value="1"/></td>
+                    <td>Doelstelling 2</td>
+                </tr>
+                <tr>
+                    <td class="vcenter"><input type="checkbox" id="blahC" value="1"/></td>
+                    <td>Doelstelling 3</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-success btn-lg btn-block">
+            <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken
+        </button>
+    </form>
 </div>

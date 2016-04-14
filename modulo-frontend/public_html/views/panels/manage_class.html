@@ -1,4 +1,35 @@
 <div data-ng-controller="ManageClassController">
     <!-- TODO create page -->
     <h3 ng-bind="panelCaption"></h3>
+    <br/>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" data-ng-class="{active: currentTab === Tab.STUDENT}"><a href="" data-ng-click="switchTab(Tab.STUDENT)">Leerlingen</a></li>
+        <li role="presentation" data-ng-class="{active: currentTab === Tab.CLASS_TOPIC}"><a href="" data-ng-click="switchTab(Tab.CLASS_TOPIC)">Vakthema's</a></li>
+    </ul>
+
+    <h2 class="sub-header">Leerlingen</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <td>Doerustig Eric</td>
+                <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+            </tr>
+            <tr>
+                <td>Droz Vinny</td>
+                <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+            </tr>
+            <tr>
+                <td>Vanmunster Mich</td>
+                <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="btn btn-success pull-right">
+        <span class="glyphicon glyphicon-plus-sign"></span> Toevoegen
+    </button>
+
 </div>
+

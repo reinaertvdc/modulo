@@ -5,6 +5,7 @@ import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ParentInfoEntity;
 import be.lambdaware.entities.StudentInfoEntity;
+import org.springframework.dao.DataAccessException;
 
 /**
  * @author Vincent
@@ -34,7 +35,7 @@ public class StudentModel extends AccountModel {
     }
 
     @Override
-    public boolean createInDB() {
+    public boolean createInDB() throws DataAccessException {
         if (!super.createInDB())
             return false;
 
@@ -46,7 +47,7 @@ public class StudentModel extends AccountModel {
     }
 
     @Override
-    public boolean getFromDB(Integer userId) {
+    public boolean getFromDB(Integer userId) throws DataAccessException {
         if (!super.getFromDB(userId))
             return false;
 
@@ -57,7 +58,7 @@ public class StudentModel extends AccountModel {
         return true;
     }
 
-    public boolean getFromDBByStudentInfoId(Integer studentInfoId) {
+    public boolean getFromDBByStudentInfoId(Integer studentInfoId) throws DataAccessException {
         studentInfoEntity = studentInfoDAO.get(studentInfoId);
         if (studentInfoEntity == null)
             return false;
@@ -70,7 +71,7 @@ public class StudentModel extends AccountModel {
     }
 
     @Override
-    public boolean deleteFromDB() {
+    public boolean deleteFromDB() throws DataAccessException {
         studentInfoDAO.delete(studentInfoEntity.getId());
 
         if (!super.deleteFromDB())
@@ -80,7 +81,7 @@ public class StudentModel extends AccountModel {
     }
 
     @Override
-    public boolean updateInDB() {
+    public boolean updateInDB() throws DataAccessException {
         if (!super.updateInDB())
             return false;
 
@@ -88,7 +89,7 @@ public class StudentModel extends AccountModel {
         return true;
     }
 
-    public ParentModel getParent(ParentInfoDAO parentInfoDAO) {
+    public ParentModel getParent(ParentInfoDAO parentInfoDAO) throws DataAccessException {
         ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
         parentModel.getFromDB(studentInfoEntity.getParent());
         return parentModel;

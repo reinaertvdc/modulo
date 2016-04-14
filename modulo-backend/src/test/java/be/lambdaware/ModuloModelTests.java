@@ -90,5 +90,11 @@ public class ModuloModelTests {
             Logger.getLogger("Test StudentModel").info("Deleted StudentModel. Matches studentModel from database - pass");
         }
     }
+
+
+
+    public void TeacherModelTest() {
+        // TODO test TeacherModel
+    }
 }
 

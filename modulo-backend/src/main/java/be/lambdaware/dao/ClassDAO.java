@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Vincent on 06/04/16.
  */
-public interface ClassesDAO {
+public interface ClassDAO {
     // define functions that are not within AbstractDAO
     // custom functions e.g.
     // public List<UserEntity> getUsersByCertificate();

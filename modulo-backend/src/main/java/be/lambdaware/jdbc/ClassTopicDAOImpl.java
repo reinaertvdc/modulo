@@ -1,8 +1,8 @@
 package be.lambdaware.jdbc;
 
-import be.lambdaware.dao.ClassTopicsDAO;
-import be.lambdaware.entities.ClassTopicsEntity;
-import be.lambdaware.mappers.ClassTopicsMapper;
+import be.lambdaware.dao.ClassTopicDAO;
+import be.lambdaware.entities.ClassTopicEntity;
+import be.lambdaware.mappers.ClassTopicMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,10 +16,10 @@ import java.util.List;
 /**
  * Created by jensv on 08-Apr-16.
  */
-public class ClassTopicsDAOImpl extends AbstractDAOImpl implements ClassTopicsDAO {
+public class ClassTopicDAOImpl extends AbstractDAOImpl implements ClassTopicDAO {
 
     @Override
-    public void create(ClassTopicsEntity entity) throws DataAccessException {
+    public void create(ClassTopicEntity entity) throws DataAccessException {
         String SQL = "INSERT INTO `class_topics`(`course_topic_id`, `class_id`) VALUES (?, ?)";
 
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
@@ -36,16 +36,16 @@ public class ClassTopicsDAOImpl extends AbstractDAOImpl implements ClassTopicsDA
     }
 
     @Override
-    public ClassTopicsEntity get(Integer courseTopicId, Integer classId) throws DataAccessException {
+    public ClassTopicEntity get(Integer courseTopicId, Integer classId) throws DataAccessException {
         String SQL = "SELECT * FROM `class_topics` WHERE `course_topic_id` = ? AND `class_id` = ?";
-        ClassTopicsEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{courseTopicId, classId}, new ClassTopicsMapper());
+        ClassTopicEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{courseTopicId, classId}, new ClassTopicMapper());
         return entity;
     }
 
     @Override
-    public List<ClassTopicsEntity> getAll() throws DataAccessException {
+    public List<ClassTopicEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `class_topics`";
-        List<ClassTopicsEntity> entities = jdbcTemplate.query(SQL, new ClassTopicsMapper());
+        List<ClassTopicEntity> entities = jdbcTemplate.query(SQL, new ClassTopicMapper());
         return entities;
     }
 

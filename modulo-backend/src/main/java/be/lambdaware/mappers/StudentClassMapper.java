@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class StudentClassMapper implements RowMapper<StudentClassEntity> {
 
     //private StudentInfoMapper studentInfoMapper;
-    //private ClassesMapper classesMapper;
+    //private ClassMapper classesMapper;
 
     @Override
     public StudentClassEntity mapRow(ResultSet resultSet, int row) throws SQLException {

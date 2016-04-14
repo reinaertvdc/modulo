@@ -1,8 +1,8 @@
 package be.lambdaware.model;
 
-import be.lambdaware.dao.CompetencesDAO;
+import be.lambdaware.dao.CompetenceDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
-import be.lambdaware.entities.CompetencesEntity;
+import be.lambdaware.entities.CompetenceEntity;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -10,31 +10,31 @@ import org.springframework.dao.DataAccessException;
  */
 public class CompetenceModel {
 
-    private CompetencesEntity competencesEntity;
-    private CompetencesDAO competencesDAO;
+    private CompetenceEntity competenceEntity;
+    private CompetenceDAO competenceDAO;
 
     public CompetenceModel() {}
 
-    public CompetenceModel(CompetencesDAO competencesDAO) {
-        this.competencesDAO = competencesDAO;
+    public CompetenceModel(CompetenceDAO competenceDAO) {
+        this.competenceDAO = competenceDAO;
     }
 
-    public CompetencesEntity getCompetencesEntity() {
-        return competencesEntity;
+    public CompetenceEntity getCompetenceEntity() {
+        return competenceEntity;
     }
 
-    public void setCompetencesEntity(CompetencesEntity competencesEntity) {
-        this.competencesEntity = competencesEntity;
+    public void setCompetenceEntity(CompetenceEntity competenceEntity) {
+        this.competenceEntity = competenceEntity;
     }
 
-    public void setCompetencesDAO(CompetencesDAO competencesDAO) {
-        this.competencesDAO = competencesDAO;
+    public void setCompetenceDAO(CompetenceDAO competenceDAO) {
+        this.competenceDAO = competenceDAO;
     }
 
     @Override
     public String toString() {
         return "Competence{" +
-                "competencesEntity=" + competencesEntity +
+                "competenceEntity=" + competenceEntity +
                 '}';
     }
 
@@ -45,37 +45,37 @@ public class CompetenceModel {
 
         CompetenceModel that = (CompetenceModel) o;
 
-        return competencesEntity.equals(that.competencesEntity);
+        return competenceEntity.equals(that.competenceEntity);
     }
 
 
     public boolean createInDB() throws DataAccessException {
-        int id = competencesDAO.create(competencesEntity);
-        competencesEntity.setId(id);
+        int id = competenceDAO.create(competenceEntity);
+        competenceEntity.setId(id);
         return true;
     }
 
     public boolean getFromDB(Integer competenceId) throws DataAccessException {
-        competencesEntity = competencesDAO.get(competenceId);
-        if (competencesEntity == null)
+        competenceEntity = competenceDAO.get(competenceId);
+        if (competenceEntity == null)
             return false;
         return true;
     }
 
     public boolean deleteFromDB() throws DataAccessException {
-        competencesDAO.delete(competencesEntity.getId());
+        competenceDAO.delete(competenceEntity.getId());
         return true;
     }
 
     public boolean updateInDB() throws DataAccessException {
-        competencesDAO.update(competencesEntity);
+        competenceDAO.update(competenceEntity);
         return true;
     }
 
 
     public SubCertificateCategoryModel getSubCertificateCategory(SubCertificateCategoryDAO subCertificateCategoryDAO) throws DataAccessException {
         SubCertificateCategoryModel subCertificateCategory = new SubCertificateCategoryModel(subCertificateCategoryDAO);
-        subCertificateCategory.getFromDB(competencesEntity.getSubCertificateCategoryId());
+        subCertificateCategory.getFromDB(competenceEntity.getSubCertificateCategoryId());
         return subCertificateCategory;
     }
 }

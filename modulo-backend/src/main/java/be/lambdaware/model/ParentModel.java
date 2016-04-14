@@ -90,7 +90,7 @@ public class ParentModel extends AccountModel {
         return true;
     }
 
-    public ArrayList<StudentModel> getChildren(StudentInfoDAO studentInfoDAO) {
+    public ArrayList<StudentModel> getChildren(StudentInfoDAO studentInfoDAO) throws DataAccessException {
         ArrayList<StudentModel> children = new ArrayList<>();
 
         // lus over alle entiteiten die teruggekregen zijn

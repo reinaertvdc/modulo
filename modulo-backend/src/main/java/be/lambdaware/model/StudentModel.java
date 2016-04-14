@@ -89,7 +89,7 @@ public class StudentModel extends AccountModel {
         return true;
     }
 
-    public ParentModel getParent(ParentInfoDAO parentInfoDAO) {
+    public ParentModel getParent(ParentInfoDAO parentInfoDAO) throws DataAccessException {
         ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
         parentModel.getFromDB(studentInfoEntity.getParent());
         return parentModel;

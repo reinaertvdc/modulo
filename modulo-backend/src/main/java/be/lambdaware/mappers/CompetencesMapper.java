@@ -17,9 +17,7 @@ public class CompetencesMapper implements RowMapper<CompetencesEntity> {
         competence.setId(resultSet.getInt("id"));
         competence.setSubCertificateCategoryId(resultSet.getInt("sub_certificate_category_id"));
         competence.setName(resultSet.getString("name"));
-        competence.setDescription(resultSet.getString("description"));
         competence.setCustomName(resultSet.getString("custom_name"));
-        competence.setCustomDescription(resultSet.getString("custom_description"));
         competence.setEnabled(resultSet.getBoolean("enabled"));
         return competence;
     }

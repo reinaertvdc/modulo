@@ -122,43 +122,39 @@ CREATE TABLE `sub_certificates` (
   `id`                 INT          NOT NULL AUTO_INCREMENT,
   `certificate_id`     INT          NOT NULL,
   `name`               VARCHAR(255) NOT NULL,
-  `description`        VARCHAR(255) NOT NULL,
   `custom_name`        VARCHAR(255),
-  `custom_description` VARCHAR(255),
   `enabled`            TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`)
 );
 
-INSERT INTO `sub_certificates` VALUES (1, 1, 'Bekisting', 'De leerling leert bekisten', NULL, NULL, 1);
-INSERT INTO `sub_certificates` VALUES (2, 1, 'Fundering', 'De leerling leert funderen', NULL, NULL, 1);
-INSERT INTO `sub_certificates` VALUES (3, 1, 'Cement', 'De leerling leert cement', NULL, NULL, 1);
-INSERT INTO `sub_certificates` VALUES (4, 2, 'Bekabeling', 'De leerling leert bekabelen', NULL, NULL, 1);
-INSERT INTO `sub_certificates` VALUES (5, 2, 'Isolatie', 'De leerling leert isoleren', NULL, NULL, 1);
-INSERT INTO `sub_certificates` VALUES (6, 2, 'Belichting', 'De leerling leert belichten', NULL, NULL, 0);
+INSERT INTO `sub_certificates` VALUES (1, 1, 'Bekisting',  NULL, 1);
+INSERT INTO `sub_certificates` VALUES (2, 1, 'Fundering', NULL, 1);
+INSERT INTO `sub_certificates` VALUES (3, 1, 'Cement',  NULL, 1);
+INSERT INTO `sub_certificates` VALUES (4, 2, 'Bekabeling',  NULL, 1);
+INSERT INTO `sub_certificates` VALUES (5, 2, 'Isolatie',  NULL, 1);
+INSERT INTO `sub_certificates` VALUES (6, 2, 'Belichting', NULL, 0);
 
 CREATE TABLE `sub_certificate_categories` (
   `id`                 INT          NOT NULL AUTO_INCREMENT,
   `sub_certificate_id` INT          NOT NULL,
   `name`               VARCHAR(255) NOT NULL,
-  `description`        VARCHAR(255) NOT NULL,
   `custom_name`        VARCHAR(255),
-  `custom_description` VARCHAR(255),
   `enabled`            TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`sub_certificate_id`) REFERENCES `sub_certificates` (`id`)
 );
 
-INSERT INTO `sub_certificate_categories` VALUES (1, 1, 'Afwerking', 'Leerling kan afwerken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (2, 1, 'Ordelijk', 'Leerling kan ordelijk werken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (3, 2, 'Afwerking', 'Leerling kan afwerken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (4, 2, 'Ordelijk', 'Leerling kan ordelijk werken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (5, 3, 'Afwerking', 'Leerling kan afwerken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (6, 3, 'Ordelijk', 'Leerling kan ordelijk werken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (7, 4, 'Afwerking', 'Leerling kan afwerken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (8, 4, 'Ordelijk', 'Leerling kan ordelijk werken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (9, 5, 'Afwerking', 'Leerling kan afwerken', NULL, NULL, 1);
-INSERT INTO `sub_certificate_categories` VALUES (10, 5, 'Ordelijk', 'Leerling kan ordelijk werken', NULL, NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (1, 1, 'Afwerking', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (2, 1, 'Ordelijk', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (3, 2, 'Afwerking', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (4, 2, 'Ordelijk', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (5, 3, 'Afwerking', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (6, 3, 'Ordelijk', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (7, 4, 'Afwerking', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (8, 4, 'Ordelijk', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (9, 5, 'Afwerking', NULL, 1);
+INSERT INTO `sub_certificate_categories` VALUES (10, 5, 'Ordelijk', NULL, 1);
 
 CREATE TABLE `grades` (
   `id`   INT NOT NULL AUTO_INCREMENT,
@@ -200,24 +196,22 @@ CREATE TABLE `competences` (
   `id`                          INT          NOT NULL AUTO_INCREMENT,
   `sub_certificate_category_id` INT          NOT NULL,
   `name`                        VARCHAR(255) NOT NULL,
-  `description`                 VARCHAR(255) NOT NULL,
   `custom_name`                 VARCHAR(255),
-  `custom_description`          VARCHAR(255),
   `enabled`                     TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`sub_certificate_category_id`) REFERENCES `sub_certificate_categories` (`id`)
 );
 
-INSERT INTO `competences` VALUES (1, 2, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (2, 4, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (3, 6, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (4, 8, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (5, 10, 'Gereedschap opruimen', 'Leerling ruimt gereedschap op', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (6, 1, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (7, 3, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (8, 5, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (9, 7, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
-INSERT INTO `competences` VALUES (10, 9, 'Afwerk Competentie', 'Leerling ruimt werkt volledig af', NULL, NULL, 1);
+INSERT INTO `competences` VALUES (1, 2, 'Gereedschap opruimen', NULL, 1);
+INSERT INTO `competences` VALUES (2, 4, 'Gereedschap opruimen', NULL, 1);
+INSERT INTO `competences` VALUES (3, 6, 'Gereedschap opruimen', NULL, 1);
+INSERT INTO `competences` VALUES (4, 8, 'Gereedschap opruimen', NULL, 1);
+INSERT INTO `competences` VALUES (5, 10, 'Gereedschap opruimen', NULL, 1);
+INSERT INTO `competences` VALUES (6, 1, 'Afwerk Competentie', NULL, 1);
+INSERT INTO `competences` VALUES (7, 3, 'Afwerk Competentie', NULL, 1);
+INSERT INTO `competences` VALUES (8, 5, 'Afwerk Competentie', NULL, 1);
+INSERT INTO `competences` VALUES (9, 7, 'Afwerk Competentie', NULL, 1);
+INSERT INTO `competences` VALUES (10, 9, 'Afwerk Competentie', NULL, 1);
 
 CREATE TABLE `course_topics` (
   `id`   INT          NOT NULL AUTO_INCREMENT,

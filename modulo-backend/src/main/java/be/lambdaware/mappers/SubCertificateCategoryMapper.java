@@ -18,9 +18,7 @@ public class SubCertificateCategoryMapper implements RowMapper<SubCertificateCat
         subCertificateCategory.setId(resultSet.getInt("id"));
         subCertificateCategory.setSubCertificateId(resultSet.getInt("sub_certificate_id"));
         subCertificateCategory.setName(resultSet.getString("name"));
-        subCertificateCategory.setDescription(resultSet.getString("description"));
         subCertificateCategory.setCustomName(resultSet.getString("custom_name"));
-        subCertificateCategory.setCustomDescription(resultSet.getString("custom_description"));
         subCertificateCategory.setEnabled(resultSet.getBoolean("enabled"));
         return subCertificateCategory;
     }

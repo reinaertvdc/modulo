@@ -5,7 +5,6 @@ import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.model.CertificateModel;
 import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/certificatemodel")
 public class CertificateModelTestController {
-
-    @Autowired
-    private ApplicationContext context;
 
     @Autowired
     private CertificateDAO certificateDAO;

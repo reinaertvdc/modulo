@@ -3,7 +3,6 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.CourseTopicDAO;
 import be.lambdaware.entities.CourseTopicEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,6 @@ import java.util.List;
 @RequestMapping("/courseTopic")
 public class CourseTopicController {
 
-    @Autowired
-    private ApplicationContext context;
     @Autowired
     private CourseTopicDAO courseTopicDAO;
 

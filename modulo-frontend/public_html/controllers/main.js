@@ -41,6 +41,7 @@ app.controller('MainController', function ($scope, $location) {
         PARAM_CREATE_NEW_CLASS: 'nieuw',
         PARAM_MANAGE_COURSE_TOPIC_ID: 'vakthema',
         PARAM_CREATE_NEW_COURSE_TOPIC: 'nieuw',
+        PARAM_MANAGE_CLASS_MEMBERS: 'leerlingen', 
 
         pathToPage: function (path) {
             return path.replace(/\//g, '');

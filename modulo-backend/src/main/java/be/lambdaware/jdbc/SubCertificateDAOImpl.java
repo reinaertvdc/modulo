@@ -19,7 +19,7 @@ import java.util.List;
 public class SubCertificateDAOImpl extends AbstractDAOImpl implements SubCertificateDAO {
     @Override
     public int create(SubCertificateEntity entity) throws DataAccessException{
-        String SQL = "INSERT INTO `sub_certificates` (`certificate_id`, `name`, `description`, `custom_name`, `custom_description`, `enabled`) VALUES (?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO `sub_certificates` (`certificate_id`, `name`, `custom_name`,  `enabled`) VALUES (?, ?, ?, ?)";
 
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -28,10 +28,8 @@ public class SubCertificateDAOImpl extends AbstractDAOImpl implements SubCertifi
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                 statement.setInt(1, entity.getCertificateId());
                 statement.setString(2, entity.getName());
-                statement.setString(3, entity.getDescription());
-                statement.setString(4, entity.getCustomName());
-                statement.setString(5, entity.getCustomDescription());
-                statement.setBoolean(6, entity.getEnabled());
+                statement.setString(3, entity.getCustomName());
+                statement.setBoolean(4, entity.getEnabled());
                 return statement;
             }
         }, holder);
@@ -61,8 +59,8 @@ public class SubCertificateDAOImpl extends AbstractDAOImpl implements SubCertifi
 
     @Override
     public void update(SubCertificateEntity entity) throws DataAccessException {
-        String SQL = "UPDATE `sub_certificates` SET `certificate_id` = ?, `name` = ?, `description` = ?, `custom_name` = ?, `custom_description` = ?, `enabled` = ? WHERE id = ?";
-        jdbcTemplate.update(SQL, entity.getCertificateId(), entity.getName(), entity.getDescription(), entity.getCustomName(), entity.getCustomDescription(), entity.getEnabled(), entity.getId());
+        String SQL = "UPDATE `sub_certificates` SET `certificate_id` = ?, `name` = ?,  `custom_name` = ?, `enabled` = ? WHERE id = ?";
+        jdbcTemplate.update(SQL, entity.getCertificateId(), entity.getName(),  entity.getCustomName(), entity.getEnabled(), entity.getId());
     }
 
     @Override

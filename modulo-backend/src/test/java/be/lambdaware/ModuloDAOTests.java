@@ -146,7 +146,7 @@ public class ModuloDAOTests {
         entity.setId(1);
         entity.setCertificateId(1);
         entity.setName("Bekisting");
-        entity.setDescription("De leerling leert bekisten");
+//        entity.setDescription("De leerling leert bekisten");
         entity.setEnabled(true);
         Assert.assertEquals(entity, subCertificateDAO.get(1));
         Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=1 matches sub_certificate from database - pass");
@@ -155,7 +155,7 @@ public class ModuloDAOTests {
         entity.setId(6);
         entity.setCertificateId(2);
         entity.setName("Belichting");
-        entity.setDescription("De leerling leert belichten");
+//        entity.setDescription("De leerling leert belichten");
         entity.setEnabled(false);
         Assert.assertEquals(entity, subCertificateDAO.get(6));
         Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=6 matches sub_certificate from database - pass");
@@ -165,8 +165,8 @@ public class ModuloDAOTests {
         entity.setCertificateId(1);
         entity.setName("test name");
         entity.setCustomName("test custom name");
-        entity.setDescription("test description");
-        entity.setCustomDescription("test custom description");
+//        entity.setDescription("test description");
+//        entity.setCustomDescription("test custom description");
         entity.setEnabled(true);
 
         int insertedId = subCertificateDAO.create(entity);
@@ -194,7 +194,7 @@ public class ModuloDAOTests {
         entity.setId(1);
         entity.setCertificateId(1);
         entity.setName("Bekisting");
-        entity.setDescription("De leerling leert bekisten");
+//        entity.setDescription("De leerling leert bekisten");
         entity.setEnabled(true);
         entities.add(entity);
 
@@ -202,7 +202,7 @@ public class ModuloDAOTests {
         entity.setId(2);
         entity.setCertificateId(1);
         entity.setName("Fundering");
-        entity.setDescription("De leerling leert funderen");
+//        entity.setDescription("De leerling leert funderen");
         entity.setEnabled(true);
         entities.add(entity);
 
@@ -210,7 +210,7 @@ public class ModuloDAOTests {
         entity.setId(3);
         entity.setCertificateId(1);
         entity.setName("Cement");
-        entity.setDescription("De leerling leert cement");
+//        entity.setDescription("De leerling leert cement");
         entity.setEnabled(true);
         entities.add(entity);
 
@@ -269,7 +269,7 @@ public class ModuloDAOTests {
         entity.setId(1);
         entity.setSubCertificateId(1);
         entity.setName("Afwerking");
-        entity.setDescription("Leerling kan afwerken");
+//        entity.setDescription("Leerling kan afwerken");
         entity.setEnabled(true);
         Assert.assertEquals(entity, subCertificateCategoryDAO.get(1));
         Logger.getLogger("Test SubCertificateCategoryDAO").info("Expected sub_certificate_category with ID=1 matches subcertificatecategory from database - pass");
@@ -278,7 +278,7 @@ public class ModuloDAOTests {
         entity.setId(6);
         entity.setSubCertificateId(3);
         entity.setName("Ordelijk");
-        entity.setDescription("Leerling kan ordelijk werken");
+//        entity.setDescription("Leerling kan ordelijk werken");
         entity.setEnabled(true);
         Assert.assertEquals(entity, subCertificateCategoryDAO.get(6));
         Logger.getLogger("Test SubCertificateCategoryDAO").info("Expected sub_certificate_category with ID=6 matches subcertificatecategory from database - pass");
@@ -288,8 +288,8 @@ public class ModuloDAOTests {
         entity.setSubCertificateId(5);
         entity.setName("test name");
         entity.setCustomName("test custom name");
-        entity.setDescription("test description");
-        entity.setCustomDescription("test custom description");
+//        entity.setDescription("test description");
+//        entity.setCustomDescription("test custom description");
         entity.setEnabled(false);
 
         int insertedId = subCertificateCategoryDAO.create(entity);
@@ -317,7 +317,7 @@ public class ModuloDAOTests {
         entity.setId(1);
         entity.setSubCertificateId(1);
         entity.setName("Afwerking");
-        entity.setDescription("Leerling kan afwerken");
+//        entity.setDescription("Leerling kan afwerken");
         entity.setEnabled(true);
         entities.add(entity);
 
@@ -325,7 +325,7 @@ public class ModuloDAOTests {
         entity.setId(2);
         entity.setSubCertificateId(1);
         entity.setName("Ordelijk");
-        entity.setDescription("Leerling kan ordelijk werken");
+//        entity.setDescription("Leerling kan ordelijk werken");
         entity.setEnabled(true);
         entities.add(entity);
 
@@ -565,7 +565,7 @@ public class ModuloDAOTests {
         competence.setId(1);
         competence.setSubCertificateCategoryId(2);
         competence.setName("Gereedschap opruimen");
-        competence.setDescription("Leerling ruimt gereedschap op");
+//        competence.setDescription("Leerling ruimt gereedschap op");
         competence.setEnabled(true);
         Assert.assertEquals(competence, competencesDAO.get(1));
         Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=1 matches competence from database - pass");
@@ -575,7 +575,7 @@ public class ModuloDAOTests {
         competence.setId(7);
         competence.setSubCertificateCategoryId(3);
         competence.setName("Afwerk Competentie");
-        competence.setDescription("Leerling ruimt werkt volledig af");
+//        competence.setDescription("Leerling ruimt werkt volledig af");
         competence.setEnabled(true);
         Assert.assertEquals(competence, competencesDAO.get(7));
         Logger.getLogger("Test CompetencesDAO").info("Expected competence with ID=7 matches competence from database - pass");
@@ -593,7 +593,7 @@ public class ModuloDAOTests {
         competence = new CompetencesEntity();
         competence.setSubCertificateCategoryId(1);
         competence.setName("Test Competentie");
-        competence.setDescription("Leerling test");
+//        competence.setDescription("Leerling test");
         competence.setEnabled(true);
 
         int insertedId = competencesDAO.create(competence);

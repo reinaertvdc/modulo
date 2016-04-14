@@ -19,9 +19,7 @@ public class SubCertificateMapper implements RowMapper<SubCertificateEntity> {
         subcertificate.setId(resultSet.getInt("id"));
         subcertificate.setCertificateId(resultSet.getInt("certificate_id"));
         subcertificate.setName(resultSet.getString("name"));
-        subcertificate.setDescription(resultSet.getString("description"));
         subcertificate.setCustomName(resultSet.getString("custom_name"));
-        subcertificate.setCustomDescription(resultSet.getString("custom_description"));
         subcertificate.setEnabled(resultSet.getBoolean("enabled"));
         return subcertificate;
     }

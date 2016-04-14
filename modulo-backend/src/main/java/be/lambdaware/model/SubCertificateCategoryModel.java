@@ -58,8 +58,8 @@ public class SubCertificateCategoryModel {
         return true;
     }
 
-    public boolean getFromDB(Integer competenceId) throws DataAccessException {
-        subCertificateCategoryEntity = subCertificateCategoryDAO.get(competenceId);
+    public boolean getFromDB(Integer subCertificateCategoryId) throws DataAccessException {
+        subCertificateCategoryEntity = subCertificateCategoryDAO.get(subCertificateCategoryId);
         if (subCertificateCategoryEntity == null)
             return false;
         return true;

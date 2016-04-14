@@ -2,6 +2,7 @@ package be.lambdaware.model;
 
 import be.lambdaware.dao.CompetencesDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
+import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.entities.CompetencesEntity;
 import be.lambdaware.entities.SubCertificateCategoryEntity;
 import org.springframework.dao.DataAccessException;
@@ -86,5 +87,12 @@ public class SubCertificateCategoryModel {
         }
 
         return competences;
+    }
+
+
+    public SubCertificateModel getSubCertificate(SubCertificateDAO subCertificateDAO) {
+        SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
+        subCertificateModel.getFromDB(subCertificateCategoryEntity.getSubCertificateId());
+        return subCertificateModel;
     }
 }

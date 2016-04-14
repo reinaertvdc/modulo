@@ -2,8 +2,10 @@ package be.lambdaware.controllers;
 
 import be.lambdaware.dao.CompetencesDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
+import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.model.CompetenceModel;
 import be.lambdaware.model.SubCertificateCategoryModel;
+import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ public class SubCertificateCategoryModelTestController {
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
     @Autowired
     private CompetencesDAO competencesDAO;
+    @Autowired
+    private SubCertificateDAO subCertificateDAO;
 
 
     @CrossOrigin
@@ -51,5 +55,14 @@ public class SubCertificateCategoryModelTestController {
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
         ArrayList<CompetenceModel> competences = subCertificateCategoryModel.getCompetences(competencesDAO);
         return new ResponseEntity<ArrayList<CompetenceModel>>(competences, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value="/subcertificate", method = RequestMethod.GET)
+    public ResponseEntity<SubCertificateModel> getSubCertificateCategory(@RequestParam(value="id") Integer subCertificateCategoryId ) {
+        SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
+        subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
+        SubCertificateModel subCertificate = subCertificateCategoryModel.getSubCertificate(subCertificateDAO);
+        return new ResponseEntity<SubCertificateModel>(subCertificate, HttpStatus.OK);
     }
 }

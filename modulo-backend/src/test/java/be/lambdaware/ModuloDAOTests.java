@@ -736,66 +736,63 @@ public class ModuloDAOTests {
 
     @Test
     public void testParentInfoDAO() {
-//
-//        // test autowire
-//        Assert.assertNotNull(parentInfoDAO);
-//        Logger.getLogger("Test ParentInfoDAO").info("ParentInfoDAO injected succesfully - pass");
-//
-//        // test get parentInfo 1
-//        ParentInfoEntity parentInfo = new ParentInfoEntity();
-//        parentInfo.setId(1);
-//        parentInfo.setUserId(31);
-//        parentInfo.setFirstName("Jan");
-//        parentInfo.setLastName("Ouder1");
-//        Assert.assertEquals(parentInfo, parentInfoDAO.get(1));
-//        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfo with ID=1 matches parentInfo from database - pass");
-//
-//        // test get parentInfo 2
-//        parentInfo =  new ParentInfoEntity();
-//        parentInfo.setId(2);
-//        parentInfo.setUserId(32);
-//        parentInfo.setFirstName("An");
-//        parentInfo.setLastName("Ouder2");
-//        Assert.assertEquals(parentInfo, parentInfoDAO.get(2));
-//        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfo with ID=2 matches parentInfo from database - pass");
-//
-//        //test getByUserId
-//        List<ParentInfoEntity> entities = new ArrayList<>();
-//        entities.add(parentInfo);
-//        Object[] converted = entities.toArray();
-//        Object[] arrayFromDatabase = parentInfoDAO.getByUserId(32).toArray();
-//        Assert.assertArrayEquals(converted,arrayFromDatabase);
-//        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfoList matches parentInfoList from database - pass");
-//
-//        // create parentInfo
-//        parentInfo = new ParentInfoEntity();
-//        parentInfo.setUserId(32);
-//        parentInfo.setFirstName("Jo");
-//        parentInfo.setLastName("Ouder3");
-//
-//        int insertedId = parentInfoDAO.create(parentInfo);
-//        parentInfo.setId(insertedId);
-//        ParentInfoEntity insertedEntity = parentInfoDAO.get(insertedId);
-//
-//        Assert.assertEquals(parentInfo,insertedEntity);
-//        Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo matches our desired parentInfo - pass");
-//
-//        //Test update
-//        parentInfo.setFirstName("Willy");
-//        parentInfoDAO.update(parentInfo);
-//        ParentInfoEntity updatedEnity = parentInfoDAO.get(parentInfo.getId());
-//        Assert.assertEquals(parentInfo,updatedEnity);
-//        Logger.getLogger("Test ParentInfoDAO").info("Updated parentInfo matches our desired parentInfo - pass");
-//
-//        //Test delete
-//        parentInfoDAO.delete(insertedId);
-//        try {
-//            insertedEntity = parentInfoDAO.get(insertedId);
-//            Assert.fail();
-//        }
-//        catch (Exception e) {
-//            Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo was deleted succesfully - pass");
-//        }
+
+        // test autowire
+        Assert.assertNotNull(parentInfoDAO);
+        Logger.getLogger("Test ParentInfoDAO").info("ParentInfoDAO injected succesfully - pass");
+
+        // test get parentInfo 1
+        ParentInfoEntity parentInfo = new ParentInfoEntity();
+        parentInfo.setId(1);
+        parentInfo.setUserId(31);
+        parentInfo.setFirstName("Jan");
+        parentInfo.setLastName("Ouder1");
+        Assert.assertEquals(parentInfo, parentInfoDAO.get(1));
+        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfo with ID=1 matches parentInfo from database - pass");
+
+        // test get parentInfo 2
+        parentInfo =  new ParentInfoEntity();
+        parentInfo.setId(2);
+        parentInfo.setUserId(32);
+        parentInfo.setFirstName("An");
+        parentInfo.setLastName("Ouder2");
+        Assert.assertEquals(parentInfo, parentInfoDAO.get(2));
+        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfo with ID=2 matches parentInfo from database - pass");
+
+        //test getByUserId
+        ParentInfoEntity getByUserId = parentInfoDAO.getByUserId(32);
+        Assert.assertEquals(parentInfo,getByUserId);
+        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfoList matches parentInfoList from database - pass");
+
+        // create parentInfo
+        parentInfo = new ParentInfoEntity();
+        parentInfo.setUserId(32);
+        parentInfo.setFirstName("Jo");
+        parentInfo.setLastName("Ouder3");
+
+        int insertedId = parentInfoDAO.create(parentInfo);
+        parentInfo.setId(insertedId);
+        ParentInfoEntity insertedEntity = parentInfoDAO.get(insertedId);
+
+        Assert.assertEquals(parentInfo,insertedEntity);
+        Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo matches our desired parentInfo - pass");
+
+        //Test update
+        parentInfo.setFirstName("Willy");
+        parentInfoDAO.update(parentInfo);
+        ParentInfoEntity updatedEnity = parentInfoDAO.get(parentInfo.getId());
+        Assert.assertEquals(parentInfo,updatedEnity);
+        Logger.getLogger("Test ParentInfoDAO").info("Updated parentInfo matches our desired parentInfo - pass");
+
+        //Test delete
+        parentInfoDAO.delete(insertedId);
+        try {
+            insertedEntity = parentInfoDAO.get(insertedId);
+            Assert.fail();
+        }
+        catch (Exception e) {
+            Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo was deleted succesfully - pass");
+        }
 
     }
 

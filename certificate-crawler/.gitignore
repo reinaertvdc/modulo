@@ -9,3 +9,7 @@ out
 gen
 target
 scotch-box-with-phpmyadmin
+
+# custom
+certificates
+/*.pyc

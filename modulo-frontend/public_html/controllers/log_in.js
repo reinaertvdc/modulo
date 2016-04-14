@@ -4,7 +4,7 @@ app.controller('LogInController', function ($scope) {
 
     $scope.submitForm = function () {
         if (!$scope.account.attemptLogin($scope.formData.email, $scope.formData.password)) {
-            alert('Ongeldig e-mailadres/wachtwoord');
+            showAlert(AlertType.DANGER, 'Ongeldig e-mailadres/wachtwoord.', 'Het ingegeven e-mailadres en wachtwoord komen niet overeen.', true);
         }
     };
 });

@@ -1,9 +1,7 @@
 import os
 
 from downloader import Downloader
-from linear_certificate_parser import LinearCertificateParser
 from modular_certificate_parser import ModularCertificateParser
-from modular_prof_certificate_parser import ModularProfCertificateParser
 from web_page_parser import WebPageParser
 
 

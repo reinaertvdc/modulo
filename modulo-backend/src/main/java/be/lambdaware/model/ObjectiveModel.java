@@ -49,27 +49,21 @@ public class ObjectiveModel {
     }
 
 
-    public boolean createInDB() throws DataAccessException {
+    public void createInDB() throws DataAccessException {
         int id = objectiveDAO.create(objectiveEntity);
         objectiveEntity.setId(id);
-        return true;
     }
 
-    public boolean getFromDB(Integer objectiveId) throws DataAccessException {
+    public void getFromDB(Integer objectiveId) throws DataAccessException {
         objectiveEntity = objectiveDAO.get(objectiveId);
-        if (objectiveEntity == null)
-            return false;
-        return true;
     }
 
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         objectiveDAO.delete(objectiveEntity.getId());
-        return true;
     }
 
-    public boolean updateInDB() throws DataAccessException {
+    public void updateInDB() throws DataAccessException {
         objectiveDAO.update(objectiveEntity);
-        return true;
     }
 
 

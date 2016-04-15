@@ -17,32 +17,21 @@ public abstract class AccountModel {
 
     public AccountModel(UserDAO userDAO) { this.userDAO = userDAO; }
 
-    public boolean createInDB() throws DataAccessException {
+    public void createInDB() throws DataAccessException {
         int entityID = userDAO.create(userEntity);
         userEntity.setId(entityID);
-        return true;
     }
 
-    public boolean getFromDB(Integer id) throws DataAccessException {
+    public void getFromDB(Integer id) throws DataAccessException {
         userEntity = userDAO.get(id);
-        if (userEntity != null)
-            return true;
-        else
-            return false;
     }
 
-    public boolean deleteFromDB() throws DataAccessException {
-        if (userEntity == null)
-            return false;
+    public void deleteFromDB() throws DataAccessException {
         userDAO.delete(userEntity.getId());
-        return true;
     }
 
-    public boolean updateInDB() throws DataAccessException {
-        if (userEntity == null)
-            return false;
+    public void updateInDB() throws DataAccessException {
         userDAO.update(userEntity);
-        return true;
     }
 
     @Override

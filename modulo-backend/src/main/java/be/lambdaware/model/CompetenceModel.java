@@ -49,27 +49,21 @@ public class CompetenceModel {
     }
 
 
-    public boolean createInDB() throws DataAccessException {
+    public void createInDB() throws DataAccessException {
         int id = competenceDAO.create(competenceEntity);
         competenceEntity.setId(id);
-        return true;
     }
 
-    public boolean getFromDB(Integer competenceId) throws DataAccessException {
+    public void getFromDB(Integer competenceId) throws DataAccessException {
         competenceEntity = competenceDAO.get(competenceId);
-        if (competenceEntity == null)
-            return false;
-        return true;
     }
 
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         competenceDAO.delete(competenceEntity.getId());
-        return true;
     }
 
-    public boolean updateInDB() throws DataAccessException {
+    public void updateInDB() throws DataAccessException {
         competenceDAO.update(competenceEntity);
-        return true;
     }
 
 

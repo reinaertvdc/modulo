@@ -23,7 +23,7 @@ class WebPageParser:
         last_certificate_file_url_index = -1
         while True:
             current_certificate_file_url_index = section.find(self.__FILE_URL_START_TAG,
-                                                             last_certificate_file_url_index + 1)
+                                                              last_certificate_file_url_index + 1)
             if current_certificate_file_url_index < 0:
                 break
             certificate_file_urls.append(section[current_certificate_file_url_index + len(

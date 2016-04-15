@@ -7,6 +7,9 @@ from pdfminer.pdfpage import PDFPage
 
 
 class PdfParser:
+    __CERTIFICATE_NAME_BEGIN_TAG = 'De opleiding '
+    __CERTIFICATE_NAME_END_TAG = ' bestaat uit '
+
     def __init__(self):
         pass
 

@@ -12,4 +12,5 @@ scotch-box-with-phpmyadmin
 
 # custom
 certificates
+output
 /*.pyc

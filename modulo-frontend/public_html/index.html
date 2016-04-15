@@ -11,14 +11,18 @@
     <link rel="icon" href="favicon.ico">
     <title>Modulo</title>
     <link href="components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="components/angular/ng-grid.css" />
+
 </head>
 
 <body data-ng-app="myApp" data-ng-controller="MainController" data-ng-include="'views/main.html'">
 
 <!-- import AngularJS and Bootstrap libraries -->
+<script src="components/jquery/jquery-2.2.3.js"></script>
 <script src="components/angular/angular.js"></script>
 <script src="components/angular/angular-animate.js"></script>
 <script src="components/angular/angular-touch.js"></script>
+<script type="text/javascript" src="components/angular/ng-grid-2.0.14.debug.js"></script>
 <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 
 <!-- import all JS functionality -->
@@ -31,7 +35,7 @@
 <script src="js/dummy_data/users.js"></script>
 
 <!-- import all controllers -->
-<script>var app = angular.module('myApp', ['ui.bootstrap']);</script>
+<script>var app = angular.module('myApp', ['ngGrid', 'ui.bootstrap']);</script>
 <script src="controllers/edit_user.js"></script>
 <script src="controllers/home.js"></script>
 <script src="controllers/list_certficates.js"></script>

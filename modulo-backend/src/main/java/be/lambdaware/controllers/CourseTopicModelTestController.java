@@ -45,6 +45,7 @@ public class CourseTopicModelTestController {
     public boolean delete(@PathVariable Integer courseTopicId) {
         CourseTopicModel courseTopicModel = new CourseTopicModel(courseTopicDAO);
         courseTopicModel.getFromDB(courseTopicId);
+        courseTopicModel.deleteFromDB();
         return true;
     }
 

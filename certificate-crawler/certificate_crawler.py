@@ -2,6 +2,7 @@ import os
 import sys
 
 from downloader import Downloader
+from js_generator import JsGenerator
 from modular_certificate_parser import ModularCertificateParser
 from sql_generator import SqlGenerator
 from web_page_parser import WebPageParser
@@ -17,6 +18,7 @@ class CertificateCrawler:
     __LINEAR_CERTIFICATES_DIR = __CERTIFICATES_DIR + 'linear/'
     __OUTPUT_DIR = 'output/'
     __SQL_OUTPUT_FILE_NAME = 'certificates.sql'
+    __JS_OUTPUT_FILE_NAME = 'certificates.js'
 
     def __init__(self):
         sys.stdout.write("\nCertificate crawler started!\n\n")
@@ -54,6 +56,8 @@ class CertificateCrawler:
         modular_certificate_parser = ModularCertificateParser()
         sys.stdout.write("SQL output will be written to '" + self.__OUTPUT_DIR + self.__SQL_OUTPUT_FILE_NAME + "'.\n")
         sql_generator = SqlGenerator(self.__OUTPUT_DIR, self.__SQL_OUTPUT_FILE_NAME)
+        sys.stdout.write("JS output will be written to '" + self.__OUTPUT_DIR + self.__JS_OUTPUT_FILE_NAME + "'.\n\n")
+        js_generator = JsGenerator(self.__OUTPUT_DIR, self.__JS_OUTPUT_FILE_NAME)
 
         modular_certificate_file_names = os.listdir(self.__MODULAR_CERTIFICATES_DIR)
         n_modular_certificates = len(modular_certificate_file_names)
@@ -62,6 +66,8 @@ class CertificateCrawler:
             sys.stdout.write("Parsing certificate " + str(i) + "/" + str(
                 n_modular_certificates) + " '" + certificate_file_name + "'...")
             sql_generator.write(
+                modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name))
+            js_generator.write(
                 modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name))
             sys.stdout.write(" Done.\n")
             i += 1

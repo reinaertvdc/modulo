@@ -61,4 +61,12 @@ public class SubCertificateModelTestController {
         CertificateModel certificate = subCertificateModel.getCertificate(certificateDAO);
         return new ResponseEntity<CertificateModel>(certificate, HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.DELETE)
+    public boolean delete(@RequestParam(value="id") Integer subCertificateId ) {
+        SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
+        subCertificateModel.getFromDB(subCertificateId);
+        return subCertificateModel.deleteFromDB();
+    }
 }

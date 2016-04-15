@@ -48,4 +48,12 @@ public class CertificateModelTestController {
         ArrayList<SubCertificateModel> subCertificates = certificateModel.getSubCertificates(subCertificateDAO);
         return new ResponseEntity<ArrayList<SubCertificateModel>>(subCertificates, HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.DELETE)
+    public boolean delete(@RequestParam(value="id") Integer certificateId ) {
+        CertificateModel certificateModel = new CertificateModel(certificateDAO);
+        certificateModel.getFromDB(certificateId);
+        return certificateModel.deleteFromDB();
+    }
 }

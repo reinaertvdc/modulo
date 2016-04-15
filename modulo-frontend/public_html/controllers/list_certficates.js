@@ -3,25 +3,25 @@
  */
 app.controller('ListCertificatesController', function ($scope, $compile) {
     // TODO implement controller
-
+    //TODO test data vervangen door effectieve data
     const CERTIFICATES_LIST_ITEM_PREFIX = 'certificates-list-item-';
     const CERTIFICATES_LIST_ELEMENT = document.getElementById('table-certificates-list-body');
 
-    var enabled = false;
     $scope.certificates = new Map();
 
     $scope.toElementId = function (id) {
         return CERTIFICATES_LIST_ITEM_PREFIX + id;
     };
 
-    $scope.addCertificate = function (i, enabled) {
-        $scope.removeCertificate(i);
+    $scope.addCertificate = function (certificate) {
+        $scope.removeCertificate(certificate.id);
 
-        $scope.certificates.set(i,enabled);
+        $scope.certificates.set(certificate.id,certificate);
 
-        var html = '<tr id="' + $scope.toElementId(i) + '">' +
-            '<td>Naam '+i+'</td>' ;
-        html += '<td class="{{color'+i+'}}" ng-click="swapEnabled(' + i + ')"><span class="glyphicon {{iconClass'+i+'}}"></span></td>';
+
+        var html = '<tr id="' + $scope.toElementId(certificate.id) + '">' +
+            '<td>'+certificate.name+'</td>' ;
+        html += '<td ng-click="swapEnabled('+certificate.id+')"><span ng-class="getClass('+certificate.id+')"></span></td>';
         html += '</tr>';
 
         var element = document.createElement('tr');
@@ -29,20 +29,22 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
         element.outerHTML = html;
     };
 
-    $scope.swapEnabled = function(id){
-        var enable = !$scope.certificates.get(id);
-        console.log("Swap Enabled CLICK: " + enable);
-        //TODO Array achtig iets maken zodat iedere rij zijn eige kleur/icon vars heeft
-        if(!enable) {
-            $scope.iconClass1 = "glyphicon-remove-circle";
-            $scope.color1 = "text-danger";
+    $scope.getClass = function(id){
+        var certificate = $scope.certificates.get(id);
+        if(!certificate.enabled) {
+            return "glyphicon glyphicon-remove-circle text-danger";
         }
         else {
-            $scope.iconClass1 = "glyphicon-ok-circle";
-            $scope.color1 = "text-success";
+            return "glyphicon glyphicon-ok-circle text-success";
         }
+    }
 
-        $scope.certificates.set(id, enable);
+    $scope.swapEnabled = function(id){
+        var certificate = $scope.certificates.get(id);
+        certificate.enabled = !certificate.enabled;
+        $scope.certificates.set(id, certificate);
+
+        backend.setCertificateEnabled(id, certificate.enabled);
     }
 
     $scope.removeCertificate = function (id) {
@@ -58,11 +60,8 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
         $compile(CERTIFICATES_LIST_ELEMENT)($scope);
     };
 
-    var i = 1;
-    backend.getUsers().forEach(function (item) {
-        $scope.addCertificate(i, enabled);
-        i = i +1;
-        enabled = !enabled;
+    backend.getCertificates().forEach(function (item) {
+        $scope.addCertificate(item);
     });
     $scope.refresh();
 });

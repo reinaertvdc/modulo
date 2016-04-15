@@ -3,7 +3,7 @@
  */
 app.controller('ListCertificatesController', function ($scope, $compile) {
     // TODO implement controller
-
+    //TODO test data vervangen door effectieve data
     const CERTIFICATES_LIST_ITEM_PREFIX = 'certificates-list-item-';
     const CERTIFICATES_LIST_ELEMENT = document.getElementById('table-certificates-list-body');
 
@@ -14,14 +14,15 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
         return CERTIFICATES_LIST_ITEM_PREFIX + id;
     };
 
-    $scope.addCertificate = function (i, enabled) {
+    $scope.addCertificate = function (i, enabled, name) {
         $scope.removeCertificate(i);
 
         $scope.certificates.set(i,enabled);
 
+
         var html = '<tr id="' + $scope.toElementId(i) + '">' +
-            '<td>Naam '+i+'</td>' ;
-        html += '<td class="{{color'+i+'}}" ng-click="swapEnabled(' + i + ')"><span class="glyphicon {{iconClass'+i+'}}"></span></td>';
+            '<td>'+name+'</td>' ;
+        html += '<td ng-click="swapEnabled(' + i + ')"><span ng-class="getClass('+i+')"></span></td>';
         html += '</tr>';
 
         var element = document.createElement('tr');
@@ -29,19 +30,19 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
         element.outerHTML = html;
     };
 
-    $scope.swapEnabled = function(id){
-        var enable = !$scope.certificates.get(id);
-        console.log("Swap Enabled CLICK: " + enable);
-        //TODO Array achtig iets maken zodat iedere rij zijn eige kleur/icon vars heeft
+    $scope.getClass = function(id){
+        console.log("Get Class");
+        var enable = $scope.certificates.get(id);
         if(!enable) {
-            $scope.iconClass1 = "glyphicon-remove-circle";
-            $scope.color1 = "text-danger";
+            return "glyphicon glyphicon-remove-circle text-danger";
         }
         else {
-            $scope.iconClass1 = "glyphicon-ok-circle";
-            $scope.color1 = "text-success";
+            return "glyphicon glyphicon-ok-circle text-success";
         }
+    }
 
+    $scope.swapEnabled = function(id){
+        var enable = !$scope.certificates.get(id);
         $scope.certificates.set(id, enable);
     }
 
@@ -60,7 +61,7 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
 
     var i = 1;
     backend.getUsers().forEach(function (item) {
-        $scope.addCertificate(i, enabled);
+        $scope.addCertificate(i, enabled, "Naam " +i);
         i = i +1;
         enabled = !enabled;
     });

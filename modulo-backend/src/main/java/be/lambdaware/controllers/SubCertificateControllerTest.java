@@ -5,7 +5,6 @@ import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.SubCertificateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,6 @@ import java.util.List;
 @RequestMapping("/subcertificate")
 public class SubCertificateControllerTest {
 
-    @Autowired
-    private ApplicationContext context;
     @Autowired
     private SubCertificateDAO subCertificateDAO;
     @Autowired

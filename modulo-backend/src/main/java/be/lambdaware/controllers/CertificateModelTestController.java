@@ -5,7 +5,6 @@ import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.model.CertificateModel;
 import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +17,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/certificatemodel")
 public class CertificateModelTestController {
-
-    @Autowired
-    private ApplicationContext context;
 
     @Autowired
     private CertificateDAO certificateDAO;
@@ -37,19 +33,27 @@ public class CertificateModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<CertificateModel> get(@RequestParam(value="id") Integer certificateId ) {
+    @RequestMapping(value = "/{certificateId}", method = RequestMethod.GET)
+    public ResponseEntity<CertificateModel> get(@PathVariable Integer certificateId ) {
         CertificateModel certificateModel = new CertificateModel(certificateDAO);
         certificateModel.getFromDB(certificateId);
         return new ResponseEntity<CertificateModel>(certificateModel, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @RequestMapping(value="/subcertificates", method = RequestMethod.GET)
-    public ResponseEntity<ArrayList<SubCertificateModel>> getSubCertificates(@RequestParam(value="id") Integer certificateId ) {
+    @RequestMapping(value="/subcertificates/{certificateId}", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<SubCertificateModel>> getSubCertificates(@PathVariable Integer certificateId ) {
         CertificateModel certificateModel = new CertificateModel(certificateDAO);
         certificateModel.getFromDB(certificateId);
         ArrayList<SubCertificateModel> subCertificates = certificateModel.getSubCertificates(subCertificateDAO);
         return new ResponseEntity<ArrayList<SubCertificateModel>>(subCertificates, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{certificateId}", method = RequestMethod.DELETE)
+    public boolean delete(@PathVariable Integer certificateId ) {
+        CertificateModel certificateModel = new CertificateModel(certificateDAO);
+        certificateModel.getFromDB(certificateId);
+        return certificateModel.deleteFromDB();
     }
 }

@@ -7,7 +7,6 @@ import be.lambdaware.model.CompetenceModel;
 import be.lambdaware.model.SubCertificateCategoryModel;
 import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +19,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/subcertificatecategorymodel")
 public class SubCertificateCategoryModelTestController {
-
-    @Autowired
-    private ApplicationContext context;
 
     @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
@@ -41,16 +37,16 @@ public class SubCertificateCategoryModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<SubCertificateCategoryModel> get(@RequestParam(value="id") Integer subCertificateCategoryId ) {
+    @RequestMapping(value = "/{subCertificateCategoryId}", method = RequestMethod.GET)
+    public ResponseEntity<SubCertificateCategoryModel> get(@PathVariable Integer subCertificateCategoryId ) {
         SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
         return new ResponseEntity<SubCertificateCategoryModel>(subCertificateCategoryModel, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @RequestMapping(value="/competences", method = RequestMethod.GET)
-    public ResponseEntity<ArrayList<CompetenceModel>> getCompetences(@RequestParam(value="id") Integer subCertificateCategoryId ) {
+    @RequestMapping(value="/competences/{subCertificateCategoryId}", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<CompetenceModel>> getCompetences(@PathVariable Integer subCertificateCategoryId ) {
         SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
         ArrayList<CompetenceModel> competences = subCertificateCategoryModel.getCompetences(competenceDAO);
@@ -58,11 +54,19 @@ public class SubCertificateCategoryModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(value="/subcertificate", method = RequestMethod.GET)
-    public ResponseEntity<SubCertificateModel> getSubCertificateCategory(@RequestParam(value="id") Integer subCertificateCategoryId ) {
+    @RequestMapping(value="/subcertificate/{subCertificateCategoryId}", method = RequestMethod.GET)
+    public ResponseEntity<SubCertificateModel> getSubCertificateCategory(@PathVariable Integer subCertificateCategoryId ) {
         SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
         SubCertificateModel subCertificate = subCertificateCategoryModel.getSubCertificate(subCertificateDAO);
         return new ResponseEntity<SubCertificateModel>(subCertificate, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{subCertificateCategoryId}", method = RequestMethod.DELETE)
+    public boolean delete(@PathVariable Integer subCertificateCategoryId ) {
+        SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
+        subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
+        return subCertificateCategoryModel.deleteFromDB();
     }
 }

@@ -1,18 +1,13 @@
 package be.lambdaware.jdbc;
 
 import be.lambdaware.dao.ObjectiveDAO;
-import be.lambdaware.entities.CourseTopicEntity;
-import be.lambdaware.entities.GradeEntity;
 import be.lambdaware.entities.ObjectiveEntity;
 import be.lambdaware.mappers.ObjectiveMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -30,7 +25,10 @@ public class ObjectiveDAOImpl extends AbstractDAOImpl implements ObjectiveDAO {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                 System.out.println(entity);
                 statement.setInt(1, entity.getGradeId());
-                statement.setInt(2, entity.getCourseTopicId());
+                if(entity.getCourseTopicId() == null)
+                    statement.setNull(2, Types.INTEGER);
+                else
+                    statement.setInt(2, entity.getCourseTopicId());
                 statement.setString(3, entity.getName());
                 statement.setString(4, entity.getCustomName());
                 return statement;

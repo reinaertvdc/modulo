@@ -4,9 +4,7 @@ import be.lambdaware.dao.ParentInfoDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.model.ParentModel;
-import be.lambdaware.model.StudentModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user/parent")
 public class ParentModelTestController {
-
-    @Autowired
-    private ApplicationContext context;
 
     @Autowired
     private UserDAO userDAO;
@@ -38,21 +33,10 @@ public class ParentModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ParentModel> get(@RequestParam(value="userID") Integer userId ) {
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<ParentModel> get(@PathVariable Integer userId ) {
         ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
         parentModel.getFromDB(userId);
-        System.out.println(parentModel);
-        System.out.println(parentModel.getChildren(studentInfoDAO));
-        //return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
-        return null;
+        return new ResponseEntity<ParentModel>(parentModel, HttpStatus.OK);
     }
-
-//    @CrossOrigin
-//    @RequestMapping(method = RequestMethod.DELETE)
-//    public boolean delete(@RequestParam(value="userID") Integer userId ) {
-//        StudentModel studentModel = new StudentModel(userDAO, studentInfoDAO);
-//        studentModel.getFromDB(userId);
-//        return studentModel.deleteFromDB();
-//    }
 }

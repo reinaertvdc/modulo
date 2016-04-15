@@ -1,3 +1,4 @@
+// enums
 var UserType = Object.freeze({
     ADMIN: 'ADMIN',
     TEACHER: 'TEACHER',
@@ -16,6 +17,7 @@ var Score = Object.freeze({
     ACQUIRED: 'V'
 });
 
+// user classes
 function User(id, name, email, password, details) {
     this.id = id;
     this.name = name;
@@ -43,4 +45,32 @@ function ParentDetails() {
 function Name(first, last) {
     this.first = first;
     this.last = last;
+}
+
+// certificate classes
+function Certificate(id, name, enabled, subCertificates) {
+    this.id = id;
+    this.name = name;
+    this.enabled = enabled;
+    this.subCertificates = subCertificates;
+}
+
+function SubCertificate(id, name, customName, subCertificateCategories) {
+    this.id = id;
+    this.name = name;
+    this.customName = customName;
+    this.subCertificateCategories = subCertificateCategories;
+}
+
+function SubCertificateCategory(id, name, customName, competences) {
+    this.id = id;
+    this.name = name;
+    this.customName = customName;
+    this.competences = competences;
+}
+
+function Competence(id, name, customName) {
+    this.id = id;
+    this.name = name;
+    this.customName = customName;
 }

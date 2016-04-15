@@ -39,5 +39,22 @@ backend.certificates = [
                 new Competence(26, '', null)
             ])
         ])
-    ])
+    ]),
+    new Certificate(1, 'Aanvuller', true, []),
+    new Certificate(2, 'Bekister', true, []),
+    new Certificate(3, 'Kassier', true, []),
+    new Certificate(4, 'Pijpfitter', true, []),
+    new Certificate(5, 'Kelner', true, []),
+    new Certificate(6, 'Stukadoor', true, []),
+    new Certificate(7, 'Slager', true, []),
+    new Certificate(8, 'Keukenmedewerker', true, []),
+    new Certificate(9, 'Podiumtechnicus', true, []),
+    new Certificate(10, 'Plaatser binnenschrijnwerk', true, []),
+    new Certificate(11, 'Industrieel schilder', true, []),
+    new Certificate(12, 'Demonteur/monteur carrosserie', true, []),
+    new Certificate(13, 'Plaatser boven- en ondergrondse kabels en leidingen', true, []),
+    new Certificate(14, 'Motorfietsmecanicien', true, []),
+    new Certificate(15, 'Verhuizer-inpakker', true, []),
+    new Certificate(16, 'Lasser MIG/MAG', true, []),
+    new Certificate(17, 'Kok', true, [])
 ];

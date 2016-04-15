@@ -1,5 +1,9 @@
+import os
+
 from downloader import Downloader
+from linear_certificate_parser import LinearCertificateParser
 from modular_certificate_parser import ModularCertificateParser
+from modular_prof_certificate_parser import ModularProfCertificateParser
 from web_page_parser import WebPageParser
 
 
@@ -30,8 +34,5 @@ class CertificateCrawler:
 
     def parse_certificates(self):
         modular_certificate_parser = ModularCertificateParser()
-
-        # TODO these three don't work yet
-        # certificates/modular/106POLYVALANTMECANICIENPERSONENWAGENSENLICHTEBEDRIJFSVOERTUIGEN.pdf
-        # certificates/modular/099Plaatserenherstellerelektrischeenelektronischeapparatuur.pdf
-        # certificates/modular/085ONDERHOUDSENDIAGNOSETECHNICUSZWAREBEDRIJFSVOERTUIGEN.pdf
+        for pdf in os.listdir(self.__MODULAR_CERTIFICATES_DIR):
+            modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + pdf)

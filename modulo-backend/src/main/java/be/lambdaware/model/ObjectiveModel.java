@@ -46,7 +46,6 @@ public class ObjectiveModel {
         ObjectiveModel that = (ObjectiveModel) o;
 
         return objectiveEntity.equals(that.objectiveEntity);
-
     }
 
 

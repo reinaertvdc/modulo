@@ -37,16 +37,16 @@ public class SubCertificateModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<SubCertificateModel> get(@RequestParam(value="id") Integer subCertificateId ) {
+    @RequestMapping(value = "/{subCertificateId}", method = RequestMethod.GET)
+    public ResponseEntity<SubCertificateModel> get(@PathVariable Integer subCertificateId ) {
         SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
         subCertificateModel.getFromDB(subCertificateId);
         return new ResponseEntity<SubCertificateModel>(subCertificateModel, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @RequestMapping(value="/subcertificatecategories", method = RequestMethod.GET)
-    public ResponseEntity<ArrayList<SubCertificateCategoryModel>> getSubCertificateCategories(@RequestParam(value="id") Integer subCertificateId ) {
+    @RequestMapping(value="/subcertificatecategories/{subCertificateId}", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<SubCertificateCategoryModel>> getSubCertificateCategories(@PathVariable Integer subCertificateId ) {
         SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
         subCertificateModel.getFromDB(subCertificateId);
         ArrayList<SubCertificateCategoryModel> subCertificateCategories = subCertificateModel.getSubCertificateCategories(subCertificateCategoryDAO);
@@ -54,17 +54,17 @@ public class SubCertificateModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(value="/certificate", method = RequestMethod.GET)
-    public ResponseEntity<CertificateModel> getCertificate(@RequestParam(value="id") Integer certificateId ) {
+    @RequestMapping(value="/certificate/{subCertificateId}", method = RequestMethod.GET)
+    public ResponseEntity<CertificateModel> getCertificate(@PathVariable Integer subCertificateId ) {
         SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
-        subCertificateModel.getFromDB(certificateId);
+        subCertificateModel.getFromDB(subCertificateId);
         CertificateModel certificate = subCertificateModel.getCertificate(certificateDAO);
         return new ResponseEntity<CertificateModel>(certificate, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.DELETE)
-    public boolean delete(@RequestParam(value="id") Integer subCertificateId ) {
+    @RequestMapping(value = "/{subCertificateId}", method = RequestMethod.DELETE)
+    public boolean delete(@PathVariable Integer subCertificateId ) {
         SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
         subCertificateModel.getFromDB(subCertificateId);
         return subCertificateModel.deleteFromDB();

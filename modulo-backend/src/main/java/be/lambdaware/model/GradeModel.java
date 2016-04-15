@@ -53,27 +53,21 @@ public class GradeModel {
     }
 
 
-    public boolean createInDB() throws DataAccessException {
+    public void createInDB() throws DataAccessException {
         int id = gradeDAO.create(gradeEntity);
         gradeEntity.setId(id);
-        return true;
     }
 
-    public boolean getFromDB(Integer gradeId) throws DataAccessException {
+    public void getFromDB(Integer gradeId) throws DataAccessException {
         gradeEntity = gradeDAO.get(gradeId);
-        if (gradeEntity == null)
-            return false;
-        return true;
     }
 
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         gradeDAO.delete(gradeEntity.getId());
-        return true;
     }
 
-    public boolean updateInDB() throws DataAccessException {
+    public void updateInDB() throws DataAccessException {
         gradeDAO.update(gradeEntity);
-        return true;
     }
 
 

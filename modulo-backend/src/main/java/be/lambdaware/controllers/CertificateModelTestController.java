@@ -54,6 +54,7 @@ public class CertificateModelTestController {
     public boolean delete(@PathVariable Integer certificateId ) {
         CertificateModel certificateModel = new CertificateModel(certificateDAO);
         certificateModel.getFromDB(certificateId);
-        return certificateModel.deleteFromDB();
+        certificateModel.deleteFromDB();
+        return true;
     }
 }

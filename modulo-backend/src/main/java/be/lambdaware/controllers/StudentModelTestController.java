@@ -43,9 +43,10 @@ public class StudentModelTestController {
 
     @CrossOrigin
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable Integer userId ) {
+    public boolean delete(@RequestParam(value="userID") Integer userId ) {
         StudentModel studentModel = new StudentModel(userDAO, studentInfoDAO);
         studentModel.getFromDB(userId);
-        return studentModel.deleteFromDB();
+        studentModel.deleteFromDB();
+        return true;
     }
 }

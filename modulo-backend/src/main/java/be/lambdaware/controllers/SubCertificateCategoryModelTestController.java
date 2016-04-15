@@ -67,6 +67,7 @@ public class SubCertificateCategoryModelTestController {
     public boolean delete(@PathVariable Integer subCertificateCategoryId ) {
         SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
         subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
-        return subCertificateCategoryModel.deleteFromDB();
+        subCertificateCategoryModel.deleteFromDB();
+        return true;
     }
 }

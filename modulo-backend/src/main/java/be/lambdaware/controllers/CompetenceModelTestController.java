@@ -52,6 +52,7 @@ public class CompetenceModelTestController {
     public boolean delete(@PathVariable Integer competenceId ) {
         CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
         competenceModel.getFromDB(competenceId);
-        return competenceModel.deleteFromDB();
+        competenceModel.deleteFromDB();
+        return true;
     }
 }

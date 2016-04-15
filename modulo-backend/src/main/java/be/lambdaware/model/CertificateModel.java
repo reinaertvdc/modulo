@@ -53,27 +53,21 @@ public class CertificateModel {
     }
 
 
-    public boolean createInDB() throws DataAccessException {
+    public void createInDB() throws DataAccessException {
         int id = certificateDAO.create(certificateEntity);
         certificateEntity.setId(id);
-        return true;
     }
 
-    public boolean getFromDB(Integer certificateId) throws DataAccessException {
+    public void getFromDB(Integer certificateId) throws DataAccessException {
         certificateEntity = certificateDAO.get(certificateId);
-        if (certificateEntity == null)
-            return false;
-        return true;
     }
 
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         certificateDAO.delete(certificateEntity.getId());
-        return true;
     }
 
-    public boolean updateInDB() throws DataAccessException {
+    public void updateInDB() throws DataAccessException {
         certificateDAO.update(certificateEntity);
-        return true;
     }
 
 

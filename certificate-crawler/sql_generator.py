@@ -35,7 +35,7 @@ class SqlGenerator:
                                                                    sub_certificate_category.name)
                 for competence in sub_certificate_category.components:
                     query += self.__get_competence_query(self.competence_id,
-                                                         sub_certificate_category,
+                                                         self.sub_certificate_category_id,
                                                          competence.name)
                     self.competence_id += 1
                 self.sub_certificate_category_id += 1

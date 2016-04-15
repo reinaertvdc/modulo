@@ -36,10 +36,17 @@ class ModularCertificateParser:
                 break
         return module_names
 
+    def __parse_sub_certificate_categories_and_competences(self):
+        return []
+
     def parse(self, path):
-        sub_certificates = []
         self.content = ' '.join(self.pdf_parser.to_plain_text(path).replace("\n", self.__NEWLINE_TAG).split())
         certificate_name = self.__parse_name()
+        sub_certificates = []
         for sub_certificate_name in self.__parse_sub_certificate_names():
             sub_certificates.append(CertificateComponent(sub_certificate_name, []))
+        i = 0
+        for sub_certificate_categories in self.__parse_sub_certificate_categories_and_competences():
+            sub_certificates[i].components = sub_certificate_categories
+            i += 1
         return CertificateComponent(certificate_name, sub_certificates)

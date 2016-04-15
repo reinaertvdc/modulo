@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/objective")
-public class ObjectiveController {
+public class ObjectiveTestController {
 
     @Autowired
     private ObjectiveDAO objectiveDAO;

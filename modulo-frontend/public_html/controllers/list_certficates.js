@@ -7,22 +7,21 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
     const CERTIFICATES_LIST_ITEM_PREFIX = 'certificates-list-item-';
     const CERTIFICATES_LIST_ELEMENT = document.getElementById('table-certificates-list-body');
 
-    var enabled = false;
     $scope.certificates = new Map();
 
     $scope.toElementId = function (id) {
         return CERTIFICATES_LIST_ITEM_PREFIX + id;
     };
 
-    $scope.addCertificate = function (i, enabled, name) {
-        $scope.removeCertificate(i);
+    $scope.addCertificate = function (certificate) {
+        $scope.removeCertificate(certificate.id);
 
-        $scope.certificates.set(i,enabled);
+        $scope.certificates.set(certificate.id,certificate);
 
 
-        var html = '<tr id="' + $scope.toElementId(i) + '">' +
-            '<td>'+name+'</td>' ;
-        html += '<td ng-click="swapEnabled(' + i + ')"><span ng-class="getClass('+i+')"></span></td>';
+        var html = '<tr id="' + $scope.toElementId(certificate.id) + '">' +
+            '<td>'+certificate.name+'</td>' ;
+        html += '<td ng-click="swapEnabled('+certificate.id+')"><span ng-class="getClass('+certificate.id+')"></span></td>';
         html += '</tr>';
 
         var element = document.createElement('tr');
@@ -31,9 +30,8 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
     };
 
     $scope.getClass = function(id){
-        console.log("Get Class");
-        var enable = $scope.certificates.get(id);
-        if(!enable) {
+        var certificate = $scope.certificates.get(id);
+        if(!certificate.enabled) {
             return "glyphicon glyphicon-remove-circle text-danger";
         }
         else {
@@ -42,8 +40,11 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
     }
 
     $scope.swapEnabled = function(id){
-        var enable = !$scope.certificates.get(id);
-        $scope.certificates.set(id, enable);
+        var certificate = $scope.certificates.get(id);
+        certificate.enabled = !certificate.enabled;
+        $scope.certificates.set(id, certificate);
+
+        backend.setCertificateEnabled(id, certificate.enabled);
     }
 
     $scope.removeCertificate = function (id) {
@@ -59,11 +60,8 @@ app.controller('ListCertificatesController', function ($scope, $compile) {
         $compile(CERTIFICATES_LIST_ELEMENT)($scope);
     };
 
-    var i = 1;
-    backend.getUsers().forEach(function (item) {
-        $scope.addCertificate(i, enabled, "Naam " +i);
-        i = i +1;
-        enabled = !enabled;
+    backend.getCertificates().forEach(function (item) {
+        $scope.addCertificate(item);
     });
     $scope.refresh();
 });

@@ -47,7 +47,7 @@ CREATE TABLE `parent_info` (
   `first_name` VARCHAR(255) NOT NULL,
   `last_name`  VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)  ON DELETE CASCADE
 );
 
 INSERT INTO `parent_info` VALUES (1, 31, 'Jan', 'Ouder1');
@@ -71,8 +71,8 @@ CREATE TABLE `student_info` (
   `phone_cell`                     VARCHAR(255) NOT NULL,
   `bank_account`                   VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  FOREIGN KEY (`parent_id`) REFERENCES `parent_info` (`id`)
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)  ON DELETE CASCADE,
+  FOREIGN KEY (`parent_id`) REFERENCES `parent_info` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `student_info` VALUES
@@ -98,7 +98,7 @@ CREATE TABLE `classes` (
   `type`       CHAR(3)      NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `classes` VALUES (1, 21, 'Metselaar 1', 'BGV');
@@ -125,7 +125,7 @@ CREATE TABLE `sub_certificates` (
   `custom_name`        VARCHAR(255),
   `enabled`            TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`)
+  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `sub_certificates` VALUES (1, 1, 'Bekisting',  NULL, 1);
@@ -142,7 +142,7 @@ CREATE TABLE `sub_certificate_categories` (
   `custom_name`        VARCHAR(255),
   `enabled`            TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`sub_certificate_id`) REFERENCES `sub_certificates` (`id`)
+  FOREIGN KEY (`sub_certificate_id`) REFERENCES `sub_certificates` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `sub_certificate_categories` VALUES (1, 1, 'Afwerking', NULL, 1);
@@ -169,8 +169,8 @@ CREATE TABLE `student_class` (
   `student_info_id` INT NOT NULL,
   `class_id`        INT NOT NULL,
   PRIMARY KEY (`student_info_id`, `class_id`),
-  FOREIGN KEY (`student_info_id`) REFERENCES `student_info` (`id`),
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
+  FOREIGN KEY (`student_info_id`) REFERENCES `student_info` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `student_class` VALUES (1, 1);
@@ -183,8 +183,8 @@ CREATE TABLE `class_certificate` (
   `class_id`       INT NOT NULL,
   `certificate_id` INT NOT NULL,
   PRIMARY KEY (`class_id`, `certificate_id`),
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`),
-  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`)
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `class_certificate` VALUES (1, 1);
@@ -199,7 +199,7 @@ CREATE TABLE `competences` (
   `custom_name`                 VARCHAR(255),
   `enabled`                     TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`sub_certificate_category_id`) REFERENCES `sub_certificate_categories` (`id`)
+  FOREIGN KEY (`sub_certificate_category_id`) REFERENCES `sub_certificate_categories` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `competences` VALUES (1, 2, 'Gereedschap opruimen', NULL, 1);
@@ -229,7 +229,7 @@ CREATE TABLE `objectives` (
   `name`            VARCHAR(255) NOT NULL,
   `custom_name`     VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`)
+  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `objectives` VALUES (1, 1, 1, 'Kent Vakthema 1', NULL);
@@ -243,8 +243,8 @@ CREATE TABLE `student_bgv_score` (
   `graded_date`    DATE    NOT NULL,
   `remarks`       VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`),
-  FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`)
+  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `student_bgv_score` VALUES (1, 1, 1, 'V', '2016-04-08', 'Remarks test');
@@ -257,8 +257,8 @@ CREATE TABLE `student_pav_score` (
   `graded_date`   DATE    NOT NULL,
   `remarks`      VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`),
-  FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`)
+  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `student_pav_score` VALUES (1, 1, 1, 'V', '2016-04-08', 'Remarks test');
@@ -267,8 +267,8 @@ CREATE TABLE `class_topics` (
   `course_topic_id` INT NOT NULL,
   `class_id`        INT NOT NULL,
   PRIMARY KEY (`course_topic_id`, `class_id`),
-  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`),
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
+  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `class_topics` VALUES (1, 1);

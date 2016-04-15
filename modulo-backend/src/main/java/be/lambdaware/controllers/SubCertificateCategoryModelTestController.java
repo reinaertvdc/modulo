@@ -61,4 +61,12 @@ public class SubCertificateCategoryModelTestController {
         SubCertificateModel subCertificate = subCertificateCategoryModel.getSubCertificate(subCertificateDAO);
         return new ResponseEntity<SubCertificateModel>(subCertificate, HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.DELETE)
+    public boolean delete(@RequestParam(value="id") Integer subCertificateCategoryId ) {
+        SubCertificateCategoryModel subCertificateCategoryModel = new SubCertificateCategoryModel(subCertificateCategoryDAO);
+        subCertificateCategoryModel.getFromDB(subCertificateCategoryId);
+        return subCertificateCategoryModel.deleteFromDB();
+    }
 }

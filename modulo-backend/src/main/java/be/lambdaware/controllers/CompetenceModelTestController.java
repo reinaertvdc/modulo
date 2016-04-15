@@ -47,4 +47,11 @@ public class CompetenceModelTestController {
         return new ResponseEntity<SubCertificateCategoryModel>(subCertificateCategory, HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.DELETE)
+    public boolean delete(@RequestParam(value="id") Integer competenceId ) {
+        CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
+        competenceModel.getFromDB(competenceId);
+        return competenceModel.deleteFromDB();
+    }
 }

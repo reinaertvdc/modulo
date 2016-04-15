@@ -36,58 +36,36 @@ public class ParentModel extends AccountModel {
     }
 
     @Override
-    public boolean createInDB() throws DataAccessException {
-        if (!super.createInDB())
-            return false;
+    public void createInDB() throws DataAccessException {
+        super.createInDB();
 
         parentInfoEntity.setUserId(userEntity.getId());
         int id = parentInfoDAO.create(parentInfoEntity);
         parentInfoEntity.setId(id);
-
-        return  true;
     }
 
     @Override
-    public boolean getFromDB(Integer userId) throws DataAccessException {
-        if (!super.getFromDB(userId))
-            return false;
-
+    public void getFromDB(Integer userId) throws DataAccessException {
+        super.getFromDB(userId);
         parentInfoEntity = parentInfoDAO.getByUserId(userId);
-        if (parentInfoEntity == null)
-            return false;
-
-        return true;
     }
 
-    public boolean getFromDBByParentInfoId(Integer parentInfoId) throws DataAccessException {
+    public void getFromDBByParentInfoId(Integer parentInfoId) throws DataAccessException {
         parentInfoEntity = parentInfoDAO.get(parentInfoId);
-        if (parentInfoEntity == null)
-            return false;
-
         userEntity = userDAO.get(parentInfoEntity.getUserId());
-        if (userEntity == null)
-            return false;
-
-        return true;
     }
 
     @Override
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         parentInfoDAO.delete(parentInfoEntity.getId());
 
-        if (!super.deleteFromDB())
-            return false;
-
-        return true;
+        super.deleteFromDB();
     }
 
     @Override
-    public boolean updateInDB() throws DataAccessException {
-        if (!super.updateInDB())
-            return false;
-
+    public void updateInDB() throws DataAccessException {
+        super.updateInDB();
         parentInfoDAO.update(parentInfoEntity);
-        return true;
     }
 
     public ArrayList<StudentModel> getChildren(StudentInfoDAO studentInfoDAO) throws DataAccessException {
@@ -95,8 +73,9 @@ public class ParentModel extends AccountModel {
 
         // lus over alle entiteiten die teruggekregen zijn
         for (StudentInfoEntity entity : studentInfoDAO.getByParentId(parentInfoEntity.getId())) {
-            // child maken, child getten met id
+            // child maken
             StudentModel child = new StudentModel(userDAO, studentInfoDAO);
+            // child getten met id
             child.getFromDBByStudentInfoId(entity.getId());
             // child toevoegen aan lijst
             children.add(child);

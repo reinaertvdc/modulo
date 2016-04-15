@@ -53,27 +53,21 @@ public class SubCertificateCategoryModel {
     }
 
 
-    public boolean createInDB() throws DataAccessException {
+    public void createInDB() throws DataAccessException {
         int id = subCertificateCategoryDAO.create(subCertificateCategoryEntity);
         subCertificateCategoryEntity.setId(id);
-        return true;
     }
 
-    public boolean getFromDB(Integer subCertificateCategoryId) throws DataAccessException {
+    public void getFromDB(Integer subCertificateCategoryId) throws DataAccessException {
         subCertificateCategoryEntity = subCertificateCategoryDAO.get(subCertificateCategoryId);
-        if (subCertificateCategoryEntity == null)
-            return false;
-        return true;
     }
 
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         subCertificateCategoryDAO.delete(subCertificateCategoryEntity.getId());
-        return true;
     }
 
-    public boolean updateInDB() throws DataAccessException {
+    public void updateInDB() throws DataAccessException {
         subCertificateCategoryDAO.update(subCertificateCategoryEntity);
-        return true;
     }
 
 

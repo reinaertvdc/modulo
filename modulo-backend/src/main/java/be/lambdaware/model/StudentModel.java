@@ -15,6 +15,9 @@ public class StudentModel extends AccountModel {
     private StudentInfoEntity studentInfoEntity;
     private StudentInfoDAO studentInfoDAO;
 
+    // TODO StudyProgress bijhouden
+    // TODO class bijhouden
+
     public StudentModel() {}
 
     public StudentModel(UserDAO userDAO, StudentInfoDAO studentInfoDAO) {
@@ -35,58 +38,35 @@ public class StudentModel extends AccountModel {
     }
 
     @Override
-    public boolean createInDB() throws DataAccessException {
-        if (!super.createInDB())
-            return false;
+    public void createInDB() throws DataAccessException {
+        super.createInDB();
 
         studentInfoEntity.setUser(userEntity.getId());
         int id = studentInfoDAO.create(studentInfoEntity);
         studentInfoEntity.setId(id);
-
-        return true;
     }
 
     @Override
-    public boolean getFromDB(Integer userId) throws DataAccessException {
-        if (!super.getFromDB(userId))
-            return false;
-
+    public void getFromDB(Integer userId) throws DataAccessException {
+        super.getFromDB(userId);
         studentInfoEntity = studentInfoDAO.getByUserId(userId);
-        if (studentInfoEntity == null)
-            return false;
-
-        return true;
     }
 
-    public boolean getFromDBByStudentInfoId(Integer studentInfoId) throws DataAccessException {
+    public void getFromDBByStudentInfoId(Integer studentInfoId) throws DataAccessException {
         studentInfoEntity = studentInfoDAO.get(studentInfoId);
-        if (studentInfoEntity == null)
-            return false;
-
         userEntity = userDAO.get(studentInfoEntity.getUser());
-        if (userEntity == null)
-            return false;
-
-        return true;
     }
 
     @Override
-    public boolean deleteFromDB() throws DataAccessException {
+    public void deleteFromDB() throws DataAccessException {
         studentInfoDAO.delete(studentInfoEntity.getId());
-
-        if (!super.deleteFromDB())
-            return false;
-
-        return true;
+        super.deleteFromDB();
     }
 
     @Override
-    public boolean updateInDB() throws DataAccessException {
-        if (!super.updateInDB())
-            return false;
-
+    public void updateInDB() throws DataAccessException {
+        super.updateInDB();
         studentInfoDAO.update(studentInfoEntity);
-        return true;
     }
 
     public ParentModel getParent(ParentInfoDAO parentInfoDAO) throws DataAccessException {

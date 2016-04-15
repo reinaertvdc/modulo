@@ -7,7 +7,7 @@ class Downloader:
     __CERTIFICATE_WEB_PAGE_URL = \
         'http://www.ond.vlaanderen.be/curriculum/leren-en-werken/deeltijds-beroepssecundair-onderwijs/opleidingen/'
     __ABSOLUTE_URL_START_TAG = 'http://'
-    __CERTIFICATE_POSTFIX = '.pdf'
+    __DIRECTORY_SYMBOL = '/'
 
     def __init__(self):
         pass
@@ -15,7 +15,9 @@ class Downloader:
     def get_certificate_web_page(self):
         return urllib2.urlopen(self.__CERTIFICATE_WEB_PAGE_URL).read()
 
-    def __save_certificate_pdf(self, url, save_path):
+    def __save_certificate_file(self, url, save_path):
+        if os.path.isfile(save_path):
+            return
         if not os.path.exists(os.path.dirname(save_path)):
             os.makedirs(os.path.dirname(save_path))
         try:
@@ -27,8 +29,7 @@ class Downloader:
         except:
             pass
 
-    def save_certificate_pdfs(self, urls, save_path):
-        index = 1
+    def save_certificate_files(self, urls, save_path):
         for url in urls:
-            self.__save_certificate_pdf(url, save_path + str(index) + self.__CERTIFICATE_POSTFIX)
-            index += 1
+            file_path_end_index = url.rfind(self.__DIRECTORY_SYMBOL)
+            self.__save_certificate_file(url, save_path + url[file_path_end_index + 1:])

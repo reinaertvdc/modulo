@@ -1,5 +1,6 @@
 package be.lambdaware.model;
 
+import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
 import be.lambdaware.dao.SubCertificateDAO;
 import be.lambdaware.entities.SubCertificateCategoryEntity;
@@ -58,8 +59,8 @@ public class SubCertificateModel {
         return true;
     }
 
-    public boolean getFromDB(Integer subCertificateCategoryId) throws DataAccessException {
-        subCertificateEntity = subCertificateDAO.get(subCertificateCategoryId);
+    public boolean getFromDB(Integer subCertificateId) throws DataAccessException {
+        subCertificateEntity = subCertificateDAO.get(subCertificateId);
         if (subCertificateEntity == null)
             return false;
         return true;
@@ -89,5 +90,9 @@ public class SubCertificateModel {
     }
 
 
-    //TODO: getCertificate
+    public CertificateModel getCertificate(CertificateDAO certificateDAO) {
+        CertificateModel certificateModel = new CertificateModel(certificateDAO);
+        certificateModel.getFromDB(subCertificateEntity.getCertificateId());
+        return  certificateModel;
+    }
 }

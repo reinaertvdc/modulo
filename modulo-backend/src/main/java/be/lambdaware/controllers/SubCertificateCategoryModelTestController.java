@@ -7,7 +7,6 @@ import be.lambdaware.model.CompetenceModel;
 import be.lambdaware.model.SubCertificateCategoryModel;
 import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +19,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/subcertificatecategorymodel")
 public class SubCertificateCategoryModelTestController {
-
-    @Autowired
-    private ApplicationContext context;
 
     @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;

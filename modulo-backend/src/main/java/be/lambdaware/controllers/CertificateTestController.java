@@ -3,7 +3,6 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.entities.CertificateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,6 @@ import java.util.List;
 @RequestMapping("/certificate")
 public class CertificateTestController {
 
-    @Autowired
-    private ApplicationContext context;
     @Autowired
     private CertificateDAO certificateDAO;
 

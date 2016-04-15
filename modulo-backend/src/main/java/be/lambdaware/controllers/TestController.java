@@ -5,7 +5,6 @@ import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,6 @@ import java.util.List;
 @RequestMapping("/test")
 public class TestController {
 
-    @Autowired
-    private ApplicationContext context;
     @Autowired
     private UserDAO userDAO;
 

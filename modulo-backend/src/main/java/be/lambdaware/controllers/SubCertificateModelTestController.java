@@ -1,11 +1,12 @@
 package be.lambdaware.controllers;
 
+import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.SubCertificateCategoryDAO;
 import be.lambdaware.dao.SubCertificateDAO;
+import be.lambdaware.model.CertificateModel;
 import be.lambdaware.model.SubCertificateCategoryModel;
 import be.lambdaware.model.SubCertificateModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,11 @@ import java.util.ArrayList;
 public class SubCertificateModelTestController {
 
     @Autowired
-    private ApplicationContext context;
-
-    @Autowired
     private SubCertificateDAO subCertificateDAO;
     @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;
+    @Autowired
+    private CertificateDAO certificateDAO;
 
 
     @CrossOrigin
@@ -51,5 +51,14 @@ public class SubCertificateModelTestController {
         subCertificateModel.getFromDB(subCertificateId);
         ArrayList<SubCertificateCategoryModel> subCertificateCategories = subCertificateModel.getSubCertificateCategories(subCertificateCategoryDAO);
         return new ResponseEntity<ArrayList<SubCertificateCategoryModel>>(subCertificateCategories, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value="/certificate", method = RequestMethod.GET)
+    public ResponseEntity<CertificateModel> getCertificate(@RequestParam(value="id") Integer certificateId ) {
+        SubCertificateModel subCertificateModel = new SubCertificateModel(subCertificateDAO);
+        subCertificateModel.getFromDB(certificateId);
+        CertificateModel certificate = subCertificateModel.getCertificate(certificateDAO);
+        return new ResponseEntity<CertificateModel>(certificate, HttpStatus.OK);
     }
 }

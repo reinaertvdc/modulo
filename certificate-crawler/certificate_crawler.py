@@ -32,5 +32,9 @@ class CertificateCrawler:
 
     def parse_certificates(self):
         modular_certificate_parser = ModularCertificateParser()
+
+        # modular_certificate_parser.parse(
+        #    self.__MODULAR_CERTIFICATES_DIR + os.listdir(self.__MODULAR_CERTIFICATES_DIR)[0])
+
         for pdf in os.listdir(self.__MODULAR_CERTIFICATES_DIR):
             modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + pdf)

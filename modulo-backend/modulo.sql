@@ -225,11 +225,12 @@ INSERT INTO `course_topics` VALUES (2, 'Vakthema 2');
 CREATE TABLE `objectives` (
   `id`              INT          NOT NULL AUTO_INCREMENT,
   `grade_id`        INT          NOT NULL,
-  `course_topic_id` INT          NOT NULL,
+  `course_topic_id` INT,
   `name`            VARCHAR(255) NOT NULL,
   `custom_name`     VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`) ON DELETE CASCADE
 );
 
 INSERT INTO `objectives` VALUES (1, 1, 1, 'Kent Vakthema 1', NULL);

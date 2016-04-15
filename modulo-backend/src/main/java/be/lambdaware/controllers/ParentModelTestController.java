@@ -33,21 +33,10 @@ public class ParentModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ParentModel> get(@RequestParam(value="userID") Integer userId ) {
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<ParentModel> get(@PathVariable Integer userId ) {
         ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
         parentModel.getFromDB(userId);
-        System.out.println(parentModel);
-        System.out.println(parentModel.getChildren(studentInfoDAO));
-        //return new ResponseEntity<StudentModel>(studentModel, HttpStatus.OK);
-        return null;
+        return new ResponseEntity<ParentModel>(parentModel, HttpStatus.OK);
     }
-
-//    @CrossOrigin
-//    @RequestMapping(method = RequestMethod.DELETE)
-//    public boolean delete(@RequestParam(value="userID") Integer userId ) {
-//        StudentModel studentModel = new StudentModel(userDAO, studentInfoDAO);
-//        studentModel.getFromDB(userId);
-//        return studentModel.deleteFromDB();
-//    }
 }

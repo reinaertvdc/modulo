@@ -93,6 +93,6 @@ public class SubCertificateModel {
     public CertificateModel getCertificate(CertificateDAO certificateDAO) {
         CertificateModel certificateModel = new CertificateModel(certificateDAO);
         certificateModel.getFromDB(subCertificateEntity.getCertificateId());
-        return  certificateModel;
+        return certificateModel;
     }
 }

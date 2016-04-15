@@ -31,16 +31,16 @@ public class CompetenceModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<CompetenceModel> get(@RequestParam(value="id") Integer competenceId ) {
+    @RequestMapping(value = "/{competenceId}", method = RequestMethod.GET)
+    public ResponseEntity<CompetenceModel> get(@PathVariable Integer competenceId ) {
         CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
         competenceModel.getFromDB(competenceId);
         return new ResponseEntity<CompetenceModel>(competenceModel, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @RequestMapping(value="/subcertificatecategory", method = RequestMethod.GET)
-    public ResponseEntity<SubCertificateCategoryModel> getSubCertificateCategory(@RequestParam(value="id") Integer competenceId ) {
+    @RequestMapping(value="/subcertificatecategory/{competenceId}", method = RequestMethod.GET)
+    public ResponseEntity<SubCertificateCategoryModel> getSubCertificateCategory(@PathVariable Integer competenceId ) {
         CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
         competenceModel.getFromDB(competenceId);
         SubCertificateCategoryModel subCertificateCategory = competenceModel.getSubCertificateCategory(subCertificateCategoryDAO);
@@ -48,8 +48,8 @@ public class CompetenceModelTestController {
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.DELETE)
-    public boolean delete(@RequestParam(value="id") Integer competenceId ) {
+    @RequestMapping(value = "/{competenceId}", method = RequestMethod.DELETE)
+    public boolean delete(@PathVariable Integer competenceId ) {
         CompetenceModel competenceModel = new CompetenceModel(competenceDAO);
         competenceModel.getFromDB(competenceId);
         return competenceModel.deleteFromDB();

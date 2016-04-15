@@ -42,5 +42,15 @@ var backend = {
         } else {
             return [];
         }
+    },
+
+    setCertificateEnabled: function(id, enabled) {
+        if (this.isLoggedIn() && this.user.details.type === UserType.ADMIN) {
+            for (var i = 0; i < this.certificates.length; i++) {
+                if (this.certificates[i].id == id) {
+                    this.certificates[i].enabled = enabled;
+                }
+            }
+        }
     }
 };

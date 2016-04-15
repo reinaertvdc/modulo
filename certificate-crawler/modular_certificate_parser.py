@@ -1,3 +1,4 @@
+from certificate_component import CertificateComponent
 from pdf_parser import PdfParser
 
 
@@ -18,7 +19,7 @@ class ModularCertificateParser:
         name_end_index = self.content.find(self.__CERTIFICATE_NAME_END_TAG, name_begin_index) - 1
         return self.content[name_begin_index:name_end_index]
 
-    def __parse_module_names(self):
+    def __parse_sub_certificate_names(self):
         module_names = []
         current_module_name_index = self.content.find(self.__MODULES_LIST_START_TAG) + len(
             self.__MODULES_LIST_START_TAG)
@@ -36,10 +37,9 @@ class ModularCertificateParser:
         return module_names
 
     def parse(self, path):
+        sub_certificates = []
         self.content = ' '.join(self.pdf_parser.to_plain_text(path).replace("\n", self.__NEWLINE_TAG).split())
-        name = self.__parse_name()
-        module_names = self.__parse_module_names()
-
-        print name + ' (' + path + ')'
-        for module_name in module_names:
-            print '    ' + module_name
+        certificate_name = self.__parse_name()
+        for sub_certificate_name in self.__parse_sub_certificate_names():
+            sub_certificates.append(CertificateComponent(sub_certificate_name, []))
+        return CertificateComponent(certificate_name, sub_certificates)

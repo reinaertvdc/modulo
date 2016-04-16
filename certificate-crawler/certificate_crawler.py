@@ -26,30 +26,34 @@ class CertificateCrawler:
     def download_certificates(self):
         downloader = Downloader()
         sys.stdout.write("Downloading certificates web page...")
-        web_page_parser = WebPageParser(downloader.get_certificate_web_page())
-        sys.stdout.write(" Done.\n")
+        try:
+            web_page_parser = WebPageParser(downloader.get_certificate_web_page())
+            sys.stdout.write(" Done.\n")
 
-        sys.stdout.write("Scanning page for modular certificates based on professional qualification...")
-        modular_prof_certificate_file_urls = web_page_parser.get_certificate_file_urls(
-            self.__SECTION_MODULAR_PROF_CERTIFICATES_TITLE)
-        sys.stdout.write(" Found " + str(len(modular_prof_certificate_file_urls)) + ".\n")
+            sys.stdout.write("Scanning page for modular certificates based on professional qualification...")
+            modular_prof_certificate_file_urls = web_page_parser.get_certificate_file_urls(
+                self.__SECTION_MODULAR_PROF_CERTIFICATES_TITLE)
+            sys.stdout.write(" Found " + str(len(modular_prof_certificate_file_urls)) + ".\n")
 
-        sys.stdout.write("Scanning page for modular certificates...")
-        modular_certificate_file_urls = web_page_parser.get_certificate_file_urls(
-            self.__SECTION_MODULAR_CERTIFICATES_TITLE)
-        sys.stdout.write(" Found " + str(len(modular_certificate_file_urls)) + ".\n")
+            sys.stdout.write("Scanning page for modular certificates...")
+            modular_certificate_file_urls = web_page_parser.get_certificate_file_urls(
+                self.__SECTION_MODULAR_CERTIFICATES_TITLE)
+            sys.stdout.write(" Found " + str(len(modular_certificate_file_urls)) + ".\n")
 
-        sys.stdout.write("Scanning page for linear certificates...")
-        linear_certificate_file_urls = web_page_parser.get_certificate_file_urls(
-            self.__SECTION_LINEAR_CERTIFICATES_TITLE)
-        sys.stdout.write(" Found " + str(len(linear_certificate_file_urls)) + ".\n\n")
+            sys.stdout.write("Scanning page for linear certificates...")
+            linear_certificate_file_urls = web_page_parser.get_certificate_file_urls(
+                self.__SECTION_LINEAR_CERTIFICATES_TITLE)
+            sys.stdout.write(" Found " + str(len(linear_certificate_file_urls)) + ".\n\n")
 
-        sys.stdout.write(
-            "Downloading missing certificates to '" + self.__CERTIFICATES_DIR + "', this may take a while...")
-        downloader.save_certificate_files(modular_prof_certificate_file_urls, self.__MODULAR_PROF_CERTIFICATES_DIR)
-        downloader.save_certificate_files(modular_certificate_file_urls, self.__MODULAR_CERTIFICATES_DIR)
-        downloader.save_certificate_files(modular_certificate_file_urls, self.__LINEAR_CERTIFICATES_DIR)
-        sys.stdout.write(" Done.\n\n")
+            sys.stdout.write(
+                "Downloading missing certificates to '" + self.__CERTIFICATES_DIR + "', this may take a while...")
+            downloader.save_certificate_files(modular_prof_certificate_file_urls, self.__MODULAR_PROF_CERTIFICATES_DIR)
+            downloader.save_certificate_files(modular_certificate_file_urls, self.__MODULAR_CERTIFICATES_DIR)
+            downloader.save_certificate_files(modular_certificate_file_urls, self.__LINEAR_CERTIFICATES_DIR)
+            sys.stdout.write(" Done.\n\n")
+        except:
+            sys.stdout.write(" Error.\n\n")
+            sys.stdout.write("WARNING: Some certificates failed to download, parsing only downloaded certificates.\n\n")
 
     def parse_certificates(self):
         sys.stdout.write("Starting parser.\n")
@@ -65,10 +69,9 @@ class CertificateCrawler:
         for certificate_file_name in modular_certificate_file_names:
             sys.stdout.write("Parsing certificate " + str(i) + "/" + str(
                 n_modular_certificates) + " '" + certificate_file_name + "'...")
-            sql_generator.write(
-                modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name))
-            js_generator.write(
-                modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name))
+            certificate = modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name)
+            sql_generator.write(certificate)
+            js_generator.write(certificate)
             sys.stdout.write(" Done.\n")
             i += 1
         sys.stdout.write("\nParser finished!\n")

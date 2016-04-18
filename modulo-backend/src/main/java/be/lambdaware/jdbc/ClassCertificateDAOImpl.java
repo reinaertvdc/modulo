@@ -38,12 +38,12 @@ public class ClassCertificateDAOImpl extends AbstractDAOImpl implements ClassCer
     }
 
     @Override
-    public List<ClassCertificateEntity> getByClass(Integer classId) throws DataAccessException {
+    public ClassCertificateEntity getByClass(Integer classId) throws DataAccessException {
 //        String SQL = "SELECT * " +
 //                "FROM `class_certificate` JOIN `classes` ON  `class_certificate`.`class_id` = `classes`.`id` JOIN `certificates` ON `class_certificate`.`certificate_id` = `certificates`.`id` JOIN  `users` ON `classes`.`teacher_id` = `users`.`id`"  +
 //                "WHERE `class_id` = ?";
         String SQL = "SELECT * FROM `class_certificate` WHERE `class_id` = ?";
-        List<ClassCertificateEntity> classCertificates = jdbcTemplate.query(SQL, new ClassCertificateMapper(), classId);
+        ClassCertificateEntity classCertificates = jdbcTemplate.queryForObject(SQL, new ClassCertificateMapper(), classId);
         return classCertificates;
     }
 

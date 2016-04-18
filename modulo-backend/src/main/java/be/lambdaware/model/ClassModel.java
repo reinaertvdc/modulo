@@ -1,10 +1,15 @@
 package be.lambdaware.model;
 
 import be.lambdaware.dao.ClassDAO;
+import be.lambdaware.dao.StudentClassDAO;
+import be.lambdaware.dao.StudentInfoDAO;
+import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.StudentClassEntity;
+import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,16 +21,14 @@ public abstract class ClassModel {
 //    private List<StudentModel> studentModels;
 
     // entities
-    private ClassEntity classEntity;
+    protected ClassEntity classEntity;
 
     // DAO's
-    private ClassDAO classDAO;
+    protected ClassDAO classDAO;
 
     public ClassModel() {}
 
-    public ClassModel(ClassDAO classDAO) {
-        this.classDAO = classDAO;
-    }
+    public ClassModel(ClassDAO classDAO) { this.classDAO = classDAO; }
 
     public ClassEntity getClassEntity() {
         return classEntity;
@@ -58,6 +61,19 @@ public abstract class ClassModel {
 
     public void updateInDB() throws DataAccessException {
         classDAO.update(classEntity);
+    }
+
+    public ArrayList<StudentModel> getStudents(UserDAO userDAO, StudentInfoDAO studentInfoDAO, StudentClassDAO studentClassDAO) throws DataAccessException {
+        ArrayList<StudentModel> students = new ArrayList<>();
+
+        // lus over alle userId's per class
+        for (StudentClassEntity studentClassEntity : studentClassDAO.getByClass(classEntity.getId())) {
+            StudentModel student = new StudentModel(userDAO, studentInfoDAO);
+            student.getFromDBByStudentInfoId(studentClassEntity.getStudentInfoId());
+            students.add(student);
+        }
+
+        return students;
     }
 
 

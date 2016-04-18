@@ -1,6 +1,10 @@
 package be.lambdaware.model;
 
 import be.lambdaware.dao.ClassDAO;
+import be.lambdaware.dao.CourseTopicDAO;
+import be.lambdaware.dao.GradeDAO;
+import be.lambdaware.dao.StudentClassDAO;
+import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
 
@@ -9,38 +13,17 @@ import java.util.ArrayList;
  */
 public class PAVClassModel extends ClassModel {
 
-    private CertificateModel certificateModel;
+    private CourseTopicDAO courseTopicDAO;
     private ArrayList<CourseTopicModel> courseTopicModels; // TODO get-function
+
+    private GradeDAO gradeDAO;
+    private GradeModel gradeModel;
+
 
     public PAVClassModel() {}
 
-    public PAVClassModel(ClassDAO classDAO) {
+    public PAVClassModel(ClassDAO classDAO, CourseTopicDAO courseTopicDAO) {
         super(classDAO);
-    }
-
-    public CertificateModel getCertificateModel() {
-        return certificateModel;
-    }
-
-    public void setCertificateModel(CertificateModel certificateModel) {
-        this.certificateModel = certificateModel;
-    }
-
-    @Override
-    public String toString() {
-        return "PAVClassModel{" +
-                "certificateModel=" + certificateModel +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        PAVClassModel that = (PAVClassModel) o;
-
-        return certificateModel.equals(that.certificateModel);
+        this.courseTopicDAO = courseTopicDAO;
     }
 }

@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.entities.GradeEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Vincent on 07/04/16.
  */
 @RestController
-@RequestMapping("/grade")
+@RequestMapping("/gradeEntity")
 public class GradeTestController {
 
     @Autowired

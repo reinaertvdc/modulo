@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.ClassCertificateDAO;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Vincent on 07/04/16.
  */
 @RestController
-@RequestMapping("/class_certificate")
+@RequestMapping("/class_certificateEntity")
 public class ClassCertificateTestController {
 
     @Autowired

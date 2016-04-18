@@ -1,9 +1,7 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.UserDAO;
-import be.lambdaware.model.ClassModel;
-import be.lambdaware.model.ParentModel;
 import be.lambdaware.model.TeacherModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

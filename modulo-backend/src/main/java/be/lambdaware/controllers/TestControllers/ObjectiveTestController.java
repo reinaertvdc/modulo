@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.ObjectiveDAO;
 import be.lambdaware.entities.ObjectiveEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/objective")
+@RequestMapping("/objectiveEntity")
 public class ObjectiveTestController {
 
     @Autowired

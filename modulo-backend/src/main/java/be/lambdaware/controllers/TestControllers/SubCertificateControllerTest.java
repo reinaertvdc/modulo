@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.SubCertificateDAO;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by MichielVM on 7/04/2016.
  */
 @RestController
-@RequestMapping("/subcertificate")
+@RequestMapping("/subcertificateEntity")
 public class SubCertificateControllerTest {
 
     @Autowired

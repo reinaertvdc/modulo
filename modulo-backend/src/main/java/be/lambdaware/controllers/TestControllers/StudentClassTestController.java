@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.StudentClassDAO;
 import be.lambdaware.entities.StudentClassEntity;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by martijn on 07/04/16.
  */
 @RestController
-@RequestMapping("/student_class")
+@RequestMapping("/student_classEntity")
 public class StudentClassTestController {
 
     @Autowired

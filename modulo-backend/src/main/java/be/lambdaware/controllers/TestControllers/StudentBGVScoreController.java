@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.StudentBGVScoreDAO;
 import be.lambdaware.entities.StudentBGVScoreEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/bgv")
+@RequestMapping("/bgvEntity")
 public class StudentBGVScoreController {
 
     @Autowired

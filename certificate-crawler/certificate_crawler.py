@@ -63,7 +63,7 @@ class CertificateCrawler:
         sys.stdout.write("JS output will be written to '" + self.__OUTPUT_DIR + self.__JS_OUTPUT_FILE_NAME + "'.\n\n")
         js_generator = JsGenerator(self.__OUTPUT_DIR, self.__JS_OUTPUT_FILE_NAME)
 
-        #modular_certificate_parser.get_certificate(self.__MODULAR_CERTIFICATES_DIR + '106POLYVALANTMECANICIENPERSONENWAGENSENLICHTEBEDRIJFSVOERTUIGEN.pdf')
+        #modular_certificate_parser.get_certificate(self.__MODULAR_CERTIFICATES_DIR + '063Kok.pdf')
         #exit()
         modular_certificate_file_names = os.listdir(self.__MODULAR_CERTIFICATES_DIR)
         n_modular_certificates = len(modular_certificate_file_names)
@@ -71,7 +71,7 @@ class CertificateCrawler:
         for certificate_file_name in modular_certificate_file_names:
             sys.stdout.write("Parsing certificate " + str(i) + "/" + str(
                 n_modular_certificates) + " '" + certificate_file_name + "'...")
-            certificate = modular_certificate_parser.parse(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name)
+            certificate = modular_certificate_parser.get_certificate(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name)
             sql_generator.write(certificate)
             js_generator.write(certificate)
             sys.stdout.write(" Done.\n")

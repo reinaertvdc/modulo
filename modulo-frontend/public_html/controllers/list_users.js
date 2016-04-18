@@ -1,4 +1,4 @@
-app.controller('ListUsersController', function ($scope, $compile) {
+app.controller('ListUsersController', function ($scope, $http, $window, $compile) {
     // TODO finish controller
     //TODO vervang alle dummy data met backend stuff
     //TODO user zorden nu handmatig via for lus bepaakd, dit zou een function call uit de database moeten worden
@@ -8,30 +8,30 @@ app.controller('ListUsersController', function ($scope, $compile) {
     $scope.users = new Map();
 
 
-    //Pagination code
-    $scope.totalItems = $scope.backend.getUsers().length;
-    $scope.currentPage = 1;
-    $scope.maxSize = 5;
-    $scope.itemsPerPage = 5;
-    $scope.previousPage = $scope.currentPage;
-
-    $scope.pageChanged = function() {
-        //Remove previous elements
-        var prevItems = $scope.itemsPerPage * $scope.previousPage;
-        for(var i = prevItems - $scope.itemsPerPage + 1; i <= prevItems;i++)
-        {
-            var user = $scope.users.get(i);
-            $scope.removeUser(user.id);
-        }
-
-        //Add new elements
-        for(var i = prevItems + 1; i <= $scope.currentPage * $scope.itemsPerPage;i++)
-        {
-            var user = $scope.users.get(i);
-            $scope.addUser(user);
-        }
-        $scope.previousPage = $scope.currentPage;
-    };
+    // //Pagination code
+    // $scope.totalItems = $scope.backend.getUsers().length;
+    // $scope.currentPage = 1;
+    // $scope.maxSize = 5;
+    // $scope.itemsPerPage = 5;
+    // $scope.previousPage = $scope.currentPage;
+    //
+    // $scope.pageChanged = function() {
+    //     //Remove previous elements
+    //     var prevItems = $scope.itemsPerPage * $scope.previousPage;
+    //     for(var i = prevItems - $scope.itemsPerPage + 1; i <= prevItems;i++)
+    //     {
+    //         var user = $scope.users.get(i);
+    //         $scope.removeUser(user.id);
+    //     }
+    //
+    //     //Add new elements
+    //     for(var i = prevItems + 1; i <= $scope.currentPage * $scope.itemsPerPage;i++)
+    //     {
+    //         var user = $scope.users.get(i);
+    //         $scope.addUser(user);
+    //     }
+    //     $scope.previousPage = $scope.currentPage;
+    // };
 
     $scope.toElementId = function (id) {
         return USER_LIST_ITEM_PREFIX + id;
@@ -39,20 +39,21 @@ app.controller('ListUsersController', function ($scope, $compile) {
 
     $scope.addUser = function (user) {
         $scope.removeUser(user.id);
-        console.log("Add users");
-        if(user.id <= $scope.itemsPerPage * $scope.currentPage)
-        {
+        $scope.users.set(user.id, user);
 
-            var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
-                '<td>' + user.name.first + ' ' + user.name.last + '</td><td>' + user.email + '</td><td>' + user.details.type + '</td>' +
-                '<td class="text-info"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-                '<td class="text-danger" data-ng-click="removeUser(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
-                '</tr>';
+        // if(user.id <= $scope.itemsPerPage * $scope.currentPage)
+        // {
 
-            var element = document.createElement('tr');
-            USER_LIST_ELEMENT.appendChild(element);
-            element.outerHTML = html;
-        }
+        var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
+            '<td>' + user.name.first + ' ' + user.name.last + '</td><td>' + user.email + '</td><td>' + user.details.type + '</td>' +
+            '<td class="text-info"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
+            '<td class="text-danger" data-ng-click="removeUser(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+            '</tr>';
+
+        var element = document.createElement('tr');
+        USER_LIST_ELEMENT.appendChild(element);
+        element.outerHTML = html;
+        // }
     };
 
     $scope.removeUser = function (id) {
@@ -68,11 +69,17 @@ app.controller('ListUsersController', function ($scope, $compile) {
         $compile(USER_LIST_ELEMENT)($scope);
     };
 
-    console.log($scope.backend.isLoggedIn());
-    $scope.backend.getUsers().forEach(function (user) {
-        console.log("In getUsers");
-        $scope.users.set(user.id, user);
-        $scope.addUser(user);
+
+
+    $http.get('http://localhost:8080/account/all').success(function (response) {
+        response.forEach(function (item) {
+            $scope.addUser(item.userEntity)
+        });
+        $scope.refresh();
     });
-    $scope.refresh();
+
+    // $scope.backend.getUsers().forEach(function (user) {
+    //     $scope.addUser(user);
+    // });
+    // $scope.refresh();
 });

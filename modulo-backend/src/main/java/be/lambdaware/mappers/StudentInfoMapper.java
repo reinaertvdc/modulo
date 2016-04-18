@@ -1,8 +1,6 @@
 package be.lambdaware.mappers;
 
-import be.lambdaware.entities.ParentInfoEntity;
 import be.lambdaware.entities.StudentInfoEntity;
-import be.lambdaware.entities.UserEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -20,8 +18,6 @@ public class StudentInfoMapper implements RowMapper<StudentInfoEntity> {
         studentInfoEntity.setId(resultSet.getInt("student_info.id"));
         studentInfoEntity.setUser(resultSet.getInt("student_info.user_id"));
         studentInfoEntity.setParent(resultSet.getInt("student_info.parent_id"));
-        studentInfoEntity.setFirstName(resultSet.getString("student_info.first_name"));
-        studentInfoEntity.setLastName(resultSet.getString("student_info.last_name"));
         studentInfoEntity.setBirthDate(resultSet.getDate("student_info.birthdate"));
         studentInfoEntity.setBirthPlace(resultSet.getString("student_info.birth_place"));
         studentInfoEntity.setNationality(resultSet.getString("student_info.nationality"));

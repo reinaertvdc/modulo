@@ -637,6 +637,8 @@ public class ModuloDAOTests {
         userEntity.setId(11);
         userEntity.setEmail("leerling1@school.be");
         userEntity.setPassword("b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86");
+        userEntity.setFirstName("Hilde");
+        userEntity.setLastName("Beerten");
         userEntity.setType("STUDENT");
         Assert.assertEquals(userEntity, userDAO.get(11));
         Logger.getLogger("Test UserDAO").info("Expected user with ID=11 matches user from database - pass");
@@ -646,6 +648,8 @@ public class ModuloDAOTests {
         userEntity.setId(12);
         userEntity.setEmail("leerling2@school.be");
         userEntity.setPassword("b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86");
+        userEntity.setFirstName("Katrien");
+        userEntity.setLastName("Formesyn");
         userEntity.setType("STUDENT");
         Assert.assertEquals(userEntity, userDAO.get(12));
         Logger.getLogger("Test UserDAO").info("Expected user with ID=12 matches user from database - pass");
@@ -654,6 +658,8 @@ public class ModuloDAOTests {
         userEntity = new UserEntity();
         userEntity.setEmail("test@unit.com");
         userEntity.setPassword("test");
+        userEntity.setFirstName("TestVoornaam");
+        userEntity.setLastName("TestAchternaam");
         userEntity.setType("STUDENT");
 
         int insertedId = userDAO.create(userEntity);
@@ -942,8 +948,6 @@ public class ModuloDAOTests {
         entity.setId(1);
         entity.setUser(11);
         entity.setParent(1);
-        entity.setFirstName("Pieter");
-        entity.setLastName("Leerling1");
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -964,8 +968,6 @@ public class ModuloDAOTests {
         entity.setId(2);
         entity.setUser(12);
         entity.setParent(2);
-        entity.setFirstName("Joris");
-        entity.setLastName("Leerling2");
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -993,8 +995,6 @@ public class ModuloDAOTests {
         entity.setId(4);
         entity.setUser(14);
         entity.setParent(2);
-        entity.setFirstName("Marcel");
-        entity.setLastName("Leerling4");
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -1019,8 +1019,6 @@ public class ModuloDAOTests {
         entity.setId(20);
         entity.setUser(41);
         entity.setParent(2);
-        entity.setFirstName("Jan");
-        entity.setLastName("Leerling20");
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -1042,8 +1040,6 @@ public class ModuloDAOTests {
         Logger.getLogger("Test StudentInfoDAO").info("Inserted StudentInfo matches our desired StudentInfo - pass");
 
         //Test update
-        entity.setFirstName("Pieter");
-        entity.setLastName("Leerling1");
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");

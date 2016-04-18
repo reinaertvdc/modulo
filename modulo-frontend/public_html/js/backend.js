@@ -29,6 +29,9 @@ var backend = {
     },
 
     getUsers: function () {
+        return this.users;
+
+        // TODO onderstaande check werkt niet voor een of andere reden
         if (this.isLoggedIn() && this.user.details.type === UserType.ADMIN) {
             return this.users;
         } else {

@@ -33,7 +33,10 @@ class ModularCertificateParser:
         name_begin_index = source.find(self.__CERTIFICATE_NAME_BEGIN_TAG) + len(self.__CERTIFICATE_NAME_BEGIN_TAG)
         name_end_index = source.find(self.__CERTIFICATE_NAME_END_TAG, name_begin_index) - 1
 
-        return source[name_begin_index:name_end_index]
+        name = source[name_begin_index:name_end_index]
+        name = name.replace('\n', '')
+
+        return name
 
     def __get_sub_certificates(self, source):
         sub_certificates = []
@@ -94,7 +97,6 @@ class ModularCertificateParser:
             elif append_to_previous_line and i > 0:
                 previous_line_was_empty = False
                 names[i - 1] += ' ' + names[i]
-                names[i - 1] = names[i - 1].replace('\n', '')
                 names.pop(i)
             else:
                 previous_line_was_empty = False

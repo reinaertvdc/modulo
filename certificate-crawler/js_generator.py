@@ -41,4 +41,4 @@ class JsGenerator:
             self.sub_certificate_id += 1
         query += "]),\n"
         self.certificate_id += 1
-        self.output_file.write(query)
+        self.output_file.write(query.encode('utf8'))

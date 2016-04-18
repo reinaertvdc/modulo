@@ -41,4 +41,4 @@ class SqlGenerator:
                 self.sub_certificate_category_id += 1
             self.sub_certificate_id += 1
         self.certificate_id += 1
-        self.output_file.write(query)
+        self.output_file.write(query.encode('utf8'))

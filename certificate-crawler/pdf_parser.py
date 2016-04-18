@@ -15,6 +15,7 @@ class PdfParser:
 
     @staticmethod
     def to_plain_text(path):
+        # based on http://stackoverflow.com/questions/26494211/extracting-text-from-a-pdf-file-using-pdfminer-in-python
         rsrcmgr = PDFResourceManager()
         retstr = StringIO()
         codec = 'utf-8'
@@ -22,7 +23,7 @@ class PdfParser:
         device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
         fp = file(path, 'rb')
         interpreter = PDFPageInterpreter(rsrcmgr, device)
-        password = ""
+        password = ''
         maxpages = 0
         caching = True
         pagenos = set()
@@ -36,4 +37,4 @@ class PdfParser:
         fp.close()
         device.close()
         retstr.close()
-        return text
+        return text.decode('utf-8')

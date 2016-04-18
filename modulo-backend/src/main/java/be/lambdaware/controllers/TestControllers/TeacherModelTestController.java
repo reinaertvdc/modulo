@@ -1,7 +1,6 @@
 package be.lambdaware.controllers.TestControllers;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.model.TeacherModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +18,10 @@ public class TeacherModelTestController {
     private UserDAO userDAO;
     @Autowired
     private ClassDAO classDAO;
+    @Autowired
+    private CertificateDAO certificateDAO;
+    @Autowired
+    private ClassCertificateDAO classCertificateDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
@@ -37,7 +40,7 @@ public class TeacherModelTestController {
         teacherModel.getFromDB(teacherId);
 
         System.out.println(teacherModel);
-        System.out.println(teacherModel.getClasses(classDAO));
+        System.out.println(teacherModel.getClasses(classDAO, certificateDAO, classCertificateDAO));
 
         return new ResponseEntity<TeacherModel>(teacherModel, HttpStatus.OK);
 //        return null;

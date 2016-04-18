@@ -16,7 +16,7 @@ public class StudentModel extends AccountModel {
     private StudentInfoDAO studentInfoDAO;
 
     // TODO StudyProgress bijhouden
-    // TODO class bijhouden -> cyclische referentie?
+    // TODO ClassModel (BGV, PAV) opvragen
 
     public StudentModel() {}
 

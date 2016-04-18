@@ -51,12 +51,12 @@ public class ClassCertificateTestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET,path = "/get_by_class")
-    public ResponseEntity<List<ClassCertificateEntity>> getByClass(@RequestParam(value = "classId") Integer classId) {
+    public ResponseEntity<ClassCertificateEntity> getByClass(@RequestParam(value = "classId") Integer classId) {
         //TODO process when dao.create fails with SQL Exception
 
-        List<ClassCertificateEntity> classCertificateEntity = classCertificateDAO.getByClass(classId);
+        ClassCertificateEntity classCertificateEntity = classCertificateDAO.getByClass(classId);
 
-        return new ResponseEntity<List<ClassCertificateEntity>>(classCertificateEntity, HttpStatus.OK);
+        return new ResponseEntity<ClassCertificateEntity>(classCertificateEntity, HttpStatus.OK);
     }
 
     @CrossOrigin

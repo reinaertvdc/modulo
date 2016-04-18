@@ -7,8 +7,9 @@ app.controller('ListUsersController', function ($scope, $compile) {
 
     $scope.users = new Map();
 
+
     //Pagination code
-    $scope.totalItems = backend.getUsers().length;
+    $scope.totalItems = $scope.backend.getUsers().length;
     $scope.currentPage = 1;
     $scope.maxSize = 5;
     $scope.itemsPerPage = 5;
@@ -38,7 +39,7 @@ app.controller('ListUsersController', function ($scope, $compile) {
 
     $scope.addUser = function (user) {
         $scope.removeUser(user.id);
-
+        console.log("Add users");
         if(user.id <= $scope.itemsPerPage * $scope.currentPage)
         {
 
@@ -67,7 +68,9 @@ app.controller('ListUsersController', function ($scope, $compile) {
         $compile(USER_LIST_ELEMENT)($scope);
     };
 
-    backend.getUsers().forEach(function (user) {
+    console.log($scope.backend.isLoggedIn());
+    $scope.backend.getUsers().forEach(function (user) {
+        console.log("In getUsers");
         $scope.users.set(user.id, user);
         $scope.addUser(user);
     });

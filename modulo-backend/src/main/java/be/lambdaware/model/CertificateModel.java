@@ -82,4 +82,17 @@ public class CertificateModel {
 
         return subCertificates;
     }
+
+
+    public static ArrayList<CertificateModel> getAll(CertificateDAO certificateDAO) {
+        ArrayList<CertificateModel> certificates = new ArrayList<CertificateModel>();
+
+        for(CertificateEntity entity : certificateDAO.getAll()) {
+            CertificateModel certificate = new CertificateModel();
+            certificate.setCertificateEntity(entity);
+            certificates.add(certificate);
+        }
+
+        return certificates;
+    }
 }

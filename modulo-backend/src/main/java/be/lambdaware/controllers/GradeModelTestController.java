@@ -42,10 +42,10 @@ public class GradeModelTestController {
 
     @CrossOrigin
     @RequestMapping(value = "/{gradeId}", method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable Integer gradeId) {
+    public void delete(@PathVariable Integer gradeId) {
         GradeModel gradeModel = new GradeModel(gradeDAO);
         gradeModel.getFromDB(gradeId);
-        return gradeModel.deleteFromDB();
+        gradeModel.deleteFromDB();
     }
 
     @CrossOrigin

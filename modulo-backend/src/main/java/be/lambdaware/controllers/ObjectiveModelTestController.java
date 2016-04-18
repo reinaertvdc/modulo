@@ -40,10 +40,10 @@ public class ObjectiveModelTestController {
 
     @CrossOrigin
     @RequestMapping(value = "/{objectiveId}", method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable Integer objectiveId) {
+    public void delete(@PathVariable Integer objectiveId) {
         ObjectiveModel objectiveModel = new ObjectiveModel(objectiveDAO);
         objectiveModel.getFromDB(objectiveId);
-        return objectiveModel.deleteFromDB();
+        objectiveModel.deleteFromDB();
     }
 
     @CrossOrigin

@@ -27,12 +27,17 @@ public class TeacherModel extends AccountModel {
 
 //            System.out.println("ClassName: " + entity.getName());
 
+            ClassModel classModel;
             // vraag type op
+            if (entity.getType().toLowerCase().equals("bgv")) {
+                // maak pav of bgv class aan
+                classModel = new BGVClassModel(classDAO);
+                System.out.println("BGV " + classModel);
+            } else { // if (entity.getType().toLowerCase().equals("pav"))
+                classModel = new PAVClassModel(classDAO);
+                System.out.println("PAV" + classModel);
+            }
 
-            // maak pav of bgv class aan
-
-            // Class maken
-            ClassModel classModel = new ClassModel(classDAO);
             // ClassEntity setten
             classModel.setClassEntity(entity);
             // Class toevoegen aan lijst

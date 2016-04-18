@@ -2,6 +2,7 @@ package be.lambdaware.model;
 
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.entities.ClassEntity;
+import be.lambdaware.entities.StudentClassEntity;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
@@ -9,8 +10,7 @@ import java.util.List;
 /**
  * Created by Vincent on 08/04/16.
  */
-// TODO make abstract
-public class ClassModel {
+public abstract class ClassModel {
     // models
 //    private TeacherModel teacherModel;
 //    private List<StudentModel> studentModels;

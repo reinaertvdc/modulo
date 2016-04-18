@@ -1,7 +1,6 @@
 package be.lambdaware.model;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.entities.ClassEntity;
 
 import java.util.ArrayList;
@@ -18,33 +17,21 @@ public class TeacherModel extends AccountModel {
         super(userDAO);
     }
 
-    public ArrayList<ClassModel> getClasses(ClassDAO classDAO) {
+    public ArrayList<ClassModel> getClasses(ClassDAO classDAO, CertificateDAO certificateDAO, ClassCertificateDAO classCertificateDAO) {
         ArrayList<ClassModel> classModels = new ArrayList<>();
 
 //        System.out.println(classDAO.getAllByTeacher(userEntity.getId()));
         // lus over alle teruggekregen entiteiten
         for (ClassEntity entity : classDAO.getAllByTeacher(userEntity.getId())) {
-
-//            System.out.println("ClassName: " + entity.getName());
-
-            ClassModel classModel;
-            // vraag type op
             if (entity.getType().toLowerCase().equals("bgv")) {
-                // maak pav of bgv class aan
-                classModel = new BGVClassModel(classDAO);
-                System.out.println("BGV " + classModel);
-            } else { // if (entity.getType().toLowerCase().equals("pav"))
-                classModel = new PAVClassModel(classDAO);
-                System.out.println("PAV" + classModel);
+                BGVClassModel bgvClassModel = new BGVClassModel(classDAO, certificateDAO);
+                bgvClassModel.getFromDB(entity.getId(), classCertificateDAO);
+                classModels.add(bgvClassModel);
+            } else { // if type is pav
+                // TODO PAV
             }
-
-            // ClassEntity setten
-            classModel.setClassEntity(entity);
-            // Class toevoegen aan lijst
-            classModels.add(classModel);
         }
 
-        // lijst returnen
         return classModels;
     }
 }

@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.ParentInfoDAO;
 import be.lambdaware.dao.StudentInfoDAO;

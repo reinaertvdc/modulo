@@ -42,6 +42,12 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
         return entity;
     }
 
+    public List<StudentClassEntity> getByClass(Integer classEntityId) throws DataAccessException {
+        String SQL = "SELECT * FROM `student_class` WHERE `class_id` = ?";
+        List<StudentClassEntity> entity = jdbcTemplate.query(SQL, new Object[]{classEntityId}, new StudentClassMapper());
+        return entity;
+    }
+
     @Override
     public List<StudentClassEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `student_class`";

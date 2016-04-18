@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.ClassCertificateDAO;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Vincent on 07/04/16.
  */
 @RestController
-@RequestMapping("/class_certificate")
+@RequestMapping("/class_certificateEntity")
 public class ClassCertificateTestController {
 
     @Autowired
@@ -51,12 +51,12 @@ public class ClassCertificateTestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET,path = "/get_by_class")
-    public ResponseEntity<List<ClassCertificateEntity>> getByClass(@RequestParam(value = "classId") Integer classId) {
+    public ResponseEntity<ClassCertificateEntity> getByClass(@RequestParam(value = "classId") Integer classId) {
         //TODO process when dao.create fails with SQL Exception
 
-        List<ClassCertificateEntity> classCertificateEntity = classCertificateDAO.getByClass(classId);
+        ClassCertificateEntity classCertificateEntity = classCertificateDAO.getByClass(classId);
 
-        return new ResponseEntity<List<ClassCertificateEntity>>(classCertificateEntity, HttpStatus.OK);
+        return new ResponseEntity<ClassCertificateEntity>(classCertificateEntity, HttpStatus.OK);
     }
 
     @CrossOrigin

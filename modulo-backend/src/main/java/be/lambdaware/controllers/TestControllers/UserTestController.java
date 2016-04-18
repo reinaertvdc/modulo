@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.UserDAO;
@@ -15,8 +15,8 @@ import java.util.List;
  * Created by hendrik on 05/04/16.
  */
 @RestController
-@RequestMapping("/test")
-public class TestController {
+@RequestMapping("/userEntity")
+public class UserTestController {
 
     @Autowired
     private UserDAO userDAO;

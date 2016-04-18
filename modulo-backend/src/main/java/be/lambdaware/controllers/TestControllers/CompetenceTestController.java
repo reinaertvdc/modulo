@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.CompetenceDAO;
 import be.lambdaware.entities.CompetenceEntity;
@@ -13,7 +13,7 @@ import java.util.List;
  * Created by martijn on 08/04/16.
  */
 @RestController
-@RequestMapping("/competences")
+@RequestMapping("/competencesEntity")
 public class CompetenceTestController {
 
     @Autowired

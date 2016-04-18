@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.StudentPAVScoreDAO;
 import be.lambdaware.entities.StudentPAVScoreEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/pav")
+@RequestMapping("/pavEntity")
 public class StudentPAVScoreController {
 
     @Autowired

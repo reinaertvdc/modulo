@@ -25,7 +25,7 @@ public interface ClassCertificateDAO {
      * @param classId the entity's classId.
      * @return a list containing the entities with classId
      */
-    public List<ClassCertificateEntity> getByClass(Integer classId) throws DataAccessException;
+    public ClassCertificateEntity getByClass(Integer classId) throws DataAccessException;
 
     /**
      * Get an entity, based on it's certificateId.

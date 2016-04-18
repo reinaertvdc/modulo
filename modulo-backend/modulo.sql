@@ -5,6 +5,8 @@ CREATE TABLE `users` (
   `id`       INT          NOT NULL AUTO_INCREMENT,
   `email`    VARCHAR(255) NOT NULL,
   `password` CHAR(128)    NOT NULL,
+  `first_name`            VARCHAR(255) NOT NULL,
+  `last_name`             VARCHAR(255) NOT NULL,
   `type`     VARCHAR(7)   NOT NULL DEFAULT 'STUDENT',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
@@ -12,33 +14,43 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` VALUES (11, 'leerling1@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Hilde', 'Beerten',
                             'STUDENT');
 INSERT INTO `users` VALUES (12, 'leerling2@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Katrien', 'Formesyn',
                             'STUDENT');
 INSERT INTO `users` VALUES (13, 'leerling3@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Martine', 'Bonné',
                             'STUDENT');
 INSERT INTO `users` VALUES (14, 'leerling4@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'André', 'Coenen',
                             'STUDENT');
 INSERT INTO `users` VALUES (15, 'leerling5@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Rembert', 'Henderix',
                             'STUDENT');
 INSERT INTO `users` VALUES (21, 'leerkracht1@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Chana', 'Lauwers',
                             'TEACHER');
 INSERT INTO `users` VALUES (22, 'leerkracht2@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Aaron', 'Charlier',
                             'TEACHER');
 INSERT INTO `users` VALUES (31, 'ouder1@telenet.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Ellen', 'Copermans',
                             'PARENT');
 INSERT INTO `users` VALUES (32, 'ouder2@belgacom.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Frederik', 'De Ridder',
                             'PARENT');
 INSERT INTO `users` VALUES (41, 'admin@school.be',
                             'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+							'Evelien', 'De Swert',
                             'ADMIN');
 
 CREATE TABLE `parent_info` (
@@ -57,8 +69,6 @@ CREATE TABLE `student_info` (
   `id`                             INT          NOT NULL AUTO_INCREMENT,
   `user_id`                        INT          NOT NULL,
   `parent_id`                      INT          NOT NULL,
-  `first_name`                     VARCHAR(255) NOT NULL,
-  `last_name`                      VARCHAR(255) NOT NULL,
   `birthdate`                      DATE         NOT NULL,
   `birth_place`                    VARCHAR(255) NOT NULL,
   `nationality`                    VARCHAR(255) NOT NULL,
@@ -76,19 +86,19 @@ CREATE TABLE `student_info` (
 );
 
 INSERT INTO `student_info` VALUES
-  (1, 11, 1, 'Pieter', 'Leerling1', '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+  (1, 11, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
    'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (2, 12, 2, 'Joris', 'Leerling2', '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (2, 12, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (3, 13, 1, 'Nik', 'Leerling3', '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (3, 13, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (4, 14, 2, 'Marcel', 'Leerling4', '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+  (4, 14, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
    'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (5, 15, 1, 'Bert', 'Leerling5', '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (5, 15, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 
 CREATE TABLE `classes` (

@@ -1,4 +1,4 @@
-package be.lambdaware.controllers;
+package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.CourseTopicDAO;
 import be.lambdaware.entities.CourseTopicEntity;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/courseTopic")
+@RequestMapping("/courseTopicEntity")
 public class CourseTopicController {
 
     @Autowired

@@ -12,8 +12,6 @@ public class StudentInfoEntity {
     private Integer user;
     private Integer parent;
 
-    private String firstName;
-    private String lastName;
     private Date birthDate;
     private String birthPlace;
     private String nationality;
@@ -48,22 +46,6 @@ public class StudentInfoEntity {
 
     public void setParent(Integer parent) {
         this.parent = parent;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public Date getBirthDate() {
@@ -160,8 +142,6 @@ public class StudentInfoEntity {
                 "id=" + id +
                 ", user=" + user +
                 ", parent=" + parent +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 ", birthPlace='" + birthPlace + '\'' +
                 ", nationality='" + nationality + '\'' +
@@ -186,8 +166,6 @@ public class StudentInfoEntity {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
         if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
         if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
         if (birthPlace != null ? !birthPlace.equals(that.birthPlace) : that.birthPlace != null) return false;
         if (nationality != null ? !nationality.equals(that.nationality) : that.nationality != null) return false;

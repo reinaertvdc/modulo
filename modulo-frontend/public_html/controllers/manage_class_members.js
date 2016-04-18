@@ -2,8 +2,8 @@ app.controller('ManageClassMembersController', function ($scope) {
     // TODO implement controller
     var defaultData = [
         {
-            text: 'Metselaar 1',
-            href: '#Metselaar 1',
+            text: 'Metselaar',
+            href: '#Metselaar',
             tags: ['2'],
             nodes: [
                 {

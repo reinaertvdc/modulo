@@ -57,9 +57,8 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.removeUserBackend = function (id) {
-        $http.delete('http://localhost:8080/account/'+id).success(function (response) {$scope.users.delete(id);
-            $scope.removeUserFrontend(id);
-        });
+        $scope.removeUserFrontend(id);
+        $http.delete('http://localhost:8080/account/'+id);
     };
 
     $scope.removeUserFrontend = function (id) {

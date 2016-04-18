@@ -4,11 +4,13 @@ import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.UserEntity;
 import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
+
 /**
  * @author hendrik
  */
 
-public abstract class AccountModel {
+public class AccountModel {
 
     protected UserEntity userEntity;
     protected UserDAO userDAO;
@@ -33,6 +35,20 @@ public abstract class AccountModel {
     public void updateInDB() throws DataAccessException {
         userDAO.update(userEntity);
     }
+
+
+    public static ArrayList<AccountModel> getAll(UserDAO userDAO) {
+        ArrayList<AccountModel> accounts = new ArrayList<AccountModel>();
+
+        for(UserEntity entity : userDAO.getAll()) {
+            AccountModel account = new AccountModel();
+            account.setUserEntity(entity);
+            accounts.add(account);
+        }
+
+        return accounts;
+    }
+
 
     @Override
     public String toString() {

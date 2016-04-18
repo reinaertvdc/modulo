@@ -38,16 +38,16 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.addUser = function (user) {
-        $scope.removeUser(user.id);
+        $scope.removeUserFrontend(user.id);
         $scope.users.set(user.id, user);
 
         // if(user.id <= $scope.itemsPerPage * $scope.currentPage)
         // {
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
-            '<td>' + user.name.first + ' ' + user.name.last + '</td><td>' + user.email + '</td><td>' + user.details.type + '</td>' +
+            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
             '<td class="text-info"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" data-ng-click="removeUser(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+            '<td class="text-danger" ng-click="removeUserBackend(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
 
         var element = document.createElement('tr');
@@ -56,13 +56,18 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         // }
     };
 
-    $scope.removeUser = function (id) {
-        //$scope.users.delete(id);
-        var element = document.getElementById($scope.toElementId(id));
-        if (element !== null) {
-            element.parentElement.removeChild(element);
-        }
+    $scope.removeUserBackend = function (id) {
+        $http.delete('http://localhost:8080/account/'+id).success(function (response) {$scope.users.delete(id);
+            $scope.removeUserFrontend(id);
+        });
     };
+
+    $scope.removeUserFrontend = function (id) {
+        $scope.users.delete(id);
+        var element = document.getElementById($scope.toElementId(id));
+        if (element !== null)
+            element.parentElement.removeChild(element);
+    }
 
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {

@@ -1,4 +1,4 @@
-app.controller('ManageClassMembersController', function ($scope) {
+app.controller('ManageClassMembersController', function ($scope, $http) {
     // TODO implement controller
     var defaultData = [
         {
@@ -122,7 +122,11 @@ app.controller('ManageClassMembersController', function ($scope) {
         '}' +
         ']';
 
+    $scope.students = new Map();
 
+    var jsonUsers = [];
+
+    //https://github.com/jonmiles/bootstrap-treeview/blob/master/public/index.html source
     var $checkableTree = $('#treeview-checkable').treeview({
         data: defaultData,
         levels: 1,
@@ -130,9 +134,13 @@ app.controller('ManageClassMembersController', function ($scope) {
         showCheckbox: true,
         onNodeChecked: function(event, node) {
             $('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
+
+            console.log("Test Checked");
         },
         onNodeUnchecked: function (event, node) {
             $('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
+
+            console.log("Test Unchecked");
         }
     });
     var findCheckableNodess = function() {
@@ -165,6 +173,16 @@ app.controller('ManageClassMembersController', function ($scope) {
     var $tree = $('#treeview12').treeview({
         data: json
     });*/
+
+    $http.get('http://localhost:8080/student/all').success(function (response) {
+        response.forEach(function (item) {
+            $scope.students.set(item.studentInfoEntity.id , item);
+            //var jsonEntity = JSON.stringify({"userEntity":item.userEntity});
+            //console.log("JsonEntity: " + jsonEntity);
+            //test.push();
+        });
+        //$scope.refresh();
+    });
 
 });
 

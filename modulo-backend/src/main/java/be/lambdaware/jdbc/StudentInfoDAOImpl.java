@@ -73,6 +73,14 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
     }
 
     @Override
+    public List<StudentInfoEntity> getAll() throws DataAccessException {
+        String SQL = "SELECT * FROM `student_info`";
+        Logger.getRootLogger().info("Performing query: "+SQL);
+        List<StudentInfoEntity> entity = jdbcTemplate.query(SQL, new StudentInfoMapper());
+        return entity;
+    }
+
+    @Override
     public void delete(Integer id) throws DataAccessException {
         String SQL = "DELETE FROM `student_info` WHERE `id` = ?";
         jdbcTemplate.update(SQL, id);

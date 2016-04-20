@@ -4,6 +4,7 @@ import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.UserEntity;
 import org.springframework.dao.DataAccessException;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +27,10 @@ public class AccountModel {
 
     public void getFromDB(Integer id) throws DataAccessException {
         userEntity = userDAO.get(id);
+    }
+
+    public void getFromDBByEmail(String email) throws DataAccessException {
+        userEntity = userDAO.getByEmail(email);
     }
 
     public void deleteFromDB() throws DataAccessException {

@@ -47,6 +47,13 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
     }
 
     @Override
+    public UserEntity getByEmail(String email) throws DataAccessException {
+        String SQL = "SELECT * FROM `users` WHERE `email` = ?";
+        UserEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{email}, new UserMapper());
+        return entity;
+    }
+
+    @Override
     public List<UserEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `users`";
         List<UserEntity> entities = jdbcTemplate.query(SQL, new UserMapper());

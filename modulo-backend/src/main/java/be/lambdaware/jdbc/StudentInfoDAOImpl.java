@@ -8,10 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -29,11 +26,14 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
                 statement.setInt(1, entity.getUser());
-                statement.setInt(2, entity.getParent());
+                if(entity.getParent() == null)
+                    statement.setNull(2, Types.INTEGER);
+                else
+                    statement.setInt(2, entity.getParent());
                 statement.setDate(3, entity.getBirthDate());
                 statement.setString(4, entity.getBirthPlace());
                 statement.setString(5, entity.getNationality());
-                statement.setString(6, entity.getNationalIdentificationNumber());
+                statement.setString(6, entity.getNationalId());
                 statement.setString(7, entity.getStreet());
                 statement.setString(8, entity.getHouseNumber());
                 statement.setString(9, entity.getPostalCode());
@@ -81,7 +81,7 @@ public class StudentInfoDAOImpl extends AbstractDAOImpl implements StudentInfoDA
     @Override
     public void update(StudentInfoEntity entity) throws DataAccessException {
         String SQL = "UPDATE `student_info` SET `user_id` = ?, `parent_id` = ?, `birthdate` = ?, `birth_place` = ?, `nationality` = ?, `national_identification_number` =  ?, `street` = ?, `house_number` =  ?, `postal_code` = ?, `city` = ?, `phone_parent` = ?, `phone_cell` =  ?, `bank_account` = ? WHERE `id` = ?";
-        jdbcTemplate.update(SQL, entity.getUser(), entity.getParent(), entity.getBirthDate(),entity.getBirthPlace(), entity.getNationality(),entity.getNationalIdentificationNumber(), entity.getStreet(), entity.getHouseNumber(), entity.getPostalCode(), entity.getCity(), entity.getPhoneParent(), entity.getPhoneCell(), entity.getBankAccount(), entity.getId());
+        jdbcTemplate.update(SQL, entity.getUser(), entity.getParent(), entity.getBirthDate(),entity.getBirthPlace(), entity.getNationality(),entity.getNationalId(), entity.getStreet(), entity.getHouseNumber(), entity.getPostalCode(), entity.getCity(), entity.getPhoneParent(), entity.getPhoneCell(), entity.getBankAccount(), entity.getId());
     }
 
 

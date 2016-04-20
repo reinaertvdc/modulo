@@ -15,7 +15,7 @@ public class StudentInfoEntity {
     private Date birthDate;
     private String birthPlace;
     private String nationality;
-    private String nationalIdentificationNumber;
+    private String nationalId;  // national identification number
     private String street;
     private String houseNumber;
     private String postalCode;
@@ -72,12 +72,12 @@ public class StudentInfoEntity {
         this.nationality = nationality;
     }
 
-    public String getNationalIdentificationNumber() {
-        return nationalIdentificationNumber;
+    public String getNationalId() {
+        return nationalId;
     }
 
-    public void setNationalIdentificationNumber(String nationalIdentificationNumber) {
-        this.nationalIdentificationNumber = nationalIdentificationNumber;
+    public void setNationalId(String nationalId) {
+        this.nationalId = nationalId;
     }
 
     public String getStreet() {
@@ -145,7 +145,7 @@ public class StudentInfoEntity {
                 ", birthDate=" + birthDate +
                 ", birthPlace='" + birthPlace + '\'' +
                 ", nationality='" + nationality + '\'' +
-                ", nationalIdentificationNumber='" + nationalIdentificationNumber + '\'' +
+                ", nationalId='" + nationalId + '\'' +
                 ", street='" + street + '\'' +
                 ", houseNumber='" + houseNumber + '\'' +
                 ", postalCode='" + postalCode + '\'' +
@@ -169,8 +169,7 @@ public class StudentInfoEntity {
         if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
         if (birthPlace != null ? !birthPlace.equals(that.birthPlace) : that.birthPlace != null) return false;
         if (nationality != null ? !nationality.equals(that.nationality) : that.nationality != null) return false;
-        if (nationalIdentificationNumber != null ? !nationalIdentificationNumber.equals(that.nationalIdentificationNumber) : that.nationalIdentificationNumber != null)
-            return false;
+        if (nationalId != null ? !nationalId.equals(that.nationalId) : that.nationalId != null) return false;
         if (street != null ? !street.equals(that.street) : that.street != null) return false;
         if (houseNumber != null ? !houseNumber.equals(that.houseNumber) : that.houseNumber != null) return false;
         if (postalCode != null ? !postalCode.equals(that.postalCode) : that.postalCode != null) return false;
@@ -181,5 +180,23 @@ public class StudentInfoEntity {
 
     }
 
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (parent != null ? parent.hashCode() : 0);
+        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (birthPlace != null ? birthPlace.hashCode() : 0);
+        result = 31 * result + (nationality != null ? nationality.hashCode() : 0);
+        result = 31 * result + (nationalId != null ? nationalId.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
+        result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (phoneParent != null ? phoneParent.hashCode() : 0);
+        result = 31 * result + (phoneCell != null ? phoneCell.hashCode() : 0);
+        result = 31 * result + (bankAccount != null ? bankAccount.hashCode() : 0);
+        return result;
+    }
 }
 

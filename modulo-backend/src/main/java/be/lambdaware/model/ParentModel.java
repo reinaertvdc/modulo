@@ -7,6 +7,8 @@ import be.lambdaware.dao.UserDAO;
  */
 public class ParentModel extends AccountModel {
 
+    public ParentModel() {}
+
     public ParentModel(UserDAO userDAO) {
         super(userDAO);
     }

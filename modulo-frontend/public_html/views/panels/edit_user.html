@@ -3,28 +3,122 @@
     <h3 ng-bind="panelCaption"></h3>
 
     <form role="form" data-ng-submit="submitForm()">
-        <div class="form-group">
-            <label for="input-email">E-mailadres</label>
-            <input id="input-email" type="email" name="email" class="form-control" placeholder="naam@voorbeeld.com"
-                   data-ng-model="formData.email" title="E-mailadres voor de gebruiker" required>
+        <div id="required">
+            <div class="form-group">
+                <label for="input-email">E-mailadres</label>
+                <input id="input-email" type="email" name="email" class="form-control" placeholder="naam@voorbeeld.com"
+                       data-ng-model="basicInfo.email" title="E-mailadres voor de gebruiker" required>
+            </div>
+
+            <div class="form-group">
+                <label for="input-password">Wachtwoord</label>
+                <input id="input-password" type="password" name="password" class="form-control"
+                       data-ng-model="basicInfo.password" title="Wachtwoord voor de gebruiker" required>
+            </div>
+
+            <div class="form-group">
+                <label for="input-firstName">Voornaam</label>
+                <input id="input-firstName" type="text" name="firstName" class="form-control"
+                       data-ng-model="basicInfo.firstName" title="Voornaam" value="michiel" required>
+            </div>
+
+            <div class="form-group">
+                <label for="input-lastName">Achternaam</label>
+                <input id="input-lastName" type="text" name="lastName" class="form-control"
+                       data-ng-model="basicInfo.lastName" title="Achternaam" required>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="input-password">Wachtwoord</label>
-            <input id="input-password" type="password" name="password" class="form-control"
-                   data-ng-model="formData.password" title="Wachtwoord voor de gebruiker" required>
-        </div>
 
         <div class="form-group">
             <label for="select-type">Type gebruiker</label>
-            <select id="select-type" class="form-control" data-ng-model="formData.type" title="Type voor de gebruiker"
+            <select id="select-type" class="form-control" data-ng-model="basicInfo.type" title="Type voor de gebruiker"
                     required>
-                <option value="ADMIN">Administrator</option>
-                <option value="TEACHER">Leerkracht</option>
                 <option value="STUDENT">Student</option>
+                <option value="TEACHER">Leerkracht</option>
                 <option value="PARENT">Ouder</option>
+                <option value="ADMIN">Administrator</option>
             </select>
         </div>
+
+
+        <div id="studentInfo" data-ng-class="{hidden: basicInfo.type != 'STUDENT'}">
+            <div class="form-group">
+                <label for="input-birthDate">Geboortedatum</label>
+                <input id="input-birthDate" type="text" name="birthDate" class="form-control"
+                       data-ng-model="studentInfo.birthDate" title="Geboortedatum" required>
+            </div>
+
+            <div class="form-group">
+                <label for="input-birthPlace">Geboorteplaats</label>
+                <input id="input-birthPlace" type="text" name="birthPlace" class="form-control"
+                       data-ng-model="studentInfo.birthPlace" title="Geboorteplaats" required>
+            </div>
+
+            <div class="form-group">
+                <label for="input-nationality">Nationaliteit</label>
+                <input id="input-nationality" type="text" name="nationality" class="form-control"
+                       data-ng-model="studentInfo.nationality" title="Nationaliteit" required>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-9" class="form-group">
+                    <label for="input-street">Straat</label>
+                    <input id="input-street" type="text" name="street" class="form-control"
+                           data-ng-model="studentInfo.street" title="Straat" required>
+                </div>
+                <div class="col-xs-3" class="form-group">
+                    <label for="input-houseNumber">Huisnummer</label>
+                    <input id="input-houseNumber" type="text" name="houseNumber" class="form-control"
+                           data-ng-model="studentInfo.houseNumber" title="Huisnummer" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-9" class="form-group">
+                    <label for="input-city">Gemeente</label>
+                    <input id="input-city" type="text" name="city" class="form-control"
+                           data-ng-model="studentInfo.city" title="Gemeente" required>
+                </div>
+                <div class="col-xs-3" class="form-group">
+                    <label for="input-postalCode">Postcode</label>
+                    <input id="input-postalCode" type="text" name="postalCode" class="form-control" ng-minlength="4"
+                           ng-maxlength="4"
+                           data-ng-model="studentInfo.postalCode" title="Postcode" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6" class="form-group">
+                    <label for="input-phoneCell">GSM nummer</label>
+                    <input id="input-phoneCell" type="text" name="phoneCell" class="form-control"
+                           data-ng-model="studentInfo.phoneCell" title="GSM nummer" required>
+                </div>
+                <div class="col-xs-6" class="form-group">
+                    <label for="input-phoneParent">Telefoon van ouders</label>
+                    <input id="input-phoneParent" type="text" name="phoneParent" class="form-control"
+                           data-ng-model="studentInfo.phoneParent" title="Telefoon van ouders" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-bankAccount">Rekeningnummer</label>
+                <input id="input-bankAccount" type="text" name="bankAccount" class="form-control"
+                       data-ng-model="studentInfo.bankAccount" title="Rekeningnummer" required>
+            </div>
+
+            <div class="form-group">
+                <label for="input-nationalId">Rijksregisternummer</label>
+                <input id="input-nationalId" type="text" name="nationalId" class="form-control" ng-minlength="11" ng-maxlength="11"
+                       data-ng-model="studentInfo.nationalId" title="Rijksregisternummer" required>
+            </div>
+
+            <!-- TODO parent-->
+            <div class="form-group">
+                <label for="input-parent">Ouder</label>
+            </div>
+        </div>
+
 
         <button type="submit" class="btn btn-success btn-lg btn-block">
             <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken

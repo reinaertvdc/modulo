@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
 import java.util.ArrayList;
 
 /**
@@ -36,5 +37,15 @@ public class AccountController {
         accountModel.getFromDB(accountId);
         accountModel.deleteFromDB();
         return true;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{accountEmail}/", method = RequestMethod.GET)
+    public ResponseEntity<AccountModel> getByEmail(@PathVariable String accountEmail) {
+        AccountModel accountModel = new AccountModel(userDAO);
+        System.out.println(accountEmail);
+        accountModel.getFromDBByEmail(accountEmail);
+        System.out.println(accountModel);
+        return new ResponseEntity<AccountModel>(accountModel, HttpStatus.OK);
     }
 }

@@ -25,6 +25,13 @@ public interface UserDAO {
     public UserEntity get(Integer id) throws DataAccessException;
 
     /**
+     * Get an entity, based on it's email.
+     * @param email the entity's email.
+     * @return the entity.
+     */
+    public UserEntity getByEmail(String email) throws DataAccessException;
+
+    /**
      * Get a list of all the entities.
      * @return a list containing all entities.
      */

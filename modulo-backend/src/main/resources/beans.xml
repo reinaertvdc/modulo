@@ -63,4 +63,8 @@
     <bean id="ClassTopicsDAO" class="be.lambdaware.jdbc.ClassTopicDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <!-- Definition for ClassTopicDAOImpl bean -->
+    <bean id="GradeClassDAO" class="be.lambdaware.jdbc.GradeClassDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 </beans>

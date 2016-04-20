@@ -115,6 +115,8 @@ INSERT INTO `classes` VALUES (1, 21, 'Metselaar 1', 'BGV');
 INSERT INTO `classes` VALUES (2, 21, 'Metselaar 2', 'BGV');
 INSERT INTO `classes` VALUES (3, 22, 'Elektricien 1', 'BGV');
 INSERT INTO `classes` VALUES (4, 22, 'Elektriciten 2', 'BGV');
+INSERT INTO `classes` VALUES (5, 22, 'PAV Klas 1', 'PAV');
+INSERT INTO `classes` VALUES (6, 22, 'PAV Klas 2', 'PAV');
 
 
 CREATE TABLE `certificates` (
@@ -183,6 +185,12 @@ CREATE TABLE `student_class` (
   FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
 );
 
+INSERT INTO `student_class` VALUES (1, 1);
+INSERT INTO `student_class` VALUES (2, 1);
+INSERT INTO `student_class` VALUES (3, 1);
+INSERT INTO `student_class` VALUES (4, 2);
+INSERT INTO `student_class` VALUES (5, 2);
+
 CREATE TABLE `grade_class` (
   `grade_id` INT NOT NULL,
   `class_id`        INT NOT NULL,
@@ -191,11 +199,8 @@ CREATE TABLE `grade_class` (
   FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
 );
 
-INSERT INTO `student_class` VALUES (1, 1);
-INSERT INTO `student_class` VALUES (2, 1);
-INSERT INTO `student_class` VALUES (3, 1);
-INSERT INTO `student_class` VALUES (4, 2);
-INSERT INTO `student_class` VALUES (5, 2);
+INSERT INTO `grade_class` VALUES (1,5);
+INSERT INTO `grade_class` VALUES (2,6);
 
 CREATE TABLE `class_certificate` (
   `class_id`       INT NOT NULL,

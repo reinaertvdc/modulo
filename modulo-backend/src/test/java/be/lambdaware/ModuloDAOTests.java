@@ -254,6 +254,38 @@ public class ModuloDAOTests {
         }
     }
 
+    @Autowired
+    private GradeClassDAO gradeClassDAO;
+
+    @Test
+    public void testGradeClassDAO() {
+        // test autowire
+        Assert.assertNotNull(gradeClassDAO);
+        Logger.getLogger("Test GradeClassDAO").info("GradeClassDAO injected succesfully - pass");
+
+        GradeClassEntity entity = new GradeClassEntity();
+        entity.setGradeId(2);
+        entity.setClassId(6);
+        Assert.assertEquals(entity, gradeClassDAO.get(2,6));
+        Logger.getLogger("Test GradeClassDAO").info("Expected grade_class matches grade_class from database - pass");
+
+
+        entity = new GradeClassEntity();
+        entity.setGradeId(2);
+        entity.setClassId(5);
+        gradeClassDAO.create(entity);
+        Assert.assertEquals(entity, gradeClassDAO.get(2,5));
+        Logger.getLogger("Test GradeClassDAO").info("Inserted grade_class matches our desired grade_class - pass");
+
+        gradeClassDAO.delete(2,5);
+        try {
+            entity = gradeClassDAO.get(2,5);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test GradeClassDAO").info("Inserted grade_class was deleted succesfully - pass");
+        }
+    }
+
 
     @Autowired
     private SubCertificateCategoryDAO subCertificateCategoryDAO;

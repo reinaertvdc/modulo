@@ -13,43 +13,43 @@ CREATE TABLE `users` (
 );
 
 INSERT INTO `users` VALUES (11, 'leerling1@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Hilde', 'Beerten',
                             'STUDENT');
 INSERT INTO `users` VALUES (12, 'leerling2@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Katrien', 'Formesyn',
                             'STUDENT');
 INSERT INTO `users` VALUES (13, 'leerling3@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Martine', 'Bonné',
                             'STUDENT');
 INSERT INTO `users` VALUES (14, 'leerling4@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'André', 'Coenen',
                             'STUDENT');
 INSERT INTO `users` VALUES (15, 'leerling5@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Rembert', 'Henderix',
                             'STUDENT');
 INSERT INTO `users` VALUES (21, 'leerkracht1@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Chana', 'Lauwers',
                             'TEACHER');
 INSERT INTO `users` VALUES (22, 'leerkracht2@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Aaron', 'Charlier',
                             'TEACHER');
 INSERT INTO `users` VALUES (31, 'ouder1@telenet.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Ellen', 'Copermans',
                             'PARENT');
 INSERT INTO `users` VALUES (32, 'ouder2@belgacom.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Frederik', 'De Ridder',
                             'PARENT');
 INSERT INTO `users` VALUES (41, 'admin@school.be',
-                            'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86',
+                            'pwd',
 							'Evelien', 'De Swert',
                             'ADMIN');
 

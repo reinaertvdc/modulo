@@ -43,9 +43,7 @@ public class AccountController {
     @RequestMapping(value = "/{accountEmail}/", method = RequestMethod.GET)
     public ResponseEntity<AccountModel> getByEmail(@PathVariable String accountEmail) {
         AccountModel accountModel = new AccountModel(userDAO);
-        System.out.println(accountEmail);
         accountModel.getFromDBByEmail(accountEmail);
-        System.out.println(accountModel);
         return new ResponseEntity<AccountModel>(accountModel, HttpStatus.OK);
     }
 }

@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `modulo`;
+﻿CREATE DATABASE IF NOT EXISTS `modulo`;
 USE `modulo`;
 
 CREATE TABLE `users` (

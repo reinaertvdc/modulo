@@ -87,7 +87,7 @@ app.controller('ManageClassMembersController', function ($scope) {
             ]
         }
     ];
-   
+
     var json = '[' +
         '{' +
         '"text": "Parent 1",' +

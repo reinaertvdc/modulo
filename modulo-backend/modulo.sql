@@ -68,7 +68,7 @@ INSERT INTO `users` VALUES (41, 'admin@school.be',
 CREATE TABLE `student_info` (
   `id`                             INT          NOT NULL AUTO_INCREMENT,
   `user_id`                        INT          NOT NULL,
-  `parent_id`                      INT          NOT NULL,
+  `parent_id`                      INT          ,
   `birthdate`                      DATE         NOT NULL,
   `birth_place`                    VARCHAR(255) NOT NULL,
   `nationality`                    VARCHAR(255) NOT NULL,

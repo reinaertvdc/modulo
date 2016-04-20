@@ -1,1 +1,1 @@
-<div data-ng-include="!location.getParameter(location.PARAM_MANAGE_CLASS_ID) ? 'views/panels/list_classes.html' : (location.getParameter(location.PARAM_MANAGE_COURSE_TOPIC_ID) ? 'views/panels/manage_course_topic.html' : (location.getParameter(location.PARAM_MANAGE_CLASS_MEMBERS )? 'views/panels/manage_class_members.html' : 'views/panels/manage_class.html'))"></div>
+<div data-ng-include="getActiveMyClassesPanel();"></div>

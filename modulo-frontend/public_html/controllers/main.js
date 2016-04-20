@@ -5,7 +5,7 @@ app.controller('MainController', function ($scope, $location) {
             new User(1, new Name('Hilde', 'Beerten'), 'hilde.beerten@tihh.be', '1234', new AdminDetails()),
             new User(2, new Name('Katrien', 'Formesyn'), 'katrien.formesyn@outlook.com', '1234', new AdminDetails()),
 
-            new User(3, new Name('Martine', 'Bonné'), 'martine.bonne@tihh.be', '1234', new TeacherDetails()),
+            new User(21, new Name('Martine', 'Bonné'), 'martine.bonne@tihh.be', '1234', new TeacherDetails()),
             new User(4, new Name('André', 'Coenen'), 'andre.coenen@gmail.com', '1234', new TeacherDetails()),
             new User(5, new Name('Rembert', 'Henderix'), 'rembert.henderix@tihh.be', '1234', new TeacherDetails()),
             new User(6, new Name('Chana', 'Lauwers'), 'chana.lauwers@tihh.be', '1234', new TeacherDetails()),
@@ -24,7 +24,7 @@ app.controller('MainController', function ($scope, $location) {
             new User(18, new Name('Karen', 'Silvi'), 'silvikaren@hotmail.com', '1234', new StudentDetails()),
             new User(19, new Name('Véronique', 'Snellinx'), 'veronique.snellinx@gmail.be', '1234', new StudentDetails()),
             new User(20, new Name('Heidi', 'Van Thielen'), 'heidi.vanthielen@hotmail.be', '1234', new StudentDetails()),
-            new User(21, new Name('Ruben', 'Vandevorst'), 'ruben.vandevorst@gmail.be', '1234', new StudentDetails()),
+            new User(55, new Name('Ruben', 'Vandevorst'), 'ruben.vandevorst@gmail.be', '1234', new StudentDetails()),
             new User(22, new Name('Steven', 'Vandormael'), 'steven.vandormael@outlook.be', '1234', new StudentDetails()),
             new User(23, new Name('Marleen', 'Verjans'), 'marleen.verjans@gmail.be', '1234', new StudentDetails()),
             new User(24, new Name('Anja', 'Weutens'), 'anja.weutens@tihh.be', '1234', new StudentDetails()),
@@ -185,8 +185,29 @@ app.controller('MainController', function ($scope, $location) {
         }
     };
 
+    $scope.getActiveMyClassesPanel = function() {
+        if ($scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID)) {
+            if ($scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID) == $scope.location.PARAM_CREATE_NEW_CLASS_ID && $scope.location.getParameter($scope.location.PARAM_CLASS_TYPE)) {
+                return 'views/panels/new_class.html';
+            }
+            if ($scope.location.getParameter($scope.location.PARAM_MANAGE_COURSE_TOPIC_ID)) {
+                return 'views/panels/manage_course_topic.html';
+            } else {
+                if ($scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_MEMBERS)) {
+                    return 'views/panels/manage_class_members.html';
+                } else if ($scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID) != $scope.location.PARAM_CREATE_NEW_CLASS_ID) {
+                    return 'views/panels/manage_class.html';
+                } else {
+                    return 'views/panels/list_classes.html';
+                }
+            }
+        } else {
+            return 'views/panels/list_classes.html';
+        }
+    };
+
     // TODO remove when finished developing
-    $scope.account.attemptLogin('hilde.beerten@tihh.be', '1234');
+    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
@@ -202,9 +223,10 @@ app.controller('MainController', function ($scope, $location) {
         PARAM_CREATE_NEW_USER: 'nieuw',
 
         PARAM_MANAGE_CLASS_ID: 'klas',
-        PARAM_CREATE_NEW_CLASS: 'nieuw',
+        PARAM_CREATE_NEW_CLASS_ID: 'nieuw',
+        PARAM_CLASS_TYPE: 'type',
         PARAM_MANAGE_COURSE_TOPIC_ID: 'vakthema',
-        PARAM_CREATE_NEW_COURSE_TOPIC: 'nieuw',
+        PARAM_CREATE_NEW_COURSE_TOPIC_ID: 'nieuw',
         PARAM_MANAGE_CLASS_MEMBERS: 'leerlingen', 
 
         pathToPage: function (path) {

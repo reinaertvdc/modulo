@@ -6,22 +6,8 @@
             <h2 class="sub-header">PAV</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <tbody>
-                    <tr>
-                        <td>PAV 1</td>
-                        <td class="text-info"><span role="button" class="glyphicon glyphicon-edit pull-right"></span></td>
-                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-                    </tr>
-                    <tr>
-                        <td>PAV 2</td>
-                        <td class="text-info"><span role="button" class="glyphicon glyphicon-edit pull-right"></span></td>
-                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-                    </tr>
-                    <tr>
-                        <td>PAV 3</td>
-                        <td class="text-info"><span role="button" class="glyphicon glyphicon-edit pull-right"></span></td>
-                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-                    </tr>
+                    <tbody id="table-pav-class-list-body">
+
                     </tbody>
                 </table>
             </div>
@@ -33,26 +19,12 @@
             <h2 class="sub-header">BGV</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <tbody>
-                    <tr>
-                        <td>Metselaar 1</td>
-                        <td class="text-info"><span role="button" class="glyphicon glyphicon-edit pull-right"></span></td>
-                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Metselaar 2</td>
-                        <td class="text-info"><span role="button" class="glyphicon glyphicon-edit pull-right"></span></td>
-                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-                    </tr>
-                    <tr>
-                        <td>Metselaar 3</td>
-                        <td class="text-info"><span role="button" class="glyphicon glyphicon-edit pull-right"></span></td>
-                        <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-                    </tr>
+                    <tbody id="table-bgv-class-list-body">
+
                     </tbody>
                 </table>
             </div>
-            <button class="btn btn-success pull-right" data-ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_ID, ''); location.setParameter(location.PARAM_CREATE_NEW_CLASS, '')">
+            <button class="btn btn-success pull-right" data-ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_ID, location.PARAM_CREATE_NEW_CLASS_ID); location.setParameter(location.PARAM_CLASS_TYPE, 'BGV')">
                 <span class="glyphicon glyphicon-plus-sign"></span> Toevoegen
             </button>
     </div>

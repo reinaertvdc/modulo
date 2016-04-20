@@ -916,7 +916,7 @@ public class ModuloDAOTests {
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
-        entity.setNationalIdentificationNumber("12345678900");
+        //entity.setNationalIdentificationNumber("12345678900");
         entity.setStreet("Straat");
         entity.setHouseNumber("10");
         entity.setPostalCode("3000");
@@ -936,7 +936,7 @@ public class ModuloDAOTests {
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
-        entity.setNationalIdentificationNumber("12345678900");
+        //entity.setNationalIdentificationNumber("12345678900");
         entity.setStreet("Straat");
         entity.setHouseNumber("10");
         entity.setPostalCode("3000");
@@ -962,7 +962,7 @@ public class ModuloDAOTests {
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
-        entity.setNationalIdentificationNumber("12345678900");
+        //Sentity.setNationalIdentificationNumber("12345678900");
         entity.setStreet("Straat");
         entity.setHouseNumber("10");
         entity.setPostalCode("3000");
@@ -979,7 +979,7 @@ public class ModuloDAOTests {
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
-        entity.setNationalIdentificationNumber("12345678900");
+        //entity.setNationalIdentificationNumber("12345678900");
         entity.setStreet("Straat");
         entity.setHouseNumber("10");
         entity.setPostalCode("3000");
@@ -1005,7 +1005,7 @@ public class ModuloDAOTests {
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
-        entity.setNationalIdentificationNumber("12345678900");
+        //entity.setNationalIdentificationNumber("12345678900");
         entity.setStreet("Straat");
         entity.setHouseNumber("10");
         entity.setPostalCode("3000");
@@ -1026,7 +1026,7 @@ public class ModuloDAOTests {
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
-        entity.setNationalIdentificationNumber("12345678900");
+        //entity.setNationalIdentificationNumber("12345678900");
         entity.setStreet("stapelstraat");
         entity.setHouseNumber("20");
         entity.setPostalCode("3800");

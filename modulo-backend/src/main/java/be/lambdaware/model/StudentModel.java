@@ -5,6 +5,8 @@ import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
+
 /**
  * @author Vincent
  */
@@ -53,6 +55,19 @@ public class StudentModel extends AccountModel {
     public void getFromDBByStudentInfoId(Integer studentInfoId) throws DataAccessException {
         studentInfoEntity = studentInfoDAO.get(studentInfoId);
         userEntity = userDAO.get(studentInfoEntity.getUser());
+    }
+
+    public static ArrayList<StudentModel> getAll(StudentInfoDAO studentInfoDAO, UserDAO userDAO) {
+        ArrayList<StudentModel> students = new ArrayList<StudentModel>();
+
+        for(StudentInfoEntity entity : studentInfoDAO.getAll()) {
+            StudentModel student = new StudentModel();
+            student.setStudentInfoEntity(entity);
+            student.setUserEntity(userDAO.get(entity.getUser()));
+            students.add(student);
+        }
+
+        return students;
     }
 
     @Override

@@ -32,6 +32,8 @@ public interface StudentInfoDAO {
 
     List<StudentInfoEntity> getByParentId(Integer id) throws DataAccessException;
 
+    List<StudentInfoEntity> getAll() throws DataAccessException;
+
     /**
      * Updates an entity/
      * @param entity the entity with the new values.

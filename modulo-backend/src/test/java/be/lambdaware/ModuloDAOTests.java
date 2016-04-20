@@ -735,73 +735,6 @@ public class ModuloDAOTests {
         }
     }
 
-
-    @Autowired
-    private ParentInfoDAO parentInfoDAO;
-
-    @Test
-    public void testParentInfoDAO() {
-
-        // test autowire
-        Assert.assertNotNull(parentInfoDAO);
-        Logger.getLogger("Test ParentInfoDAO").info("ParentInfoDAO injected succesfully - pass");
-
-        // test get parentInfo 1
-        ParentInfoEntity parentInfo = new ParentInfoEntity();
-        parentInfo.setId(1);
-        parentInfo.setUserId(31);
-        parentInfo.setFirstName("Jan");
-        parentInfo.setLastName("Ouder1");
-        Assert.assertEquals(parentInfo, parentInfoDAO.get(1));
-        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfo with ID=1 matches parentInfo from database - pass");
-
-        // test get parentInfo 2
-        parentInfo =  new ParentInfoEntity();
-        parentInfo.setId(2);
-        parentInfo.setUserId(32);
-        parentInfo.setFirstName("An");
-        parentInfo.setLastName("Ouder2");
-        Assert.assertEquals(parentInfo, parentInfoDAO.get(2));
-        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfo with ID=2 matches parentInfo from database - pass");
-
-        //test getByUserId
-        ParentInfoEntity getByUserId = parentInfoDAO.getByUserId(32);
-        Assert.assertEquals(parentInfo,getByUserId);
-        Logger.getLogger("Test ParentInfoDAO").info("Expected parentInfoList matches parentInfoList from database - pass");
-
-        // create parentInfo
-        parentInfo = new ParentInfoEntity();
-        parentInfo.setUserId(32);
-        parentInfo.setFirstName("Jo");
-        parentInfo.setLastName("Ouder3");
-
-        int insertedId = parentInfoDAO.create(parentInfo);
-        parentInfo.setId(insertedId);
-        ParentInfoEntity insertedEntity = parentInfoDAO.get(insertedId);
-
-        Assert.assertEquals(parentInfo,insertedEntity);
-        Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo matches our desired parentInfo - pass");
-
-        //Test update
-        parentInfo.setFirstName("Willy");
-        parentInfoDAO.update(parentInfo);
-        ParentInfoEntity updatedEnity = parentInfoDAO.get(parentInfo.getId());
-        Assert.assertEquals(parentInfo,updatedEnity);
-        Logger.getLogger("Test ParentInfoDAO").info("Updated parentInfo matches our desired parentInfo - pass");
-
-        //Test delete
-        parentInfoDAO.delete(insertedId);
-        try {
-            insertedEntity = parentInfoDAO.get(insertedId);
-            Assert.fail();
-        }
-        catch (Exception e) {
-            Logger.getLogger("Test ParentInfoDAO").info("Inserted parentInfo was deleted succesfully - pass");
-        }
-
-    }
-
-
     @Autowired
     private ObjectiveDAO objectiveDAO;
 
@@ -947,7 +880,7 @@ public class ModuloDAOTests {
         StudentInfoEntity entity = new StudentInfoEntity();
         entity.setId(1);
         entity.setUser(11);
-        entity.setParent(1);
+        entity.setParent(32);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -967,7 +900,7 @@ public class ModuloDAOTests {
         entity = new StudentInfoEntity();
         entity.setId(2);
         entity.setUser(12);
-        entity.setParent(2);
+        entity.setParent(31);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -989,12 +922,11 @@ public class ModuloDAOTests {
 
         //getByParentId
         List<StudentInfoEntity> entities = new ArrayList<>();
-        entities.add(entity);
 
         entity = new StudentInfoEntity();
-        entity.setId(4);
-        entity.setUser(14);
-        entity.setParent(2);
+        entity.setId(1);
+        entity.setUser(11);
+        entity.setParent(32);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -1008,8 +940,27 @@ public class ModuloDAOTests {
         entity.setBankAccount("BE67-500-555-9685");
         entities.add(entity);
 
+        entity = new StudentInfoEntity();
+        entity.setId(4);
+        entity.setUser(14);
+        entity.setParent(32);
+        entity.setBirthDate(Date.valueOf("2012-01-01"));
+        entity.setBirthPlace("Hasselt");
+        entity.setNationality("Belgium");
+        entity.setNationalIdentificationNumber("12345678900");
+        entity.setStreet("Straat");
+        entity.setHouseNumber("10");
+        entity.setPostalCode("3000");
+        entity.setCity("Hasselt");
+        entity.setPhoneParent("012857496");
+        entity.setPhoneCell("085479621");
+        entity.setBankAccount("BE67-500-555-9685");
+        entities.add(entity);
+
+
+
         Object[] converted = entities.toArray();
-        Object[] arrayFromDatabase = studentInfoDAO.getByParentId(2).toArray();
+        Object[] arrayFromDatabase = studentInfoDAO.getByParentId(32).toArray();
         Assert.assertArrayEquals(converted, arrayFromDatabase);
         Logger.getLogger("Test StudentInfoDAO").info("Expected StudentInfoList by parentId matches StudentInfoList from database - pass");
 
@@ -1018,7 +969,7 @@ public class ModuloDAOTests {
         entity = new StudentInfoEntity();
         entity.setId(20);
         entity.setUser(41);
-        entity.setParent(2);
+        entity.setParent(31);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");

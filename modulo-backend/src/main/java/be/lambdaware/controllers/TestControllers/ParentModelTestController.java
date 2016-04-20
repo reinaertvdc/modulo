@@ -1,6 +1,5 @@
 package be.lambdaware.controllers.TestControllers;
 
-import be.lambdaware.dao.ParentInfoDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.model.ParentModel;
@@ -19,15 +18,12 @@ public class ParentModelTestController {
     @Autowired
     private UserDAO userDAO;
     @Autowired
-    private ParentInfoDAO parentInfoDAO;
-    @Autowired
     private StudentInfoDAO studentInfoDAO;
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ParentModel> create(@RequestBody ParentModel parentModel) {
         parentModel.setUserDAO(userDAO);
-        parentModel.setParentInfoDAO(parentInfoDAO);
         parentModel.createInDB();
         return new ResponseEntity<ParentModel>(parentModel, HttpStatus.OK);
     }
@@ -35,7 +31,7 @@ public class ParentModelTestController {
     @CrossOrigin
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity<ParentModel> get(@PathVariable Integer userId ) {
-        ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
+        ParentModel parentModel = new ParentModel(userDAO);
         parentModel.getFromDB(userId);
         return new ResponseEntity<ParentModel>(parentModel, HttpStatus.OK);
     }

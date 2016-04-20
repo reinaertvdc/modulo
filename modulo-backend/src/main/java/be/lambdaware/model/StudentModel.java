@@ -1,9 +1,7 @@
 package be.lambdaware.model;
 
-import be.lambdaware.dao.ParentInfoDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
-import be.lambdaware.entities.ParentInfoEntity;
 import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.dao.DataAccessException;
 
@@ -69,8 +67,8 @@ public class StudentModel extends AccountModel {
         studentInfoDAO.update(studentInfoEntity);
     }
 
-    public ParentModel getParent(ParentInfoDAO parentInfoDAO) throws DataAccessException {
-        ParentModel parentModel = new ParentModel(userDAO, parentInfoDAO);
+    public ParentModel getParent(UserDAO userDAO) throws DataAccessException {
+        ParentModel parentModel = new ParentModel(userDAO);
         parentModel.getFromDB(studentInfoEntity.getParent());
         return parentModel;
     }

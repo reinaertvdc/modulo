@@ -31,9 +31,6 @@
     <bean id="StudentInfoDAO" class="be.lambdaware.jdbc.StudentInfoDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <bean id="ParentInfoDAO" class="be.lambdaware.jdbc.ParentInfoDAOImpl">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
     <bean id="CertificatesDAO" class="be.lambdaware.jdbc.CertificateDAOImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>

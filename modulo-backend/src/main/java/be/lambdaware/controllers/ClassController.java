@@ -31,7 +31,7 @@ public class ClassController {
 
 
     @CrossOrigin
-    @RequestMapping(value = "/{teacherId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/teacher/{teacherId}", method = RequestMethod.GET)
     public ResponseEntity<ArrayList<ClassModel>> getClasses(@PathVariable Integer teacherId) {
         TeacherModel teacherModel = new TeacherModel(userDAO);
         teacherModel.getFromDB(teacherId);

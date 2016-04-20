@@ -6,16 +6,14 @@ import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.StudentClassEntity;
-import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Vincent on 08/04/16.
  */
-public abstract class ClassModel {
+public class ClassModel {
     // models
 //    private TeacherModel teacherModel;
 //    private List<StudentModel> studentModels;
@@ -44,16 +42,17 @@ public abstract class ClassModel {
 
 
     public void createInDB() throws DataAccessException {
-        classDAO.create(classEntity);
+        int id = classDAO.create(classEntity);
+        classEntity.setId(id);
     }
 
     public void getFromDB(Integer id) throws DataAccessException {
-        classDAO.get(id);
+        classEntity = classDAO.get(id);
     }
 
-    public void getFromDBByTeacher(Integer teacherId) throws DataAccessException {
-        classDAO.getAllByTeacher(teacherId);
-    }
+//    public void getFromDBByTeacher(Integer teacherId) throws DataAccessException {
+//        classDAO.getAllByTeacher(teacherId);
+//    }
 
     public void deleteFromDB() throws DataAccessException {
         classDAO.delete(classEntity.getId());

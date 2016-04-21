@@ -45,7 +45,7 @@ app.controller('ScoreManagementController', function ($scope) {
                 name: 'PAV',
                 coursePlaceholder: 'Graad',
                 schoolClassPlaceholder: 'Klas',
-                modulePlaceholder: 'Module',
+                modulePlaceholder: 'Vakthema',
                 courses: ['1ste graad', '2de graad']
             }
         ];

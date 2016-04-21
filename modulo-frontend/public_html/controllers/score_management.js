@@ -1,12 +1,95 @@
 app.controller('ScoreManagementController', function ($scope) {
     // TODO implement controller
+    $scope.scoreHierarchy = [];
+
+    $scope.visibleScores = {
+        subject: null,
+        course: null,
+        schoolClass: null,
+        module: null,
+
+        setSubject: function (subject) {
+            this.subject = subject;
+            this.course = null;
+            this.schoolClass = null;
+            this.module = null;
+        },
+
+        setCourse: function (course) {
+            this.course = course;
+            this.schoolClass = null;
+            this.module = null;
+        },
+
+        setSchoolClass: function (schoolClass) {
+            this.schoolClass = schoolClass;
+        },
+
+        setModule: function (module) {
+            this.module = module;
+        }
+    };
+
+    $scope.selectedScore = null;
+
+    $scope.getScoreHierarchy = function() {
+        var subjects = [
+            {
+                name: 'BGV',
+                coursePlaceholder: 'Opleiding',
+                schoolClassPlaceholder: 'Klas',
+                modulePlaceholder: 'Deelcertificaat',
+                courses: ['Metselaar', 'BouwplaatsMachinist', 'Kok', 'Kassier']
+            },
+            {
+                name: 'PAV',
+                coursePlaceholder: 'Graad',
+                schoolClassPlaceholder: 'Klas',
+                modulePlaceholder: 'Module',
+                courses: ['1ste graad', '2de graad']
+            }
+        ];
+
+        for (var subjectIndex = 0; subjectIndex < subjects.length; subjectIndex++) {
+            var subject = subjects[subjectIndex];
+            var newSubject = {name: subject.name, coursePlaceholder: subject.coursePlaceholder, schoolClassPlaceholder: subject.schoolClassPlaceholder, modulePlaceholder: subject.modulePlaceholder, courses: []};
+            for (var courseIndex = 0; courseIndex < subject.courses.length; courseIndex++) {
+                var course = subject.courses[courseIndex];
+                var newCourse = {name: course, classes: [], modules: []};
+                for (var i = 1; i <= 4; i++) {
+                    newCourse.classes.push('Klas ' + i);
+                }
+                for (var i = 1; i <= 6; i++) {
+                    newCourse.modules.push(subject.modulePlaceholder + ' ' + i);
+                }
+                newSubject.courses.push(newCourse);
+            }
+            $scope.scoreHierarchy.push(newSubject);
+        }
+
+        for (var i = 0; i < $scope.scoreHierarchy.length; i++) {
+            console.log($scope.scoreHierarchy[i].name);
+            for (var j = 0; j < $scope.scoreHierarchy[i].courses.length; j++) {
+                console.log('    ' + $scope.scoreHierarchy[i].courses[j].name);
+                for (var k = 0; k < $scope.scoreHierarchy[i].courses[j].classes.length; k++) {
+                    console.log('        ' + $scope.scoreHierarchy[i].courses[j].classes[k]);
+                }
+                for (var k = 0; k < $scope.scoreHierarchy[i].courses[j].modules.length; k++) {
+                    console.log('        ' + $scope.scoreHierarchy[i].courses[j].modules[k]);
+                }
+            }
+        }
+    };
+
+    $scope.getScoreHierarchy();
+
 });
 
 app.controller('ExampleController', ['$scope', function($scope) {
     $scope.data = {
         singleSelect: null,
         multipleSelect: [],
-        option1: 'option-1',
+        option1: 'option-1'
     };
 }]);
 

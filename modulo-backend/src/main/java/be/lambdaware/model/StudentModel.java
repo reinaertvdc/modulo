@@ -1,11 +1,16 @@
 package be.lambdaware.model;
 
+import be.lambdaware.dao.CertificateDAO;
+import be.lambdaware.dao.StudentBGVScoreDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
+import be.lambdaware.entities.CompetenceEntity;
+import be.lambdaware.entities.StudentBGVScoreEntity;
 import be.lambdaware.entities.StudentInfoEntity;
 import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vincent
@@ -15,15 +20,40 @@ public class StudentModel extends AccountModel {
     private StudentInfoEntity studentInfoEntity;
     private StudentInfoDAO studentInfoDAO;
 
+    private CertificateDAO certificateDAO;
+    private StudentBGVScoreDAO studentBGVScoreDAO;
+
     // TODO StudyProgress bijhouden
     // TODO ClassModel (BGV, PAV) opvragen
 
-    public StudentModel() {}
+    public StudentModel() {
+    }
 
     public StudentModel(UserDAO userDAO, StudentInfoDAO studentInfoDAO) {
         super(userDAO);
         this.studentInfoDAO = studentInfoDAO;
     }
+
+    public List<BGVScoreModel> getBGVScore(int studentId, CertificateDAO certificateDAO, StudentBGVScoreDAO studentBGVScoreDAO) {
+        getFromDBByStudentInfoId(studentId);
+        int certificateId = studentInfoEntity.getCertificateId();
+        this.certificateDAO = certificateDAO;
+        this.studentBGVScoreDAO = studentBGVScoreDAO;
+        List<CompetenceEntity> competences = certificateDAO.getAllCompetences(certificateId);
+        List<BGVScoreModel> scores = new ArrayList<>();
+        for (CompetenceEntity competence : competences) {
+            try {
+                StudentBGVScoreEntity studentBGVScoreEntity = studentBGVScoreDAO.getByStudentAndCompetence(studentInfoEntity.getId(), competence.getId());
+                BGVScoreModel scoreModel = new BGVScoreModel();
+                scoreModel.setStudentBGVScoreEntity(studentBGVScoreEntity);
+                scores.add(scoreModel);
+            } catch (Exception e) {
+
+            }
+        }
+        return scores;
+    }
+
 
     public StudentInfoEntity getStudentInfoEntity() {
         return studentInfoEntity;
@@ -60,7 +90,7 @@ public class StudentModel extends AccountModel {
     public static ArrayList<StudentModel> getAll(StudentInfoDAO studentInfoDAO, UserDAO userDAO) {
         ArrayList<StudentModel> students = new ArrayList<StudentModel>();
 
-        for(StudentInfoEntity entity : studentInfoDAO.getAll()) {
+        for (StudentInfoEntity entity : studentInfoDAO.getAll()) {
             StudentModel student = new StudentModel();
             student.setStudentInfoEntity(entity);
             student.setUserEntity(userDAO.get(entity.getUser()));

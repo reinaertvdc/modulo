@@ -18,6 +18,8 @@ public class StudentInfoMapper implements RowMapper<StudentInfoEntity> {
         studentInfoEntity.setId(resultSet.getInt("student_info.id"));
         studentInfoEntity.setUser(resultSet.getInt("student_info.user_id"));
         studentInfoEntity.setParent(resultSet.getInt("student_info.parent_id"));
+        studentInfoEntity.setGradeId(resultSet.getInt("student_info.grade_id"));
+        studentInfoEntity.setCertificateId(resultSet.getInt("student_info.certificate_id"));
         studentInfoEntity.setBirthDate(resultSet.getDate("student_info.birthdate"));
         studentInfoEntity.setBirthPlace(resultSet.getString("student_info.birth_place"));
         studentInfoEntity.setNationality(resultSet.getString("student_info.nationality"));

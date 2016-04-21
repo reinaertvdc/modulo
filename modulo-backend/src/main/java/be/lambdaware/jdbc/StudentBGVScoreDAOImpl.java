@@ -47,6 +47,13 @@ public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBG
     }
 
     @Override
+    public StudentBGVScoreEntity getByStudentAndCompetence(Integer studentId, Integer competenceId) {
+        String SQL = "SELECT * FROM `student_bgv_score` WHERE `student_id` = ? AND `competence_id` = ?";
+        StudentBGVScoreEntity entity = jdbcTemplate.queryForObject(SQL, new Object[]{studentId, competenceId}, new StudentBGVScoreMapper());
+        return entity;
+    }
+
+    @Override
     public List<StudentBGVScoreEntity> getAll() throws DataAccessException {
         String SQL = "SELECT * FROM `student_bgv_score`";
         List<StudentBGVScoreEntity> entities = jdbcTemplate.query(SQL, new StudentBGVScoreMapper());
@@ -62,6 +69,6 @@ public class StudentBGVScoreDAOImpl extends AbstractDAOImpl implements StudentBG
     @Override
     public void update(StudentBGVScoreEntity entity) throws DataAccessException {
         String SQL = "UPDATE `student_bgv_score` SET `student_id` = ?, `competence_id` = ?, `score` = ?, `graded_date` =  ?, `remarks` = ? WHERE id = ?";
-        jdbcTemplate.update(SQL, entity.getStudentId(), entity.getCompetenceId(), entity.getScore(), entity.getGradedDate(), entity.getRemarks(),entity.getId());
+        jdbcTemplate.update(SQL, entity.getStudentId(), entity.getCompetenceId(), entity.getScore(), entity.getGradedDate(), entity.getRemarks(), entity.getId());
     }
 }

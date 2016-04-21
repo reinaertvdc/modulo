@@ -1,6 +1,7 @@
 package be.lambdaware.dao;
 
 import be.lambdaware.entities.CertificateEntity;
+import be.lambdaware.entities.CompetenceEntity;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface CertificateDAO {
 
     /**
      * Create an entity in the database.
+     *
      * @param entity the entity to create.
      * @return the id of the newly created entity.
      */
@@ -19,6 +21,7 @@ public interface CertificateDAO {
 
     /**
      * Get an entity, based on it's id.
+     *
      * @param id the entity's id.
      * @return the entity.
      */
@@ -26,18 +29,23 @@ public interface CertificateDAO {
 
     /**
      * Get a list of all the entities.
+     *
      * @return a list containing all entities.
      */
     public List<CertificateEntity> getAll() throws DataAccessException;
 
+    public List<CompetenceEntity> getAllCompetences(Integer certificateId) throws DataAccessException;
+
     /**
      * Delete a certain entity.
+     *
      * @param id the entity's id
      */
     public void delete(Integer id) throws DataAccessException;
 
     /**
      * Updates an entity/
+     *
      * @param entity the entity with the new values.
      */
     public void update(CertificateEntity entity) throws DataAccessException;

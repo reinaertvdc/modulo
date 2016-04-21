@@ -27,8 +27,8 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement statement = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1,entity.getStudentInfoId());
-                statement.setInt(2,entity.getClassId());
+                statement.setInt(1, entity.getStudentInfoId());
+                statement.setInt(2, entity.getClassId());
                 return statement;
             }
         }, holder);
@@ -45,6 +45,12 @@ public class StudentClassDAOImpl extends AbstractDAOImpl implements StudentClass
     public List<StudentClassEntity> getByClass(Integer classEntityId) throws DataAccessException {
         String SQL = "SELECT * FROM `student_class` WHERE `class_id` = ?";
         List<StudentClassEntity> entity = jdbcTemplate.query(SQL, new Object[]{classEntityId}, new StudentClassMapper());
+        return entity;
+    }
+
+    public List<StudentClassEntity> getByStudent(Integer studentId) throws DataAccessException {
+        String SQL = "SELECT * FROM `student_class` WHERE `student_info_id` = ?";
+        List<StudentClassEntity> entity = jdbcTemplate.query(SQL, new Object[]{studentId}, new StudentClassMapper());
         return entity;
     }
 

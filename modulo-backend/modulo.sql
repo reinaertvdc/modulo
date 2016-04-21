@@ -2,56 +2,57 @@
 USE `modulo`;
 
 CREATE TABLE `users` (
-  `id`       INT          NOT NULL AUTO_INCREMENT,
-  `email`    VARCHAR(255) NOT NULL,
-  `password` CHAR(128)    NOT NULL,
-  `first_name`            VARCHAR(255) NOT NULL,
-  `last_name`             VARCHAR(255) NOT NULL,
-  `type`     VARCHAR(7)   NOT NULL DEFAULT 'STUDENT',
+  `id`         INT          NOT NULL AUTO_INCREMENT,
+  `email`      VARCHAR(255) NOT NULL,
+  `password`   CHAR(128)    NOT NULL,
+  `first_name` VARCHAR(255) NOT NULL,
+  `last_name`  VARCHAR(255) NOT NULL,
+  `type`       VARCHAR(7)   NOT NULL DEFAULT 'STUDENT',
+  `enabled`    TINYINT      NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 );
 
 INSERT INTO `users` VALUES (11, 'leerling1@school.be',
                             'pwd',
-							'Hilde', 'Beerten',
-                            'STUDENT');
+                            'Hilde', 'Beerten',
+                            'STUDENT', 1);
 INSERT INTO `users` VALUES (12, 'leerling2@school.be',
                             'pwd',
-							'Katrien', 'Formesyn',
-                            'STUDENT');
+                            'Katrien', 'Formesyn',
+                            'STUDENT', 1);
 INSERT INTO `users` VALUES (13, 'leerling3@school.be',
                             'pwd',
-							'Martine', 'Bonné',
-                            'STUDENT');
+                            'Martine', 'Bonné',
+                            'STUDENT', 1);
 INSERT INTO `users` VALUES (14, 'leerling4@school.be',
                             'pwd',
-							'André', 'Coenen',
-                            'STUDENT');
+                            'André', 'Coenen',
+                            'STUDENT', 1);
 INSERT INTO `users` VALUES (15, 'leerling5@school.be',
                             'pwd',
-							'Rembert', 'Henderix',
-                            'STUDENT');
+                            'Rembert', 'Henderix',
+                            'STUDENT', 1);
 INSERT INTO `users` VALUES (21, 'leerkracht1@school.be',
                             'pwd',
-							'Chana', 'Lauwers',
-                            'TEACHER');
+                            'Chana', 'Lauwers',
+                            'TEACHER', 1);
 INSERT INTO `users` VALUES (22, 'leerkracht2@school.be',
                             'pwd',
-							'Aaron', 'Charlier',
-                            'TEACHER');
+                            'Aaron', 'Charlier',
+                            'TEACHER', 1);
 INSERT INTO `users` VALUES (31, 'ouder1@telenet.be',
                             'pwd',
-							'Ellen', 'Copermans',
-                            'PARENT');
+                            'Ellen', 'Copermans',
+                            'PARENT', 1);
 INSERT INTO `users` VALUES (32, 'ouder2@belgacom.be',
                             'pwd',
-							'Frederik', 'De Ridder',
-                            'PARENT');
+                            'Frederik', 'De Ridder',
+                            'PARENT', 1);
 INSERT INTO `users` VALUES (41, 'admin@school.be',
                             'pwd',
-							'Evelien', 'De Swert',
-                            'ADMIN');
+                            'Evelien', 'De Swert',
+                            'ADMIN', 1);
 
 -- CREATE TABLE `parent_info` (
 --   `id`         INT          NOT NULL AUTO_INCREMENT,
@@ -65,41 +66,6 @@ INSERT INTO `users` VALUES (41, 'admin@school.be',
 -- INSERT INTO `parent_info` VALUES (1, 31, 'Jan', 'Ouder1');
 -- INSERT INTO `parent_info` VALUES (2, 32, 'An', 'Ouder2');
 
-CREATE TABLE `student_info` (
-  `id`                             INT          NOT NULL AUTO_INCREMENT,
-  `user_id`                        INT          NOT NULL,
-  `parent_id`                      INT          ,
-  `birthdate`                      DATE         NOT NULL,
-  `birth_place`                    VARCHAR(255) NOT NULL,
-  `nationality`                    VARCHAR(255) NOT NULL,
-  `national_identification_number` CHAR(11)     NOT NULL,
-  `street`                         VARCHAR(255) NOT NULL,
-  `house_number`                   VARCHAR(255) NOT NULL,
-  `postal_code`                    CHAR(4)      NOT NULL,
-  `city`                           VARCHAR(255) NOT NULL,
-  `phone_parent`                   VARCHAR(255) NOT NULL,
-  `phone_cell`                     VARCHAR(255) NOT NULL,
-  `bank_account`                   VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)  ON DELETE CASCADE,
-  FOREIGN KEY (`parent_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-);
-
-INSERT INTO `student_info` VALUES
-  (1, 11, 32, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
-   'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
-INSERT INTO `student_info` VALUES
-  (2, 12, 31, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
-   '012857496', '085479621', 'BE67-500-555-9685');
-INSERT INTO `student_info` VALUES
-  (3, 13, 31, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
-   '012857496', '085479621', 'BE67-500-555-9685');
-INSERT INTO `student_info` VALUES
-  (4, 14, 32, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
-   'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
-INSERT INTO `student_info` VALUES
-  (5, 15, 31, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
-   '012857496', '085479621', 'BE67-500-555-9685');
 
 CREATE TABLE `classes` (
   `id`         INT          NOT NULL AUTO_INCREMENT,
@@ -108,7 +74,8 @@ CREATE TABLE `classes` (
   `type`       CHAR(3)      NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `classes` VALUES (1, 21, 'Metselaar 1', 'BGV');
@@ -131,20 +98,21 @@ INSERT INTO `certificates` VALUES (2, 'Elektricien', '1');
 INSERT INTO `certificates` VALUES (3, 'Loodgieter', '0');
 
 CREATE TABLE `sub_certificates` (
-  `id`                 INT          NOT NULL AUTO_INCREMENT,
-  `certificate_id`     INT          NOT NULL,
-  `name`               VARCHAR(255) NOT NULL,
-  `custom_name`        VARCHAR(255),
-  `enabled`            TINYINT(1)   NOT NULL,
+  `id`             INT          NOT NULL AUTO_INCREMENT,
+  `certificate_id` INT          NOT NULL,
+  `name`           VARCHAR(255) NOT NULL,
+  `custom_name`    VARCHAR(255),
+  `enabled`        TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`)
+    ON DELETE CASCADE
 );
 
-INSERT INTO `sub_certificates` VALUES (1, 1, 'Bekisting',  NULL, 1);
+INSERT INTO `sub_certificates` VALUES (1, 1, 'Bekisting', NULL, 1);
 INSERT INTO `sub_certificates` VALUES (2, 1, 'Fundering', NULL, 1);
-INSERT INTO `sub_certificates` VALUES (3, 1, 'Cement',  NULL, 1);
-INSERT INTO `sub_certificates` VALUES (4, 2, 'Bekabeling',  NULL, 1);
-INSERT INTO `sub_certificates` VALUES (5, 2, 'Isolatie',  NULL, 1);
+INSERT INTO `sub_certificates` VALUES (3, 1, 'Cement', NULL, 1);
+INSERT INTO `sub_certificates` VALUES (4, 2, 'Bekabeling', NULL, 1);
+INSERT INTO `sub_certificates` VALUES (5, 2, 'Isolatie', NULL, 1);
 INSERT INTO `sub_certificates` VALUES (6, 2, 'Belichting', NULL, 0);
 
 CREATE TABLE `sub_certificate_categories` (
@@ -154,7 +122,8 @@ CREATE TABLE `sub_certificate_categories` (
   `custom_name`        VARCHAR(255),
   `enabled`            TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`sub_certificate_id`) REFERENCES `sub_certificates` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`sub_certificate_id`) REFERENCES `sub_certificates` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `sub_certificate_categories` VALUES (1, 1, 'Afwerking', NULL, 1);
@@ -177,12 +146,58 @@ CREATE TABLE `grades` (
 INSERT INTO `grades` VALUES (1, 'Graad 1');
 INSERT INTO `grades` VALUES (2, 'Graad 2');
 
+CREATE TABLE `student_info` (
+  `id`                             INT          NOT NULL AUTO_INCREMENT,
+  `user_id`                        INT          NOT NULL,
+  `parent_id`                      INT,
+  `grade_id`                       INT          NOT NULL,
+  `certificate_id`                 INT          NOT NULL,
+  `birthdate`                      DATE         NOT NULL,
+  `birth_place`                    VARCHAR(255) NOT NULL,
+  `nationality`                    VARCHAR(255) NOT NULL,
+  `national_identification_number` CHAR(11)     NOT NULL,
+  `street`                         VARCHAR(255) NOT NULL,
+  `house_number`                   VARCHAR(255) NOT NULL,
+  `postal_code`                    CHAR(4)      NOT NULL,
+  `city`                           VARCHAR(255) NOT NULL,
+  `phone_parent`                   VARCHAR(255) NOT NULL,
+  `phone_cell`                     VARCHAR(255) NOT NULL,
+  `bank_account`                   VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`parent_id`) REFERENCES `users` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`)
+    ON DELETE CASCADE
+);
+
+INSERT INTO `student_info` VALUES
+  (1, 11, 32, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+   'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
+INSERT INTO `student_info` VALUES
+  (2, 12, 31, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+   '012857496', '085479621', 'BE67-500-555-9685');
+INSERT INTO `student_info` VALUES
+  (3, 13, 31, 2, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+   '012857496', '085479621', 'BE67-500-555-9685');
+INSERT INTO `student_info` VALUES
+  (4, 14, 32, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+   'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
+INSERT INTO `student_info` VALUES
+  (5, 15, 31, 1, 3, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+   '012857496', '085479621', 'BE67-500-555-9685');
+
 CREATE TABLE `student_class` (
   `student_info_id` INT NOT NULL,
   `class_id`        INT NOT NULL,
   PRIMARY KEY (`student_info_id`, `class_id`),
-  FOREIGN KEY (`student_info_id`) REFERENCES `student_info` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`student_info_id`) REFERENCES `student_info` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `student_class` VALUES (1, 1);
@@ -193,21 +208,25 @@ INSERT INTO `student_class` VALUES (5, 2);
 
 CREATE TABLE `grade_class` (
   `grade_id` INT NOT NULL,
-  `class_id`        INT NOT NULL,
+  `class_id` INT NOT NULL,
   PRIMARY KEY (`grade_id`, `class_id`),
-  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
+    ON DELETE CASCADE
 );
 
-INSERT INTO `grade_class` VALUES (1,5);
-INSERT INTO `grade_class` VALUES (2,6);
+INSERT INTO `grade_class` VALUES (1, 5);
+INSERT INTO `grade_class` VALUES (2, 6);
 
 CREATE TABLE `class_certificate` (
   `class_id`       INT NOT NULL,
   `certificate_id` INT NOT NULL,
   PRIMARY KEY (`class_id`, `certificate_id`),
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`certificate_id`) REFERENCES `certificates` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `class_certificate` VALUES (1, 1);
@@ -222,7 +241,8 @@ CREATE TABLE `competences` (
   `custom_name`                 VARCHAR(255),
   `enabled`                     TINYINT(1)   NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`sub_certificate_category_id`) REFERENCES `sub_certificate_categories` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`sub_certificate_category_id`) REFERENCES `sub_certificate_categories` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `competences` VALUES (1, 2, 'Gereedschap opruimen', NULL, 1);
@@ -252,8 +272,10 @@ CREATE TABLE `objectives` (
   `name`            VARCHAR(255) NOT NULL,
   `custom_name`     VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `objectives` VALUES (1, 1, 1, 'Kent Vakthema 1', NULL);
@@ -261,28 +283,40 @@ INSERT INTO `objectives` VALUES (2, 2, 1, 'Kent Vakthema 2', NULL);
 
 CREATE TABLE `student_bgv_score` (
   `id`            INT     NOT NULL AUTO_INCREMENT,
-  `student_id`     INT     NOT NULL,
+  `student_id`    INT     NOT NULL,
   `competence_id` INT     NOT NULL,
   `score`         CHAR(1) NOT NULL,
-  `graded_date`    DATE    NOT NULL,
+  `graded_date`   DATE    NOT NULL,
   `remarks`       VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`competence_id`) REFERENCES `competences` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `student_bgv_score` VALUES (1, 1, 1, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (2, 1, 2, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (3, 1, 3, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (4, 1, 4, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (5, 1, 5, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (6, 1, 6, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (7, 1, 7, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (8, 1, 8, 'V', '2016-04-08', 'Remarks test');
+INSERT INTO `student_bgv_score` VALUES (9, 1, 9, 'V', '2016-04-08', 'Remarks test');
 
 CREATE TABLE `student_pav_score` (
   `id`           INT     NOT NULL AUTO_INCREMENT,
-  `student_id`    INT     NOT NULL,
+  `student_id`   INT     NOT NULL,
   `objective_id` INT     NOT NULL,
   `score`        CHAR(1) NOT NULL,
-  `graded_date`   DATE    NOT NULL,
+  `graded_date`  DATE    NOT NULL,
   `remarks`      VARCHAR(255),
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`student_id`) REFERENCES `student_info` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`objective_id`) REFERENCES `objectives` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `student_pav_score` VALUES (1, 1, 1, 'V', '2016-04-08', 'Remarks test');
@@ -291,8 +325,10 @@ CREATE TABLE `class_topics` (
   `course_topic_id` INT NOT NULL,
   `class_id`        INT NOT NULL,
   PRIMARY KEY (`course_topic_id`, `class_id`),
-  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE
+  FOREIGN KEY (`course_topic_id`) REFERENCES `course_topics` (`id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`)
+    ON DELETE CASCADE
 );
 
 INSERT INTO `class_topics` VALUES (1, 1);

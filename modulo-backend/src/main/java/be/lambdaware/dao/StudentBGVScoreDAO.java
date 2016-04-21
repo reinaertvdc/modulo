@@ -24,6 +24,8 @@ public interface StudentBGVScoreDAO {
      */
     public StudentBGVScoreEntity get(Integer id) throws DataAccessException;
 
+    StudentBGVScoreEntity getByStudentAndCompetence(Integer studentId, Integer competenceId);
+
     /**
      * Get a list of all the entities.
      * @return a list containing all entities.

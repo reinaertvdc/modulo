@@ -11,6 +11,8 @@ public class StudentInfoEntity {
 
     private Integer user;
     private Integer parent;
+    private Integer gradeId;
+    private Integer certificateId;
 
     private Date birthDate;
     private String birthPlace;
@@ -136,24 +138,20 @@ public class StudentInfoEntity {
         this.bankAccount = bankAccount;
     }
 
-    @Override
-    public String toString() {
-        return "StudentInfoEntity{" +
-                "id=" + id +
-                ", user=" + user +
-                ", parent=" + parent +
-                ", birthDate=" + birthDate +
-                ", birthPlace='" + birthPlace + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", nationalId='" + nationalId + '\'' +
-                ", street='" + street + '\'' +
-                ", houseNumber='" + houseNumber + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", city='" + city + '\'' +
-                ", phoneParent='" + phoneParent + '\'' +
-                ", phoneCell='" + phoneCell + '\'' +
-                ", bankAccount='" + bankAccount + '\'' +
-                '}';
+    public Integer getGradeId() {
+        return gradeId;
+    }
+
+    public void setGradeId(Integer gradeId) {
+        this.gradeId = gradeId;
+    }
+
+    public Integer getCertificateId() {
+        return certificateId;
+    }
+
+    public void setCertificateId(Integer certificateId) {
+        this.certificateId = certificateId;
     }
 
     @Override
@@ -166,6 +164,9 @@ public class StudentInfoEntity {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
         if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
+        if (gradeId != null ? !gradeId.equals(that.gradeId) : that.gradeId != null) return false;
+        if (certificateId != null ? !certificateId.equals(that.certificateId) : that.certificateId != null)
+            return false;
         if (birthDate != null ? !birthDate.equals(that.birthDate) : that.birthDate != null) return false;
         if (birthPlace != null ? !birthPlace.equals(that.birthPlace) : that.birthPlace != null) return false;
         if (nationality != null ? !nationality.equals(that.nationality) : that.nationality != null) return false;
@@ -181,22 +182,25 @@ public class StudentInfoEntity {
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (parent != null ? parent.hashCode() : 0);
-        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
-        result = 31 * result + (birthPlace != null ? birthPlace.hashCode() : 0);
-        result = 31 * result + (nationality != null ? nationality.hashCode() : 0);
-        result = 31 * result + (nationalId != null ? nationalId.hashCode() : 0);
-        result = 31 * result + (street != null ? street.hashCode() : 0);
-        result = 31 * result + (houseNumber != null ? houseNumber.hashCode() : 0);
-        result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (phoneParent != null ? phoneParent.hashCode() : 0);
-        result = 31 * result + (phoneCell != null ? phoneCell.hashCode() : 0);
-        result = 31 * result + (bankAccount != null ? bankAccount.hashCode() : 0);
-        return result;
+    public String toString() {
+        return "StudentInfoEntity{" +
+                "id=" + id +
+                ", user=" + user +
+                ", parent=" + parent +
+                ", gradeId=" + gradeId +
+                ", certificateId=" + certificateId +
+                ", birthDate=" + birthDate +
+                ", birthPlace='" + birthPlace + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", nationalId='" + nationalId + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
+                ", phoneParent='" + phoneParent + '\'' +
+                ", phoneCell='" + phoneCell + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                '}';
     }
 }
 

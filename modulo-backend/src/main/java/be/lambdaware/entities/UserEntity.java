@@ -12,6 +12,8 @@ public class UserEntity {
     private String lastName;
     private String type;
 
+    //TODO add "enabled" field
+
     public Integer getId() {
         return id;
     }

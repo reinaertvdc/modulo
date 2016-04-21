@@ -1,14 +1,14 @@
 package be.lambdaware.controllers.TestControllers;
 
 import be.lambdaware.dao.*;
-import be.lambdaware.model.*;
+import be.lambdaware.model.BGVScoreModel;
+import be.lambdaware.model.StudentModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,23 +38,15 @@ public class MobileTestController {
 
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    StudentBGVScoreDAO studentBGVScoreDAO;
 
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public List<CompetenceModel>  get() {
-        SubCertificateModel bekisting = new SubCertificateModel(subCertificateDAO);
-        bekisting.getFromDB(1);
+    public List<BGVScoreModel>  get() {
+        StudentModel studentModel = new StudentModel(userDAO,studentInfoDAO);
 
-        List<SubCertificateCategoryModel> subcertificates = bekisting.getSubCertificateCategories(subCertificateCategoryDAO);
-        List<CompetenceModel> competences = new ArrayList<>();
-
-        for(SubCertificateCategoryModel sccm : subcertificates) {
-            competences.addAll(sccm.getCompetences(competenceDAO));
-        }
-
-
-
-        return competences;
+        return studentModel.getBGVScore(1,certificateDAO,studentBGVScoreDAO);
     }
 }

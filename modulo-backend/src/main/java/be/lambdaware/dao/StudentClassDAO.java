@@ -17,6 +17,8 @@ public interface StudentClassDAO {
 
     public List<StudentClassEntity> getByClass(Integer classEntityId) throws DataAccessException;
 
+    public List<StudentClassEntity> getByStudent(Integer studentId) throws DataAccessException;
+
     public List<StudentClassEntity> getAll() throws DataAccessException;
 
     public void delete(Integer studentInfoId, Integer classId) throws DataAccessException;

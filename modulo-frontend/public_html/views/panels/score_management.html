@@ -2,138 +2,172 @@
     <!-- TODO create page -->
     <h3>Puntenbeheer</h3>
 
-    <br>
-    <br>
-    <div ng-controller="ExampleController">
-        <form name="myForm">
+    <form name="form">
+        <div class="btn-group" data-uib-dropdown>
+            <button id="button-subject" type="button" class="btn btn-default" data-uib-dropdown-toggle
+                    data-ng-disabled="disabled">
+                {{visibleScores.subject ? visibleScores.subject.name : 'Vak'}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+                <li data-ng-repeat="subject in scoreHierarchy"><a href=""
+                                                                  data-ng-click="visibleScores.setSubject(subject)">{{subject.name}}</a>
+                </li>
+            </ul>
+        </div>
 
-            <label for="vak"> Vak: </label>
-            <select name="singleSelect" id="vak" ng-model="data.singleSelect">
-                <option value="">---Please select---</option> <!-- not selected / blank option -->
-                <option value="{{data.option1}}">Option 1</option> <!-- interpolation -->
-                <option value="option-2">Option 2</option>
-            </select>
-            <label for="opleiding"> Opleiding: </label>
-            <select name="singleSelect" id="opleiding" ng-model="data.singleSelect">
-                <option value="">---Please select---</option> <!-- not selected / blank option -->
-                <option value="{{data.option1}}">Option 1</option> <!-- interpolation -->
-                <option value="option-2">Option 2</option>
-            </select>
-            <label for="klas"> Klas: </label>
-            <select name="singleSelect" id="klas" ng-model="data.singleSelect">
-                <option value="">---Please select---</option> <!-- not selected / blank option -->
-                <option value="{{data.option1}}">Option 1</option> <!-- interpolation -->
-                <option value="option-2">Option 2</option>
-            </select>
-            <label for="module"> Module: </label>
-            <select name="singleSelect" id="module" ng-model="data.singleSelect">
-                <option value="">---Please select---</option> <!-- not selected / blank option -->
-                <option value="{{data.option1}}">Option 1</option> <!-- interpolation -->
-                <option value="option-2">Option 2</option>
-            </select>
+        <div class="btn-group" data-uib-dropdown data-ng-class="{hidden: !visibleScores.subject}">
+            <button id="button-course" type="button" class="btn btn-default" data-uib-dropdown-toggle
+                    data-ng-disabled="disabled">
+                {{visibleScores.course ? visibleScores.course.name : visibleScores.subject.coursePlaceholder}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-course">
+                <li data-ng-repeat="course in visibleScores.subject.courses"><a href=""
+                                                                                data-ng-click="visibleScores.setCourse(course)">{{course.name}}</a>
+                </li>
+            </ul>
+        </div>
 
-            <div ng-controller="DatepickerPopupDemoCtrl">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="input-group">
-                            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt"
-                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true"
-                                   close-text="Close" alt-input-formats="altInputFormats"/>
+        <div class="btn-group" data-uib-dropdown data-ng-class="{hidden: !visibleScores.course}">
+            <button id="button-school-class" type="button" class="btn btn-default" data-uib-dropdown-toggle
+                    data-ng-disabled="disabled">
+                {{visibleScores.schoolClass ? visibleScores.schoolClass : visibleScores.subject.schoolClassPlaceholder}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                <li data-ng-repeat="schoolClass in visibleScores.course.classes"><a href=""
+                                                                                    data-ng-click="visibleScores.setSchoolClass(schoolClass)">{{schoolClass}}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="btn-group" data-uib-dropdown data-ng-class="{hidden: !visibleScores.schoolClass}">
+            <button id="button-module" type="button" class="btn btn-default" data-uib-dropdown-toggle
+                    data-ng-disabled="disabled">
+                {{visibleScores.module ? visibleScores.module : visibleScores.subject.modulePlaceholder}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                <li data-ng-repeat="module in visibleScores.course.modules"><a href=""
+                                                                               data-ng-click="visibleScores.setModule(module)">{{module}}</a>
+                </li>
+            </ul>
+        </div>
+
+        <br>
+        <br>
+
+        <div ng-controller="DatepickerPopupDemoCtrl">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt"
+                               is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true"
+                               close-text="Close" alt-input-formats="altInputFormats"/>
           <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="open1()"><i
                     class="glyphicon glyphicon-calendar"></i></button>
           </span>
-                        </p>
-                    </div>
+                    </p>
                 </div>
+            </div>
 
 
-                <br/>
-                <br/>
-                <!--  ng-grid voorbeeld
-               <div ng-controller="MyCtrl">
-               <div class="gridStyle" ng-grid="gridOptions"  style="border: 1px solid black; width: 200px; height: 400px"></div>
-               <div class="selectedItems">Items: {{mySelections}}</div><br><br>
-               <div class="selectedItems">IDs: {{selectedIDs}}</div><br><br>
-               </div>-->
+            <br/>
+            <br/>
+            <!--  ng-grid voorbeeld
+           <div ng-controller="MyCtrl">
+           <div class="gridStyle" ng-grid="gridOptions"  style="border: 1px solid black; width: 200px; height: 400px"></div>
+           <div class="selectedItems">Items: {{mySelections}}</div><br><br>
+           <div class="selectedItems">IDs: {{selectedIDs}}</div><br><br>
+           </div>-->
 
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Joske</th>
-                            <th>Pietje</th>
-                            <th>Joske</th>
-                            <th>Pietje</th>
-                            <th>Joske</th>
-                            <th>Pietje</th>
-                            <th>Joske</th>
-                            <th>Pietje</th>
-                            <th>Joske</th>
-                            <th>Pietje</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>doelstelling 1</td>
-                            <td> V </td>
-                            <td> A </td>
-                            <td> V </td>
-                            <td> A </td>
-                            <td> V </td>
-                            <td> A </td>
-                            <td> V </td>
-                            <td> A </td>
-                            <td> V </td>
-                            <td> A </td>
-                        </tr>
-                        <tr>
-                            <td>doelstelling 2</td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                        </tr>
-                        <tr>
-                            <td>doelstelling 3</td>
-                            <td> V </td>
-                            <td> V </td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                            <td> I </td>
-                            <td> A </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Joske</th>
+                        <th>Pietje</th>
+                        <th>Joske</th>
+                        <th>Pietje</th>
+                        <th>Joske</th>
+                        <th>Pietje</th>
+                        <th>Joske</th>
+                        <th>Pietje</th>
+                        <th>Joske</th>
+                        <th>Pietje</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>doelstelling 1</td>
+                        <td> V</td>
+                        <td> A</td>
+                        <td> V</td>
+                        <td> A</td>
+                        <td> V</td>
+                        <td> A</td>
+                        <td> V</td>
+                        <td> A</td>
+                        <td> V</td>
+                        <td> A</td>
+                    </tr>
+                    <tr>
+                        <td>doelstelling 2</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                    </tr>
+                    <tr>
+                        <td>doelstelling 3</td>
+                        <td> V</td>
+                        <td> V</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                        <td> I</td>
+                        <td> A</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <br>
-                <label for="score"> Score </label><br>
-                <select name="singleSelect" id="score" ng-model="data.singleSelect">
-                    <option value="">---Selecteer score---</option> <!-- not selected / blank option -->
-                    <option value="A">A</option> <!-- interpolation -->
-                    <option value="I">I</option>
-                    <option value="V">V</option>
-                </select>
-
-                <div class="form-group">
-                    <label for="comment">Commentaar:</label>
-                    <textarea class="form-control" rows="5" id="comment"></textarea>
-                </div>
-                <button type="submit" class="btn btn-success btn-lg btn-block">
-                    <span class="glyphicon glyphicon-plus-sign"></span> Opslaan
+            <br>
+            <div class="btn-group" data-uib-dropdown>
+                <button id="button-score" type="button" class="btn btn-default" data-uib-dropdown-toggle
+                        data-ng-disabled="disabled">
+                    {{selectedScore ? selectedScore : 'Score'}}
+                    <span class="caret"></span>
                 </button>
-        </form>
-    </div>
+                <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                    <li><a href="" data-ng-click="selectedScore='Aangeboden'">Aangeboden</a></li>
+                    <li><a href="" data-ng-click="selectedScore='Ingeoefend'">Ingeoefend</a></li>
+                    <li><a href="" data-ng-click="selectedScore='Verworven'">Verworven</a></li>
+                </ul>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div class="form-group">
+                <label for="comment">Commentaar:</label>
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg btn-block">
+                <span class="glyphicon glyphicon-plus-sign"></span> Opslaan
+            </button>
+        </div>
+    </form>
 </div>

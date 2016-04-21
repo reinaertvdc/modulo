@@ -220,7 +220,6 @@ app.controller('MainController', function ($scope, $location) {
         STUDENT_PROGRESS: 'voortgang_studenten',
 
         PARAM_EDIT_USER_ID: 'gebruiker',
-        PARAM_CREATE_NEW_USER: 'nieuw',
 
         PARAM_MANAGE_CLASS_ID: 'klas',
         PARAM_CREATE_NEW_CLASS_ID: 'nieuw',

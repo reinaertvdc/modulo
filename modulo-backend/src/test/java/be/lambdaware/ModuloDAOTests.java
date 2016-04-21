@@ -570,14 +570,14 @@ public class ModuloDAOTests {
 //        Assert.assertArrayEquals(converted, arrayFromDatabase);
 //        Logger.getLogger("Test ClassCertificateDAO").info("All classCertificates with certificate_id=2 match the database - pass");
 //
-//        // Delete classCertificate with class_id=2 & certificate_id=2
-//        classCertificateDAO.delete(2,2);
-//        try {
-//            insertedEntity = classCertificateDAO.get(2,2);
-//            Assert.fail();
-//        } catch (Exception e) {
-//            Logger.getLogger("Test ClassCertificateDAO").info("Inserted classCertificate was deleted successfully - pass");
-//        }
+        // Delete classCertificate with class_id=2 & certificate_id=2
+        classCertificateDAO.delete(2,2);
+        try {
+            insertedEntity = classCertificateDAO.get(2,2);
+            Assert.fail();
+        } catch (Exception e) {
+            Logger.getLogger("Test ClassCertificateDAO").info("Inserted classCertificate was deleted successfully - pass");
+        }
     }
 
 

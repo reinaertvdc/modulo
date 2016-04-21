@@ -109,19 +109,31 @@
 
             <div class="form-group">
                 <label for="input-nationalId">Rijksregisternummer</label>
-                <input id="input-nationalId" type="text" name="nationalId" class="form-control" ng-minlength="11" ng-maxlength="11"
+                <input id="input-nationalId" type="text" name="nationalId" class="form-control" ng-minlength="11"
+                       ng-maxlength="11"
                        data-ng-model="studentInfo.nationalId" title="Rijksregisternummer" required>
             </div>
 
-            <!-- TODO parent-->
             <div class="form-group">
-                <label for="input-parent">Ouder</label>
+                <label for="input-parentStr">Ouder</label>
+                <div class="row">
+                    <div class="col-xs-10" class="form-group">
+                        <input id="input-parentStr" type="text" name="parentStr" class="form-control"
+                               data-ng-model="parentStr" title="Ouder" readonly>
+                    </div>
+                    <div class="col-xs-2" class="form-group">
+                        <button type="button" class="btn btn-default btn-block" ng-click="open()">
+                            <span class="glyphicon glyphicon-search"></span></button>
+                    </div>
+                </div>
             </div>
         </div>
 
 
         <button type="submit" class="btn btn-success btn-lg btn-block">
-            <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken
+            <span class="glyphicon glyphicon-plus-sign"></span> {{btnText}}
         </button>
+
+
     </form>
 </div>

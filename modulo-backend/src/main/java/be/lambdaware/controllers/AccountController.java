@@ -33,6 +33,54 @@ public class AccountController {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "/parents", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<ParentModel>> getParents() {
+        ArrayList<AccountModel> accounts = AccountModel.getAll(userDAO);
+        ArrayList<ParentModel> parents = new ArrayList<ParentModel>();
+        for(AccountModel account : accounts)
+            if(account.getUserEntity().getType().equals("PARENT")) {
+                ParentModel parent = new ParentModel(userDAO);
+                parent.getFromDB(account.getUserEntity().getId());
+                parents.add(parent);
+            }
+        return new ResponseEntity<ArrayList<ParentModel>>(parents, HttpStatus.OK);
+    }
+
+//    @CrossOrigin
+//    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+//    public ResponseEntity<AccountModel> getAdmin(@PathVariable Integer userId) {
+//        AccountModel account = new AccountModel(userDAO);
+//        account.getFromDB(userId);
+//        if(account.getUserEntity().getType() == "STUDENT") {
+//            StudentModel student = new StudentModel(userDAO, studentInfoDAO);
+//            student.getFromDB(userId);
+//            return new ResponseEntity<StudentModel>(student, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<AccountModel>(account, HttpStatus.OK);
+//    }
+//    @CrossOrigin
+//    @RequestMapping(value = "/parent/{userId}", method = RequestMethod.GET)
+//    public ResponseEntity<ParentModel> getParent(@PathVariable Integer userId) {
+//        ParentModel parent = new ParentModel(userDAO);
+//        parent.getFromDB(userId);
+//        return new ResponseEntity<ParentModel>(parent, HttpStatus.OK);
+//    }
+//    @CrossOrigin
+//    @RequestMapping(value = "/teacher/{userId}", method = RequestMethod.GET)
+//    public ResponseEntity<TeacherModel> getTeacher(@PathVariable Integer userId) {
+//        TeacherModel teacher = new TeacherModel(userDAO);
+//        teacher.getFromDB(userId);
+//        return new ResponseEntity<TeacherModel>(teacher, HttpStatus.OK);
+//    }
+//    @CrossOrigin
+//    @RequestMapping(value = "/student/{userId}", method = RequestMethod.GET)
+//    public ResponseEntity<StudentModel> getStudent(@PathVariable Integer userId) {
+//        StudentModel student = new StudentModel(userDAO, studentInfoDAO);
+//        student.getFromDB(userId);
+//        return new ResponseEntity<StudentModel>(student, HttpStatus.OK);
+//    }
+
+    @CrossOrigin
     @RequestMapping(value = "/{accountId}", method = RequestMethod.DELETE)
     public boolean delete(@PathVariable Integer accountId ) {
         AccountModel accountModel = new AccountModel(userDAO);
@@ -65,6 +113,9 @@ public class AccountController {
     @CrossOrigin
     @RequestMapping(value = "/student", method = RequestMethod.POST)
     public ResponseEntity<StudentModel> createStudent(@RequestBody StudentModel student) {
+        System.out.println(student);
+        System.out.println(student.getStudentInfoEntity().getParent());
+
         student.setUserDAO(userDAO);
         student.setStudentInfoDAO(studentInfoDAO);
         student.createInDB();

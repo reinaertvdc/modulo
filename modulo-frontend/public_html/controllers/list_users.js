@@ -1,12 +1,28 @@
 app.controller('ListUsersController', function ($scope, $http, $window, $compile) {
     // TODO finish controller
-    //TODO vervang alle dummy data met backend stuff
-    //TODO user zorden nu handmatig via for lus bepaakd, dit zou een function call uit de database moeten worden
     const USER_LIST_ITEM_PREFIX = 'user-list-item-';
     const USER_LIST_ELEMENT = document.getElementById('table-user-list-body');
 
     $scope.users = new Map();
+    $scope.originalUsers = new Map();
 
+    $scope.searchUsers = function () {
+        if ($scope.searchKeyword) {
+            $scope.users = new Map($scope.originalUsers);
+            var search = $scope.searchKeyword.toLowerCase();
+
+            $scope.users.forEach(function (item) {
+               console.log(item.firstName.to);
+                if (item.firstName.toLowerCase().indexOf(search) < 0 && item.lastName.toLocaleLowerCase().indexOf(search) < 0)
+                    $scope.removeUserFrontend(item.id);
+            });
+        } else {
+            $scope.users = new Map($scope.originalUsers);
+            $scope.originalUsers.forEach(function (item) {
+               $scope.addUser(item);
+            });
+        }
+    };
 
     // //Pagination code
     // $scope.totalItems = $scope.backend.getUsers().length;
@@ -77,13 +93,10 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
     $http.get('http://localhost:8080/account/all').success(function (response) {
         response.forEach(function (item) {
-            $scope.addUser(item.userEntity)
+            $scope.addUser(item.userEntity);
         });
+
+        $scope.originalUsers = new Map($scope.users);
         $scope.refresh();
     });
-
-    // $scope.backend.getUsers().forEach(function (user) {
-    //     $scope.addUser(user);
-    // });
-    // $scope.refresh();
 });

@@ -4,7 +4,7 @@
 
     <div>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Zoeken...">
+            <input data-ng-model="searchKeyword" data-ng-change="searchUsers()" type="text" class="form-control" placeholder="Zoeken...">
         <span class="input-group-btn">
             <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
         </span>

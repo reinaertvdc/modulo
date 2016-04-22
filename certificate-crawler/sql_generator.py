@@ -9,18 +9,18 @@ class SqlGenerator:
         self.certificate_id = self.sub_certificate_id = self.sub_certificate_category_id = self.competence_id = 1
 
     def __get_certificate_query(self, id, name):
-        return "INSERT INTO 'certificates' VALUES (" + str(id) + ", '" + name + "', '1');\n"
+        return "INSERT INTO `certificates` VALUES (" + str(id) + ", '" + name + "', '0');\n"
 
     def __get_sub_certificate_query(self, id, parent_id, name):
-        return "    INSERT INTO 'sub_certificates' VALUES (" + str(id) + ", " + str(
+        return "    INSERT INTO `sub_certificates` VALUES (" + str(id) + ", " + str(
             parent_id) + ", '" + name + "', NULL, '1');\n"
 
     def __get_sub_certificate_category_query(self, id, parent_id, name):
-        return "        INSERT INTO 'sub_certificate_categories' VALUES (" + str(id) + ", " + str(
+        return "        INSERT INTO `sub_certificate_categories` VALUES (" + str(id) + ", " + str(
             parent_id) + ", '" + name + "', NULL, '1');\n"
 
     def __get_competence_query(self, id, parent_id, name):
-        return "            INSERT INTO 'competences' VALUES (" + str(id) + ", " + str(
+        return "            INSERT INTO `competences` VALUES (" + str(id) + ", " + str(
             parent_id) + ", '" + name + "', NULL, '1');\n"
 
     def write(self, certificate):

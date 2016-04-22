@@ -25,6 +25,10 @@ class ModularCertificateParser:
     __SUB_CERTIFICATE_BEGIN_TAG = 'Module '
     __SUB_CERTIFICATE_END_TAG = 'De beroepsgerichte vorming '
 
+    __COMPETENCE_BEGIN_TAG = u'\uF0D8'
+
+    __SUB_CERTIFICATE_CATEGORY_TITLE_END_TAG = ' zoals: \n' + __COMPETENCE_BEGIN_TAG
+
     def __init__(self):
         self.pdf_parser = PdfParser()
 
@@ -128,14 +132,46 @@ class ModularCertificateParser:
 
             source_begin_index = sub_certificates_source.find(self.__SUB_CERTIFICATE_BEGIN_TAG, previous_end_index)
             source_end_index = sub_certificates_source.find(self.__SUB_CERTIFICATE_END_TAG, source_begin_index)
+
         return sources
 
     def __get_sub_certificate_categories(self, categories_source):
+        return []
         categories = []
+        category_names = []
+        competences_sources = []
 
-        categories_source = categories_source.replace('\n', '')
+        print categories_source
+
+        previous_title_end_index = -1
+        while True:
+            title_end_index = categories_source.find(self.__SUB_CERTIFICATE_CATEGORY_TITLE_END_TAG,
+                                                     previous_title_end_index + 1)
+            title_begin_index = categories_source.rfind('\n', previous_title_end_index, title_end_index) + 1
+            while True:
+                previous_line_begin_index = categories_source.rfind('\n', previous_title_end_index, title_end_index) + 1
+                if previous_line_begin_index == categories_source.rfind(
+                        self.__COMPETENCE_BEGIN_TAG, title_end_index) or previous_line_begin_index >= title_begin_index:
+                    break
+                title_begin_index = previous_line_begin_index
+            if previous_title_end_index >= 0:
+                competences_begin_index = previous_title_end_index + len(
+                    self.__SUB_CERTIFICATE_CATEGORY_TITLE_END_TAG) - 1
+                competences_end_index = title_begin_index - 1
+                competences_sources.append(categories_source[competences_begin_index:competences_end_index])
+            if title_end_index < 0:
+                break
+            category_names.append(categories_source[title_begin_index:title_end_index].replace('\n', '').strip())
+            previous_title_end_index = title_end_index
+
+        for category_name, competences_source in zip(category_names, competences_sources):
+            competences = self.__get_competences(competences_source)
+            categories.append(CertificateComponent(category_name, competences))
 
         return categories
+
+    def __get_competences(self, competences_source):
+        return []
 
     def get_certificate(self, path):
         # Series of spaces need to be removed because they sometimes occur mid-sentence, but all newlines need to be

@@ -1,10 +1,8 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.dao.ClassCertificateDAO;
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.model.ClassModel;
+import be.lambdaware.model.StudentModel;
 import be.lambdaware.model.TeacherModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +26,10 @@ public class ClassController {
     private CertificateDAO certificateDAO;
     @Autowired
     private ClassCertificateDAO classCertificateDAO;
+    @Autowired
+    private StudentInfoDAO studentInfoDAO;
+    @Autowired
+    private StudentClassDAO studentClassDAO;
 
 
     @CrossOrigin
@@ -45,6 +47,33 @@ public class ClassController {
         ClassModel clazz = new ClassModel(classDAO);
         clazz.getFromDB(classId);
         clazz.deleteFromDB();
+        return true;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{classId}/students", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<StudentModel>> getStudents(@PathVariable Integer classId ) {
+        ClassModel clazz = new ClassModel(classDAO);
+        clazz.getFromDB(classId);
+        ArrayList<StudentModel> students = clazz.getStudents(userDAO, studentInfoDAO, studentClassDAO);
+        return new ResponseEntity<ArrayList<StudentModel>>(students, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{classId}/student/{studentInfoId}", method = RequestMethod.POST)
+    public boolean createStudentClass(@PathVariable Integer classId, Integer studentInfoId ) {
+        ClassModel clazz = new ClassModel(classDAO, studentClassDAO);
+        clazz.getFromDB(classId);
+        clazz.createStudentClassInDB(studentInfoId);
+        return true;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/{classId}/student/{studentInfoId}", method = RequestMethod.DELETE)
+    public boolean deleteStudentClass(@PathVariable Integer classId, Integer studentInfoId ) {
+        ClassModel clazz = new ClassModel(classDAO, studentClassDAO);
+        clazz.getFromDB(classId);
+        clazz.deleteStudentClassInDB(studentInfoId);
         return true;
     }
 }

@@ -23,10 +23,13 @@ public class ClassModel {
 
     // DAO's
     protected ClassDAO classDAO;
+    protected StudentClassDAO studentClassDAO;
 
     public ClassModel() {}
 
     public ClassModel(ClassDAO classDAO) { this.classDAO = classDAO; }
+
+    public ClassModel(ClassDAO classDAO, StudentClassDAO studentClassDAO) { this.classDAO = classDAO; this.studentClassDAO = studentClassDAO; }
 
     public ClassEntity getClassEntity() {
         return classEntity;
@@ -60,6 +63,14 @@ public class ClassModel {
 
     public void updateInDB() throws DataAccessException {
         classDAO.update(classEntity);
+    }
+
+    public void createStudentClassInDB(Integer studentInfoId) throws  DataAccessException {
+        studentClassDAO.create(new StudentClassEntity(studentInfoId, classEntity.getId()));
+    }
+
+    public void deleteStudentClassInDB(Integer studentInfoId) throws  DataAccessException {
+        studentClassDAO.delete(studentInfoId, classEntity.getId());
     }
 
     public ArrayList<StudentModel> getStudents(UserDAO userDAO, StudentInfoDAO studentInfoDAO, StudentClassDAO studentClassDAO) throws DataAccessException {

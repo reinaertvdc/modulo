@@ -45,6 +45,20 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mMainLayout = (LinearLayout) findViewById(R.id.ll_main_layout);
+
+        View header = navigationView.getHeaderView(0);
+        TextView textViewName = (TextView) header.findViewById(R.id.tv_name);
+        TextView textViewMail = (TextView) header.findViewById(R.id.tv_mail);
+
+        for (int i = 0; i < 6; i++) {
+            Random random = new Random();
+            int totalCount = random.nextInt(50) + 30;
+            int practicedCount = random.nextInt(20) + 10;
+            int acquiredCount = totalCount - practicedCount;
+            addScore("Subcertificaat " + (i + 1), totalCount, practicedCount, acquiredCount);
+        }
+
+        new AsyncRestCall(textViewName, textViewMail).execute();
     }
 
     @Override
@@ -64,20 +78,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    int i=0;
+    int i = 0;
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if(id == R.id.nav_progress) {
+        if (id == R.id.nav_progress) {
             //TODO do something with nav progress
-            Random random = new Random();
-            int totalCount = random.nextInt(50)+30;
-            int practicedCount = random.nextInt(20)+10;
-            int acquiredCount = totalCount - practicedCount;
-            addScore("Test "+(++i),totalCount,practicedCount,acquiredCount);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,12 +96,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void addScore(String competenceName, int totalCount, int practicedCount, int acquiredCount) {
-        View scoreLayout = LayoutInflater.from(this).inflate(R.layout.score_layout,mMainLayout,false);
+        View scoreLayout = LayoutInflater.from(this).inflate(R.layout.score_layout, mMainLayout, false);
 
-        TextView competenceView =(TextView) scoreLayout.findViewById(R.id.tv_competence);
-        TextView totalView =(TextView) scoreLayout.findViewById(R.id.tv_total);
-        TextView practicedView =(TextView) scoreLayout.findViewById(R.id.tv_practiced);
-        TextView acquiredView =(TextView) scoreLayout.findViewById(R.id.tv_acquired);
+        TextView competenceView = (TextView) scoreLayout.findViewById(R.id.tv_competence);
+        TextView totalView = (TextView) scoreLayout.findViewById(R.id.tv_total);
+        TextView practicedView = (TextView) scoreLayout.findViewById(R.id.tv_practiced);
+        TextView acquiredView = (TextView) scoreLayout.findViewById(R.id.tv_acquired);
         PieChart pieView = (PieChart) scoreLayout.findViewById(R.id.pc_chart);
 
         competenceView.setText(competenceName);
@@ -99,12 +109,11 @@ public class MainActivity extends AppCompatActivity
         practicedView.setText(String.valueOf(practicedCount));
         acquiredView.setText(String.valueOf(acquiredCount));
 
-        int practicedPercentage = (int)(((practicedCount / (double) totalCount)) * 100);
-        int acquiredPercentage = (int)(((acquiredCount / (double) totalCount)) * 100);
+        int practicedPercentage = (int) (((practicedCount / (double) totalCount)) * 100);
+        int acquiredPercentage = (int) (((acquiredCount / (double) totalCount)) * 100);
 
-        pieView.addPieSlice(new PieModel("I",practicedPercentage,Color.parseColor("#FF0000")));
-        pieView.addPieSlice(new PieModel("V",acquiredPercentage,Color.parseColor("#00FF00")));
-
+        pieView.addPieSlice(new PieModel("I", practicedPercentage, Color.parseColor("#FF0000")));
+        pieView.addPieSlice(new PieModel("V", acquiredPercentage, Color.parseColor("#00FF00")));
 
 
         mMainLayout.addView(scoreLayout);

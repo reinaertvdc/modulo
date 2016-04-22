@@ -20,17 +20,20 @@ import java.net.URL;
 public class AsyncRestCall extends AsyncTask<String,Void,String> {
 
     private HttpURLConnection httpConnection;
-    private TextView tv_result;
 
-    public AsyncRestCall(TextView tv_result) {
-        this.tv_result = tv_result;
+    private TextView textViewName;
+    private TextView textViewMail;
+
+    public AsyncRestCall(TextView textViewName, TextView textViewMail) {
+        this.textViewName = textViewName;
+        this.textViewMail = textViewMail;
     }
 
     @Override
     protected String doInBackground(String... params) {
 
         // params.
-        String webAddress = "http://10.0.2.2:8080/competencemodel?id=5";
+        String webAddress = "http://10.0.2.2:8080/mobile";
 
         StringBuilder webResponse = new StringBuilder();
 
@@ -58,9 +61,14 @@ public class AsyncRestCall extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String jsonString) {
         Log.i("AsyncRestCall",jsonString);
-        tv_result.setText(jsonString);
         try {
             JSONObject json = new JSONObject(jsonString);
+            JSONObject userEntity = json.getJSONObject("userEntity");
+            String name = userEntity.getString("firstName");
+            name +=" " + userEntity.getString("lastName");
+            String mail = userEntity.getString("email");
+            textViewName.setText(name);
+            textViewMail.setText(mail);
         } catch (JSONException e) {
             e.printStackTrace();
         }

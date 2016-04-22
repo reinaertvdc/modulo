@@ -1,169 +1,80 @@
-app.controller('NewClassController', function ($scope) {
+app.controller('NewClassController', function ($scope, $http) {
         // TODO implement controller
-        var defaultData = [
-            {
-                text: 'Metselaar',
-                href: '#Metselaar',
-                tags: ['2'],
-                nodes: [
-                    {
-                        text: 'Joni Gijsens',
-                        href: '#Joni Gijsens',
-                        tags: ['0']
-                    },
-                    {
-                        text: 'Kjell Swinnen',
-                        href: '#Kjell Swinnen',
-                        tags: ['0']
-                    }
-                ]
-            },
-            {
-                text: 'Industrieel verpakker',
-                href: '#Industrieel verpakker',
-                tags: ['2'],
-                nodes: [
-                    {
-                        text: 'Joni Gijsens',
-                        href: '#Joni Gijsens',
-                        tags: ['0']
-                    },
-                    {
-                        text: 'Kjell Swinnen',
-                        href: '#Kjell Swinnen',
-                        tags: ['0']
-                    }
-                ]
-            },
-            {
-                text: 'Plaatlasser',
-                href: '#Plaatlasser',
-                tags: ['2'],
-                nodes: [
-                    {
-                        text: 'Joni Gijsens',
-                        href: '#Joni Gijsens',
-                        tags: ['0']
-                    },
-                    {
-                        text: 'Kjell Swinnen',
-                        href: '#Kjell Swinnen',
-                        tags: ['0']
-                    }
-                ]
-            },
-            {
-                text: 'Banketbakker',
-                href: '#Banketbakker',
-                tags: ['2'],
-                nodes: [
-                    {
-                        text: 'Joni Gijsens',
-                        href: '#Joni Gijsens',
-                        tags: ['0']
-                    },
-                    {
-                        text: 'Kjell Swinnen',
-                        href: '#Kjell Swinnen',
-                        tags: ['0']
-                    }
-                ]
-            },
-            {
-                text: 'Winkelbediende',
-                href: '#Winkelbediende'  ,
-                tags: ['2'],
-                nodes: [
-                    {
-                        text: 'Joni Gijsens',
-                        href: '#Joni Gijsens',
-                        tags: ['0']
-                    },
-                    {
-                        text: 'Kjell Swinnen',
-                        href: '#Kjell Swinnen',
-                        tags: ['0']
-                    }
-                ]
+    $scope.students = new Map();
+    $scope.jsonStudents = "";
+
+        $http.get('http://localhost:8080/student/all').success(function (response) {
+            response.forEach(function (item) {
+                $scope.students.set(item.studentInfoEntity.id, item);
+            });
+            $scope.fillJsonStudents();
+            $scope.buildTree();
+        });
+
+    $scope.fillJsonStudents = function () {
+        var certificateStudents = new Map();
+        $scope.students.forEach(function (student, key) {
+            var certificate = student.certificateEntity;
+            if (certificateStudents.has(certificate.name)) {
+                certificateStudents.get(certificate.name).push(student);
             }
-        ];
+            else {
+                certificateStudents.set(certificate.name, []);
+                certificateStudents.get(certificate.name).push(student);
+            }
+        }, $scope.students);
 
-        var json = '[' +
-            '{' +
-            '"text": "Parent 1",' +
-            '"nodes": [' +
-            '{' +
-            '"text": "Child 1",' +
-            '"nodes": [' +
-            '{' +
-            '"text": "Grandchild 1"' +
-            '},' +
-            '{' +
-            '"text": "Grandchild 2"' +
-            '}' +
-            ']' +
-            '},' +
-            '{' +
-            '"text": "Child 2"' +
-            '}' +
-            ']' +
-            '},' +
-            '{' +
-            '"text": "Parent 2"' +
-            '},' +
-            '{' +
-            '"text": "Parent 3"' +
-            '},' +
-            '{' +
-            '"text": "Parent 4"' +
-            '},' +
-            '{' +
-            '"text": "Parent 5"' +
-            '}' +
-            ']';
+        $scope.jsonStudents += '[';
+        var i = 0;
+        certificateStudents.forEach(function (students, key) {
+            $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
+            $scope.addStudents(students);
+            //add student
 
+            if (i < certificateStudents.size - 1) {
+                $scope.jsonStudents += ']},'
+            }
+            else {
+                $scope.jsonStudents += ']}'
+            }
+            i++;
+        }, $scope.students);
+        $scope.jsonStudents += ']';
+    }
 
-        var $checkableTree = $('#treeview-checkable').treeview({
-            data: defaultData,
+    $scope.addStudents = function (students) {
+        for (var i = 0; i < students.length; i++) {
+            if (i < students.length - 1) {
+                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "studentInfoId": "' + students[i].studentInfoEntity.id + '"},';
+            }
+            else {
+                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+            }
+        }
+    }
+
+    $scope.buildTree = function () {
+        //source: https://github.com/jonmiles/bootstrap-treeview/blob/master/public/index.html
+        $scope.checkableTree = $('#treeview-checkable').treeview({
+            data: $scope.jsonStudents,
             levels: 1,
             showIcon: false,
             showCheckbox: true,
-            onNodeChecked: function(event, node) {
-                $('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
+            onNodeChecked: function (event, node) {
+                //Todo
+
             },
             onNodeUnchecked: function (event, node) {
-                $('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
+                //Todo
             }
         });
-        var findCheckableNodess = function() {
-            return $checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
-        };
-        var checkableNodes = findCheckableNodess();
-        // Check/uncheck/toggle nodes
-        $('#input-check-node').on('keyup', function (e) {
-            checkableNodes = findCheckableNodess();
-            $('.check-node').prop('disabled', !(checkableNodes.length >= 1));
-        });
-        $('#btn-check-node.check-node').on('click', function (e) {
-            $checkableTree.treeview('checkNode', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
-        });
-        $('#btn-uncheck-node.check-node').on('click', function (e) {
-            $checkableTree.treeview('uncheckNode', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
-        });
-        $('#btn-toggle-checked.check-node').on('click', function (e) {
-            $checkableTree.treeview('toggleNodeChecked', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
-        });
-        // Check/uncheck all
-        $('#btn-check-all').on('click', function (e) {
-            $checkableTree.treeview('checkAll', { silent: $('#chk-check-silent').is(':checked') });
-        });
-        $('#btn-uncheck-all').on('click', function (e) {
-            $checkableTree.treeview('uncheckAll', { silent: $('#chk-check-silent').is(':checked') });
-        });
 
-        /*
-         var $tree = $('#treeview12').treeview({
-         data: json
-         });*/
+        var findCheckableNodess = function() {
+            return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
+        };
+
+        //Expand all
+        $scope.checkableTree.treeview('expandAll', {silent: true});
+    }
 
 });

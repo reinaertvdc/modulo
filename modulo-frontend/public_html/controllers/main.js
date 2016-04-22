@@ -207,7 +207,7 @@ app.controller('MainController', function ($scope, $location) {
     };
 
     // TODO remove when finished developing
-    // $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
+    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
@@ -247,7 +247,7 @@ app.controller('MainController', function ($scope, $location) {
 
         userCanAccessPage: function (page) {
 
-            // return true;
+            return true;
 
             if (page === '') {
                 return true;

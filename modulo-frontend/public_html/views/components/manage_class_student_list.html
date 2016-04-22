@@ -5,28 +5,12 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Naam</th>
-                <th>Certificaat</th>
+                <th class="col-xs-6">Naam</th>
+                <th class="col-xs-6">Certificaat</th>
                 <th></th>
             </tr>
             </thead>
-            <tbody id="manage-student-list-body">
-            <tr>
-                <td>Doerustig Eric</td>
-                <td>Metselaar</td>
-                <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-            </tr>
-            <tr>
-                <td>Droz Vinny</td>
-                <td>Metselaar</td>
-                <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-            </tr>
-            <tr>
-                <td>Vanmunster Mich</td>
-                <td>Winkelbediende</td>
-                <td class="text-danger"><span role="button" class="glyphicon glyphicon-remove pull-right"></span></td>
-            </tr>
-            </tbody>
+            <tbody id="manage-student-list-body"></tbody>
         </table>
     </div>
     <button class="btn btn-success pull-right" data-ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_MEMBERS, true)">

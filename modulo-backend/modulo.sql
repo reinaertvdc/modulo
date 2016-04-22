@@ -80,7 +80,7 @@ CREATE TABLE `classes` (
 
 INSERT INTO `classes` VALUES (1, 21, 'Metselaar 1', 'BGV');
 INSERT INTO `classes` VALUES (2, 21, 'Metselaar 2', 'BGV');
-INSERT INTO `classes` VALUES (3, 22, 'Elektricien 1', 'BGV');
+INSERT INTO `classes` VALUES (3, 21, 'Elektricien 1', 'BGV');
 INSERT INTO `classes` VALUES (4, 22, 'Elektriciten 2', 'BGV');
 INSERT INTO `classes` VALUES (5, 22, 'PAV Klas 1', 'PAV');
 INSERT INTO `classes` VALUES (6, 22, 'PAV Klas 2', 'PAV');
@@ -184,10 +184,10 @@ INSERT INTO `student_info` VALUES
   (3, 13, 31, 2, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (4, 14, 32, 1, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+  (4, 14, 32, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
    'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (5, 15, 31, 1, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (5, 15, 31, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 
 CREATE TABLE `student_class` (
@@ -203,8 +203,8 @@ CREATE TABLE `student_class` (
 INSERT INTO `student_class` VALUES (1, 1);
 INSERT INTO `student_class` VALUES (2, 1);
 INSERT INTO `student_class` VALUES (3, 1);
-INSERT INTO `student_class` VALUES (4, 2);
-INSERT INTO `student_class` VALUES (5, 2);
+INSERT INTO `student_class` VALUES (4, 3);
+INSERT INTO `student_class` VALUES (5, 3);
 
 CREATE TABLE `grade_class` (
   `grade_id` INT NOT NULL,

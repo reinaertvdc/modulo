@@ -55,13 +55,13 @@ public class ClassController {
     public ResponseEntity<ArrayList<StudentModel>> getStudents(@PathVariable Integer classId ) {
         ClassModel clazz = new ClassModel(classDAO);
         clazz.getFromDB(classId);
-        ArrayList<StudentModel> students = clazz.getStudents(userDAO, studentInfoDAO, studentClassDAO);
+        ArrayList<StudentModel> students = clazz.getStudents(userDAO, studentInfoDAO, studentClassDAO, certificateDAO);
         return new ResponseEntity<ArrayList<StudentModel>>(students, HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/{classId}/student/{studentInfoId}", method = RequestMethod.POST)
-    public boolean createStudentClass(@PathVariable Integer classId, Integer studentInfoId ) {
+    public boolean createStudentClass(@PathVariable Integer classId,@PathVariable Integer studentInfoId ) {
         ClassModel clazz = new ClassModel(classDAO, studentClassDAO);
         clazz.getFromDB(classId);
         clazz.createStudentClassInDB(studentInfoId);
@@ -70,7 +70,7 @@ public class ClassController {
 
     @CrossOrigin
     @RequestMapping(value = "/{classId}/student/{studentInfoId}", method = RequestMethod.DELETE)
-    public boolean deleteStudentClass(@PathVariable Integer classId, Integer studentInfoId ) {
+    public boolean deleteStudentClass(@PathVariable Integer classId,@PathVariable Integer studentInfoId ) {
         ClassModel clazz = new ClassModel(classDAO, studentClassDAO);
         clazz.getFromDB(classId);
         clazz.deleteStudentClassInDB(studentInfoId);

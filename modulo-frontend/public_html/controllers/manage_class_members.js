@@ -1,4 +1,4 @@
-app.controller('ManageClassMembersController', function ($scope, $http, $compile) {
+app.controller('ManageClassMembersController', function ($scope, $http) {
     // TODO implement controller
     var json = "" +
         '[' +
@@ -30,7 +30,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $compile
     $scope.students = new Map();
     $scope.studentsInClass = [];
 
-    $scope.jsonUsers = "";
+    $scope.jsonStudents = "";
 
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
 
@@ -62,23 +62,23 @@ app.controller('ManageClassMembersController', function ($scope, $http, $compile
             }
         }, $scope.students);
 
-        $scope.jsonUsers += '[';
+        $scope.jsonStudents += '[';
         var i = 0;
         certificateStudents.forEach(function (students, key) {
 
-            $scope.jsonUsers += '{"text": "' + key + '", "nodes": [';
+            $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
             $scope.addStudents(students);
             //add student
 
             if (i < certificateStudents.size - 1) {
-                $scope.jsonUsers += ']},'
+                $scope.jsonStudents += ']},'
             }
             else {
-                $scope.jsonUsers += ']}'
+                $scope.jsonStudents += ']}'
             }
             i++;
         }, $scope.students);
-        $scope.jsonUsers += ']';
+        $scope.jsonStudents += ']';
     }
 
     $scope.addStudents = function (students) {
@@ -90,10 +90,10 @@ app.controller('ManageClassMembersController', function ($scope, $http, $compile
             }
 
             if (i < students.length - 1) {
-                $scope.jsonUsers += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "state":{"checked": "' + inClass + '"}, "studentInfoId": "' + students[i].studentInfoEntity.id + '"},';
+                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "state":{"checked": "' + inClass + '"}, "studentInfoId": "' + students[i].studentInfoEntity.id + '"},';
             }
             else {
-                $scope.jsonUsers += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "state":{"checked": "' + inClass + '"}, "studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "state":{"checked": "' + inClass + '"}, "studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
             }
         }
     }
@@ -110,7 +110,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $compile
     $scope.buildTree = function () {
         //source: https://github.com/jonmiles/bootstrap-treeview/blob/master/public/index.html
         $scope.checkableTree = $('#treeview-checkable').treeview({
-            data: $scope.jsonUsers,
+            data: $scope.jsonStudents,
             levels: 1,
             showIcon: false,
             showCheckbox: true,

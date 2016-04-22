@@ -21,6 +21,7 @@ public class UserMapper implements RowMapper<UserEntity> {
         userEntity.setFirstName(resultSet.getString("users.first_name"));
         userEntity.setLastName(resultSet.getString("users.last_name"));
         userEntity.setType(resultSet.getString("users.type"));
+        userEntity.setEnabled(resultSet.getBoolean("users.enabled"));
         return userEntity;
     }
 }

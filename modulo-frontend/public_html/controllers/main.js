@@ -207,14 +207,14 @@ app.controller('MainController', function ($scope, $location) {
     };
 
     // TODO remove when finished developing
-    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
+    // $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
         NOT_FOUND: 'pagina_niet_gevonden',
         ACCESS_DENIED: 'toegang_geweigerd',
         USER_MANAGEMENT: 'gebruikersbeheer',
-        COURSES: 'opleidingen',
+        COURSES: 'certificaten',
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',
@@ -247,24 +247,24 @@ app.controller('MainController', function ($scope, $location) {
 
         userCanAccessPage: function (page) {
 
-            return true;
+            // return true;
 
             if (page === '') {
                 return true;
             } else if (!$scope.account.isLoggedIn()) {
                 return false;
             } else if (page === this.USER_MANAGEMENT) {
-                return $scope.account.user.details.type === UserType.ADMIN;
+                return $scope.account.user.type === UserType.ADMIN;
             } else if (page === this.COURSES) {
-                return $scope.account.user.details.type === UserType.ADMIN;
+                return $scope.account.user.type === UserType.ADMIN;
             } else if (page === this.MY_CLASSES) {
-                return $scope.account.user.details.type === UserType.TEACHER;
+                return $scope.account.user.type === UserType.TEACHER;
             } else if (page === this.SCORES_MANAGEMENT) {
-                return $scope.account.user.details.type === UserType.TEACHER;
+                return $scope.account.user.type === UserType.TEACHER;
             } else if (page === this.STUDENT_PROGRESS) {
-                return $scope.account.user.details.type === UserType.TEACHER
-                    || $scope.account.user.details.type === UserType.STUDENT
-                    || $scope.account.user.details.type === UserType.PARENT;
+                return $scope.account.user.type === UserType.TEACHER
+                    || $scope.account.user.type === UserType.STUDENT
+                    || $scope.account.user.type === UserType.PARENT;
             }
 
             return false;

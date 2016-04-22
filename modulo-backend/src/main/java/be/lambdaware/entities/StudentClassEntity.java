@@ -9,6 +9,11 @@ public class StudentClassEntity {
 
     public StudentClassEntity(){}
 
+    public StudentClassEntity(Integer studentInfoId, Integer classId){
+        this.studentInfoId = studentInfoId;
+        this.classId = classId;
+    }
+
     public Integer getStudentInfoId() {
         return studentInfoId;
     }

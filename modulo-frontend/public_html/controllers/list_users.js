@@ -12,7 +12,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             var search = $scope.searchKeyword.toLowerCase();
 
             $scope.users.forEach(function (item) {
-               console.log(item.firstName.to);
                 if (item.firstName.toLowerCase().indexOf(search) < 0 && item.lastName.toLocaleLowerCase().indexOf(search) < 0)
                     $scope.removeUserFrontend(item.id);
             });

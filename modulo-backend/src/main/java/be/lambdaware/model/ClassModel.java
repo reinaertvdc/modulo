@@ -1,9 +1,6 @@
 package be.lambdaware.model;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentClassDAO;
-import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.entities.ClassEntity;
 import be.lambdaware.entities.StudentClassEntity;
 import org.springframework.dao.DataAccessException;
@@ -73,13 +70,14 @@ public class ClassModel {
         studentClassDAO.delete(studentInfoId, classEntity.getId());
     }
 
-    public ArrayList<StudentModel> getStudents(UserDAO userDAO, StudentInfoDAO studentInfoDAO, StudentClassDAO studentClassDAO) throws DataAccessException {
+    public ArrayList<StudentModel> getStudents(UserDAO userDAO, StudentInfoDAO studentInfoDAO, StudentClassDAO studentClassDAO, CertificateDAO certificateDAO) throws DataAccessException {
         ArrayList<StudentModel> students = new ArrayList<>();
 
         // lus over alle userId's per class
         for (StudentClassEntity studentClassEntity : studentClassDAO.getByClass(classEntity.getId())) {
             StudentModel student = new StudentModel(userDAO, studentInfoDAO);
             student.getFromDBByStudentInfoId(studentClassEntity.getStudentInfoId());
+            student.setCertificateEntity(certificateDAO.get(student.getStudentInfoEntity().getCertificateId()));
             students.add(student);
         }
 

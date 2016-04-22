@@ -11,7 +11,7 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
 
     $scope.addStudent = function (student) {
-        $scope.removeStudentBackend(student.studentInfoEntity.id);
+        $scope.removeStudentFrontend(student.studentInfoEntity.id);
         $scope.students.set(student.studentInfoEntity.id, student);
 
 
@@ -32,7 +32,12 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
     $scope.removeStudentBackend = function (id) {
         $scope.removeStudentFrontend(id);
-       // $http.delete('http://localhost:8080/class=' + paramVal + '/' + id);
+       $http.delete('http://localhost:8080/class/' + $scope.classId + '/student/' + id).success(function (response) {
+            if(response)
+                console.log("Delete succes!");
+            else
+                console.log("Delete fail!");
+        });
     };
 
     $scope.removeStudentFrontend = function (id) {

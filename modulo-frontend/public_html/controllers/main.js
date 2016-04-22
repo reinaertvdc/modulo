@@ -214,7 +214,7 @@ app.controller('MainController', function ($scope, $location) {
         NOT_FOUND: 'pagina_niet_gevonden',
         ACCESS_DENIED: 'toegang_geweigerd',
         USER_MANAGEMENT: 'gebruikersbeheer',
-        COURSES: 'opleidingen',
+        COURSES: 'certificaten',
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',

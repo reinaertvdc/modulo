@@ -36,7 +36,7 @@ app.controller('ScoreManagementController', function ($scope) {
         var subjects = [
             {
                 name: 'BGV',
-                coursePlaceholder: 'Opleiding',
+                coursePlaceholder: 'Certificaat',
                 schoolClassPlaceholder: 'Klas',
                 modulePlaceholder: 'Deelcertificaat',
                 courses: ['Metselaar', 'BouwplaatsMachinist', 'Kok', 'Kassier']

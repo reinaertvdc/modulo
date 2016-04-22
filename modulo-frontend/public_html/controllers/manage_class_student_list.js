@@ -16,7 +16,7 @@ app.controller('ManageClassStudentListController', function ($scope) {
 
 
         /*----------------------------------------------------------------------------*/
-        // TODO eventueel opleidingen toevoegen in de 2de iteratie
+        // TODO eventueel certificaten toevoegen in de 2de iteratie
 
         var html =  '<td>' + student.firstName + ' ' + student.lastName + '</td>' +
             '<td class="text-danger" ng-click="removeClassBackend(' + addclass.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +

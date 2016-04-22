@@ -32,6 +32,12 @@ app.controller('ScoreManagementController', function ($scope) {
 
     $scope.selectedScore = null;
 
+    $scope
+
+    $scope.scores = [
+
+    ]
+
     $scope.getScoreHierarchy = function() {
         var subjects = [
             {
@@ -92,32 +98,6 @@ app.controller('ExampleController', ['$scope', function($scope) {
         option1: 'option-1'
     };
 }]);
-
-/*
-app.controller('MyCtrl', function($scope) {
-    $scope.mySelections = [];
-
-    $scope.myData = [{name: "Moroni", id: 1},
-        {name: "Tiancum", id: 2},
-        {name: "Jacob", id: 3},
-        {name: "Nephi", id: 4},
-        {name: "Akon", id: 5},
-        {name: "Enos", id: 6}];
-
-    $scope.gridOptions = {
-        data: 'myData',
-        selectedItems: $scope.mySelections,
-        multiSelect: true,
-        enableCellSelection: true,
-        enableRowSelection: false,
-        enableCellEdit: false,
-        afterSelectionChange: function () {
-            $scope.selectedIDs = [];
-
-        }
-    };
-
-});*/
 
 app.controller('DatepickerPopupDemoCtrl', function ($scope) {
     $scope.today = function() {

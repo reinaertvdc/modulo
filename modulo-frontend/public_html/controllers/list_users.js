@@ -53,6 +53,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.addUser = function (user) {
+        console.log(user);
         $scope.removeUserFrontend(user.id);
         $scope.users.set(user.id, user);
 
@@ -61,6 +62,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
             '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
+            '<td ng-click="swapEnabled('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
             '<td class="text-danger" ng-click="removeUserBackend(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
@@ -70,6 +72,24 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         element.outerHTML = html;
         // }
     };
+
+    $scope.getClass = function(id){
+        var user = $scope.users.get(id);
+        console.log(user.enabled);
+        if(!user.enabled)
+            return "glyphicon glyphicon-remove-circle text-danger";
+        else
+            return "glyphicon glyphicon-ok-circle text-success";
+    }
+
+    $scope.swapEnabled = function(id){
+        var user = $scope.users.get(id);
+        user.enabled = !user.enabled;
+        var userModel = JSON.stringify({"userEntity":user});
+        $http.put('http://localhost:8080/account', userModel).success(function (response) {
+            $scope.users.set(id, response.userEntity);
+        });
+    }
 
     $scope.removeUserBackend = function (id) {
         $scope.removeUserFrontend(id);

@@ -106,7 +106,16 @@ public class AccountController {
         return new ResponseEntity<StudentModel>(student, HttpStatus.OK);
     }
 
-
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<AccountModel> update(@RequestBody AccountModel accountModel) {
+        AccountModel old = new AccountModel(userDAO);
+        old.getFromDB(accountModel.getUserEntity().getId());
+        accountModel.setUserDAO(userDAO);
+        accountModel.getUserEntity().setPassword( old.getUserEntity().getPassword());
+        accountModel.updateInDB();
+        return new ResponseEntity<AccountModel>(accountModel, HttpStatus.OK);
+    }
     @CrossOrigin
     @RequestMapping(value = "/admin", method = RequestMethod.PUT)
     public ResponseEntity<AdminModel> updateAdmin(@RequestBody AdminModel admin) {
@@ -167,7 +176,6 @@ public class AccountController {
         //TODO mapping between student and others... Update?
         return new ResponseEntity<StudentModel>(student, HttpStatus.OK);
     }
-
 
     @CrossOrigin
     @RequestMapping(value = "/email/{accountEmail}/", method = RequestMethod.GET)

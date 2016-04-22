@@ -18,12 +18,13 @@ var Score = Object.freeze({
 });
 
 // user classes
-function User(id, name, email, password, details) {
+function User(id, name, email, password, details, enabled) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
     this.details = details;
+    this.enabled = enabled;
 }
 
 function AdminDetails() {

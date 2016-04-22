@@ -10,7 +10,7 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="manage-student-list-body">
             <tr>
                 <td>Doerustig Eric</td>
                 <td>Metselaar</td>
@@ -29,7 +29,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-success pull-right">
-        <span class="glyphicon glyphicon-plus-sign"></span> Toevoegen
+    <button class="btn btn-success pull-right" data-ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_MEMBERS, true)">
+        <span class="glyphicon glyphicon-plus-sign" ></span> Toevoegen
     </button>
 </div>

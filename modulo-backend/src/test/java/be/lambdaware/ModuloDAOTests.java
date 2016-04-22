@@ -911,7 +911,7 @@ public class ModuloDAOTests {
         entity.setUser(11);
         entity.setParent(32);
         entity.setGradeId(1);
-        entity.setCertificateId(2);
+        entity.setCertificateId(1);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -933,7 +933,7 @@ public class ModuloDAOTests {
         entity.setUser(12);
         entity.setParent(31);
         entity.setGradeId(1);
-        entity.setCertificateId(2);
+        entity.setCertificateId(1);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -961,7 +961,7 @@ public class ModuloDAOTests {
         entity.setUser(11);
         entity.setParent(32);
         entity.setGradeId(1);
-        entity.setCertificateId(2);
+        entity.setCertificateId(1);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");
@@ -980,7 +980,7 @@ public class ModuloDAOTests {
         entity.setUser(14);
         entity.setParent(32);
         entity.setGradeId(1);
-        entity.setCertificateId(2);
+        entity.setCertificateId(1);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");

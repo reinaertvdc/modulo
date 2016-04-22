@@ -20,7 +20,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 
     @Override
     public int create(UserEntity entity) throws DataAccessException {
-        String SQL = "INSERT INTO `users` (`email`, `password`, `first_name`, `last_name`, `type`) VALUES (?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO `users` (`email`, `password`, `first_name`, `last_name`, `type`, `enabled`) VALUES (?, ?, ?, ?, ?, ?)";
 
         GeneratedKeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -32,6 +32,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
                 statement.setString(3, entity.getFirstName());
                 statement.setString(4, entity.getLastName());
                 statement.setString(5, entity.getType());
+                statement.setBoolean(6, entity.isEnabled());
                 return statement;
             }
         }, holder);
@@ -68,7 +69,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 
     @Override
     public void update(UserEntity entity) throws DataAccessException {
-        String SQL = "UPDATE `users` SET email = ?, password = ?, first_name = ?, last_name = ?, type = ? where id = ?";
-        jdbcTemplate.update(SQL, entity.getEmail(), entity.getPassword(), entity.getFirstName(), entity.getLastName(), entity.getType(),entity.getId());
+        String SQL = "UPDATE `users` SET email = ?, password = ?, first_name = ?, last_name = ?, type = ?, enabled = ? where id = ?";
+        jdbcTemplate.update(SQL, entity.getEmail(), entity.getPassword(), entity.getFirstName(), entity.getLastName(), entity.getType(), entity.isEnabled(), entity.getId());
     }
 }

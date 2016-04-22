@@ -11,8 +11,8 @@ public class UserEntity {
     private String firstName;
     private String lastName;
     private String type;
+    private boolean enabled;
 
-    //TODO add "enabled" field
 
     public Integer getId() {
         return id;
@@ -61,6 +61,10 @@ public class UserEntity {
     public void setType(String type) {
         this.type = type;
     }
+
+    public boolean isEnabled() { return enabled; }
+
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
     @Override
     public String toString() {

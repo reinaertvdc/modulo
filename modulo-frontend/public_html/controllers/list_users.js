@@ -1,10 +1,11 @@
-app.controller('ListUsersController', function ($scope, $http, $window, $compile) {
+app.controller('ListUsersController', function ($scope, $http, $window, $compile, $uibModal) {
     // TODO finish controller
     const USER_LIST_ITEM_PREFIX = 'user-list-item-';
     const USER_LIST_ELEMENT = document.getElementById('table-user-list-body');
 
     $scope.users = new Map();
     $scope.originalUsers = new Map();
+    $scope.removeId;
 
     $scope.searchUsers = function () {
         if ($scope.searchKeyword) {
@@ -53,7 +54,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.addUser = function (user) {
-        console.log(user);
         $scope.removeUserFrontend(user.id);
         $scope.users.set(user.id, user);
 
@@ -64,7 +64,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
             '<td ng-click="swapEnabled('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="removeUserBackend(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+            '<td class="text-danger" ng-click="open(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
 
         var element = document.createElement('tr');
@@ -75,8 +75,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
     $scope.getClass = function(id){
         var user = $scope.users.get(id);
-        console.log(user.enabled);
-        if(!user.enabled)
+        if(!angular.isUndefined(user) && !user.enabled)
             return "glyphicon glyphicon-remove-circle text-danger";
         else
             return "glyphicon glyphicon-ok-circle text-success";
@@ -93,7 +92,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
     $scope.removeUserBackend = function (id) {
         $scope.removeUserFrontend(id);
-        $http.delete('http://localhost:8080/account/'+id);
+        $http.delete('http://localhost:8080/account/' + id);
     };
 
     $scope.removeUserFrontend = function (id) {
@@ -103,12 +102,25 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             element.parentElement.removeChild(element);
     }
 
+    $scope.open = function (id) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/removeModal.html',
+            controller: 'ModalInstanceCtrl',
+            resolve: {
+            }
+        });
+        $scope.removeId = id
+        modalInstance.result.then(function () {
+            $scope.removeUserBackend($scope.removeId)
+        }, function () {
+        });
+    };
+
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {
         $compile(USER_LIST_ELEMENT)($scope);
     };
-
-
 
     $http.get('http://localhost:8080/account/all').success(function (response) {
         response.forEach(function (item) {
@@ -118,4 +130,16 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $scope.originalUsers = new Map($scope.users);
         $scope.refresh();
     });
+});
+
+
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalTitle = "Verwijder gebruiker";
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });

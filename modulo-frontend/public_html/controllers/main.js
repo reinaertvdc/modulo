@@ -254,17 +254,17 @@ app.controller('MainController', function ($scope, $location) {
             } else if (!$scope.account.isLoggedIn()) {
                 return false;
             } else if (page === this.USER_MANAGEMENT) {
-                return $scope.account.user.details.type === UserType.ADMIN;
+                return $scope.account.user.type === UserType.ADMIN;
             } else if (page === this.COURSES) {
-                return $scope.account.user.details.type === UserType.ADMIN;
+                return $scope.account.user.type === UserType.ADMIN;
             } else if (page === this.MY_CLASSES) {
-                return $scope.account.user.details.type === UserType.TEACHER;
+                return $scope.account.user.type === UserType.TEACHER;
             } else if (page === this.SCORES_MANAGEMENT) {
-                return $scope.account.user.details.type === UserType.TEACHER;
+                return $scope.account.user.type === UserType.TEACHER;
             } else if (page === this.STUDENT_PROGRESS) {
-                return $scope.account.user.details.type === UserType.TEACHER
-                    || $scope.account.user.details.type === UserType.STUDENT
-                    || $scope.account.user.details.type === UserType.PARENT;
+                return $scope.account.user.type === UserType.TEACHER
+                    || $scope.account.user.type === UserType.STUDENT
+                    || $scope.account.user.type === UserType.PARENT;
             }
 
             return false;

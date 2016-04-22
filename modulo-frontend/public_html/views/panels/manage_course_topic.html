@@ -2,6 +2,12 @@
     <!-- TODO create page -->
     <h3 ng-bind="panelCaption"></h3>
 
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" > remediëring
+        </label>
+    </div>
+
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
             <label for="usr">Naam:</label>
@@ -14,7 +20,40 @@
         </div>
 
         <br/>
-        <br/>
+
+        <label>Leerlingen:</label>
+        <div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Zoeken...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+            </div>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" >selecteerd alles
+            </label>
+        </div>
+
+        <div>
+            <table id="mytbl" class="table table-hover table-condensed">
+                <tbody>
+                <tr>
+                    <td class="vcenter"><input type="checkbox" id="blahD" value="1"/></td>
+                    <td>Koen Lievens</td>
+                </tr>
+                <tr>
+                    <td class="vcenter"><input type="checkbox" id="blahK" value="1"/></td>
+                    <td>Janna Kempeneers</td>
+                </tr>
+                <tr>
+                    <td class="vcenter"><input type="checkbox" id="blahZ" value="1"/></td>
+                    <td>Maxime Pierards</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
         <label>Aangeboden doelstelling:</label>
         <div>
@@ -25,7 +64,12 @@
         </span>
             </div>
         </div>
-
+        
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" >selecteerd alles
+            </label>
+        </div>
         <div>
             <table id="mytb" class="table table-hover table-condensed">
                 <tbody>

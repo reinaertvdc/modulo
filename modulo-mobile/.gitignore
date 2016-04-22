@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example userEntity template template
+### Example userEntity template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+target
+scotch-box-with-phpmyadmin

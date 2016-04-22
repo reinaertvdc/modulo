@@ -175,19 +175,19 @@ CREATE TABLE `student_info` (
 );
 
 INSERT INTO `student_info` VALUES
-  (1, 11, 32, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+  (1, 11, 32, 1, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
    'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (2, 12, 31, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (2, 12, 31, 1, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (3, 13, 31, 2, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (3, 13, 31, 2, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (4, 14, 32, 1, 2, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
+  (4, 14, 32, 1, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000',
    'Hasselt', '012857496', '085479621', 'BE67-500-555-9685');
 INSERT INTO `student_info` VALUES
-  (5, 15, 31, 1, 3, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
+  (5, 15, 31, 1, 1, '2012-01-01', 'Hasselt', 'Belgium', '12345678900', 'Straat', '10', '3000', 'Hasselt',
    '012857496', '085479621', 'BE67-500-555-9685');
 
 CREATE TABLE `student_class` (

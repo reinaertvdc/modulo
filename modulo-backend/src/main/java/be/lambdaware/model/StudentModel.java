@@ -4,6 +4,7 @@ import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.StudentBGVScoreDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
+import be.lambdaware.entities.CertificateEntity;
 import be.lambdaware.entities.CompetenceEntity;
 import be.lambdaware.entities.StudentBGVScoreEntity;
 import be.lambdaware.entities.StudentInfoEntity;
@@ -20,7 +21,9 @@ public class StudentModel extends AccountModel {
     private StudentInfoEntity studentInfoEntity;
     private StudentInfoDAO studentInfoDAO;
 
+    private CertificateEntity certificateEntity;
     private CertificateDAO certificateDAO;
+
     private StudentBGVScoreDAO studentBGVScoreDAO;
 
     // TODO StudyProgress bijhouden
@@ -54,7 +57,6 @@ public class StudentModel extends AccountModel {
         return scores;
     }
 
-
     public StudentInfoEntity getStudentInfoEntity() {
         return studentInfoEntity;
     }
@@ -65,6 +67,23 @@ public class StudentModel extends AccountModel {
 
     public void setStudentInfoDAO(StudentInfoDAO studentInfoDAO) {
         this.studentInfoDAO = studentInfoDAO;
+    }
+
+
+    public CertificateEntity getCertificateEntity() {
+        return certificateEntity;
+    }
+
+    public void setCertificateEntity(CertificateEntity certificateEntity) {
+        this.certificateEntity = certificateEntity;
+    }
+
+    public void setCertificateDAO(CertificateDAO certificateDAO) {
+        this.certificateDAO = certificateDAO;
+    }
+
+    public void setStudentBGVScoreDAO(StudentBGVScoreDAO studentBGVScoreDAO) {
+        this.studentBGVScoreDAO = studentBGVScoreDAO;
     }
 
     @Override
@@ -87,13 +106,14 @@ public class StudentModel extends AccountModel {
         userEntity = userDAO.get(studentInfoEntity.getUser());
     }
 
-    public static ArrayList<StudentModel> getAll(StudentInfoDAO studentInfoDAO, UserDAO userDAO) {
+    public static ArrayList<StudentModel> getAll(StudentInfoDAO studentInfoDAO, UserDAO userDAO, CertificateDAO certificateDAO) {
         ArrayList<StudentModel> students = new ArrayList<StudentModel>();
 
         for (StudentInfoEntity entity : studentInfoDAO.getAll()) {
             StudentModel student = new StudentModel();
             student.setStudentInfoEntity(entity);
             student.setUserEntity(userDAO.get(entity.getUser()));
+            student.setCertificateEntity(certificateDAO.get(entity.getCertificateId()));
             students.add(student);
         }
 

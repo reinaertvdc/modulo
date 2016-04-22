@@ -168,7 +168,7 @@ public class AccountController {
 
 
     @CrossOrigin
-    @RequestMapping(value = "/{accountEmail}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/email/{accountEmail}/", method = RequestMethod.GET)
     public ResponseEntity<AccountModel> getByEmail(@PathVariable String accountEmail) {
         AccountModel accountModel = new AccountModel(userDAO);
         accountModel.getFromDBByEmail(accountEmail);

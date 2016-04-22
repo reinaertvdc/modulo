@@ -121,8 +121,7 @@ Leerlingen en ouders kunnen enkel respectievelijk hun eigen voortgang of die van
 \item Het systeem moet toelaten om van een opleiding in te stellen of deze al dan niet door de school wordt aangeboden \footnote{De overheid lijst zo'n 150 opleidingen op, maar een school zal er typisch slechts zo'n 20 aanbieden}.
 \item Het systeem moet toelaten om een vakthema of remediëringstaak aan een aantal leerlingen van een klas toe te kennen. Deze worden opgebouwd uit doelstellingen. Indien alle leerlingen gekozen worden spreekt men van een vakthema, anders van een remediëringstaak.
 % BGV
-\item Het systeem moet toelaten om een beheerder BGV klassen aan te laten maken, deze klassen stellen de verschillende opleidingen voor (bv. Mestselaar bestaat uit 2klassen: Metselaar1 en Metselaar2).
-\todo{Nieuw Martijn: beheerder maakt BGV klassen aan}
+\item Het systeem moet toelaten om een bgv klas aan te maken door een leerkracht.
 \item Het systeem moet toelaten om een score (A,I,V) (zie woordenlijst) toe te kennen aan een doelstelling binnen een vakthema, voor een leerling.  % PAV
 \item Het systeem moet toelaten om een score (A,I,V) toe te kennen aan een competentie binnen een deelcertificaat, voor een leerling.  % BGV
 \item Het systeem moet automatisch het behalen van een competentie blokkeren voor een leerling, indien deze reeds drie maal verworven (score V) werd.  % 3x verwerven == behaald
@@ -244,7 +243,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
         \item Beheerder kiest ``Gebruiker toevoegen''.
         \item Systeem toont een dropdown waarmee de gebruikersrol dient ingesteld te worden.
         \item Beheerder kiest ``leerling'' als gebruikersrol.
-        \item Systeem toont een leeg formulier waarin alle informatie over de leerling moet worden ingevuld. Dit zijn de persoonlijke, accountgerelateerde en inschrijvingsgerelateerde informatie (zie \ref{itm:pers_info}, \ref{itm:account_info} en \ref{itm:inschr_info}).
+        \item Systeem toont een leeg formulier waarin alle informatie over de leerling moet worden ingevuld. Dit zijn de persoonlijke, accountgerelateerde en inschrijvingsgerelateerde informatie (zie \ref{itm:pers_info}, \ref{itm:account_info} en \ref{itm:inschr_info} ).
         \item Beheerder vult alle benodigde informatie in.
         \item Beheerder bevestigt ingevulde informatie door op ``ok'' te klikken.
         \item Systeem toont de aangepaste lijst met gebruikers.
@@ -351,7 +350,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     }
 \end{usecase}
 
-\todo{VR: SSD + contracten}
+
 % Puntenbeheer 
 \begin{usecase}
     \addtitle{Use Case 7}{Puntenbeheer} 
@@ -599,6 +598,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     \hline
 \end{tabularx}\\
 
+\todo{Vincent: + contracten}
 \subsection{Puntenbeheer}
 \begin{tabularx}{\textwidth}{|l X|}
     \hline
@@ -609,7 +609,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     \end{itemize}\\
     \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan.\\
     \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
-        \item 
+        \item Het systeem houdt bij dat er punten geopend worden.
     \end{itemize}\\
     \hline
 \end{tabularx}\\
@@ -623,7 +623,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     \end{itemize}\\
     \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan.\\
     \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
-        \item 
+        \item Het systeem heeft het vak BGV ingeladen.
     \end{itemize}\\
     \hline
 \end{tabularx}\\
@@ -637,7 +637,78 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     \end{itemize}\\
     \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan. Het vak moet reeds geselecteerd zijn.\\
     \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
-        \item 
+        \item Het systeem heeft het vak met id ingeladen.
+    \end{itemize}\\
+    \hline
+\end{tabularx}\\
+
+\begin{tabularx}{\textwidth}{|l X|}
+    \hline
+    \textbf{Naam} & chooseClass(id) \\
+    \textbf{Verwijzingen} & \begin{itemize}[leftmargin=*]
+        \item Use Case 7 - Puntenbeheer
+        \item Systeem Sequentie Diagram 2 - Puntenbeheer
+    \end{itemize}\\
+    \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan. Het vak moet reeds geselecteerd zijn.\\
+    \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
+        \item Het systeem heeft de klas met id ingeladen.
+    \end{itemize}\\
+    \hline
+\end{tabularx}\\
+
+\begin{tabularx}{\textwidth}{|l X|}
+    \hline
+    \textbf{Naam} & chooseModule(id) \\
+    \textbf{Verwijzingen} & \begin{itemize}[leftmargin=*]
+        \item Use Case 7 - Puntenbeheer
+        \item Systeem Sequentie Diagram 2 - Puntenbeheer
+    \end{itemize}\\
+    \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan. Het vak moet reeds geselecteerd zijn.\\
+    \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
+        \item Het heeft de module met id ingeladen.
+    \end{itemize}\\
+    \hline
+\end{tabularx}\\
+
+\begin{tabularx}{\textwidth}{|l X|}
+    \hline
+    \textbf{Naam} & chooseDate(date) \\
+    \textbf{Verwijzingen} & \begin{itemize}[leftmargin=*]
+        \item Use Case 7 - Puntenbeheer
+        \item Systeem Sequentie Diagram 2 - Puntenbeheer
+    \end{itemize}\\
+    \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan. Het vak moet reeds geselecteerd zijn.\\
+    \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
+        \item Het systeem heeft de datum date ingesteld.
+    \end{itemize}\\
+    \hline
+\end{tabularx}\\
+
+\begin{tabularx}{\textwidth}{|l X|}
+    \hline
+    \textbf{Naam} & selectCompetencesPerStudent(List<studentId>, List<competenceId>) \\
+    \textbf{Verwijzingen} & \begin{itemize}[leftmargin=*]
+        \item Use Case 7 - Puntenbeheer
+        \item Systeem Sequentie Diagram 2 - Puntenbeheer
+    \end{itemize}\\
+    \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan. Het vak moet reeds geselecteerd zijn.\\
+    \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
+        \item Het systeem heeft de competenties met de studentId's en competenceId's ingeladen.
+    \end{itemize}\\
+    \hline
+\end{tabularx}\\
+
+\begin{tabularx}{\textwidth}{|l X|}
+    \hline
+    \textbf{Naam} & grade(List<studentId>, List<competenceId>, score, details) \\
+    \textbf{Verwijzingen} & \begin{itemize}[leftmargin=*]
+        \item Use Case 7 - Puntenbeheer
+        \item Systeem Sequentie Diagram 2 - Puntenbeheer
+    \end{itemize}\\
+    \textbf{Pre-condities} & De leerkracht moet aangemeld zijn. De opleidingen, klassen en leerlingen moeten bestaan. Het vak moet reeds geselecteerd zijn.\\
+    \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
+        \item Het systeem heeft de competenties met de studentId's en competenceId's score als score gegeven en feedback als details ingegeven.
+    \end{itemize}\\
     \end{itemize}\\
     \hline
 \end{tabularx}\\
@@ -777,4 +848,3 @@ Er wordt per 2 aan eenzelfde module gewerkt, maar niet in de vorm van pair-progr
 
 % indien we een doelstelling of competentie 3keer verworven hebben dan gaan we alle dagen uitgrijzen behalve de dage waarop de doelstelling verworven is zodat we deze nog kunnen aanpassen
 
-F

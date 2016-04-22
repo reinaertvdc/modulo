@@ -24,11 +24,13 @@ public class StudentController {
     private StudentInfoDAO studentInfoDAO;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private CertificateDAO certificateDAO;
 
     @CrossOrigin
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<ArrayList<StudentModel>> getAll() {
-        ArrayList<StudentModel> students = StudentModel.getAll(studentInfoDAO, userDAO);
+        ArrayList<StudentModel> students = StudentModel.getAll(studentInfoDAO, userDAO, certificateDAO);
         return new ResponseEntity<ArrayList<StudentModel>>(students, HttpStatus.OK);
     }
 }

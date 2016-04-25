@@ -21,6 +21,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             $scope.originalUsers.forEach(function (item) {
                $scope.addUser(item);
             });
+            $scope.refresh();
         }
     };
 

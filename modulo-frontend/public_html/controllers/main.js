@@ -205,9 +205,9 @@ app.controller('MainController', function ($scope, $location) {
             return 'views/panels/list_classes.html';
         }
     };
-
-    // TODO remove when finished developing
-    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
+    
+    // TODO uncomment when debugging
+    //$scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
@@ -247,7 +247,8 @@ app.controller('MainController', function ($scope, $location) {
 
         userCanAccessPage: function (page) {
 
-            return true;
+            // TODO uncomment when debugging
+            //return true;
 
             if (page === '') {
                 return true;

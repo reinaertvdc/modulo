@@ -194,16 +194,16 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         }
 
          var findCheckableNodess = function() {
-         return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
+         return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: true, exactMatch: false } ]);
          };
-        /*
-         var checkableNodes = findCheckableNodess();
-         // Check/uncheck/toggle nodes
-         $('#input-check-node').on('keyup', function (e) {
-         checkableNodes = findCheckableNodess();
-         $('.check-node').prop('disabled', !(checkableNodes.length >= 1));
-         });
 
+        var checkableNodes = findCheckableNodess();
+        $('#input-check-node').on('keyup', function (e) {
+         checkableNodes = findCheckableNodess();
+         //$('.check-node').prop('disabled', !(checkableNodes.length >= 1));
+         });
+/*
+         // Check/uncheck/toggle nodes
          $('#btn-check-node.check-node').on('click', function (e) {
          $scope.checkableTree.treeview('checkNode', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
          });
@@ -213,7 +213,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
          $('#btn-toggle-checked.check-node').on('click', function (e) {
          $scope.checkableTree.treeview('toggleNodeChecked', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
          });
-
         // Check/uncheck all
         $('#btn-check-all').on('click', function (e) {
             $scope.checkableTree.treeview('checkAll');//, { silent: $('#chk-check-silent').is(':checked') });
@@ -221,7 +220,8 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         $('#btn-uncheck-all').on('click', function (e) {
             $scope.checkableTree.treeview('uncheckAll', {silent: $('#chk-check-silent').is(':checked')});
         });
-        */
+*/
+
         //Expand all
         $scope.checkableTree.treeview('expandAll', {silent: true});
     }

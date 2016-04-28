@@ -71,11 +71,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
             '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.getTypeStr(user.type) + '</td>' +
-            '<td ng-click="swapEnabled('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
-            '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="open(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
-            '</tr>';
-            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
             '<td ng-click="openStatusModal('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
         if($scope.account.user.id === user.id)

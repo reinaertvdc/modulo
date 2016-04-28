@@ -46,7 +46,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
     $scope.open = function () {
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'views/panels/parentModal.html',
+            templateUrl: 'views/panels/parent_modal.html',
             controller: 'ParentModalInstanceCtrl',
             resolve: {
                 parents: function () {

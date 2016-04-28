@@ -6,6 +6,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     $scope.users = new Map();
     $scope.originalUsers = new Map();
     $scope.removeId;
+    $scope.swapId;
 
     $scope.searchUsers = function () {
         if ($scope.searchKeyword) {
@@ -63,9 +64,9 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
             '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
-            '<td ng-click="swapEnabled('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
+            '<td ng-click="openStatusModal('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="open(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+            '<td class="text-danger" ng-click="openRemoveModal(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
 
         var element = document.createElement('tr');
@@ -103,10 +104,10 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             element.parentElement.removeChild(element);
     }
 
-    $scope.open = function (id) {
+    $scope.openRemoveModal = function (id) {
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'views/panels/removeModal.html',
+            templateUrl: 'views/panels/remove_modal.html',
             controller: 'RemoveModalInstanceCtrl',
             resolve: {
             }
@@ -114,6 +115,21 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $scope.removeId = id
         modalInstance.result.then(function () {
             $scope.removeUserBackend($scope.removeId)
+        }, function () {
+        });
+    };
+
+    $scope.openStatusModal = function (id) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/user_status_modal.html',
+            controller: 'StatusModalInstanceCtrl',
+            resolve: {
+            }
+        });
+        $scope.swapId = id
+        modalInstance.result.then(function () {
+            $scope.swapEnabled($scope.swapId)
         }, function () {
         });
     };
@@ -136,6 +152,17 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
 app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
     $scope.modalTitle = "Verwijder gebruiker";
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+app.controller('StatusModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalTitle = "Zet gebruiker (in)actief";
 
     $scope.ok = function () {
         $uibModalInstance.close();

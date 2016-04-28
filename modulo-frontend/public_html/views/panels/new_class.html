@@ -1,11 +1,29 @@
 <div data-ng-controller="NewClassController">
     <!-- TODO create page -->
     <h3>Nieuwe klas aanmaken</h3>
-
     <br>
 
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
+            <div>
+                <label for="class">Naam klas:</label>
+                <input type="text" class="form-control" id="class">
+            </div>
+            <br>
+            <div ng-controller="DropdownCtrl">
+                <!-- Single button -->
+                <label for="class">Certificaat:</label><br>
+                <div class="btn-group" uib-dropdown is-open="status.isopen">
+                    <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                        Certificaat <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem"><a href="">Metselaar</a></li>
+                        <li role="menuitem"><a href="">Winkelbediende</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br>
             <div>
                 <label>Selecteer leerlingen:</label>
                 <div class="form-group">

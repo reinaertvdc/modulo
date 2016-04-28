@@ -29,7 +29,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
 
     $scope.students = new Map();
     $scope.studentsInClass = [];
-
     $scope.jsonStudents = "";
 
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
@@ -67,9 +66,9 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
 
             $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
 
-            var checked = $scope.addStudents(students, key);
+            var allStudentChecked = $scope.addStudents(students, key);
             $scope.jsonStudents += '], ' +
-                '"state":{"checked": ' + checked + '}}';
+                '"state":{"checked": ' + allStudentChecked + '}}';
 
             if (i < certificateStudents.size - 1) {
                 $scope.jsonStudents += ',';
@@ -175,7 +174,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
             allNodes.forEach(function(node){
                 if(node.parent == parentNode.text){
                     $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
-                    //$('#tree').treeview('uncheckNode', [ nodeId, { silent: true } ]);
                 }
             });
         }
@@ -194,16 +192,16 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         }
 
          var findCheckableNodess = function() {
-         return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
+         return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: true, exactMatch: false } ]);
          };
-        /*
-         var checkableNodes = findCheckableNodess();
-         // Check/uncheck/toggle nodes
-         $('#input-check-node').on('keyup', function (e) {
-         checkableNodes = findCheckableNodess();
-         $('.check-node').prop('disabled', !(checkableNodes.length >= 1));
-         });
 
+        var checkableNodes = findCheckableNodess();
+        $('#input-check-node').on('keyup', function (e) {
+         checkableNodes = findCheckableNodess();
+         //$('.check-node').prop('disabled', !(checkableNodes.length >= 1));
+         });
+/*
+         // Check/uncheck/toggle nodes
          $('#btn-check-node.check-node').on('click', function (e) {
          $scope.checkableTree.treeview('checkNode', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
          });
@@ -213,7 +211,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
          $('#btn-toggle-checked.check-node').on('click', function (e) {
          $scope.checkableTree.treeview('toggleNodeChecked', [ checkableNodes, { silent: $('#chk-check-silent').is(':checked') }]);
          });
-
         // Check/uncheck all
         $('#btn-check-all').on('click', function (e) {
             $scope.checkableTree.treeview('checkAll');//, { silent: $('#chk-check-silent').is(':checked') });
@@ -221,7 +218,8 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         $('#btn-uncheck-all').on('click', function (e) {
             $scope.checkableTree.treeview('uncheckAll', {silent: $('#chk-check-silent').is(':checked')});
         });
-        */
+*/
+
         //Expand all
         $scope.checkableTree.treeview('expandAll', {silent: true});
     }

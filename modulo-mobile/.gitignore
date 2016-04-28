@@ -21,6 +21,8 @@ Thumbs.db
 # OSX files
 .DS_Store
 
+/local.properties
+/build
 # Eclipse project files
 .classpath
 .project

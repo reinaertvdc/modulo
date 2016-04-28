@@ -46,8 +46,8 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
     $scope.open = function () {
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'views/panels/parentModal.html',
-            controller: 'ModalInstanceCtrl',
+            templateUrl: 'views/panels/parent_modal.html',
+            controller: 'ParentModalInstanceCtrl',
             resolve: {
                 parents: function () {
                     return $scope.parents;
@@ -141,7 +141,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 });
 
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, parents) {
+app.controller('ParentModalInstanceCtrl', function ($scope, $uibModalInstance, parents) {
     $scope.modalTitle = "Kies een ouder";
     $scope.items = parents;
     $scope.selected = {

@@ -92,7 +92,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             return "glyphicon glyphicon-remove-circle text-danger";
         else
             return "glyphicon glyphicon-ok-circle text-success";
-    }
+    };
 
     $scope.swapEnabled = function(id){
         var user = $scope.users.get(id);
@@ -101,7 +101,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $http.put('http://localhost:8080/account', userModel).success(function (response) {
             $scope.users.set(id, response.userEntity);
         });
-    }
+    };
 
     $scope.removeUserBackend = function (id) {
         $scope.removeUserFrontend(id);
@@ -113,7 +113,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         var element = document.getElementById($scope.toElementId(id));
         if (element !== null)
             element.parentElement.removeChild(element);
-    }
+    };
 
     $scope.openRemoveModal = function (id) {
         var modalInstance = $uibModal.open({
@@ -123,7 +123,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             resolve: {
             }
         });
-        $scope.removeId = id
+        $scope.removeId = id;
         modalInstance.result.then(function () {
             $scope.removeUserBackend($scope.removeId)
         }, function () {
@@ -138,7 +138,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             resolve: {
             }
         });
-        $scope.swapId = id
+        $scope.swapId = id;
         modalInstance.result.then(function () {
             $scope.swapEnabled($scope.swapId)
         }, function () {
@@ -161,15 +161,15 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
     $scope.getTypeStr = function (type) {
         if(type == "STUDENT")
-            return "Student"
+            return "Student";
         else if(type == "TEACHER")
-            return "Leerkracht"
+            return "Leerkracht";
         else if(type == "ADMIN")
-            return "Beheerder"
+            return "Beheerder";
         else if(type == "PARENT")
-            return "Ouder"
+            return "Ouder";
         else
-            return "?"
+            return "?";
     }
 });
 

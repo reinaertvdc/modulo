@@ -1,11 +1,36 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example userEntity template template
-### Example userEntity template
+#built application files
+*.apk
+*.ap_
 
-# IntelliJ project files
-.idea
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
 *.iml
-out
-gen
-target
-scotch-box-with-phpmyadmin
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
+
+#NDK
+obj/

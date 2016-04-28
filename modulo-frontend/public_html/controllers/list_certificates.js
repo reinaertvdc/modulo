@@ -8,6 +8,26 @@ app.controller('ListCertificatesController', function ($scope, $http, $window, $
     const CERTIFICATES_LIST_ELEMENT = document.getElementById('table-certificates-list-body');
 
     $scope.certificates = new Map();
+    $scope.originalCertificates = new Map();
+
+    $scope.searchCertificates = function () {
+        // make $scope.users the original certificates
+        $scope.certificates = new Map($scope.originalCertificates);
+        $scope.originalCertificates.forEach(function (item) {
+            $scope.addCertificate(item);
+        });
+
+        if ($scope.certificateSearchKeyword) {
+            var search = $scope.certificateSearchKeyword.toLowerCase();
+
+            // remove all the certificates that don't match
+            $scope.certificates.forEach(function (item) {
+                if (item.name.toLowerCase().indexOf(search) < 0)
+                    $scope.removeCertificate(item.id);
+            });
+        }
+        $scope.refresh();
+    };
 
     $scope.toElementId = function (id) {
         return CERTIFICATES_LIST_ITEM_PREFIX + id;
@@ -29,11 +49,11 @@ app.controller('ListCertificatesController', function ($scope, $http, $window, $
 
     $scope.getClass = function(id){
         var certificate = $scope.certificates.get(id);
-        if(!certificate.enabled)
+        if(!angular.isUndefined(certificate) && !certificate.enabled)
             return "glyphicon glyphicon-remove-circle text-danger";
         else
             return "glyphicon glyphicon-ok-circle text-success";
-    }
+    };
 
     $scope.swapEnabled = function(id){
         var certificate = $scope.certificates.get(id);
@@ -42,7 +62,7 @@ app.controller('ListCertificatesController', function ($scope, $http, $window, $
         $http.put('http://localhost:8080/certificate', certificateModel).success(function (response) {
             $scope.certificates.set(id, response.certificateEntity);
         });
-    }
+    };
 
     $scope.removeCertificate = function (id) {
         $scope.certificates.delete(id);
@@ -62,6 +82,8 @@ app.controller('ListCertificatesController', function ($scope, $http, $window, $
         response.forEach(function (item) {
             $scope.addCertificate(item.certificateEntity);
         });
+
+        $scope.originalCertificates = new Map($scope.certificates);
         $scope.refresh();
     });
 

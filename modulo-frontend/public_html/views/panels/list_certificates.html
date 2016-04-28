@@ -2,6 +2,27 @@
     <!-- TODO create page -->
     <h3>Certificaten</h3>
 
+    <div>
+        <div class="input-group">
+            <input data-ng-model="certificateSearchKeyword" data-ng-change="searchCertificates()" type="text" class="form-control" placeholder="Zoeken...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+        </div>
+
+        <!-- <ul class="pagination">
+            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+        </ul> -->
+    </div>
+
+    <br />
+
     <div class="panel panel-default">
         <table class="table table-condensed table-striped">
             <thead>

@@ -9,25 +9,19 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     $scope.swapId;
 
     $scope.searchUsers = function () {
-        if ($scope.searchKeyword) {
-            $scope.users = new Map($scope.originalUsers);
-            var search = $scope.searchKeyword.toLowerCase();
+        // make $scope.users the original users
+        $scope.users = new Map($scope.originalUsers);
+        $scope.originalUsers.forEach(function (item) {
+            $scope.addUser(item);
+        });
 
-            // put all the original users back in
-            $scope.users = new Map($scope.originalUsers);
-            $scope.originalUsers.forEach(function (item) {
-                $scope.addUser(item);
-            });
+        if ($scope.searchKeyword) {
+            var search = $scope.searchKeyword.toLowerCase();
 
             // remove all the users that don't match
             $scope.users.forEach(function (item) {
                 if (item.firstName.toLowerCase().indexOf(search) < 0 && item.lastName.toLocaleLowerCase().indexOf(search) < 0)
                     $scope.removeUserFrontend(item.id);
-            });
-        } else {
-            $scope.users = new Map($scope.originalUsers);
-            $scope.originalUsers.forEach(function (item) {
-               $scope.addUser(item);
             });
         }
         $scope.refresh();

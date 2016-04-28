@@ -12,6 +12,13 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             $scope.users = new Map($scope.originalUsers);
             var search = $scope.searchKeyword.toLowerCase();
 
+            // put all the original users back in
+            $scope.users = new Map($scope.originalUsers);
+            $scope.originalUsers.forEach(function (item) {
+                $scope.addUser(item);
+            });
+
+            // remove all the users that don't match
             $scope.users.forEach(function (item) {
                 if (item.firstName.toLowerCase().indexOf(search) < 0 && item.lastName.toLocaleLowerCase().indexOf(search) < 0)
                     $scope.removeUserFrontend(item.id);
@@ -21,8 +28,8 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             $scope.originalUsers.forEach(function (item) {
                $scope.addUser(item);
             });
-            $scope.refresh();
         }
+        $scope.refresh();
     };
 
     // //Pagination code

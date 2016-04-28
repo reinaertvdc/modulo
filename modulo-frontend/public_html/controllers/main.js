@@ -207,7 +207,7 @@ app.controller('MainController', function ($scope, $location) {
     };
     
     // TODO uncomment when debugging
-    //$scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
+    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
@@ -248,7 +248,7 @@ app.controller('MainController', function ($scope, $location) {
         userCanAccessPage: function (page) {
 
             // TODO uncomment when debugging
-            //return true;
+            return true;
 
             if (page === '') {
                 return true;

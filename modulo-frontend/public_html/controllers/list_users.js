@@ -107,7 +107,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'views/panels/removeModal.html',
-            controller: 'ModalInstanceCtrl',
+            controller: 'RemoveModalInstanceCtrl',
             resolve: {
             }
         });
@@ -134,7 +134,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 });
 
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
     $scope.modalTitle = "Verwijder gebruiker";
 
     $scope.ok = function () {

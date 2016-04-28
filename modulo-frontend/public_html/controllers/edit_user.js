@@ -20,7 +20,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     $scope.basicInfo = {
         id: null,
-        type: 'STUDENT',
+        type: 'TEACHER',
         email: 'michiel@test.com',
         password: 'pass',
         firstName: 'Michiel',
@@ -96,7 +96,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     $scope.resetForm = function () {
         $scope.basicInfo.id = null;
-        $scope.basicInfo.type = 'STUDENT'
+        $scope.basicInfo.type = 'TEACHER'
         $scope.basicInfo.email = '';
         $scope.basicInfo.password = '';
         $scope.basicInfo.firstName = '';
@@ -126,14 +126,14 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
         if (paramVal == 'nieuw') {
             $http.post('http://localhost:8080/account/' + $scope.basicInfo.type.toLocaleLowerCase(), model).success(function () {
-                alert('Nieuwe gebruiker aangemaakt.');
+                $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                $scope.location.setParameter($scope.location.USER_MANAGEMENT_EDIT, 'Gebruiker toegevoegd.');
                 $scope.resetForm();
             });
         } else if (paramVal) {
-            console.log($scope.basicInfo.id);
-
             $http.put('http://localhost:8080/account/' + $scope.basicInfo.type.toLocaleLowerCase(), model).success(function () {
-                alert('Gebruiker geüpdatet.');
+                $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                $scope.location.setParameter($scope.location.USER_MANAGEMENT_EDIT, 'Gebruiker bewerkt.');
                 $scope.resetForm();
             });
         }

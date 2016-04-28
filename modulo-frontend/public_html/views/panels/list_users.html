@@ -1,5 +1,11 @@
 <div data-ng-controller="ListUsersController">
     <!-- TODO finish page -->
+    <uib-alert ng-if="location.getParameter(location.USER_MANAGEMENT_EDIT)" type="success" close="location.removeAllParameters()">
+        {{location.getParameter(location.USER_MANAGEMENT_EDIT)}}
+    </uib-alert>
+
+
+
     <h3>Gebruikersbeheer</h3>
 
     <div>

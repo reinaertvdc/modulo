@@ -207,13 +207,14 @@ app.controller('MainController', function ($scope, $location) {
     };
     
     // TODO uncomment when debugging
-    //$scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
+    $scope.account.attemptLogin('martine.bonne@tihh.be', '1234');
 
     $scope.location = {
         HOME: 'startpagina',
         NOT_FOUND: 'pagina_niet_gevonden',
         ACCESS_DENIED: 'toegang_geweigerd',
         USER_MANAGEMENT: 'gebruikersbeheer',
+        USER_MANAGEMENT_EDIT: 'bewerkt',
         COURSES: 'certificaten',
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
@@ -248,7 +249,7 @@ app.controller('MainController', function ($scope, $location) {
         userCanAccessPage: function (page) {
 
             // TODO uncomment when debugging
-            //return true;
+            return true;
 
             if (page === '') {
                 return true;

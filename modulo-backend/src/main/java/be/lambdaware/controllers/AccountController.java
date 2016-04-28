@@ -79,6 +79,7 @@ public class AccountController {
     @CrossOrigin
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ResponseEntity<AdminModel> createAdmin(@RequestBody AdminModel admin) {
+        admin.getUserEntity().setEnabled(true);
         admin.setUserDAO(userDAO);
         admin.createInDB();
         return new ResponseEntity<AdminModel>(admin, HttpStatus.OK);
@@ -86,6 +87,7 @@ public class AccountController {
     @CrossOrigin
     @RequestMapping(value = "/parent", method = RequestMethod.POST)
     public ResponseEntity<ParentModel> createParent(@RequestBody ParentModel parent) {
+        parent.getUserEntity().setEnabled(true);
         parent.setUserDAO(userDAO);
         parent.createInDB();
         return new ResponseEntity<ParentModel>(parent, HttpStatus.OK);
@@ -93,6 +95,7 @@ public class AccountController {
     @CrossOrigin
     @RequestMapping(value = "/teacher", method = RequestMethod.POST)
     public ResponseEntity<TeacherModel> createTeacher(@RequestBody TeacherModel teacher) {
+        teacher.getUserEntity().setEnabled(true);
         teacher.setUserDAO(userDAO);
         teacher.createInDB();
         return new ResponseEntity<TeacherModel>(teacher, HttpStatus.OK);
@@ -100,6 +103,7 @@ public class AccountController {
     @CrossOrigin
     @RequestMapping(value = "/student", method = RequestMethod.POST)
     public ResponseEntity<StudentModel> createStudent(@RequestBody StudentModel student) {
+        student.getUserEntity().setEnabled(true);
         student.setUserDAO(userDAO);
         student.setStudentInfoDAO(studentInfoDAO);
         student.createInDB();

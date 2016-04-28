@@ -34,7 +34,7 @@ public class ModuloDAOTests {
         // test get certificate 1
         CertificateEntity certificateEntity = new CertificateEntity();
         certificateEntity.setId(1);
-        certificateEntity.setName("Metselaar");
+        certificateEntity.setName("Buitenschrijnwerker");
         certificateEntity.setEnabled(true);
         Assert.assertEquals(certificateEntity, certificateDAO.get(1));
         Logger.getLogger("Test CertificateDAO").info("Expected certificate with ID=1 matches certificate from database - pass");
@@ -42,8 +42,8 @@ public class ModuloDAOTests {
         // test get certificate 2
         certificateEntity = new CertificateEntity();
         certificateEntity.setId(2);
-        certificateEntity.setName("Elektricien");
-        certificateEntity.setEnabled(true);
+        certificateEntity.setName("Werkplaatsbinnenschrijnwerker hout");
+        certificateEntity.setEnabled(false);
         Assert.assertEquals(certificateEntity, certificateDAO.get(2));
         Logger.getLogger("Test CertificateDAO").info("Expected certificate with ID=2 matches certificate from database - pass");
 
@@ -125,6 +125,13 @@ public class ModuloDAOTests {
         classEntity.setTeacherId(21);
         entities.add(classEntity);
 
+        classEntity = new ClassEntity();
+        classEntity.setId(3);
+        classEntity.setName("Elektricien 1");
+        classEntity.setType("BGV");
+        classEntity.setTeacherId(21);
+        entities.add(classEntity);
+
         Object[] fromDatabase = classDAO.getAllByTeacher(21).toArray();
         Object[] objectArray = entities.toArray();
 
@@ -145,7 +152,7 @@ public class ModuloDAOTests {
         SubCertificateEntity entity = new SubCertificateEntity();
         entity.setId(1);
         entity.setCertificateId(1);
-        entity.setName("Bekisting");
+        entity.setName("Machinale houtbewerking");
 //        entity.setDescription("De leerling leert bekisten");
         entity.setEnabled(true);
         Assert.assertEquals(entity, subCertificateDAO.get(1));
@@ -154,9 +161,9 @@ public class ModuloDAOTests {
         entity = new SubCertificateEntity();
         entity.setId(6);
         entity.setCertificateId(2);
-        entity.setName("Belichting");
+        entity.setName("Manuele houtbewerking");
 //        entity.setDescription("De leerling leert belichten");
-        entity.setEnabled(false);
+        entity.setEnabled(true);
         Assert.assertEquals(entity, subCertificateDAO.get(6));
         Logger.getLogger("Test SubCertificateDAO").info("Expected sub_certificate with ID=6 matches sub_certificate from database - pass");
 
@@ -193,7 +200,7 @@ public class ModuloDAOTests {
         entity = new SubCertificateEntity();
         entity.setId(1);
         entity.setCertificateId(1);
-        entity.setName("Bekisting");
+        entity.setName("Machinale houtbewerking");
 //        entity.setDescription("De leerling leert bekisten");
         entity.setEnabled(true);
         entities.add(entity);
@@ -201,7 +208,7 @@ public class ModuloDAOTests {
         entity = new SubCertificateEntity();
         entity.setId(2);
         entity.setCertificateId(1);
-        entity.setName("Fundering");
+        entity.setName("Manuele houtbewerking");
 //        entity.setDescription("De leerling leert funderen");
         entity.setEnabled(true);
         entities.add(entity);
@@ -209,7 +216,15 @@ public class ModuloDAOTests {
         entity = new SubCertificateEntity();
         entity.setId(3);
         entity.setCertificateId(1);
-        entity.setName("Cement");
+        entity.setName("Plaatsing buitenschrijnwerk hout");
+//        entity.setDescription("De leerling leert cement");
+        entity.setEnabled(true);
+        entities.add(entity);
+
+        entity = new SubCertificateEntity();
+        entity.setId(4);
+        entity.setCertificateId(1);
+        entity.setName("Werkplaatsbuitenschrijnwerk");
 //        entity.setDescription("De leerling leert cement");
         entity.setEnabled(true);
         entities.add(entity);
@@ -233,8 +248,8 @@ public class ModuloDAOTests {
 
         StudentClassEntity entity = new StudentClassEntity();
         entity.setStudentInfoId(4);
-        entity.setClassId(2);
-        Assert.assertEquals(entity, studentClassDAO.get(4, 2));
+        entity.setClassId(3);
+        Assert.assertEquals(entity, studentClassDAO.get(4, 3));
         Logger.getLogger("Test StudentClassDAO").info("Expected student_class matches studentclass from database - pass");
 
 
@@ -980,7 +995,7 @@ public class ModuloDAOTests {
         entity.setUser(14);
         entity.setParent(32);
         entity.setGradeId(1);
-        entity.setCertificateId(1);
+        entity.setCertificateId(2);
         entity.setBirthDate(Date.valueOf("2012-01-01"));
         entity.setBirthPlace("Hasselt");
         entity.setNationality("Belgium");

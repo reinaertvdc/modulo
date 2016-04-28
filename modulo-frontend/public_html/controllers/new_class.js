@@ -28,27 +28,25 @@ app.controller('NewClassController', function ($scope, $http) {
         var i = 0;
         certificateStudents.forEach(function (students, key) {
             $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
-            $scope.addStudents(students);
-            //add student
+            $scope.addStudents(students, key);
+            $scope.jsonStudents += ']}';
 
             if (i < certificateStudents.size - 1) {
-                $scope.jsonStudents += ']},'
-            }
-            else {
-                $scope.jsonStudents += ']}'
+                $scope.jsonStudents += ',';
             }
             i++;
         }, $scope.students);
         $scope.jsonStudents += ']';
     }
 
-    $scope.addStudents = function (students) {
+    $scope.addStudents = function (students, certificate) {
         for (var i = 0; i < students.length; i++) {
+            $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", ' +
+                '"parent": "' +  certificate + '", ' +
+                '"studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+
             if (i < students.length - 1) {
-                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "studentInfoId": "' + students[i].studentInfoEntity.id + '"},';
-            }
-            else {
-                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+                $scope.jsonStudents += ',';
             }
         }
     }
@@ -61,17 +59,69 @@ app.controller('NewClassController', function ($scope, $http) {
             showIcon: false,
             showCheckbox: true,
             onNodeChecked: function (event, node) {
-                //Todo
-
+                if(node.parent != null){
+                    if($scope.allSiblingsChecked(node)){
+                        var parent = $('#treeview-checkable').treeview('getParent', node);
+                        $('#treeview-checkable').treeview('checkNode', [ parent.nodeId, { silent: true } ]);
+                    }
+                }
+                else{
+                    $scope.checkChildNodes(node);
+                }
             },
             onNodeUnchecked: function (event, node) {
-                //Todo
+                if (node.parent != null) {
+                    if ($scope.allSiblingsChecked(node)) {
+                        var parent = $('#treeview-checkable').treeview('getParent', node);
+                        $('#treeview-checkable').treeview('uncheckNode', [parent.nodeId, {silent: true}]);
+                    }
+                }
+                else {
+                    $scope.uncheckChildNodes(node);
+                }
             }
         });
 
+        $scope.checkChildNodes = function(parentNode){
+            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
+            allNodes.forEach(function(node){
+                if(node.parent == parentNode.text){
+                    $('#treeview-checkable').treeview('checkNode', [ node.nodeId ]);
+                }
+            });
+        }
+
+        $scope.uncheckChildNodes = function(parentNode){
+            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
+            allNodes.forEach(function(node){
+                if(node.parent == parentNode.text){
+                    $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
+                }
+            });
+        }
+
+        $scope.allSiblingsChecked = function(node){
+            var allChecked = true;
+            var siblings = $('#treeview-checkable').treeview('getSiblings', node);
+
+            for(var i = 0; allChecked && i < siblings.length; i++){
+                if(!siblings[i].state.checked){
+                    allChecked = false;
+                }
+            };
+
+            return allChecked;
+        }
+
         var findCheckableNodess = function() {
-            return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
+            return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: true, exactMatch: false } ]);
         };
+
+        var checkableNodes = findCheckableNodess();
+        $('#input-check-node').on('keyup', function (e) {
+            checkableNodes = findCheckableNodess();
+            //$('.check-node').prop('disabled', !(checkableNodes.length >= 1));
+        });
 
         //Expand all
         $scope.checkableTree.treeview('expandAll', {silent: true});

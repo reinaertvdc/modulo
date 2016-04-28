@@ -29,7 +29,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
 
     $scope.students = new Map();
     $scope.studentsInClass = [];
-
     $scope.jsonStudents = "";
 
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
@@ -67,9 +66,9 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
 
             $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
 
-            var checked = $scope.addStudents(students, key);
+            var allStudentChecked = $scope.addStudents(students, key);
             $scope.jsonStudents += '], ' +
-                '"state":{"checked": ' + checked + '}}';
+                '"state":{"checked": ' + allStudentChecked + '}}';
 
             if (i < certificateStudents.size - 1) {
                 $scope.jsonStudents += ',';
@@ -175,7 +174,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
             allNodes.forEach(function(node){
                 if(node.parent == parentNode.text){
                     $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
-                    //$('#tree').treeview('uncheckNode', [ nodeId, { silent: true } ]);
                 }
             });
         }

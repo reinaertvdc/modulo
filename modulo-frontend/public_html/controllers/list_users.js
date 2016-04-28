@@ -65,9 +65,13 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
             '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
             '<td ng-click="openStatusModal('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
-            '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="openRemoveModal(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
-            '</tr>';
+            '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
+        if($scope.account.user.id === user.id)
+        {
+            html += '<td><span class="glyphicon glyphicon-remove"></span></td></tr>';
+        }else {
+            html += '<td class="text-danger" ng-click="openRemoveModal(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td></tr>';
+        }
 
         var element = document.createElement('tr');
         USER_LIST_ELEMENT.appendChild(element);

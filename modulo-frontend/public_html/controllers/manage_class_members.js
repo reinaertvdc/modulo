@@ -1,6 +1,6 @@
 app.controller('ManageClassMembersController', function ($scope, $http) {
     // TODO implement controller
-    var json = "" +
+    /*var json = "" +
         '[' +
         '{"text": "Parent 1",' +
         '"nodes": [' +
@@ -25,7 +25,7 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         '{"text": "Parent 1", "id": "3"},' +
         '{"text": "Parent 1", "id": "4"},' +
         '{"text": "Parent 1", "id": "5"}' +
-        ']';
+        ']';*/
 
     $scope.students = new Map();
     $scope.studentsInClass = [];
@@ -42,7 +42,6 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         $http.get('http://localhost:8080/student/all').success(function (response) {
             response.forEach(function (item) {
                 $scope.students.set(item.studentInfoEntity.id, item);
-                //console.log("Certificate of student " + item.userEntity.firstName + " " + item.userEntity.lastName + ": " + item.certificateEntity.name);
             });
             $scope.fillJsonUsers();
             $scope.buildTree();
@@ -67,35 +66,41 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         certificateStudents.forEach(function (students, key) {
 
             $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
-            $scope.addStudents(students);
-            //add student
+
+            var checked = $scope.addStudents(students, key);
+            $scope.jsonStudents += '], ' +
+                '"state":{"checked": ' + checked + '}}';
 
             if (i < certificateStudents.size - 1) {
-                $scope.jsonStudents += ']},'
-            }
-            else {
-                $scope.jsonStudents += ']}'
+                $scope.jsonStudents += ',';
             }
             i++;
         }, $scope.students);
         $scope.jsonStudents += ']';
     }
 
-    $scope.addStudents = function (students) {
+    $scope.addStudents = function (students, certificate) {
+        var allChecked = true;
         for (var i = 0; i < students.length; i++) {
-            var inClass = "";
+            var inClass = false;
 
             if($scope.studentInClass(students[i].studentInfoEntity.id)){
-                inClass = "true";
+                inClass = true;
+            }
+            else if(allChecked){
+                allChecked = false;
             }
 
+            $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", ' +
+                    '"parent": "' +  certificate + '", ' +
+                '"state":{"checked": ' + inClass + '}, ' +
+                '"studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+
             if (i < students.length - 1) {
-                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "state":{"checked": "' + inClass + '"}, "studentInfoId": "' + students[i].studentInfoEntity.id + '"},';
-            }
-            else {
-                $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", "state":{"checked": "' + inClass + '"}, "studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+                $scope.jsonStudents += ',';
             }
         }
+        return allChecked;
     }
 
     $scope.studentInClass = function(studentInfoEntityId){
@@ -115,29 +120,78 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
             showIcon: false,
             showCheckbox: true,
             onNodeChecked: function (event, node) {
-                //Todo add student to class
-                //$('#checkable-output').prepend('<p>' + node.text + ' Checked with id: ' + node.studentInfoId + '</p>');
-                $http.post('http://localhost:8080/class/' + $scope.classId + '/student/' + node.studentInfoId).success(function (response) {
-                    if(response)
-                        console.log("Post succes!");
-                    else
-                        console.log("Post fail!");
-                });
-
-                //console.log("Test1 " + node.text + " Checked with id: " + node.studentInfoId);
+                if(node.parent != null){
+                    $http.post('http://localhost:8080/class/' + $scope.classId + '/student/' + node.studentInfoId).success(function (response) {
+                        //TODO verwijder console log stuff
+                        if(response) {
+                            console.log("Post succes!");
+                            if($scope.allSiblingsChecked(node)){
+                                var parent = $('#treeview-checkable').treeview('getParent', node);
+                                $('#treeview-checkable').treeview('checkNode', [ parent.nodeId, { silent: true } ]);
+                            }
+                        }
+                        else {
+                            console.log("Post fail!");
+                        }
+                    });
+                }
+                else{
+                    $scope.checkChildNodes(node);
+                }
             },
             onNodeUnchecked: function (event, node) {
-                //Todo remove student from class
-                //$('#checkable-output').prepend('<p>' + node.text + ' Unchecked with id: ' + node.studentInfoId + '</p>');
-                $http.delete('http://localhost:8080/class/' + $scope.classId + '/student/' + node.studentInfoId).success(function (response) {
-                    if(response)
-                        console.log("Delete succes!");
-                    else
-                        console.log("Delete fail!");
-                });
-                //console.log("Test2 " + node.text + " Unchecked with id: " + node.studentInfoId);
+                if(node.parent != null) {
+                    $http.delete('http://localhost:8080/class/' + $scope.classId + '/student/' + node.studentInfoId).success(function (response) {
+                        //TODO verwijder console log stuff
+                        if (response) {
+                            console.log("Delete succes!");
+                            if($scope.allSiblingsChecked(node)){
+                                var parent = $('#treeview-checkable').treeview('getParent', node);
+                                $('#treeview-checkable').treeview('uncheckNode', [ parent.nodeId , { silent: true } ]);
+                            }
+                        }
+                        else {
+                            console.log("Delete fail!");
+                        }
+                    });
+                }
+                else{
+                    $scope.uncheckChildNodes(node);
+                }
             }
         });
+
+        $scope.checkChildNodes = function(parentNode){
+            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
+            allNodes.forEach(function(node){
+                if(node.parent == parentNode.text){
+                    $('#treeview-checkable').treeview('checkNode', [ node.nodeId ]);
+                }
+            });
+        }
+
+        $scope.uncheckChildNodes = function(parentNode){
+            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
+            allNodes.forEach(function(node){
+                if(node.parent == parentNode.text){
+                    $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
+                    //$('#tree').treeview('uncheckNode', [ nodeId, { silent: true } ]);
+                }
+            });
+        }
+
+        $scope.allSiblingsChecked = function(node){
+            var allChecked = true;
+            var siblings = $('#treeview-checkable').treeview('getSiblings', node);
+
+            for(var i = 0; allChecked && i < siblings.length; i++){
+                if(!siblings[i].state.checked){
+                    allChecked = false;
+                }
+            };
+
+            return allChecked;
+        }
 
          var findCheckableNodess = function() {
          return $scope.checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);

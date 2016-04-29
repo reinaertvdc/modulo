@@ -30,6 +30,16 @@ public class CertificateController {
         ArrayList<CertificateModel> certificates = CertificateModel.getAll(certificateDAO);
         return new ResponseEntity<ArrayList<CertificateModel>>(certificates, HttpStatus.OK);
     }
+    @CrossOrigin
+    @RequestMapping(value = "/allActive", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<CertificateModel>> getAllActive() {
+        ArrayList<CertificateModel> certificates = new ArrayList<CertificateModel>();
+        for(CertificateModel cert : CertificateModel.getAll(certificateDAO)) {
+            if(cert.getCertificateEntity().getEnabled())
+                certificates.add(cert);
+        }
+        return new ResponseEntity<ArrayList<CertificateModel>>(certificates, HttpStatus.OK);
+    }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT)

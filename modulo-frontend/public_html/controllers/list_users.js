@@ -64,7 +64,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         // {
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
-            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.getTypeStr(user.type) + '</td>' +
+            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.userTypes[user.type] + '</td>' +
             '<td ng-click="openStatusModal('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
         if($scope.account.user.id === user.id)
@@ -152,19 +152,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $scope.originalUsers = new Map($scope.users);
         $scope.refresh();
     });
-
-    $scope.getTypeStr = function (type) {
-        if(type == "STUDENT")
-            return "Student";
-        else if(type == "TEACHER")
-            return "Leerkracht";
-        else if(type == "ADMIN")
-            return "Beheerder";
-        else if(type == "PARENT")
-            return "Ouder";
-        else
-            return "?";
-    }
 });
 
 

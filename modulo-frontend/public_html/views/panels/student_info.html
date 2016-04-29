@@ -1,4 +1,36 @@
 <div class="form-group">
+    <label>Graad</label>
+    <br/>
+    <div class="btn-group" data-uib-dropdown>
+        <button id="button-grade" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+            {{selectedGrade}}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+            <li data-ng-repeat="grade in grades">
+                <a href="" data-ng-click="setSelectedGrade(grade)">{{grade.name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>Certificaat</label>
+    <br/>
+    <div class="btn-group" data-uib-dropdown>
+        <button id="button-subject" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+            {{selectedCert}}
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+            <li data-ng-repeat="cert in certificates">
+                <a href="" data-ng-click="setSelectedCert(cert)">{{cert.name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="form-group">
     <label for="input-birthDate">Geboortedatum</label>
     <input id="input-birthDate" type="text" name="birthDate" class="form-control"
            data-ng-model="studentInfo.birthDate" title="Geboortedatum" required>

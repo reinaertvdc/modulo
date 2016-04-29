@@ -865,8 +865,9 @@ CREATE TABLE `grades` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `grades` VALUES (1, 'Graad 1');
-INSERT INTO `grades` VALUES (2, 'Graad 2');
+INSERT INTO `grades` VALUES (1, '2de graad');
+INSERT INTO `grades` VALUES (2, '3de graad (1e en 2e lj)');
+INSERT INTO `grades` VALUES (3, '3de graad (3e lj)');
 
 CREATE TABLE `student_info` (
   `id`                             INT          NOT NULL AUTO_INCREMENT,

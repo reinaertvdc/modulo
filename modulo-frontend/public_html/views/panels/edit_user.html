@@ -4,14 +4,19 @@
 
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
-            <label for="select-type">Type gebruiker</label>
-            <select id="select-type" class="form-control" data-ng-model="basicInfo.type" title="Type voor de gebruiker"
-                    required>
-                <option value="STUDENT">Student</option>
-                <option value="TEACHER">Leerkracht</option>
-                <option value="PARENT">Ouder</option>
-                <option value="ADMIN">Beheerder</option>
-            </select>
+            <label>Type gebruiker</label>
+            <br/>
+            <div class="btn-group" data-uib-dropdown>
+                <button id="button-subject" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+                    {{userTypes[basicInfo.type]}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+                    <li data-ng-repeat="type in userTypesKeys">
+                        <a href="" data-ng-click="setUserType(type)">{{userTypes[type]}}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
 

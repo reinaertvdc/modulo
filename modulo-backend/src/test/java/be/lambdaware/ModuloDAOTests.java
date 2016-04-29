@@ -490,7 +490,7 @@ public class ModuloDAOTests {
 
         GradeEntity entity = new GradeEntity();
         entity.setId(1);
-        entity.setName("Graad 1");
+        entity.setName("2de graad");
         Assert.assertEquals(entity, gradeDAO.get(1));
         Logger.getLogger("Test GradeDAO").info("Expected grade with ID=1 matches grade from database - pass");
 

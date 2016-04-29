@@ -34,6 +34,18 @@ public class GradeModel {
         this.gradeDAO = gradeDAO;
     }
 
+    public static ArrayList<GradeModel> getAll(GradeDAO gradeDAO) {
+        ArrayList<GradeModel> grades = new ArrayList<GradeModel>();
+
+        for(GradeEntity entity : gradeDAO.getAll()) {
+            GradeModel grade = new GradeModel();
+            grade.setGradeEntity(entity);
+            grades.add(grade);
+        }
+
+        return grades;
+    }
+
     @Override
     public String toString() {
         return "GradeModel{" +

@@ -91,10 +91,7 @@ public class StudentModel extends AccountModel {
         super.createInDB();
 
         studentInfoEntity.setUser(userEntity.getId());
-        //TODO hardcoded id's
         userEntity.setEnabled(true);
-        studentInfoEntity.setCertificateId(1);
-        studentInfoEntity.setGradeId(1);
         int id = studentInfoDAO.create(studentInfoEntity);
         studentInfoEntity.setId(id);
     }

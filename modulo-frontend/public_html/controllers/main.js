@@ -316,4 +316,8 @@ app.controller('MainController', function ($scope, $location) {
             return value.length > 0;
         }
     };
+
+    $scope.userTypes = {"STUDENT": "Student","TEACHER": "Leerkracht","ADMIN": "Beheerder", "PARENT": "Ouder"};
+    $scope.userTypesKeys = Object.keys($scope.userTypes);
+
 });

@@ -2,7 +2,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
     var paramVal = $scope.location.getParameter($scope.location.PARAM_EDIT_USER_ID);
 
 
-    // DEBUG:  fill with dummy data
+    // TODO: set to actual default values
     $scope.studentInfo = {
         birthDate: '1995-07-25',
         birthPlace: 'leuven',
@@ -15,7 +15,9 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
         phoneParent: '123456',
         bankAccount: '999999999',
         nationalId: '01234567890',
-        parent: null
+        parent: null,
+        gradeId: null,
+        certificateId: null
     }
 
     $scope.basicInfo = {
@@ -30,12 +32,46 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
     $scope.parentStr = '';
 
 
+    // USER TYPES
+    $scope.setUserType = function (type) {
+        $scope.basicInfo.type = type;
+    };
+
+
+    // GRADES
+    $scope.grades = {};
+    $scope.setSelectedGrade = function (grade) {
+        $scope.selectedGrade = grade.name;
+        $scope.studentInfo.gradeId = grade.id;
+    };
+    $http.get('http://localhost:8080/grade/all').success(function (response) {
+        response.forEach(function (item) {
+            $scope.grades[item.gradeEntity.id] = item.gradeEntity;
+        });
+        var firstKey = (Object.keys($scope.grades)[0]);
+        $scope.selectedGrade = $scope.grades[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
+        $scope.studentInfo.gradeId = $scope.grades[firstKey].id;
+    });
+
+
+    // CERTIFICATES
+    $scope.certificates = {};
+    $scope.setSelectedCert = function (cert) {
+        $scope.selectedCert = cert.name;
+        $scope.studentInfo.certificateId = cert.id;
+    };
+    $http.get('http://localhost:8080/certificate/allActive').success(function (response) {
+        response.forEach(function (item) {
+            $scope.certificates[item.certificateEntity.id] = item.certificateEntity;
+        });
+        var firstKey = (Object.keys($scope.certificates)[0]);
+        $scope.selectedCert = $scope.certificates[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
+        $scope.studentInfo.certificateId = $scope.certificates[firstKey].id;
+    });
 
 
     //PARENT SELECTION MODAL
-
     $scope.parents = [];
-
     $http.get('http://localhost:8080/account/parents').success(function (response) {
         response.forEach(function (item) {
             if($scope.basicInfo.id != item.userEntity.id)
@@ -67,14 +103,14 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     // NEW USER
     if (paramVal == 'nieuw') {
-        $scope.btnText = 'Aanmaken'
+        $scope.btnText = 'Aanmaken';
         $scope.panelCaption = 'Nieuwe gebruiker aanmaken';
     }
 
 
     // EDIT USER
     else if (paramVal) {
-        $scope.btnText = 'Opslaan'
+        $scope.btnText = 'Opslaan';
 
         $http.get('http://localhost:8080/account/' + paramVal).success(function (response) {
             $scope.basicInfo = response.userEntity;
@@ -83,11 +119,15 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
             if ($scope.basicInfo.type == "STUDENT") {
                 $http.get('http://localhost:8080/account/student/' + paramVal).success(function (response) {
                     $scope.studentInfo = response.studentInfoEntity;
+                    $scope.selectedGrade = $scope.grades[$scope.studentInfo.gradeId].name;
+                    $scope.selectedCert = $scope.certificates[$scope.studentInfo.certificateId].name;
 
-                    if ($scope.studentInfo.parent)
+                    if ($scope.studentInfo.parent)  // seperate get request is simpler in this case
                         $http.get('http://localhost:8080/account/' + $scope.studentInfo.parent).success(function (response) {
                             $scope.parentStr = response.userEntity.firstName + ' ' + response.userEntity.lastName;
                         });
+                    else
+                        $scope.studentInfo.parent = null;
                 });
             }
         });
@@ -96,7 +136,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     $scope.resetForm = function () {
         $scope.basicInfo.id = null;
-        $scope.basicInfo.type = 'TEACHER'
+        $scope.basicInfo.type = 'TEACHER';
         $scope.basicInfo.email = '';
         $scope.basicInfo.password = '';
         $scope.basicInfo.firstName = '';

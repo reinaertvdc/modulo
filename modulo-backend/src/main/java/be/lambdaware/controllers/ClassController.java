@@ -42,6 +42,22 @@ public class ClassController {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "/{classId}", method = RequestMethod.GET)
+    public ResponseEntity<ClassModel> get(@PathVariable Integer classId ) {
+        ClassModel clazz = new ClassModel(classDAO);
+        clazz.getFromDB(classId);
+        return new ResponseEntity<ClassModel>(clazz, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.PUT)
+    public boolean update(@RequestBody ClassModel classModel) {
+        classModel.setClassDAO(classDAO);
+        classModel.updateInDB();
+        return true;
+    }
+
+    @CrossOrigin
     @RequestMapping(value = "/{classId}", method = RequestMethod.DELETE)
     public boolean delete(@PathVariable Integer classId ) {
         ClassModel clazz = new ClassModel(classDAO);

@@ -129,12 +129,11 @@ public class BGVScore {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("BGVScore{");
-        sb.append("remarks='").append(remarks).append('\'');
-        sb.append(", gradedDate=").append(gradedDate);
-        sb.append(", score=").append(score);
-        sb.append(", id=").append(id);
-        sb.append('}');
-        return sb.toString();
+        String sb = "BGVScore{" + "remarks='" + remarks + '\'' +
+                ", gradedDate=" + gradedDate +
+                ", score=" + score +
+                ", id=" + id +
+                '}';
+        return sb;
     }
 }

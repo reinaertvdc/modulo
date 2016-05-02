@@ -150,11 +150,10 @@ public class Certificate {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Certificate{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", enabled=").append(enabled);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Certificate{" + "id=" + id +
+                ", name='" + name + '\'' +
+                ", enabled=" + enabled +
+                '}';
+        return sb;
     }
 }

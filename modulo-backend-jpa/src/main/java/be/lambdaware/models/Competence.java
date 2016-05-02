@@ -133,12 +133,11 @@ public class Competence {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Competence{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", customName='").append(customName).append('\'');
-        sb.append(", enabled=").append(enabled);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Competence{" + "id=" + id +
+                ", name='" + name + '\'' +
+                ", customName='" + customName + '\'' +
+                ", enabled=" + enabled +
+                '}';
+        return sb;
     }
 }

@@ -133,12 +133,11 @@ public class SubCertificateCategory {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("SubCertificateCategory{");
-        sb.append("enabled=").append(enabled);
-        sb.append(", id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", customName='").append(customName).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "SubCertificateCategory{" + "enabled=" + enabled +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", customName='" + customName + '\'' +
+                '}';
+        return sb;
     }
 }

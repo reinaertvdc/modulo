@@ -113,10 +113,9 @@ public class CourseTopic {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("CourseTopic{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", id=").append(id);
-        sb.append('}');
-        return sb.toString();
+        String sb = "CourseTopic{" + "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+        return sb;
     }
 }

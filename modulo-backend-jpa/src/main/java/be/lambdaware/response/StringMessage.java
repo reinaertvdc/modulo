@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 
 public class StringMessage {
 
-    private static Logger log = Logger.getLogger(StringMessage.class);
+    private static final Logger log = Logger.getLogger(StringMessage.class);
     private String message;
 
-    public StringMessage(String message) {
+    private StringMessage(String message) {
         this.message = message;
     }
 
@@ -40,10 +40,9 @@ public class StringMessage {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("StringMessage{");
-        sb.append("message='").append(message).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "StringMessage{" + "message='" + message + '\'' +
+                '}';
+        return sb;
     }
 
 }

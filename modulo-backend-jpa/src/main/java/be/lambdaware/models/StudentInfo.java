@@ -307,20 +307,19 @@ public class StudentInfo {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("StudentInfo{");
-        sb.append("id=").append(id);
-        sb.append(", birthDate=").append(birthDate);
-        sb.append(", birthPlace='").append(birthPlace).append('\'');
-        sb.append(", nationality='").append(nationality).append('\'');
-        sb.append(", nationalIdentificationNumber='").append(nationalIdentificationNumber).append('\'');
-        sb.append(", street='").append(street).append('\'');
-        sb.append(", houseNumber='").append(houseNumber).append('\'');
-        sb.append(", postalCode='").append(postalCode).append('\'');
-        sb.append(", city='").append(city).append('\'');
-        sb.append(", phoneNumber='").append(phoneNumber).append('\'');
-        sb.append(", emergencyNumber='").append(emergencyNumber).append('\'');
-        sb.append(", bankAccount='").append(bankAccount).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "StudentInfo{" + "id=" + id +
+                ", birthDate=" + birthDate +
+                ", birthPlace='" + birthPlace + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", nationalIdentificationNumber='" + nationalIdentificationNumber + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", emergencyNumber='" + emergencyNumber + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                '}';
+        return sb;
     }
 }

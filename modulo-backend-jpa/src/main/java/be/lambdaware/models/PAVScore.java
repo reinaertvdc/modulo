@@ -130,12 +130,11 @@ public class PAVScore {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("PAVScore{");
-        sb.append("id=").append(id);
-        sb.append(", score=").append(score);
-        sb.append(", gradedDate=").append(gradedDate);
-        sb.append(", remarks='").append(remarks).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "PAVScore{" + "id=" + id +
+                ", score=" + score +
+                ", gradedDate=" + gradedDate +
+                ", remarks='" + remarks + '\'' +
+                '}';
+        return sb;
     }
 }

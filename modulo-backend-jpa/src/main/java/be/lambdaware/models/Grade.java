@@ -142,11 +142,10 @@ public class Grade {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Grade{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", enabled=").append(enabled);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Grade{" + "id=" + id +
+                ", name='" + name + '\'' +
+                ", enabled=" + enabled +
+                '}';
+        return sb;
     }
 }

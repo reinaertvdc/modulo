@@ -158,11 +158,10 @@ public class Clazz {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Clazz{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", type=").append(type);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Clazz{" + "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+        return sb;
     }
 }

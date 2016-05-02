@@ -17,7 +17,7 @@ public class APIAuthentication {
     @Autowired
     UserDAO userDAO;
 
-    User authenticatedUser;
+    private User authenticatedUser;
 
     Logger log = Logger.getLogger(getClass());
 
@@ -38,19 +38,20 @@ public class APIAuthentication {
     }
 
     public String SHA512(String toHash) {
-        MessageDigest md = null;
-        byte[] hash = null;
+        MessageDigest md;
+        byte[] hash;
         try {
             md = MessageDigest.getInstance("SHA-512");
             hash = md.digest(toHash.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte currentByte : hash) {
+                sb.append(Integer.toString((currentByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        StringBuilder sb = new StringBuilder();
-        for (byte currentByte : hash) {
-            sb.append(Integer.toString((currentByte & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
+        return "BAD HASH";
     }
 
     public User getAuthenticatedUser() {

@@ -2,8 +2,10 @@ package be.lambdaware.controllers;
 
 import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.ClassDAO;
+import be.lambdaware.dao.UserDAO;
 import be.lambdaware.models.Certificate;
 import be.lambdaware.models.Clazz;
+import be.lambdaware.models.User;
 import be.lambdaware.response.ErrorMessages;
 import be.lambdaware.response.StringMessage;
 import be.lambdaware.security.APIAuthentication;
@@ -28,6 +30,9 @@ public class ClassController {
 
     @Autowired
     ClassDAO classDAO;
+
+    @Autowired
+    UserDAO userDAO;
 
     @Autowired
     APIAuthentication authentication;
@@ -57,7 +62,7 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
@@ -75,7 +80,7 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/id/{id}/teacher", method = RequestMethod.GET)
-    public ResponseEntity<?> getTeacherFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> getTeacherFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
@@ -88,7 +93,7 @@ public class ClassController {
         if (clazz == null) {
             return StringMessage.asEntity(String.format("No class with ID=%d found.", id), HttpStatus.NOT_FOUND);
         } else {
-            if(clazz.getTeacher()==null){
+            if (clazz.getTeacher() == null) {
                 return StringMessage.asEntity(String.format("Class with ID=%d has no teacher.", id), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(clazz.getTeacher(), HttpStatus.OK);
@@ -96,7 +101,7 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/id/{id}/students", method = RequestMethod.GET)
-    public ResponseEntity<?> getStudentsFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> getStudentsFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
@@ -109,7 +114,7 @@ public class ClassController {
         if (clazz == null) {
             return StringMessage.asEntity(String.format("No class with ID=%d found.", id), HttpStatus.NOT_FOUND);
         } else {
-            if(clazz.getStudents().size()==0){
+            if (clazz.getStudents().size() == 0) {
                 return StringMessage.asEntity(String.format("Class with ID=%d has no students.", id), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(clazz.getStudents(), HttpStatus.OK);
@@ -117,7 +122,7 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/id/{id}/certificate", method = RequestMethod.GET)
-    public ResponseEntity<?> getCertificateFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> getCertificateFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
@@ -130,7 +135,7 @@ public class ClassController {
         if (clazz == null) {
             return StringMessage.asEntity(String.format("No class with ID=%d found.", id), HttpStatus.NOT_FOUND);
         } else {
-            if(clazz.getCertificate()==null){
+            if (clazz.getCertificate() == null) {
                 return StringMessage.asEntity(String.format("Class with ID=%d has no certificate.", id), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(clazz.getCertificate(), HttpStatus.OK);
@@ -138,7 +143,7 @@ public class ClassController {
     }
 
     @RequestMapping(value = "/id/{id}/grade", method = RequestMethod.GET)
-    public ResponseEntity<?> getGradeFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> getGradeFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
@@ -151,10 +156,41 @@ public class ClassController {
         if (clazz == null) {
             return StringMessage.asEntity(String.format("No class with ID=%d found.", id), HttpStatus.NOT_FOUND);
         } else {
-            if(clazz.getGrade()==null){
+            if (clazz.getGrade() == null) {
                 return StringMessage.asEntity(String.format("Class with ID=%d has no grade.", id), HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(clazz.getGrade(), HttpStatus.OK);
+        }
+    }
+
+    // ===================================================================================
+    // POST methods
+    // ===================================================================================
+
+    @RequestMapping(value = "/id/{id}/student/{studentId}", method = RequestMethod.POST)
+    public ResponseEntity<?> addStudentToClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long studentId) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        Clazz clazz = classDAO.findById(id);
+        User user = userDAO.findById(studentId);
+
+        log.info(user);
+
+        if (clazz == null) {
+            return StringMessage.asEntity(String.format("No class with ID=%d found.", id), HttpStatus.NOT_FOUND);
+        } else if (user == null) {
+            return StringMessage.asEntity(String.format("No user with ID=%d found.", studentId), HttpStatus.NOT_FOUND);
+        } else {
+            if(!clazz.getStudents().contains(user)){
+                clazz.getStudents().add(user);
+                classDAO.save(clazz);
+            }
+            return StringMessage.asEntity(String.format("User with ID=%d added to class with ID=%d.", studentId,id), HttpStatus.OK);
         }
     }
 }

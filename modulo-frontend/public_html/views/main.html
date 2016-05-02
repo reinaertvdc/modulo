@@ -17,8 +17,8 @@
                 <li id="navbar-courses" data-ng-class="{active: location.getRequestedPage()===location.COURSES, hidden: !location.userCanAccessPage(location.COURSES)}"><a href="" data-ng-click="location.openPage(location.COURSES)">Certificaten</a></li>
                 <li id="navbar-my-classes" data-ng-class="{active: location.getRequestedPage()===location.MY_CLASSES, hidden: !location.userCanAccessPage(location.MY_CLASSES)}"><a href="" data-ng-click="location.openPage(location.MY_CLASSES)">Mijn klassen</a></li>
                 <li id="navbar-scores-management" data-ng-class="{active: location.getRequestedPage()===location.SCORES_MANAGEMENT, hidden: !location.userCanAccessPage(location.SCORES_MANAGEMENT)}"><a href="" data-ng-click="location.openPage(location.SCORES_MANAGEMENT)">Puntenbeheer</a></li>
-                <li id="navbar-student-progress" data-ng-class="{active: location.getRequestedPage()===location.STUDENT_PROGRESS, hidden: !location.userCanAccessPage(location.STUDENT_PROGRESS)}"><a href="" data-ng-click="location.openPage(location.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
                 <li id="navbar-task-management" data-ng-class="{active: location.getRequestedPage()===location.TASK_MANAGEMENT, hidden: !location.userCanAccessPage(location.TASK_MANAGEMENT)}"><a href="" data-ng-click="location.openPage(location.TASK_MANAGEMENT)">Takenbeheer</a></li>
+                <li id="navbar-student-progress" data-ng-class="{active: location.getRequestedPage()===location.STUDENT_PROGRESS, hidden: !location.userCanAccessPage(location.STUDENT_PROGRESS)}"><a href="" data-ng-click="location.openPage(location.STUDENT_PROGRESS)">Voortgang leerlingen</a></li>
                 <li id="navbar-log-out" data-ng-class="{hidden: !account.isLoggedIn()}"><a href="#" data-ng-click="account.logOut();navigate('');"><span class="glyphicon glyphicon-log-out"></span> Afmelden</a></li>
             </ul>
         </div>

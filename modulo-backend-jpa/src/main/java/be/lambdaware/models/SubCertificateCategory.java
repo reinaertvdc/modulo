@@ -43,8 +43,7 @@ public class SubCertificateCategory {
     @JsonIgnore
     private SubCertificate subCertificate;
 
-    @OneToMany(mappedBy = "subCertificateCategory")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "subCertificateCategory",orphanRemoval = true)
     private List<Competence> competences = new ArrayList<>();
 
     // ===================================================================================

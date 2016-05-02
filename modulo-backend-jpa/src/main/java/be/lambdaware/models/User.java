@@ -64,7 +64,7 @@ public class User {
     @JsonIgnore
     private List<Clazz> classes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
     @JsonManagedReference
     private StudentInfo studentInfo;
 

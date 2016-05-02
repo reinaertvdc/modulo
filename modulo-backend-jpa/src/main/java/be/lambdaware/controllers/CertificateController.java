@@ -151,7 +151,7 @@ public class CertificateController {
     // Delete methods
     // ===================================================================================
 
-    @RequestMapping(value = "/id/{id}/disable", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
@@ -164,7 +164,7 @@ public class CertificateController {
             return StringMessage.asEntity(String.format("No certificate with ID=%d found.", id), HttpStatus.NOT_FOUND);
         } else {
             certificateDAO.delete(id);
-            return StringMessage.asEntity(String.format("Certificate with ID=%d is disabled.", id), HttpStatus.OK);
+            return StringMessage.asEntity(String.format("Certificate with ID=%d deleted.", id), HttpStatus.OK);
         }
     }
 

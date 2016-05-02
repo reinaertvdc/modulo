@@ -41,8 +41,7 @@ public class Certificate {
     // Relations
     // ===================================================================================
 
-    @OneToMany(mappedBy = "certificate")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "certificate", orphanRemoval = true)
     private List<SubCertificate> subCertificates = new ArrayList<>();
 
     @OneToMany(mappedBy = "certificate")

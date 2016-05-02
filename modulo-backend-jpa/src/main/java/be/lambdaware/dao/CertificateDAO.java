@@ -4,15 +4,14 @@
 
 package be.lambdaware.dao;
 
-// Imports ...
 
-import be.lambdaware.models.StudentInfo;
+import be.lambdaware.models.Certificate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 
 @Transactional
-public interface StudentInfoDAO extends JpaRepository<StudentInfo, Long> {
+public interface CertificateDAO extends JpaRepository<Certificate, Long> {
 
 
 }

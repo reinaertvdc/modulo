@@ -5,7 +5,7 @@
 package be.lambdaware.controllers;
 
 import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentInfoDao;
+import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.enums.SexType;
 import be.lambdaware.enums.UserRole;
@@ -33,6 +33,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
 
 
@@ -41,7 +42,7 @@ public class UserController {
     @Autowired
     ClassDAO classDAO;
     @Autowired
-    StudentInfoDao studentInfoDAO;
+    StudentInfoDAO studentInfoDAO;
 
     @Autowired
     APIAuthentication authentication;

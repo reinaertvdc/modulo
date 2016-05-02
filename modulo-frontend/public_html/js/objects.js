@@ -75,3 +75,8 @@ function Competence(id, name, customName) {
     this.name = name;
     this.customName = customName;
 }
+
+function StudentScores(studentName, scores) {
+    this.studentName = studentName;
+    this.scores = scores;
+}

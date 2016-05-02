@@ -32,11 +32,7 @@ app.controller('ScoreManagementController', function ($scope) {
 
     $scope.selectedScore = null;
 
-    $scope
-
-    $scope.scores = [
-
-    ]
+    $scope.scores = [];
 
     $scope.getScoreHierarchy = function() {
         var subjects = [
@@ -89,15 +85,25 @@ app.controller('ScoreManagementController', function ($scope) {
 
     $scope.getScoreHierarchy();
 
-});
+    $scope.competences = [
+        new Competence(1, 'Doelstelling 1', null),
+        new Competence(2, 'Doelstelling 2', null),
+        new Competence(3, 'Doelstelling 3', null),
+        new Competence(4, 'Doelstelling 4', null),
+        new Competence(5, 'Doelstelling 5', null)
+    ];
 
-app.controller('ExampleController', ['$scope', function($scope) {
-    $scope.data = {
-        singleSelect: null,
-        multipleSelect: [],
-        option1: 'option-1'
-    };
-}]);
+    $scope.studentScores = [
+        new StudentScores('Jonas Verlinden', [Score.PRACTICED, Score.ACQUIRED, Score.PRACTICED, Score.PRACTICED, Score.ACQUIRED]),
+        new StudentScores('Niels Vanmunster', [Score.PRACTICED, Score.ACQUIRED, Score.PRACTICED, Score.ACQUIRED, Score.OFFERED]),
+        new StudentScores('Mohammed Vannitsen', [Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED]),
+        new StudentScores('Elise Vanderkruis', [Score.PRACTICED, Score.OFFERED, Score.PRACTICED, Score.ACQUIRED, Score.ACQUIRED]),
+        new StudentScores('Christophe Drozdzyniak', [Score.PRACTICED, Score.ACQUIRED, Score.OFFERED, Score.PRACTICED, Score.ACQUIRED]),
+        new StudentScores('Ivan De Vadder', [Score.ACQUIRED, Score.PRACTICED, Score.PRACTICED, Score.ACQUIRED, Score.PRACTICED]),
+        new StudentScores('Ward De Bever', [Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED]),
+        new StudentScores('Frank Wilfrank', [Score.ACQUIRED, Score.PRACTICED, Score.OFFERED, Score.ACQUIRED, Score.PRACTICED])
+    ];
+});
 
 app.controller('DatepickerPopupDemoCtrl', function ($scope) {
     $scope.today = function() {

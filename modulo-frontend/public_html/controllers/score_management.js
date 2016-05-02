@@ -103,6 +103,8 @@ app.controller('ScoreManagementController', function ($scope) {
         new StudentScores('Ward De Bever', [Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED]),
         new StudentScores('Frank Wilfrank', [Score.ACQUIRED, Score.PRACTICED, Score.OFFERED, Score.ACQUIRED, Score.PRACTICED])
     ];
+    
+    $scope.selectedStudentScores = [];
 });
 
 app.controller('DatepickerPopupDemoCtrl', function ($scope) {

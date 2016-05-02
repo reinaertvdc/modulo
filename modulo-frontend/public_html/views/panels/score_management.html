@@ -88,7 +88,7 @@
                     <tbody class="text-center" data-ng-class="{hidden: !visibleScores.module}">
                     <tr data-ng-repeat="competence in competences" data-ng-init="competenceIndex = $index">
                         <td>{{competence.name}}</td>
-                        <td data-ng-repeat="studentScore in studentScores">{{studentScore.scores[competenceIndex]}}</td>
+                        <td style="cursor: pointer; vertical-align: middle;" data-ng-repeat="studentScore in studentScores" data-ng-init="studentScoreIndex = $index" data-ng-class="{info: selectedStudentScores[competenceIndex][studentScoreIndex] == true}" data-ng-click="selectedStudentScores[competenceIndex][studentScoreIndex] = !selectedStudentScores[competenceIndex][studentScoreIndex];">{{studentScore.scores[competenceIndex]}}</td>
                     </tr>
                     </tbody>
                 </table>

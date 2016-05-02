@@ -23,7 +23,8 @@ import org.eazegraph.lib.models.PieModel;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity
+public class
+MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout mMainLayout;

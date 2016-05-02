@@ -17,8 +17,17 @@
                     </li>
                 </ul>
             </div>
+<!--
+            <label for="select-role">Rol van de gebruiker</label>
+            <select id="select-role" class="form-control" data-ng-model="basicInfo.role" title="Rol van de gebruiker"
+                    required>
+                <option value="STUDENT">Student</option>
+                <option value="TEACHER">Leerkracht</option>
+                <option value="PARENT">Ouder</option>
+                <option value="ADMIN">Beheerder</option>
+            </select>
+-->
         </div>
-
 
         <div id="required">
             <div class="form-group">
@@ -44,10 +53,18 @@
                 <input id="input-lastName" type="text" name="lastName" class="form-control"
                        data-ng-model="basicInfo.lastName" title="Achternaam" required>
             </div>
+            <div class="form-group">
+                <label for="select-sex">Gelsacht</label>
+                <select id="select-sex" class="form-control" data-ng-model="basicInfo.sex" title="Geslacht"
+                        required>
+                    <option value="MALE">Man</option>
+                    <option value="FEMALE">Vrouw</option>
+                </select>
+            </div>
         </div>
 
 
-        <div id="studentInfo" ng-if="basicInfo.type == 'STUDENT'" data-ng-include="'views/panels/student_info.html'"></div>
+        <div id="studentInfo" ng-if="basicInfo.role == 'STUDENT'" data-ng-include="'views/panels/student_info.html'"></div>
 
 
         <button type="submit" class="btn btn-success btn-lg btn-block">

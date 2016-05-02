@@ -1,25 +1,21 @@
-app.controller('LogInController', function ($scope, $http) {
+app.controller('LogInController', function ($scope, $http, $base64, $cookies) {
     // TODO finish controller
     $scope.formData = {};
-
+    $cookies.put('auth', "");
+    $cookies.putObject('user', null);
     $scope.submitForm = function () {
-        $http.get('http://localhost:8080/account/email/' + $scope.formData.email + '/').success(function (response) {
-            // console.log(response.userEntity);
+        var auth = $scope.formData.email + ":" + $scope.formData.password;
+        auth = $base64.encode(auth);
 
-            if (response.userEntity.password !== $scope.formData.password)
-                showAlert(AlertType.DANGER, 'Ongeldig e-mailadres/wachtwoord.', 'Het ingegeven e-mailadres en wachtwoord komen niet overeen.', true);
-            else
-                $scope.account.user = response.userEntity;
+        $http({
+            method: 'GET', url: 'http://localhost:8080/auth',
+            headers: {'X-auth': auth }
+        }).success(function (response) {
+            $cookies.put('auth', auth);
+            $cookies.putObject('user', response);
+        }).error(function (response, code){
+            showAlert(AlertType.DANGER, 'Ongeldig e-mailadres/wachtwoord.', 'Het ingegeven e-mailadres en wachtwoord komen niet overeen.', true);
         });
-
-        // $http.get('http://localhost:8080/account/email/' + $scope.formData.email + '/').success(function (response) {
-        //     // console.log(response.userEntity);
-        //
-        //     if (response.userEntity.password !== $scope.formData.password)
-        //         showAlert(AlertType.DANGER, 'Ongeldig e-mailadres/wachtwoord.', 'Het ingegeven e-mailadres en wachtwoord komen niet overeen.', true);
-        //     else
-        //         $scope.account.user = response.userEntity;
-        // });
-
     };
+
 });

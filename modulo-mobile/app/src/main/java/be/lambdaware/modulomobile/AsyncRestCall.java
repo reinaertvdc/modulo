@@ -39,7 +39,6 @@ public class AsyncRestCall extends AsyncTask<String,Void,String> {
 
         try {
             URL url = new URL(webAddress);
-            httpConnection =(HttpURLConnection) url.openConnection();
             httpConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(httpConnection.getInputStream());
 

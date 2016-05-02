@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="debf30ce0a7560396b6235edef77e447006454c2">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-23.3.0_5670e2e61a070f2156b5278c6d54accb7c27078c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.3.0_13389bfaf1cadf242344391a56385881c895af91/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.3.0_dd05c110623c03c4e06726dcbb35bbe90800f7c7/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/design/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f0001e71cea6ae432a00021c6f727f5ef0f3d27e">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-23.3.0_b6ca96b03d1068f44e7117cb5746314c538de185/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.3.0_133383a000d5b645907e199ba5f0d58ab058aab4/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="fe7e7c88b5a84fdee22ae2be6af516ad563fe63d">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_53f65f493fac8fa6e4523e95746b47cd12eba1f1/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="593af2d55d633d748890e72a6d6d65388c767df6">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_b457f2778065a13924a473bf1e12d34851ab8208/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.3.0_61c8f3c1f70bdac252b99509ad0d873c138094ac/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.3.0_e36c6151d7436514d49f630690d6cd68bd68cfbb/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.github.blackfizz/eazegraph/1.2.2/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="2584bbecc58c666b0e064ebce64f67a46bfa2aba">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.github.blackfizz-eazegraph-1.2.2_0b56e873997c2144fa6e6f67185671963e201646/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_d9fc43e7c1007fb20b8a0842c4c95b0d54fa379a/classes.dex" />
+    </item>
+    <item
+        jar="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="/Users/Hendrik/Projecten/se-2016-groep3/modulo-mobile/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.3.0_41f986cdbf65ea99aa15395fe5eedbd217dd5152/classes.dex" />
+    </item>
+
+</items>

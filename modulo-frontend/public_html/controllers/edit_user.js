@@ -1,4 +1,4 @@
-app.controller('EditUserController', function ($scope, $http, $uibModal) {
+app.controller('EditUserController', function ($scope, $http, $uibModal, $cookies) {
     var paramVal = $scope.location.getParameter($scope.location.PARAM_EDIT_USER_ID);
 
 
@@ -22,19 +22,21 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     $scope.basicInfo = {
         id: null,
-        type: 'TEACHER',
+        role: 'STUDENT',
         email: 'michiel@test.com',
         password: 'pass',
         firstName: 'Michiel',
-        lastName: 'Vanmunster'
+        lastName: 'Vanmunster',
+        sex: 'MALE'
     };
 
     $scope.parentStr = '';
 
 
     // USER TYPES
-    $scope.setUserType = function (type) {
-        $scope.basicInfo.type = type;
+    //TODO rename userRole
+    $scope.setUserType = function (role) {
+        $scope.basicInfo.role = role;
     };
 
 
@@ -72,10 +74,10 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     //PARENT SELECTION MODAL
     $scope.parents = [];
-    $http.get('http://localhost:8080/account/parents').success(function (response) {
+    $http.get('http://localhost:8080/user/role/PARENT', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            if($scope.basicInfo.id != item.userEntity.id)
-                $scope.parents.push(item.userEntity);
+            if($scope.basicInfo.id != item.id)
+                $scope.parents.push(item);
         });
     });
 
@@ -112,22 +114,16 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
     else if (paramVal) {
         $scope.btnText = 'Opslaan';
 
-        $http.get('http://localhost:8080/account/' + paramVal).success(function (response) {
-            $scope.basicInfo = response.userEntity;
+        $http.get('http://localhost:8080/user/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            $scope.basicInfo = response;
             $scope.panelCaption = 'Gebruiker bewerken: ' + $scope.basicInfo.firstName + ' ' + $scope.basicInfo.lastName;
 
-            if ($scope.basicInfo.type == "STUDENT") {
-                $http.get('http://localhost:8080/account/student/' + paramVal).success(function (response) {
-                    $scope.studentInfo = response.studentInfoEntity;
-                    $scope.selectedGrade = $scope.grades[$scope.studentInfo.gradeId].name;
-                    $scope.selectedCert = $scope.certificates[$scope.studentInfo.certificateId].name;
 
-                    if ($scope.studentInfo.parent)  // seperate get request is simpler in this case
-                        $http.get('http://localhost:8080/account/' + $scope.studentInfo.parent).success(function (response) {
-                            $scope.parentStr = response.userEntity.firstName + ' ' + response.userEntity.lastName;
-                        });
-                    else
-                        $scope.studentInfo.parent = null;
+            if ($scope.basicInfo.role == "STUDENT") {
+                $scope.studentInfo = response.studentInfo;
+
+                $http.get('http://localhost:8080/user/id/' + paramVal+'/parent', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $scope.parentStr = response.firstName + ' ' + response.lastName;
                 });
             }
         });
@@ -136,11 +132,12 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
 
     $scope.resetForm = function () {
         $scope.basicInfo.id = null;
-        $scope.basicInfo.type = 'TEACHER';
+        $scope.basicInfo.role = 'STUDENT'
         $scope.basicInfo.email = '';
         $scope.basicInfo.password = '';
         $scope.basicInfo.firstName = '';
         $scope.basicInfo.lastName = '';
+        $scope.basicInfo.sex = '';
         $scope.studentInfo.birthDate = '';
         $scope.studentInfo.birthPlace = '';
         $scope.studentInfo.nationality = '';
@@ -148,32 +145,31 @@ app.controller('EditUserController', function ($scope, $http, $uibModal) {
         $scope.studentInfo.houseNumber = '';
         $scope.studentInfo.city = '';
         $scope.studentInfo.postalCode = '';
-        $scope.studentInfo.phoneCell = '';
-        $scope.studentInfo.phoneParent = '';
+        $scope.studentInfo.phoneNumber = '';
+        $scope.studentInfo.emergencyNumber = '';
         $scope.studentInfo.bankAccount = '';
-        $scope.studentInfo.nationalId = '';
+        $scope.studentInfo.nationalIdentificationNumber = '';
         $scope.studentInfo.parent = null;
         $scope.parentStr = '';
     };
 
-
     $scope.submitForm = function () {
         var model;
-        if ($scope.basicInfo.type == 'STUDENT')
+        if ($scope.basicInfo.role == 'STUDENT')
             model = JSON.stringify({"userEntity": $scope.basicInfo, "studentInfoEntity": $scope.studentInfo});
         else
             model = JSON.stringify({"userEntity": $scope.basicInfo});
 
         if (paramVal == 'nieuw') {
-            $http.post('http://localhost:8080/account/' + $scope.basicInfo.type.toLocaleLowerCase(), model).success(function () {
-                $scope.location.openPage($scope.location.USER_MANAGEMENT);
-                $scope.location.setParameter($scope.location.USER_MANAGEMENT_EDIT, 'Gebruiker toegevoegd.');
+            $http.post('http://localhost:8080/account/' + $scope.basicInfo.role.toLocaleLowerCase(), model).success(function () {
+                alert('Nieuwe gebruiker aangemaakt.');
                 $scope.resetForm();
             });
         } else if (paramVal) {
-            $http.put('http://localhost:8080/account/' + $scope.basicInfo.type.toLocaleLowerCase(), model).success(function () {
-                $scope.location.openPage($scope.location.USER_MANAGEMENT);
-                $scope.location.setParameter($scope.location.USER_MANAGEMENT_EDIT, 'Gebruiker bewerkt.');
+            console.log($scope.basicInfo.id);
+
+            $http.put('http://localhost:8080/account/' + $scope.basicInfo.role.toLocaleLowerCase(), model).success(function () {
+                alert('Gebruiker geüpdatet.');
                 $scope.resetForm();
             });
         }

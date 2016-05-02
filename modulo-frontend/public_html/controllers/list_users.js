@@ -1,4 +1,4 @@
-app.controller('ListUsersController', function ($scope, $http, $window, $compile, $uibModal) {
+app.controller('ListUsersController', function ($scope, $http, $window, $compile, $uibModal, $cookies) {
     // TODO finish controller
     const USER_LIST_ITEM_PREFIX = 'user-list-item-';
     const USER_LIST_ELEMENT = document.getElementById('table-user-list-body');
@@ -64,15 +64,16 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         // {
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
+
             '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.userTypes[user.type] + '</td>' +
-            '<td ng-click="openStatusModal('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
+            '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>' +
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
-        if($scope.account.user.id === user.id)
-        {
+        if ($cookies.get("user").id === user.id) {
             html += '<td><span class="glyphicon glyphicon-remove"></span></td></tr>';
-        }else {
+        } else {
             html += '<td class="text-danger" ng-click="openRemoveModal(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td></tr>';
         }
+
 
         var element = document.createElement('tr');
         USER_LIST_ELEMENT.appendChild(element);
@@ -80,26 +81,37 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         // }
     };
 
-    $scope.getClass = function(id){
+    $scope.getClass = function (id) {
         var user = $scope.users.get(id);
-        if(!angular.isUndefined(user) && !user.enabled)
+        if (!angular.isUndefined(user) && !user.enabled)
             return "glyphicon glyphicon-remove-circle text-danger";
         else
             return "glyphicon glyphicon-ok-circle text-success";
     };
 
-    $scope.swapEnabled = function(id){
+    $scope.swapEnabled = function (id) {
         var user = $scope.users.get(id);
-        user.enabled = !user.enabled;
-        var userModel = JSON.stringify({"userEntity":user});
-        $http.put('http://localhost:8080/account', userModel).success(function (response) {
-            $scope.users.set(id, response.userEntity);
+
+        var enabledOrDisabled = "";
+        if (!user.enabled)
+            enabledOrDisabled = "enable";
+        else
+            enabledOrDisabled = "disable";
+        console.log("Auth: " + $cookies.get("auth"));
+
+        $http({
+            method: 'PUT', url: 'http://localhost:8080/user/id/' + user.id + '/' + enabledOrDisabled,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            user.enabled = !user.enabled;
         });
     };
 
     $scope.removeUserBackend = function (id) {
-        $scope.removeUserFrontend(id);
-        $http.delete('http://localhost:8080/account/' + id);
+
+        $http.delete('http://localhost:8080/user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+            $scope.removeUserFrontend(id);
+        });
     };
 
     $scope.removeUserFrontend = function (id) {
@@ -114,8 +126,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             animation: true,
             templateUrl: 'views/panels/remove_modal.html',
             controller: 'RemoveModalInstanceCtrl',
-            resolve: {
-            }
+            resolve: {}
         });
         $scope.removeId = id;
         modalInstance.result.then(function () {
@@ -129,8 +140,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             animation: true,
             templateUrl: 'views/panels/user_status_modal.html',
             controller: 'StatusModalInstanceCtrl',
-            resolve: {
-            }
+            resolve: {}
         });
         $scope.swapId = id;
         modalInstance.result.then(function () {
@@ -144,9 +154,9 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $compile(USER_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/account/all').success(function (response) {
+    $http.get('http://localhost:8080/user/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            $scope.addUser(item.userEntity);
+            $scope.addUser(item);
         });
 
         $scope.originalUsers = new Map($scope.users);

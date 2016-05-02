@@ -541,7 +541,6 @@ public class UserController {
 
     @RequestMapping(value = "/id/{id}/enable", method = RequestMethod.PUT)
     public ResponseEntity<?> enabledCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
-
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
         } else if (!authentication.isAdmin()) {
@@ -561,7 +560,6 @@ public class UserController {
 
     @RequestMapping(value = "/id/{id}/disable", method = RequestMethod.PUT)
     public ResponseEntity<?> disableCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
-
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
         } else if (!authentication.isAdmin()) {

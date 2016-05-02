@@ -1,4 +1,4 @@
-app.controller('ListUsersController', function ($scope, $http, $window, $compile, $uibModal) {
+app.controller('ListUsersController', function ($scope, $http, $window, $compile, $uibModal, $cookies) {
     // TODO finish controller
     const USER_LIST_ITEM_PREFIX = 'user-list-item-';
     const USER_LIST_ELEMENT = document.getElementById('table-user-list-body');
@@ -62,7 +62,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         // {
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
-            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.type + '</td>' +
+            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + user.role + '</td>' +
             '<td ng-click="swapEnabled('+user.id+')"><span ng-class="getClass('+user.id+')"></span></td>'+
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
             '<td class="text-danger" ng-click="open(' + user.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
@@ -84,16 +84,25 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
     $scope.swapEnabled = function(id){
         var user = $scope.users.get(id);
-        user.enabled = !user.enabled;
-        var userModel = JSON.stringify({"userEntity":user});
-        $http.put('http://localhost:8080/account', userModel).success(function (response) {
-            $scope.users.set(id, response.userEntity);
+
+        var enabledOrDisabled = "";
+        if(!user.enabled)
+            enabledOrDisabled = "enable";
+        else
+            enabledOrDisabled = "disable";
+        console.log("Auth: " + $cookies.get("auth"));
+
+        $http({method: 'PUT', url: 'http://localhost:8080/user/id/'+user.id+'/'+enabledOrDisabled,
+            headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            user.enabled = !user.enabled;
         });
     }
 
     $scope.removeUserBackend = function (id) {
-        $scope.removeUserFrontend(id);
-        $http.delete('http://localhost:8080/account/' + id);
+
+        $http.delete('http://localhost:8080/user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function(response){
+            $scope.removeUserFrontend(id);
+        });
     };
 
     $scope.removeUserFrontend = function (id) {
@@ -123,9 +132,9 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $compile(USER_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/account/all').success(function (response) {
+    $http.get('http://localhost:8080/user/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            $scope.addUser(item.userEntity);
+            $scope.addUser(item);
         });
 
         $scope.originalUsers = new Map($scope.users);

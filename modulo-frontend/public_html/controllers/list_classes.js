@@ -1,4 +1,4 @@
-app.controller('ListClassesController', function ($scope , $http, $window, $compile) {
+app.controller('ListClassesController', function ($scope , $http, $window, $compile, $cookies) {
     // TODO implement controller
 
     const CLASS_LIST_ITEM_PREFIX = 'class-list-item-';
@@ -50,7 +50,7 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
         $compile(BGVCLASS_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/class/teacher/' + $scope.account.user.id).success(function (response) {
+    $http.get('http://localhost:8080/class/teacher/' + $cookies.get("user").id).success(function (response) {
         response.forEach(function (item) {
             $scope.addClass(item.classEntity)
         });

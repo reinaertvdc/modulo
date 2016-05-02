@@ -219,6 +219,7 @@ app.controller('MainController', function ($scope, $location) {
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang_studenten',
+        TASK_MANAGEMENT: 'takenbeheer',
 
         PARAM_EDIT_USER_ID: 'gebruiker',
 
@@ -244,6 +245,7 @@ app.controller('MainController', function ($scope, $location) {
                 || page === this.MY_CLASSES
                 || page === this.SCORES_MANAGEMENT
                 || page === this.STUDENT_PROGRESS
+                || page === this.TASK_MANAGEMENT
         },
 
         userCanAccessPage: function (page) {
@@ -267,6 +269,8 @@ app.controller('MainController', function ($scope, $location) {
                 return $scope.account.user.type === UserType.TEACHER
                     || $scope.account.user.type === UserType.STUDENT
                     || $scope.account.user.type === UserType.PARENT;
+            } else if (page === this.TASK_MANAGEMENT) {
+                return $scope.account.user.type === UserType.TEACHER;
             }
 
             return false;

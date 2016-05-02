@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -410,20 +411,9 @@ public class UserController {
     // POST methods
     // ===================================================================================
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        if (userDAO.findByEmail(user.getEmail()) != null) {
-            StringMessage message = new StringMessage(String.format("User with email=%s already exists.", user.getEmail()));
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        } else {
-            userDAO.save(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
-    }
-
     //TODO: example method to create a user with x-www-form-urlencoded parameters. Check http://stackoverflow.com/questions/11442632/how-can-i-post-data-as-form-data-instead-of-a-request-payload for angularjs impl.
-    @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
-    public ResponseEntity<?> createUserFromForm(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
+    @RequestMapping(value = "/admin", method = RequestMethod.POST)
+    public ResponseEntity<?> createAdmin(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
             return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
@@ -431,17 +421,118 @@ public class UserController {
             return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
-        String email = form.getFirst("email");
+        // extract formdata
+        String email = form.getFirst("email").toLowerCase();
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
         String password = form.getFirst("password");
         SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
         UserRole role = UserRole.ADMIN;
 
-        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-        userDAO.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        if(userDAO.findByEmail(email) != null)
+            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
+        else {
+            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+            userDAO.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+
     }
+
+    @RequestMapping(value = "/parent", method = RequestMethod.POST)
+    public ResponseEntity<?> createParent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        // extract formdata
+        String email = form.getFirst("email").toLowerCase();
+        String firstName = form.getFirst("firstName");
+        String lastName = form.getFirst("lastName");
+        String password = form.getFirst("password");
+        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        UserRole role = UserRole.PARENT;
+
+        if(userDAO.findByEmail(email) != null)
+            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
+        else {
+            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+            userDAO.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/teacher", method = RequestMethod.POST)
+    public ResponseEntity<?> createTeacher(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        // extract formdata
+        String email = form.getFirst("email").toLowerCase();
+        String firstName = form.getFirst("firstName");
+        String lastName = form.getFirst("lastName");
+        String password = form.getFirst("password");
+        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        UserRole role = UserRole.TEACHER;
+
+        if(userDAO.findByEmail(email) != null)
+            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
+        else {
+            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+            userDAO.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/student", method = RequestMethod.POST)
+    public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        // extract formdata for user
+        String email = form.getFirst("email").toLowerCase();
+        String firstName = form.getFirst("firstName");
+        String lastName = form.getFirst("lastName");
+        String password = form.getFirst("password");
+        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        UserRole role = UserRole.STUDENT;
+
+        // extract formdata for student
+        Date birthDate = Date.valueOf(form.getFirst("birthDate"));
+        String birthPlace = form.getFirst("birthPlace");
+        String nationality = form.getFirst("nationality");
+        String nationalIdentificationNumber = form.getFirst("nationalIdentificationNumber");
+        String street = form.getFirst("street");
+        String houseNumber = form.getFirst("houseNumber");
+        String postalCode = form.getFirst("postalCode");
+        String city = form.getFirst("city");
+        String phoneNumber = form.getFirst("phoneNumber");
+        String emergencyNumber = form.getFirst("emergencyNumber");
+        String bankAccount = form.getFirst("bankAccount");
+
+        if(userDAO.findByEmail(email) != null)
+            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
+        else {
+            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+            StudentInfo studentInfo = new StudentInfo(birthDate,birthPlace,nationality,nationalIdentificationNumber,street,houseNumber,postalCode,city,phoneNumber,emergencyNumber,bankAccount);
+            userDAO.save(user);
+            user.setStudentInfo(studentInfo);
+            studentInfoDAO.save(studentInfo);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+    }
+
 
     // ===================================================================================
     // PUT methods
@@ -536,12 +627,24 @@ public class UserController {
     // DELETE methods
     // ===================================================================================
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteUser(@PathVariable long id) {
-        authentication.checkLogin("test");
-        userDAO.delete(id);
-        StringMessage message = new StringMessage(String.format("User with id=%d deleted.", id));
-        return new ResponseEntity<>(message, HttpStatus.OK);
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        if(userDAO.exists(id)){
+            userDAO.delete(id);
+            StringMessage message = new StringMessage(String.format("User with id=%d deleted.", id));
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
 }

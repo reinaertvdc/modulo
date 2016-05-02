@@ -41,8 +41,8 @@ public class MobileTestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public StudentModel  get() {
-        StudentModel studentModel = new StudentModel(userDAO,studentInfoDAO);
+    public StudentModel get() {
+        StudentModel studentModel = new StudentModel(userDAO, studentInfoDAO);
         studentModel.getFromDB(11);
         return studentModel;
     }

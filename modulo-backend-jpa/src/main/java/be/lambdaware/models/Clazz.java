@@ -27,13 +27,13 @@ public class Clazz {
     @Column(nullable = false)
     private String name;
 
-    // ===================================================================================
-    // Relations
-    // ===================================================================================
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ClassType type;
+
+    // ===================================================================================
+    // Relations
+    // ===================================================================================
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id")
@@ -41,10 +41,12 @@ public class Clazz {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "certificate_id")
+    @JsonIgnore
     private Certificate certificate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grade_id")
+    @JsonIgnore
     private Grade grade;
 
     @ManyToMany(cascade = CascadeType.ALL)

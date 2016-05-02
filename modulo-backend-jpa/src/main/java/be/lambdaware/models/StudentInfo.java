@@ -82,9 +82,11 @@ public class StudentInfo {
     private Grade grade;
 
     @OneToMany(mappedBy = "studentInfo")
+    @JsonIgnore
     private List<BGVScore> bgvScores = new ArrayList<>();
 
     @OneToMany(mappedBy = "studentInfo")
+    @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 
     @ManyToMany(mappedBy = "students")

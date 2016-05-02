@@ -70,3 +70,18 @@ INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city
 INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (7, 'BE62539012137034', '1996-05-23', 'Heusden', 'Heusden', '3248851324', '112', '01234567891', 'belgisch', '32477123465', '3550', 'Katteveldstraat', null, null, 16);
 INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (8, 'BE62539012137034', '1995-04-22', 'Heusden', 'Heusden', '3248851324', '112', '01234567891', 'belgisch', '32477123465', '3550', 'Katteveldstraat', null, null, 17);
 INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (9, 'BE62539012137034', '1996-08-01', 'Heusden', 'Lummen', '3248851324', '23', '01234567891', 'belgisch', '32477123465', '3560', 'Achterweg', null, null, 19);
+
+-- Class
+INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (1, 'Metselaar 1', 'BGV', 1, null, 2);
+INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (2, 'Zorgkunde 1', 'BGV', 2, null, 4);
+
+-- User Class
+INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 6);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (2, 7);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 9);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 11);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (2, 13);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (2, 14);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 16);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 17);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 19);

@@ -211,7 +211,7 @@ public class User {
 
     public void setParent(User parent) {
         this.parent = parent;
-        if (!parent.getChildren().contains(this)) {
+        if (parent != null && !parent.getChildren().contains(this)) {
             parent.getChildren().add(this);
         }
     }

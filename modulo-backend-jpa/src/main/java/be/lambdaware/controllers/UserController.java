@@ -677,7 +677,17 @@ public class UserController {
             return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
-        if(userDAO.exists(id)){
+        User user = userDAO.findById(id);
+
+        if(user != null){
+            // Set children of parent to null.
+            if(user.getRole() == UserRole.PARENT) {
+                for(User child : user.getChildren()){
+                    child.setParent(null);
+                    userDAO.save(child);
+                }
+            }
+            // delete user
             userDAO.delete(id);
             StringMessage message = new StringMessage(String.format("User with id=%d deleted.", id));
             return new ResponseEntity<>(message, HttpStatus.OK);

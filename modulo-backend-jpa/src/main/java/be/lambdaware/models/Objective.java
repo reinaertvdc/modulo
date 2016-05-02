@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import javax.persistence.*;
@@ -104,7 +100,7 @@ public class Objective {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-        if(!grade.getObjectives().contains(this)) {
+        if (!grade.getObjectives().contains(this)) {
             grade.getObjectives().add(this);
         }
     }
@@ -115,7 +111,7 @@ public class Objective {
 
     public void setCourseTopic(CourseTopic courseTopic) {
         this.courseTopic = courseTopic;
-        if(!courseTopic.getObjectives().contains(this)){
+        if (!courseTopic.getObjectives().contains(this)) {
             courseTopic.addObjective(this);
         }
     }

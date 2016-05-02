@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -246,7 +242,7 @@ public class StudentInfo {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-        if(!grade.getStudents().contains(this)) {
+        if (!grade.getStudents().contains(this)) {
             grade.getStudents().add(this);
         }
     }

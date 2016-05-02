@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import be.lambdaware.enums.ClassType;
@@ -105,7 +101,7 @@ public class Clazz {
 
     public void setTeacher(User teacher) {
         this.teacher = teacher;
-        if (!teacher.getTeachedClasses().contains(this)) {
+        if (teacher != null && !teacher.getTeachedClasses().contains(this)) {
             teacher.getTeachedClasses().add(this);
         }
     }
@@ -116,7 +112,7 @@ public class Clazz {
 
     public void setCertificate(Certificate certificate) {
         this.certificate = certificate;
-        if (!certificate.getClasses().contains(this)) {
+        if (certificate != null && !certificate.getClasses().contains(this)) {
             certificate.getClasses().add(this);
         }
     }
@@ -127,7 +123,7 @@ public class Clazz {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-        if(!grade.getClasses().contains(this)){
+        if (grade != null && !grade.getClasses().contains(this)) {
             grade.getClasses().add(this);
         }
     }
@@ -142,7 +138,7 @@ public class Clazz {
 
     public void addStudent(User user) {
         this.students.add(user);
-        if(!user.getClasses().contains(this)){
+        if (!user.getClasses().contains(this)) {
             user.getClasses().add(this);
         }
     }

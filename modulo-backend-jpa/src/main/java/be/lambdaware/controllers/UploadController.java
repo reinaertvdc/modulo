@@ -1,10 +1,6 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.controllers;
 
-import be.lambdaware.response.ErrorMessages;
+import be.lambdaware.response.Responses;
 import be.lambdaware.response.StringMessage;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -19,7 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 /**
- * {@link UploadController} is the controller that is mapped to /auth and is used to verify credentials.
+ * {@link UploadController} is the controller that is mapped to "/upload" and is used to handle uploads.
  *
  * @author Hendrik Lievens - 1130921
  */
@@ -40,9 +36,13 @@ public class UploadController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> uploadFile(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestParam MultipartFile file) {
+
         if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+            return Responses.LOGIN_INVALID;
+        } else if (!authentication.isAdmin()) {
+            return Responses.UNAUTHORIZED;
         }
+
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();

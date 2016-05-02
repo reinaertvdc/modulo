@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import be.lambdaware.enums.SexType;

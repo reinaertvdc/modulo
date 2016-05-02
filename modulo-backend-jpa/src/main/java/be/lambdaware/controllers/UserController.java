@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.controllers;
 
 import be.lambdaware.dao.ClassDAO;
@@ -12,8 +8,7 @@ import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.Clazz;
 import be.lambdaware.models.StudentInfo;
 import be.lambdaware.models.User;
-import be.lambdaware.response.ErrorMessages;
-import be.lambdaware.response.StringMessage;
+import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link UserController} is the controller that is mapped to /user and handles all user related API calls.
+ * {@link UserController} is the controller that is mapped to "/user" and handles all user related API calls.
  *
  * @author Hendrik Lievens - 1130921
  */
@@ -47,7 +42,7 @@ public class UserController {
     @Autowired
     APIAuthentication authentication;
 
-    Logger log = Logger.getLogger(getClass());
+    private static Logger log = Logger.getLogger(UserController.class);
 
     // ===================================================================================
     // GET methods
@@ -58,29 +53,18 @@ public class UserController {
      *
      * @param auth a base64 encoding of "email:password" for authentication.
      * @return a {@link ResponseEntity} or {@link List<User>}.
-     * @url GET http://localhost:8080/user/all
-     * @desc Get all users.
-     * @header X-Auth: base64(email:password)
-     * @response 200 OK API Call successful.
-     * @response 403 Forbidden Not Logged in.
-     * @response 401 Unauthorized Not authorized.
      */
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<?> getAll(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> users = userDAO.findAll();
 
-        if (users.size() == 0) {
-            return StringMessage.asEntity("No users found.", HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+        if (users.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**
@@ -89,29 +73,18 @@ public class UserController {
      * @param auth a base64 encoding of "email:password" for authentication.
      * @param id   the user's id.
      * @return a {@link ResponseEntity} or {@link User}.
-     * @url GET http://localhost:8080/user/id/{:id}
-     * @desc Get a user by id.
-     * @header X-Auth: base64(email:password)
-     * @response 200 OK API Call successful.
-     * @response 403 Forbidden Not Logged in.
-     * @response 401 Unauthorized Not authorized.
      */
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        if (user == null) return Responses.USER_NOT_FOUND;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     /**
@@ -124,19 +97,14 @@ public class UserController {
     @RequestMapping(value = "/email/{email:.+}", method = RequestMethod.GET)
     public ResponseEntity<?> getByEmail(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable String email) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findByEmail(email);
 
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with email=%s found.", email), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        if (user == null) return Responses.USER_NOT_FOUND;
+        else return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     /**
@@ -149,19 +117,14 @@ public class UserController {
     @RequestMapping(value = "/firstname/{firstName}", method = RequestMethod.GET)
     public ResponseEntity<?> getAllByFirstName(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable String firstName) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> users = userDAO.findAllByFirstNameIgnoreCase(firstName);
 
-        if (users.size() == 0) {
-            return StringMessage.asEntity(String.format("No users with first name=%s found.", firstName), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+        if (users.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**
@@ -174,19 +137,14 @@ public class UserController {
     @RequestMapping(value = "/lastname/{lastName}", method = RequestMethod.GET)
     public ResponseEntity<?> getAllByLastName(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable String lastName) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> users = userDAO.findAllByLastNameIgnoreCase(lastName);
 
-        if (users.size() == 0) {
-            return StringMessage.asEntity(String.format("No users with last name=%s found.", lastName), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+        if (users.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**
@@ -199,19 +157,14 @@ public class UserController {
     @RequestMapping(value = "/role/{role}", method = RequestMethod.GET)
     public ResponseEntity<?> getAllByRole(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable UserRole role) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> users = userDAO.findAllByRole(role);
 
-        if (users.size() == 0) {
-            return StringMessage.asEntity(String.format("No users with role=%s found.", role), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+        if (users.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**
@@ -224,19 +177,14 @@ public class UserController {
     @RequestMapping(value = "/enabled/{enabled}", method = RequestMethod.GET)
     public ResponseEntity<?> getAllByEnabled(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable boolean enabled) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> users = userDAO.findAllByEnabled(enabled);
 
-        if (users.size() == 0) {
-            return StringMessage.asEntity(String.format("No users with enabled=%b found.", enabled), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
+        if (users.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**
@@ -249,20 +197,19 @@ public class UserController {
     @RequestMapping(value = "/id/{parentId}/children", method = RequestMethod.GET)
     public ResponseEntity<?> getAllByParent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long parentId) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User parent = userDAO.findById(parentId);
-        if (parent == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", parentId), HttpStatus.NOT_FOUND);
-        } else if (parent.getRole() != UserRole.PARENT) {
-            return StringMessage.asEntity(String.format("User with ID=%d is not a parent.", parentId), HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(userDAO.findAllByParent(parent), HttpStatus.OK);
-        }
+        User user = userDAO.findById(parentId);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.PARENT) return Responses.USER_NOT_PARENT;
+
+        List<User> users = user.getChildren();
+
+        if (users.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**
@@ -275,26 +222,19 @@ public class UserController {
     @RequestMapping(value = "/id/{childId}/parent", method = RequestMethod.GET)
     public ResponseEntity<?> getParentFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long childId) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User child = userDAO.findById(childId);
+        User user = userDAO.findById(childId);
 
-        if (child == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", childId), HttpStatus.NOT_FOUND);
-        } else if (child.getRole() != UserRole.STUDENT) {
-            return StringMessage.asEntity(String.format("User with ID=%d is not a student.", childId), HttpStatus.BAD_REQUEST);
-        } else {
-            User parent = child.getParent();
-            if (parent == null)
-                return StringMessage.asEntity(String.format("User with ID=%d has no parent assigned.", childId), HttpStatus.NOT_FOUND);
-            else
-                return new ResponseEntity<>(child.getParent(), HttpStatus.OK);
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
-        }
+        User parent = user.getParent();
+
+        if (parent == null) return Responses.USER_NOT_FOUND;
+        return new ResponseEntity<>(parent, HttpStatus.OK);
     }
 
     /**
@@ -307,21 +247,19 @@ public class UserController {
     @RequestMapping(value = "/id/{id}/info", method = RequestMethod.GET)
     public ResponseEntity<?> getStudentInfoFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable int id) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
-        } else if (user.getRole() != UserRole.STUDENT) {
-            return StringMessage.asEntity(String.format("User with ID=%d is not a student.", id), HttpStatus.BAD_REQUEST);
-        } else {
-            return new ResponseEntity<>(user.getStudentInfo(), HttpStatus.OK);
-        }
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.USER_NO_INFO;
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 
     /**
@@ -334,24 +272,19 @@ public class UserController {
     @RequestMapping(value = "/id/{id}/classes", method = RequestMethod.GET)
     public ResponseEntity<?> getClassesFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
-        } else if (user.getRole() != UserRole.STUDENT) {
-            return StringMessage.asEntity(String.format("User with ID=%d is not a student.", id), HttpStatus.BAD_REQUEST);
-        } else {
-            if (user.getClasses().size() == 0)
-                return StringMessage.asEntity(String.format("User with ID=%d is not enrolled in a class.", id), HttpStatus.NOT_FOUND);
-            else
-                return new ResponseEntity<>(user.getClasses(), HttpStatus.OK);
-        }
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        List<Clazz> classes = user.getClasses();
+
+        if (classes.size() == 0) return Responses.USER_NO_CLASSES;
+        return new ResponseEntity<>(classes, HttpStatus.OK);
     }
 
     /**
@@ -364,23 +297,19 @@ public class UserController {
     @RequestMapping(value = "/id/{id}/teaching", method = RequestMethod.GET)
     public ResponseEntity<?> getTeachedClassed(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
-        } else if (user.getRole() != UserRole.TEACHER) {
-            return StringMessage.asEntity(String.format("User with ID=%d is not a teacher.", id), HttpStatus.BAD_REQUEST);
-        } else {
-            if (user.getTeachedClasses().size() == 0)
-                return StringMessage.asEntity(String.format("User with ID=%d is not teaching any classes.", id), HttpStatus.NOT_FOUND);
-            else
-                return new ResponseEntity<>(user.getTeachedClasses(), HttpStatus.OK);
-        }
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
+
+        List<Clazz> classes = user.getTeachedClasses();
+
+        if (classes.size() == 0) return Responses.USER_NO_TEACHING;
+        return new ResponseEntity<>(classes, HttpStatus.OK);
     }
 
     /**
@@ -392,20 +321,17 @@ public class UserController {
      */
     @RequestMapping(value = "/search/{query}", method = RequestMethod.GET)
     public ResponseEntity<?> findUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable String query) {
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> records = new ArrayList<>();
         records.addAll(userDAO.findAllByFirstNameContainingIgnoreCase(query));
         records.addAll(userDAO.findAllByLastNameContainingIgnoreCase(query));
 
-        if (records.size() == 0)
-            return StringMessage.asEntity(String.format("No users matching query=%s found.", query), HttpStatus.NOT_FOUND);
-        else
-            return new ResponseEntity<>(records, HttpStatus.OK);
+        if (records.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(records, HttpStatus.OK);
     }
 
     // ===================================================================================
@@ -416,13 +342,10 @@ public class UserController {
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ResponseEntity<?> createAdmin(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        // extract formdata
         String email = form.getFirst("email").toLowerCase();
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
@@ -430,26 +353,20 @@ public class UserController {
         SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
         UserRole role = UserRole.ADMIN;
 
-        if(userDAO.findByEmail(email) != null)
-            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
-        else {
-            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-            userDAO.save(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
 
+        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+        userDAO.saveAndFlush(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/parent", method = RequestMethod.POST)
     public ResponseEntity<?> createParent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        // extract formdata
         String email = form.getFirst("email").toLowerCase();
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
@@ -457,25 +374,20 @@ public class UserController {
         SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
         UserRole role = UserRole.PARENT;
 
-        if(userDAO.findByEmail(email) != null)
-            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
-        else {
-            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-            userDAO.save(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+
+        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+        userDAO.saveAndFlush(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/teacher", method = RequestMethod.POST)
     public ResponseEntity<?> createTeacher(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        // extract formdata
         String email = form.getFirst("email").toLowerCase();
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
@@ -483,33 +395,27 @@ public class UserController {
         SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
         UserRole role = UserRole.TEACHER;
 
-        if(userDAO.findByEmail(email) != null)
-            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
-        else {
-            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-            userDAO.save(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+
+        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+        userDAO.saveAndFlush(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/student", method = RequestMethod.POST)
     public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        // extract formdata for user
+
         String email = form.getFirst("email").toLowerCase();
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
         String password = form.getFirst("password");
         SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
         UserRole role = UserRole.STUDENT;
-
-        // extract formdata for student
         Date birthDate = Date.valueOf(form.getFirst("birthDate"));
         String birthPlace = form.getFirst("birthPlace");
         String nationality = form.getFirst("nationality");
@@ -522,16 +428,14 @@ public class UserController {
         String emergencyNumber = form.getFirst("emergencyNumber");
         String bankAccount = form.getFirst("bankAccount");
 
-        if(userDAO.findByEmail(email) != null)
-            return StringMessage.asEntity(String.format("Could not create user. Email=%s already exists.", email), HttpStatus.BAD_REQUEST);
-        else {
-            User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-            StudentInfo studentInfo = new StudentInfo(birthDate,birthPlace,nationality,nationalIdentificationNumber,street,houseNumber,postalCode,city,phoneNumber,emergencyNumber,bankAccount);
-            userDAO.save(user);
-            user.setStudentInfo(studentInfo);
-            studentInfoDAO.save(studentInfo);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+
+        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+        StudentInfo studentInfo = new StudentInfo(birthDate, birthPlace, nationality, nationalIdentificationNumber, street, houseNumber, postalCode, city, phoneNumber, emergencyNumber, bankAccount);
+        userDAO.saveAndFlush(user);
+        user.setStudentInfo(studentInfo);
+        studentInfoDAO.saveAndFlush(studentInfo);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
@@ -540,41 +444,33 @@ public class UserController {
     // ===================================================================================
 
     @RequestMapping(value = "/id/{id}/enable", method = RequestMethod.PUT)
-    public ResponseEntity<?> enabledCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<?> enableUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
         User user = userDAO.findById(id);
 
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
-        } else {
-            user.setEnabled(true);
-            userDAO.save(user);
-            return StringMessage.asEntity(String.format("User with ID=%d is enabled.", id), HttpStatus.OK);
-        }
+        if (user == null) return Responses.USER_NOT_FOUND;
+
+        user.setEnabled(true);
+        userDAO.saveAndFlush(user);
+        return Responses.USER_ENABLED;
     }
 
     @RequestMapping(value = "/id/{id}/disable", method = RequestMethod.PUT)
-    public ResponseEntity<?> disableCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<?> disableUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
         User user = userDAO.findById(id);
 
-        if (user == null) {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
-        } else {
-            user.setEnabled(false);
-            userDAO.save(user);
-            return StringMessage.asEntity(String.format("User with ID=%d is disabled.", id), HttpStatus.OK);
-        }
+        if (user == null) return Responses.USER_NOT_FOUND;
+
+        user.setEnabled(false);
+        userDAO.saveAndFlush(user);
+        return Responses.USER_DISABLED;
     }
 
     // ===================================================================================
@@ -584,30 +480,38 @@ public class UserController {
     @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else if (!authentication.isAdmin()) {
-            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
-        if(user != null){
-            // Set children of parent to null.
-            if(user.getRole() == UserRole.PARENT) {
-                for(User child : user.getChildren()){
-                    child.setParent(null);
-                    userDAO.save(child);
-                }
+        if (user == null) return Responses.USER_NOT_FOUND;
+
+        if (user.getRole() == UserRole.PARENT) {
+            // unreference children when parent is deleted
+            for (User child : user.getChildren()) {
+                child.setParent(null);
+                userDAO.saveAndFlush(child);
             }
-            // delete user
-            userDAO.delete(id);
-            StringMessage message = new StringMessage(String.format("User with id=%d deleted.", id));
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } else {
-            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
+        }
+        if (user.getRole() == UserRole.STUDENT) {
+            // remove this student from the classes first
+            for (Clazz clazz : user.getClasses()) {
+                clazz.getStudents().remove(user);
+                classDAO.saveAndFlush(clazz);
+            }
+        }
+        if (user.getRole() == UserRole.TEACHER) {
+            // remove this teacher from the classes first
+            for (Clazz clazz : user.getTeachedClasses()) {
+                clazz.setTeacher(null);
+                classDAO.saveAndFlush(clazz);
+            }
         }
 
+        userDAO.delete(id);
+        return Responses.USER_DELETED;
 
     }
 

@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,8 +29,8 @@ public class CourseTopic {
     @OneToMany(mappedBy = "courseTopic")
     private List<Objective> objectives = new ArrayList<>();
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="course_topics_students", joinColumns=@JoinColumn(name="course_topic_id"), inverseJoinColumns=@JoinColumn(name="student_id"))
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "course_topics_students", joinColumns = @JoinColumn(name = "course_topic_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     @JsonIgnore
     private List<StudentInfo> students = new ArrayList<>();
 
@@ -82,7 +78,7 @@ public class CourseTopic {
 
     public void addObjective(Objective objective) {
         this.objectives.add(objective);
-        if(objective.getCourseTopic()!=this){
+        if (objective.getCourseTopic() != this) {
             objective.setCourseTopic(this);
         }
     }
@@ -97,7 +93,7 @@ public class CourseTopic {
 
     public void addStudent(StudentInfo student) {
         this.students.add(student);
-        if(!student.getCourseTopics().contains(this)){
+        if (!student.getCourseTopics().contains(this)) {
             student.getCourseTopics().add(this);
         }
     }

@@ -1,11 +1,6 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.controllers;
 
-import be.lambdaware.response.ErrorMessages;
-import be.lambdaware.response.StringMessage;
+import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +30,9 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> checkCredentials(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth) {
-        log.info("test");
-        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
-            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
-        } else {
-            return new ResponseEntity<>(authentication.getAuthenticatedUser(), HttpStatus.OK);
-        }
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        return new ResponseEntity<>(authentication.getAuthenticatedUser(), HttpStatus.OK);
     }
 }

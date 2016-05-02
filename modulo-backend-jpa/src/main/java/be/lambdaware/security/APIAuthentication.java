@@ -1,7 +1,3 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.security;
 
 import be.lambdaware.dao.UserDAO;
@@ -34,7 +30,7 @@ public class APIAuthentication {
         String hashedPassword = SHA512(password);
 
         User user = userDAO.findByEmail(email);
-        if ((user != null) && (user.getPassword().equals(hashedPassword))){
+        if ((user != null) && (user.getPassword().equals(hashedPassword))) {
             authenticatedUser = user;
             return true;
         } else
@@ -50,9 +46,9 @@ public class APIAuthentication {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < hash.length; i++) {
-            sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+        StringBuilder sb = new StringBuilder();
+        for (byte currentByte : hash) {
+            sb.append(Integer.toString((currentByte & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
     }
@@ -61,7 +57,15 @@ public class APIAuthentication {
         return authenticatedUser;
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return authenticatedUser.getRole() == UserRole.ADMIN;
+    }
+
+    public boolean isTeacher() {
+        return authenticatedUser.getRole() == UserRole.TEACHER;
+    }
+
+    public boolean isStudent() {
+        return authenticatedUser.getRole() == UserRole.STUDENT;
     }
 }

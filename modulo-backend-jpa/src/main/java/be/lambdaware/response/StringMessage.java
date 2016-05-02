@@ -1,16 +1,13 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.response;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 public class StringMessage {
 
-    public String message;
+    private static Logger log = Logger.getLogger(StringMessage.class);
+    private String message;
 
     public StringMessage(String message) {
         this.message = message;
@@ -18,6 +15,7 @@ public class StringMessage {
 
     public static ResponseEntity<?> asEntity(String message, HttpStatus status) {
         StringMessage stringMessage = new StringMessage(message);
+        log.info("Response: " + message);
         return new ResponseEntity<>(stringMessage, status);
     }
 

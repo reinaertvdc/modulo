@@ -1,12 +1,6 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,7 +37,7 @@ public class Competence {
     @JsonIgnore
     private SubCertificateCategory subCertificateCategory;
 
-    @OneToMany(mappedBy = "competence",orphanRemoval = true)
+    @OneToMany(mappedBy = "competence", orphanRemoval = true)
     private List<BGVScore> bgvScores = new ArrayList<>();
 
     // ===================================================================================

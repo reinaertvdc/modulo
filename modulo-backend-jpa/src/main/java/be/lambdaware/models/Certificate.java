@@ -1,13 +1,7 @@
-/*
- *  Created by Lambdaware as part of the course "Software Engineering" @ Hasselt University.
- */
-
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -106,7 +100,7 @@ public class Certificate {
 
     public void addSubCertificate(SubCertificate subCertificate) {
         this.subCertificates.add(subCertificate);
-        if(subCertificate.getCertificate() != this) {
+        if (subCertificate.getCertificate() != this) {
             subCertificate.setCertificate(this);
         }
     }
@@ -121,7 +115,7 @@ public class Certificate {
 
     public void addStudent(StudentInfo studentInfo) {
         this.students.add(studentInfo);
-        if(studentInfo.getCertificate() != this) {
+        if (studentInfo.getCertificate() != this) {
             studentInfo.setCertificate(this);
         }
     }
@@ -136,7 +130,7 @@ public class Certificate {
 
     public void addClass(Clazz clazz) {
         this.classes.add(clazz);
-        if(clazz.getCertificate() != this) {
+        if (clazz.getCertificate() != this) {
             clazz.setCertificate(this);
         }
     }

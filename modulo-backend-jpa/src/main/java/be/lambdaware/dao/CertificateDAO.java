@@ -14,4 +14,5 @@ import javax.transaction.Transactional;
 public interface CertificateDAO extends JpaRepository<Certificate, Long> {
 
 
+    Certificate findById(long id);
 }

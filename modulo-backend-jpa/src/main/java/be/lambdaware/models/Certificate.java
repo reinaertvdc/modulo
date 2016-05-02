@@ -6,6 +6,8 @@ package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ public class Certificate {
     // ===================================================================================
 
     @OneToMany(mappedBy = "certificate")
-    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SubCertificate> subCertificates = new ArrayList<>();
 
     @OneToMany(mappedBy = "certificate")
@@ -48,6 +50,7 @@ public class Certificate {
     private List<StudentInfo> students = new ArrayList<>();
 
     @OneToMany(mappedBy = "certificate")
+    @JsonIgnore
     private List<Clazz> classes = new ArrayList<>();
 
     // ===================================================================================

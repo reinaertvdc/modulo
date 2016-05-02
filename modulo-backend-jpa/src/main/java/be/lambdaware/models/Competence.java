@@ -4,6 +4,8 @@
 
 package be.lambdaware.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class Competence {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sub_certificate_category_id")
+    @JsonIgnore
     private SubCertificateCategory subCertificateCategory;
 
     @OneToMany(mappedBy = "competence")

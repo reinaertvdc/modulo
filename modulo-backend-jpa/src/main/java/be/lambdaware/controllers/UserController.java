@@ -539,6 +539,46 @@ public class UserController {
     // PUT methods
     // ===================================================================================
 
+    @RequestMapping(value = "/id/{id}/enable", method = RequestMethod.PUT)
+    public ResponseEntity<?> enabledCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userDAO.findById(id);
+
+        if (user == null) {
+            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
+        } else {
+            user.setEnabled(true);
+            userDAO.save(user);
+            return StringMessage.asEntity(String.format("User with ID=%d is enabled.", id), HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/id/{id}/disable", method = RequestMethod.PUT)
+    public ResponseEntity<?> disableCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+
+        if (auth.equals("empty") || !authentication.checkLogin(auth)) {
+            return StringMessage.asEntity(ErrorMessages.LOGIN_INVALID, HttpStatus.FORBIDDEN);
+        } else if (!authentication.isAdmin()) {
+            return StringMessage.asEntity(ErrorMessages.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userDAO.findById(id);
+
+        if (user == null) {
+            return StringMessage.asEntity(String.format("No user with ID=%d found.", id), HttpStatus.NOT_FOUND);
+        } else {
+            user.setEnabled(false);
+            userDAO.save(user);
+            return StringMessage.asEntity(String.format("User with ID=%d is disabled.", id), HttpStatus.OK);
+        }
+    }
+
     @RequestMapping(value = "/id/{id}/email/{email}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateEmail(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable String email) {
 

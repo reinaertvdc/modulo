@@ -4,6 +4,10 @@
 
 package be.lambdaware.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +40,11 @@ public class SubCertificateCategory {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sub_certificate_id")
+    @JsonIgnore
     private SubCertificate subCertificate;
 
     @OneToMany(mappedBy = "subCertificateCategory")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Competence> competences = new ArrayList<>();
 
     // ===================================================================================

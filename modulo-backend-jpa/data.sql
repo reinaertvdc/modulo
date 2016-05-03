@@ -79,6 +79,8 @@ INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city
 -- Class
 INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (1, 'Metselaar 1', 'BGV', 1, null, 2);
 INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (2, 'Zorgkunde 1', 'BGV', 2, null, 4);
+INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (3, 'PAV 1', 'PAV', null, 1, 3);
+INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (4, 'PAV 2', 'PAV', null, 2, 3);
 
 -- User Class
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 6);

@@ -41,6 +41,8 @@ public class Responses {
     private static final String gradeDisabled = "Grade successfully disabled.";
     private static final String gradeDeleted = "Grade successfully deleted.";
 
+    private static final String studentInfoNotFound = "The requested student info could not be found.";
+
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> UNAUTHORIZED = StringMessage.asEntity(unauthorized, HttpStatus.UNAUTHORIZED);
@@ -75,4 +77,6 @@ public class Responses {
     public static final ResponseEntity<?> GRADE_ENABLED = StringMessage.asEntity(gradeEnabled, HttpStatus.OK);
     public static final ResponseEntity<?> GRADE_DISABLED = StringMessage.asEntity(gradeDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> GRADE_DELETED = StringMessage.asEntity(gradeDeleted, HttpStatus.OK);
+
+    public static final ResponseEntity<?> STUDENT_INFO_NOT_FOUND = StringMessage.asEntity(studentInfoNotFound,HttpStatus.NOT_FOUND);
 }

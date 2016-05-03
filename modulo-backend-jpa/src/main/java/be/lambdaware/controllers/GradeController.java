@@ -4,10 +4,7 @@ import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.models.Certificate;
-import be.lambdaware.models.Clazz;
-import be.lambdaware.models.Grade;
-import be.lambdaware.models.StudentInfo;
+import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -16,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -79,7 +77,7 @@ public class GradeController {
     }
 
     @RequestMapping(value = "/id/{id}/name", method = RequestMethod.GET)
-    public ResponseEntity<?> getNameFromCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getNameFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -92,7 +90,7 @@ public class GradeController {
     }
 
     @RequestMapping(value = "/id/{id}/enabled", method = RequestMethod.GET)
-    public ResponseEntity<?> getEnabledFromCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getEnabledFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -102,6 +100,45 @@ public class GradeController {
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
         return new ResponseEntity<>(grade.isEnabled(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/students", method = RequestMethod.GET)
+    public ResponseEntity<?> getStudentsFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+
+        Grade grade = gradeDAO.findById(id);
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        List<User> users = new ArrayList<>();
+
+        for(StudentInfo studentInfo : grade.getStudents())
+            users.add(studentInfo.getUser());
+
+        if (users.size()==0) return Responses.USERS_NOT_FOUND;
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/classes", method = RequestMethod.GET)
+    public ResponseEntity<?> getClassesFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+
+        Grade grade = gradeDAO.findById(id);
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        List<Clazz> classes = grade.getClasses();
+
+        if (classes.size()==0) return Responses.CLASSES_NOT_FOUND;
+
+        return new ResponseEntity<>(classes, HttpStatus.OK);
     }
 
     // ===================================================================================

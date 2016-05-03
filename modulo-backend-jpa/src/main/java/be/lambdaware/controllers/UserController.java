@@ -5,9 +5,7 @@ import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
-import be.lambdaware.models.Clazz;
-import be.lambdaware.models.StudentInfo;
-import be.lambdaware.models.User;
+import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -337,6 +335,52 @@ public class UserController {
 
         if (records.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(records, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/grade", method = RequestMethod.GET)
+    public ResponseEntity<?> getGradeFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        Grade grade = info.getGrade();
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        return new ResponseEntity<>(grade, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/certificate", method = RequestMethod.GET)
+    public ResponseEntity<?> getCertificateFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        Certificate certificate = info.getCertificate();
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        return new ResponseEntity<>(certificate, HttpStatus.OK);
     }
 
     // ===================================================================================

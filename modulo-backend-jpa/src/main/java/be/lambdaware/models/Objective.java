@@ -1,5 +1,7 @@
 package be.lambdaware.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +34,18 @@ public class Objective {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grade_id")
+    @JsonIgnore
     private Grade grade;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_topic_id")
+    @JsonIgnore
     private CourseTopic courseTopic;
 
 
     //TODO deleting a Grade will result in deletion of all objectives and also all the scores. Invasive action!
     @OneToMany(mappedBy = "objective",orphanRemoval = true)
+    @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 
     // ===================================================================================

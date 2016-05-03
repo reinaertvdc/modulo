@@ -99,7 +99,7 @@ public class PAVScore {
 
     public void setStudentInfo(StudentInfo studentInfo) {
         this.studentInfo = studentInfo;
-        if (!studentInfo.getPavScores().contains(this)) {
+        if (studentInfo != null && !studentInfo.getPavScores().contains(this)) {
             studentInfo.getPavScores().add(this);
         }
     }

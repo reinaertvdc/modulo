@@ -98,7 +98,7 @@ public class BGVScore {
 
     public void setCompetence(Competence competence) {
         this.competence = competence;
-        if (!competence.getBgvScores().contains(this)) {
+        if (competence != null && !competence.getBgvScores().contains(this)) {
             competence.getBgvScores().add(this);
         }
     }
@@ -109,7 +109,7 @@ public class BGVScore {
 
     public void setStudentInfo(StudentInfo studentInfo) {
         this.studentInfo = studentInfo;
-        if (!studentInfo.getBgvScores().contains(this)) {
+        if (studentInfo != null && !studentInfo.getBgvScores().contains(this)) {
             studentInfo.getBgvScores().add(this);
         }
     }

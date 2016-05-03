@@ -220,7 +220,7 @@ public class StudentInfo {
 
     public void setUser(User user) {
         this.user = user;
-        if (user.getStudentInfo() != this) {
+        if (user != null && user.getStudentInfo() != this) {
             user.setStudentInfo(this);
         }
     }
@@ -242,7 +242,7 @@ public class StudentInfo {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-        if (!grade.getStudents().contains(this)) {
+        if (grade != null && !grade.getStudents().contains(this)) {
             grade.getStudents().add(this);
         }
     }

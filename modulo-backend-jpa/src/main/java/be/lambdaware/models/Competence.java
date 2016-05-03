@@ -98,7 +98,7 @@ public class Competence {
 
     public void setSubCertificateCategory(SubCertificateCategory subCertificateCategory) {
         this.subCertificateCategory = subCertificateCategory;
-        if (!subCertificateCategory.getCompetences().contains(this)) {
+        if (subCertificateCategory != null && !subCertificateCategory.getCompetences().contains(this)) {
             subCertificateCategory.getCompetences().add(this);
         }
     }
@@ -113,7 +113,7 @@ public class Competence {
 
     public void addBgvScore(BGVScore bgvScore) {
         this.bgvScores.add(bgvScore);
-        if (bgvScore.getCompetence() != this) {
+        if (bgvScore != null && bgvScore.getCompetence() != this) {
             bgvScore.setCompetence(this);
         }
     }

@@ -115,7 +115,7 @@ public class Certificate {
 
     public void addStudent(StudentInfo studentInfo) {
         this.students.add(studentInfo);
-        if (studentInfo.getCertificate() != this) {
+        if (studentInfo != null && studentInfo.getCertificate() != this) {
             studentInfo.setCertificate(this);
         }
     }

@@ -78,7 +78,7 @@ public class CourseTopic {
 
     public void addObjective(Objective objective) {
         this.objectives.add(objective);
-        if (objective.getCourseTopic() != this) {
+        if (objective != null && objective.getCourseTopic() != this) {
             objective.setCourseTopic(this);
         }
     }

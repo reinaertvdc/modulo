@@ -98,7 +98,7 @@ public class SubCertificateCategory {
 
     public void setSubCertificate(SubCertificate subCertificate) {
         this.subCertificate = subCertificate;
-        if (!subCertificate.getSubCertificateCategories().contains(this)) {
+        if (subCertificate!=null && !subCertificate.getSubCertificateCategories().contains(this)) {
             subCertificate.getSubCertificateCategories().add(this);
         }
     }

@@ -148,6 +148,7 @@ public class ClassController {
             clazz.getStudents().add(user);
             classDAO.saveAndFlush(clazz);
         }
+
         return Responses.CLASS_ADDED_STUDENT;
     }
 
@@ -163,7 +164,7 @@ public class ClassController {
         User teacher = userDAO.findById(teacherId);
 
         if (teacher == null) return Responses.USER_NOT_FOUND;
-        if (teacher.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+        if (teacher.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
 
         clazz.setTeacher(teacher);
         classDAO.saveAndFlush(clazz);

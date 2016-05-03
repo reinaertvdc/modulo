@@ -298,11 +298,11 @@ public class UserController {
      * @return a {@link ResponseEntity} or {@link List<Clazz>}.
      */
     @RequestMapping(value = "/id/{id}/teaching", method = RequestMethod.GET)
-    public ResponseEntity<?> getTeachedClassed(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getTeachedClasses(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 

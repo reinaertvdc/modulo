@@ -41,6 +41,19 @@ public class CertificateController {
         return new ResponseEntity<>(certificates, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/enabled/{enabled}", method = RequestMethod.GET)
+    public ResponseEntity<?> getAllByEnabled(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable boolean enabled) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        List<Certificate> certificates = certificateDAO.findAllByEnabled(enabled);
+
+        if (certificates.size() == 0) return Responses.USERS_NOT_FOUND;
+        return new ResponseEntity<>(certificates, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 

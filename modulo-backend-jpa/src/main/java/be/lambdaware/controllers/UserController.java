@@ -452,38 +452,40 @@ public class UserController {
     }
 
     @RequestMapping(value = "/student", method = RequestMethod.POST)
-    public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
+    public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User user) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-
-        String email = form.getFirst("email").toLowerCase();
-        String firstName = form.getFirst("firstName");
-        String lastName = form.getFirst("lastName");
-        String password = form.getFirst("password");
-        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
-        UserRole role = UserRole.STUDENT;
-        Date birthDate = Date.valueOf(form.getFirst("birthDate"));
-        String birthPlace = form.getFirst("birthPlace");
-        String nationality = form.getFirst("nationality");
-        String nationalIdentificationNumber = form.getFirst("nationalIdentificationNumber");
-        String street = form.getFirst("street");
-        String houseNumber = form.getFirst("houseNumber");
-        String postalCode = form.getFirst("postalCode");
-        String city = form.getFirst("city");
-        String phoneNumber = form.getFirst("phoneNumber");
-        String emergencyNumber = form.getFirst("emergencyNumber");
-        String bankAccount = form.getFirst("bankAccount");
-
-        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
-
-        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-        StudentInfo studentInfo = new StudentInfo(birthDate, birthPlace, nationality, nationalIdentificationNumber, street, houseNumber, postalCode, city, phoneNumber, emergencyNumber, bankAccount);
         userDAO.saveAndFlush(user);
-        user.setStudentInfo(studentInfo);
-        studentInfoDAO.saveAndFlush(studentInfo);
+
+
+//        String email = form.getFirst("email").toLowerCase();
+//        String firstName = form.getFirst("firstName");
+//        String lastName = form.getFirst("lastName");
+//        String password = form.getFirst("password");
+//        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
+//        UserRole role = UserRole.STUDENT;
+//        Date birthDate = Date.valueOf(form.getFirst("birthDate"));
+//        String birthPlace = form.getFirst("birthPlace");
+//        String nationality = form.getFirst("nationality");
+//        String nationalIdentificationNumber = form.getFirst("nationalIdentificationNumber");
+//        String street = form.getFirst("street");
+//        String houseNumber = form.getFirst("houseNumber");
+//        String postalCode = form.getFirst("postalCode");
+//        String city = form.getFirst("city");
+//        String phoneNumber = form.getFirst("phoneNumber");
+//        String emergencyNumber = form.getFirst("emergencyNumber");
+//        String bankAccount = form.getFirst("bankAccount");
+//
+//        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+//
+//        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
+//        StudentInfo studentInfo = new StudentInfo(birthDate, birthPlace, nationality, nationalIdentificationNumber, street, houseNumber, postalCode, city, phoneNumber, emergencyNumber, bankAccount);
+//        userDAO.saveAndFlush(user);
+//        user.setStudentInfo(studentInfo);
+//        studentInfoDAO.saveAndFlush(studentInfo);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -539,7 +541,7 @@ public class UserController {
             user.setPassword(authentication.SHA512(user.getPassword()));
 
 
-        //TODO validate conversions
+        //TODO check conversions
         if (user.getRole() == UserRole.STUDENT) {
 
             StudentInfo studentInfo = user.getStudentInfo();

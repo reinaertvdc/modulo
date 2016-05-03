@@ -146,7 +146,10 @@ app.controller('MainController', function ($scope, $location, $cookies) {
         }
     };
 
-    $scope.userTypes = {"STUDENT": "Student", "TEACHER": "Leerkracht", "ADMIN": "Beheerder", "PARENT": "Ouder"};
-    $scope.userTypesKeys = Object.keys($scope.userTypes);
+    $scope.userRoles = {"STUDENT": "Student", "TEACHER": "Leerkracht", "ADMIN": "Beheerder", "PARENT": "Ouder"};
+    $scope.userRolesKeys = Object.keys($scope.userRoles);
+
+    $scope.userSexes = {"MALE": "Man", "FEMALE": "Vrouw"};
+    $scope.userSexesKeys = Object.keys($scope.userSexes);
 
 });

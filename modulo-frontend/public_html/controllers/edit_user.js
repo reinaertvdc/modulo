@@ -34,10 +34,14 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
 
 
     // USER TYPES
-    //TODO rename userRole
-    $scope.setUserType = function (role) {
+    $scope.setUserRole = function (role) {
         $scope.basicInfo.role = role;
     };
+
+    //SEX
+    $scope.setSex = function(sex){
+        $scope.basicInfo.sex = sex;
+    }
 
 
     // GRADES
@@ -46,6 +50,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         $scope.selectedGrade = grade.name;
         $scope.studentInfo.gradeId = grade.id;
     };
+
     $http.get('http://localhost:8080/grade/all').success(function (response) {
         response.forEach(function (item) {
             $scope.grades[item.gradeEntity.id] = item.gradeEntity;
@@ -62,9 +67,9 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         $scope.selectedCert = cert.name;
         $scope.studentInfo.certificateId = cert.id;
     };
-    $http.get('http://localhost:8080/certificate/allActive').success(function (response) {
+    $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            $scope.certificates[item.certificateEntity.id] = item.certificateEntity;
+            $scope.certificates[item.id] = item;
         });
         var firstKey = (Object.keys($scope.certificates)[0]);
         $scope.selectedCert = $scope.certificates[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)

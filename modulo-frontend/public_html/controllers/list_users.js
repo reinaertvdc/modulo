@@ -65,7 +65,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
 
-            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.userTypes[user.type] + '</td>' +
+            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.userRoles[user.role] + '</td>' +
             '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>' +
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
         if ($cookies.get("user").id === user.id) {
@@ -97,7 +97,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             enabledOrDisabled = "enable";
         else
             enabledOrDisabled = "disable";
-        console.log("Auth: " + $cookies.get("auth"));
 
         $http({
             method: 'PUT', url: 'http://localhost:8080/user/id/' + user.id + '/' + enabledOrDisabled,

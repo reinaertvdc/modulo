@@ -2,12 +2,12 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     // TODO finish controller
     $scope.account = {
         isLoggedIn: function () {
-            return $cookies.get("auth") !== "";
+            return  $cookies.get("auth") != null;
         },
 
         logOut: function () {
-            $cookies.putObject('user', null);
-            $cookies.put("auth", "");
+            $cookies.putObject('user', null, {'expires': new Date()});
+            $cookies.put("auth", null, {'expires': new Date()});
         }
     };
 
@@ -169,7 +169,6 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     };
 
     $scope.checkBackendConnectionLoop = function () {
-        console.log('test');
         $scope.checkBackendConnection();
         setTimeout(function() {
             if (!$scope.testedBackendConnectionSuccessfully) {

@@ -1,4 +1,4 @@
-app.controller('MainController', function ($scope, $location, $cookies) {
+app.controller('MainController', function ($scope, $location, $base64, $cookies, $http) {
     // TODO finish controller
     $scope.account = {
         isLoggedIn: function () {
@@ -31,7 +31,6 @@ app.controller('MainController', function ($scope, $location, $cookies) {
             return 'views/panels/list_classes.html';
         }
     };
-
 
     $scope.location = {
         HOME: 'startpagina',
@@ -146,10 +145,45 @@ app.controller('MainController', function ($scope, $location, $cookies) {
         }
     };
 
+    $scope.isConnectedToBackend = true;
+
+    $scope.testedBackendConnectionSuccessfully = false;
+
+    $scope.checkBackendConnection = function () {
+        var auth = 'ping:ping';
+        auth = $base64.encode(auth);
+        $http({
+            method: 'GET', url: 'http://localhost:8080/auth',
+            headers: {'X-auth': auth }
+        }).success(function (response) {
+            $scope.isConnectedToBackend = true;
+            $scope.testedBackendConnectionSuccessfully = true;
+        }).error(function (response, code) {
+            if (code > 0) {
+                $scope.isConnectedToBackend = true;
+                $scope.testedBackendConnectionSuccessfully = true;
+            } else {
+                $scope.isConnectedToBackend = false;
+            }
+        });
+    };
+
+    $scope.checkBackendConnectionLoop = function () {
+        console.log('test');
+        $scope.checkBackendConnection();
+        setTimeout(function() {
+            if (!$scope.testedBackendConnectionSuccessfully) {
+                $scope.isConnectedToBackend = false;
+                $scope.checkBackendConnectionLoop();
+            }
+        }, (3 * 1000));
+    };
+
+    $scope.checkBackendConnectionLoop();
+
     $scope.userRoles = {"STUDENT": "Student", "TEACHER": "Leerkracht", "ADMIN": "Beheerder", "PARENT": "Ouder"};
     $scope.userRolesKeys = Object.keys($scope.userRoles);
 
     $scope.userSexes = {"MALE": "Man", "FEMALE": "Vrouw"};
     $scope.userSexesKeys = Object.keys($scope.userSexes);
-
 });

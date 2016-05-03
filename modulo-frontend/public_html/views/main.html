@@ -25,6 +25,6 @@
     </div>
 </nav>
 
-<div id="main" class="container" data-ng-include="location.getUrlToPageToOpen()"></div>
+<div id="main" class="container" data-ng-include="isConnectedToBackend ? location.getUrlToPageToOpen() : 'views/pages/geen_verbinding.html'"></div>
 
 <br/>

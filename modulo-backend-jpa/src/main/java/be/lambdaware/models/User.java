@@ -196,7 +196,7 @@ public class User {
 
     public void setStudentInfo(StudentInfo studentInfo) {
         this.studentInfo = studentInfo;
-        if (studentInfo != null && studentInfo.getUser() != this) {
+        if (studentInfo.getUser() != this) {
             studentInfo.setUser(this);
         }
     }

@@ -1,7 +1,13 @@
 package be.lambdaware.controllers;
 
 import be.lambdaware.dao.CertificateDAO;
+import be.lambdaware.dao.ClassDAO;
+import be.lambdaware.dao.GradeDAO;
+import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.models.Certificate;
+import be.lambdaware.models.Clazz;
+import be.lambdaware.models.Grade;
+import be.lambdaware.models.StudentInfo;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -14,13 +20,18 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/certificate")
+@RequestMapping("/grade")
 @CrossOrigin
-public class CertificateController {
+public class GradeController {
 
-    private static Logger log = Logger.getLogger(CertificateController.class);
+    private static Logger log = Logger.getLogger(GradeController.class);
     @Autowired
-    CertificateDAO certificateDAO;
+    GradeDAO gradeDAO;
+    @Autowired
+    StudentInfoDAO studentInfoDAO;
+    @Autowired
+    ClassDAO classDAO;
+
     @Autowired
     APIAuthentication authentication;
 
@@ -34,11 +45,11 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        List<Certificate> certificates = certificateDAO.findAll();
+        List<Grade> grades = gradeDAO.findAll();
 
-        if (certificates.size() == 0) return Responses.CERTIFICATES_NOT_FOUND;
+        if (grades.size() == 0) return Responses.GRADES_NOT_FOUND;
 
-        return new ResponseEntity<>(certificates, HttpStatus.OK);
+        return new ResponseEntity<>(grades, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/enabled/{enabled}", method = RequestMethod.GET)
@@ -48,10 +59,10 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<Certificate> certificates = certificateDAO.findAllByEnabled(enabled);
+        List<Grade> grades = gradeDAO.findAllByEnabled(enabled);
 
-        if (certificates.size() == 0) return Responses.CERTIFICATES_NOT_FOUND;
-        return new ResponseEntity<>(certificates, HttpStatus.OK);
+        if (grades.size() == 0) return Responses.GRADES_NOT_FOUND;
+        return new ResponseEntity<>(grades, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -60,10 +71,10 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Grade grade = gradeDAO.findById(id);
 
-        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
-        return new ResponseEntity<>(certificate, HttpStatus.OK);
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+        return new ResponseEntity<>(grade, HttpStatus.OK);
 
     }
 
@@ -73,10 +84,11 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Certificate certificate = certificateDAO.findById(id);
 
-        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
-        return new ResponseEntity<>(certificate.getName(), HttpStatus.OK);
+        Grade grade = gradeDAO.findById(id);
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+        return new ResponseEntity<>(grade.getName(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/id/{id}/enabled", method = RequestMethod.GET)
@@ -85,10 +97,11 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Certificate certificate = certificateDAO.findById(id);
 
-        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
-        return new ResponseEntity<>(certificate.isEnabled(), HttpStatus.OK);
+        Grade grade = gradeDAO.findById(id);
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+        return new ResponseEntity<>(grade.isEnabled(), HttpStatus.OK);
     }
 
     // ===================================================================================
@@ -102,13 +115,13 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Grade grade = gradeDAO.findById(id);
 
-        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
 
-        certificate.setEnabled(true);
-        certificateDAO.saveAndFlush(certificate);
-        return Responses.CERTIFICATE_ENABLED;
+        grade.setEnabled(true);
+        gradeDAO.saveAndFlush(grade);
+        return Responses.GRADE_ENABLED;
     }
 
     @RequestMapping(value = "/id/{id}/disable", method = RequestMethod.PUT)
@@ -118,13 +131,13 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Grade grade = gradeDAO.findById(id);
 
-        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
 
-        certificate.setEnabled(false);
-        certificateDAO.saveAndFlush(certificate);
-        return Responses.CERTIFICATE_DISABLED;
+        grade.setEnabled(true);
+        gradeDAO.saveAndFlush(grade);
+        return Responses.GRADE_DISABLED;
     }
 
     // ===================================================================================
@@ -138,10 +151,24 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        if (!certificateDAO.exists(id)) return Responses.CERTIFICATE_NOT_FOUND;
+        Grade grade = gradeDAO.findById(id);
 
-        certificateDAO.delete(id);
-        return Responses.CERTIFICATE_DELETED;
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        // Remove grade from students, without deleting the student.
+        for(StudentInfo student : grade.getStudents()){
+            student.setGrade(null);
+            studentInfoDAO.saveAndFlush(student);
+        }
+
+        // Remove grade from classes, without deleting the classes.
+        for(Clazz clazz : grade.getClasses()){
+            clazz.setGrade(null);
+            classDAO.saveAndFlush(clazz);
+        }
+
+        gradeDAO.delete(id);
+        return Responses.GRADE_DELETED;
 
     }
 

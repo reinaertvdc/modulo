@@ -36,6 +36,10 @@ public class Responses {
     private static final String certificateDeleted = "Certificate successfully deleted.";
 
     private static final String gradeNotFound = "The requested grade could not be found.";
+    private static final String gradesNotFound = "The requested certificates could not be found.";
+    private static final String gradeEnabled = "Grade successfully enabled.";
+    private static final String gradeDisabled = "Grade successfully disabled.";
+    private static final String gradeDeleted = "Grade successfully deleted.";
 
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
@@ -46,7 +50,7 @@ public class Responses {
     public static final ResponseEntity<?> USER_NOT_PARENT = StringMessage.asEntity(userNotParent, HttpStatus.BAD_REQUEST);
     public static final ResponseEntity<?> USER_NOT_STUDENT = StringMessage.asEntity(userNotStudent, HttpStatus.BAD_REQUEST);
     public static final ResponseEntity<?> USER_NOT_TEACHER = StringMessage.asEntity(userNotTeacher, HttpStatus.BAD_REQUEST);
-    public static ResponseEntity<?> USER_NOT_ADMIN = StringMessage.asEntity(userNotAdmin, HttpStatus.BAD_REQUEST);
+    public static final ResponseEntity<?> USER_NOT_ADMIN = StringMessage.asEntity(userNotAdmin, HttpStatus.BAD_REQUEST);
     public static final ResponseEntity<?> USER_NO_INFO= StringMessage.asEntity(userNoInfo, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> USER_NO_CLASSES = StringMessage.asEntity(userNoClasses, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> USER_NO_TEACHING = StringMessage.asEntity(userNoTeaching, HttpStatus.NOT_FOUND);
@@ -62,9 +66,13 @@ public class Responses {
 
     public static final ResponseEntity<?> CERTIFICATE_NOT_FOUND = StringMessage.asEntity(certificateNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> CERTIFICATES_NOT_FOUND = StringMessage.asEntity(certificatesNotFound, HttpStatus.NOT_FOUND);
-    public static ResponseEntity<?> CERTIFICATE_ENABLED = StringMessage.asEntity(certificateEnabled, HttpStatus.OK);
+    public static final ResponseEntity<?> CERTIFICATE_ENABLED = StringMessage.asEntity(certificateEnabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DISABLED = StringMessage.asEntity(certificateDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DELETED = StringMessage.asEntity(certificateDeleted, HttpStatus.OK);
 
-    public static ResponseEntity<?> GRADE_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> GRADE_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> GRADES_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> GRADE_ENABLED = StringMessage.asEntity(gradeEnabled, HttpStatus.OK);
+    public static final ResponseEntity<?> GRADE_DISABLED = StringMessage.asEntity(gradeDisabled, HttpStatus.OK);
+    public static final ResponseEntity<?> GRADE_DELETED = StringMessage.asEntity(gradeDeleted, HttpStatus.OK);
 }

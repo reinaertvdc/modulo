@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public class StringMessage {
 
-    private static final Logger log = Logger.getLogger(StringMessage.class);
     private String message;
 
     private StringMessage(String message) {
@@ -15,7 +14,6 @@ public class StringMessage {
 
     public static ResponseEntity<?> asEntity(String message, HttpStatus status) {
         StringMessage stringMessage = new StringMessage(message);
-        log.info("Response: " + message);
         return new ResponseEntity<>(stringMessage, status);
     }
 

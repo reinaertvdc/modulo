@@ -93,3 +93,8 @@ INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 16);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 17);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 19);
 
+-- BGV scores
+INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (1, '2016-05-02', 'Goed gedaan', 'V', 1, 5);
+INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (2, '2016-05-02', 'Goed gedaan', 'V', 2, 5);
+INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (3, '2016-05-02', 'Dat kan beter', 'I', 3, 5);
+

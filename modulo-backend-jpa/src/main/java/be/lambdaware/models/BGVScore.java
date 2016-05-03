@@ -1,6 +1,8 @@
 package be.lambdaware.models;
 
 import be.lambdaware.enums.ScoreType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -38,6 +40,7 @@ public class BGVScore {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
+    @JsonIgnore
     private StudentInfo studentInfo;
 
     // ===================================================================================

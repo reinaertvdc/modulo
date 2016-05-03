@@ -1,7 +1,7 @@
 package be.lambdaware.enums;
 
 
-public enum SexType {
+public enum Sex {
     MALE,
     FEMALE,
 }

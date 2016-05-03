@@ -3,7 +3,7 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
-import be.lambdaware.enums.SexType;
+import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.Clazz;
 import be.lambdaware.models.StudentInfo;
@@ -350,7 +350,7 @@ public class UserController {
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
         String password = form.getFirst("password");
-        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.ADMIN;
 
         if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
@@ -371,7 +371,7 @@ public class UserController {
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
         String password = form.getFirst("password");
-        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.PARENT;
 
         if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
@@ -392,7 +392,7 @@ public class UserController {
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
         String password = form.getFirst("password");
-        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.TEACHER;
 
         if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
@@ -414,7 +414,7 @@ public class UserController {
         String firstName = form.getFirst("firstName");
         String lastName = form.getFirst("lastName");
         String password = form.getFirst("password");
-        SexType sex = form.getFirst("sex").equals("MALE") ? SexType.MALE : SexType.FEMALE;
+        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.STUDENT;
         Date birthDate = Date.valueOf(form.getFirst("birthDate"));
         String birthPlace = form.getFirst("birthPlace");

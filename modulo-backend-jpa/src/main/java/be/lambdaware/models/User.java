@@ -1,6 +1,6 @@
 package be.lambdaware.models;
 
-import be.lambdaware.enums.SexType;
+import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -39,7 +39,7 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private SexType sex;
+    private Sex sex;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -78,7 +78,7 @@ public class User {
     public User() {
     }
 
-    public User(String email, String password, String firstName, String lastName, SexType sex, UserRole role, boolean enabled) {
+    public User(String email, String password, String firstName, String lastName, Sex sex, UserRole role, boolean enabled) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -132,11 +132,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public SexType getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(SexType sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 

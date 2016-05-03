@@ -92,7 +92,7 @@ public class Grade {
 
     public void addStudent(StudentInfo studentInfo) {
         this.students.add(studentInfo);
-        if (studentInfo.getGrade() != this) {
+        if (studentInfo != null && studentInfo.getGrade() != this) {
             studentInfo.setGrade(this);
         }
     }
@@ -122,7 +122,7 @@ public class Grade {
 
     public void addObjective(Objective objective) {
         this.objectives.add(objective);
-        if (objective.getGrade() != this) {
+        if (objective != null && objective.getGrade() != this) {
             objective.setGrade(this);
         }
     }

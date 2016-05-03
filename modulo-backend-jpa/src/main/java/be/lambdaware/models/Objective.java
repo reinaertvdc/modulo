@@ -100,7 +100,7 @@ public class Objective {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-        if (!grade.getObjectives().contains(this)) {
+        if (grade != null && !grade.getObjectives().contains(this)) {
             grade.getObjectives().add(this);
         }
     }
@@ -126,7 +126,7 @@ public class Objective {
 
     public void addPavScore(PAVScore pavScore) {
         this.pavScores.add(pavScore);
-        if (pavScore.getObjective() != this) {
+        if (pavScore != null && pavScore.getObjective() != this) {
             pavScore.setObjective(this);
         }
     }

@@ -92,6 +92,15 @@ INSERT INTO public.classes_users (class_id, user_id) VALUES (2, 14);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 16);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 17);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 19);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (3, 6);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (3, 7);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (3, 9);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (3, 11);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (3, 13);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 14);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 16);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 17);
+INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 19);
 
 -- BGV scores
 INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (1, '2016-05-02', 'Goed gedaan', 'V', 1, 5);

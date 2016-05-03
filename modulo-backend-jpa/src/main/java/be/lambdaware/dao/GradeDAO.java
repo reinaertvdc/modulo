@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface GradeDAO extends JpaRepository<GradeDAO, Long> {
+public interface GradeDAO extends JpaRepository<Grade, Long> {
 
 
     Grade findById(long id);

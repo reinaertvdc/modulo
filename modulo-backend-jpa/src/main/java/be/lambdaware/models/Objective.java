@@ -39,7 +39,8 @@ public class Objective {
     private CourseTopic courseTopic;
 
 
-    @OneToMany(mappedBy = "objective")
+    //TODO deleting a Grade will result in deletion of all objectives and also all the scores. Invasive action!
+    @OneToMany(mappedBy = "objective",orphanRemoval = true)
     private List<PAVScore> pavScores = new ArrayList<>();
 
     // ===================================================================================

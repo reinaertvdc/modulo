@@ -69,12 +69,12 @@ public class StudentInfo {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "certificate_id")
-    @JsonManagedReference
+    @JsonIgnore
     private Certificate certificate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grade_id")
-    @JsonManagedReference
+    @JsonIgnore
     private Grade grade;
 
     @OneToMany(mappedBy = "studentInfo")

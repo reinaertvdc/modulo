@@ -253,10 +253,15 @@ public class UserController {
 
         User user = userDAO.findById(id);
 
+        log.info(user);
+
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
         StudentInfo info = user.getStudentInfo();
+
+        log.info(info);
+
 
         if (info == null) return Responses.USER_NO_INFO;
         return new ResponseEntity<>(info, HttpStatus.OK);

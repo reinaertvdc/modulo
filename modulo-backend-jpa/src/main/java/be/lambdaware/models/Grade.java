@@ -36,7 +36,7 @@ public class Grade {
     @OneToMany(mappedBy = "grade")
     private List<Clazz> classes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "grade")
+    @OneToMany(mappedBy = "grade",orphanRemoval = true)
     private List<Objective> objectives = new ArrayList<>();
 
     // ===================================================================================

@@ -6,6 +6,7 @@ import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.BGVScore;
+import be.lambdaware.models.PAVScore;
 import be.lambdaware.models.StudentInfo;
 import be.lambdaware.models.User;
 import be.lambdaware.response.Responses;
@@ -40,7 +41,7 @@ public class ScoreController {
     // GET methods
     // ===================================================================================
 
-    @RequestMapping(value = "/id/{userId}")
+    @RequestMapping(value = "/id/{userId}/bgv")
     public ResponseEntity<?> getAllBGVScoresFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
@@ -61,5 +62,28 @@ public class ScoreController {
         if (bgvScores.size() == 0) return Responses.BGV_SCORES_NOT_FOUND;
 
         return new ResponseEntity<>(bgvScores, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{userId}/pav")
+    public ResponseEntity<?> getAllPAVScoresFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(userId);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        List<PAVScore> pavScores = info.getPavScores();
+
+        if (pavScores.size() == 0) return Responses.BGV_SCORES_NOT_FOUND;
+
+        return new ResponseEntity<>(pavScores, HttpStatus.OK);
     }
 }

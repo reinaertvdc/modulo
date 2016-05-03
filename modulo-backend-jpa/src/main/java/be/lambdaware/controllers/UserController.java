@@ -521,7 +521,7 @@ public class UserController {
         userDAO.saveAndFlush(user);
         return Responses.USER_DISABLED;
     }
-    
+
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @RequestBody User user) {
@@ -532,11 +532,75 @@ public class UserController {
 
         User dataBaseUser = userDAO.findById(user.getId());
 
-        if(user.getPassword()==null || user.getPassword().equals(""))
+        // Compare if a new password was set, if not, set the old password.
+        if (user.getPassword() == null || user.getPassword().equals(""))
             user.setPassword(dataBaseUser.getPassword());
         else
             user.setPassword(authentication.SHA512(user.getPassword()));
 
+
+        //TODO validate conversions
+        if (user.getRole() == UserRole.STUDENT) {
+
+            StudentInfo studentInfo = user.getStudentInfo();
+            // setId(0) to identify that we need a new object.
+            studentInfo.setId(0);
+            studentInfoDAO.saveAndFlush(studentInfo);
+            if (dataBaseUser.getRole() == UserRole.PARENT) {
+                for (User child : dataBaseUser.getChildren()) {
+                    child.setParent(null);
+                    userDAO.saveAndFlush(child);
+                }
+            }
+            else if (dataBaseUser.getRole() == UserRole.ADMIN) {
+                // nothing specific
+            }
+            else if (dataBaseUser.getRole() == UserRole.TEACHER) {
+                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
+                    clazz.setTeacher(null);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
+        } else if (user.getRole() == UserRole.PARENT) {
+            if (dataBaseUser.getRole() == UserRole.STUDENT) {
+                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
+                user.setParent(null);
+            } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
+                // nothing
+            } else if (dataBaseUser.getRole() == UserRole.TEACHER) {
+                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
+                    clazz.setTeacher(null);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
+        } else if (user.getRole() == UserRole.ADMIN) {
+            if (dataBaseUser.getRole() == UserRole.STUDENT) {
+                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
+                user.setParent(null);
+            } else if (dataBaseUser.getRole() == UserRole.PARENT) {
+                for (User child : dataBaseUser.getChildren()) {
+                    child.setParent(null);
+                    userDAO.saveAndFlush(child);
+                }
+            } else if (dataBaseUser.getRole() == UserRole.TEACHER) {
+                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
+                    clazz.setTeacher(null);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
+        } else if (user.getRole() == UserRole.TEACHER) {
+            if (dataBaseUser.getRole() == UserRole.STUDENT) {
+                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
+                user.setParent(null);
+            } else if (dataBaseUser.getRole() == UserRole.PARENT) {
+                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
+                    clazz.setTeacher(null);
+                    classDAO.saveAndFlush(clazz);
+                }
+            } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
+                //nothing
+            }
+        }
 
         userDAO.saveAndFlush(user);
 

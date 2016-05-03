@@ -187,21 +187,22 @@ public class CertificateController {
 
         Certificate certificate = certificateDAO.findById(id);
 
-        if (certificate == null) return Responses.GRADE_NOT_FOUND;
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
         // Remove grade from students, without deleting the student.
         for(StudentInfo student : certificate.getStudents()){
-            student.setGrade(null);
+            student.setCertificate(null);
             studentInfoDAO.saveAndFlush(student);
         }
 
         // Remove grade from classes, without deleting the classes.
         for(Clazz clazz : certificate.getClasses()){
-            clazz.setGrade(null);
+            clazz.setCertificate(null);
             classDAO.saveAndFlush(clazz);
         }
 
         certificateDAO.delete(id);
+        //TODO change in CERTIFICATE_DELETED
         return Responses.GRADE_DELETED;
 
     }

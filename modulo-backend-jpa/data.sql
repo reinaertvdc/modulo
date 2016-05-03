@@ -98,3 +98,14 @@ INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, s
 INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (2, '2016-05-02', 'Goed gedaan', 'V', 2, 5);
 INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (3, '2016-05-02', 'Dat kan beter', 'I', 3, 5);
 
+-- Objectives
+INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (1, null, true, 'Doelstelling 1', null, 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (2, null, true, 'Doelstelling 2', null, 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (3, null, true, 'Doelstelling 3', null, 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (4, null, true, 'Doelstelling A', null, 2);
+INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (5, null, true, 'Doelstelling B', null, 2);
+INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (6, null, true, 'Doelstelling C', null, 2);
+
+-- Scores
+INSERT INTO public.pav_scores (id, graded_date, remarks, score, objective_id, student_id) VALUES (1, '2016-05-02', 'Helemaal Oke', 'V', 1, 1);
+INSERT INTO public.pav_scores (id, graded_date, remarks, score, objective_id, student_id) VALUES (2, '2016-05-03', 'Goed gemaakt', 'V', 4, 2);

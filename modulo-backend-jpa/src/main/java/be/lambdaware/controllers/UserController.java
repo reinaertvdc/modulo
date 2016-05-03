@@ -3,6 +3,7 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
+import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
@@ -313,6 +314,31 @@ public class UserController {
 
         if (classes.size() == 0) return Responses.USER_NO_TEACHING;
         return new ResponseEntity<>(classes, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/id/{id}/teaching/type/{type}", method = RequestMethod.GET)
+    public ResponseEntity<?> getTeachedClassesType(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable ClassType type) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
+
+        List<Clazz> classes = user.getTeachedClasses();
+        if (classes.size() == 0) return Responses.USER_NO_TEACHING;
+
+        List<Clazz> typeClasses = new ArrayList<Clazz>();
+        for(Clazz clazz : classes) {
+            if(clazz.getType() == type)
+                typeClasses.add(clazz);
+        }
+
+        return new ResponseEntity<>(typeClasses, HttpStatus.OK);
     }
 
     /**

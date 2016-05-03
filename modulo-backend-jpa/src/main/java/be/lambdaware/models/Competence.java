@@ -39,6 +39,7 @@ public class Competence {
 
     //TODO deleting a Certificate will result in deletion of all competences and also all the scores. Invasive action!
     @OneToMany(mappedBy = "competence", orphanRemoval = true)
+    @JsonIgnore
     private List<BGVScore> bgvScores = new ArrayList<>();
 
     // ===================================================================================

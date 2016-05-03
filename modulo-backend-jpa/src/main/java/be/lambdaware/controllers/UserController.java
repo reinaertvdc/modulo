@@ -338,7 +338,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/id/{id}/grade", method = RequestMethod.GET)
-    public ResponseEntity<?> getGradeFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> getGradeFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -361,7 +361,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/id/{id}/certificate", method = RequestMethod.GET)
-    public ResponseEntity<?> getCertificateFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,@PathVariable long id) {
+    public ResponseEntity<?> getCertificateFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -520,6 +520,27 @@ public class UserController {
         user.setEnabled(false);
         userDAO.saveAndFlush(user);
         return Responses.USER_DISABLED;
+    }
+    
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @RequestBody User user) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        User dataBaseUser = userDAO.findById(user.getId());
+
+        if(user.getPassword()==null || user.getPassword().equals(""))
+            user.setPassword(dataBaseUser.getPassword());
+        else
+            user.setPassword(authentication.SHA512(user.getPassword()));
+
+
+        userDAO.saveAndFlush(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     // ===================================================================================

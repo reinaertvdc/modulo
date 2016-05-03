@@ -1,7 +1,9 @@
 package be.lambdaware.controllers;
 
 import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.models.Certificate;
+import be.lambdaware.dao.ClassDAO;
+import be.lambdaware.dao.StudentInfoDAO;
+import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +24,11 @@ public class CertificateController {
     private static Logger log = Logger.getLogger(CertificateController.class);
     @Autowired
     CertificateDAO certificateDAO;
+    @Autowired
+    StudentInfoDAO studentInfoDAO;
+    @Autowired
+    ClassDAO classDAO;
+
     @Autowired
     APIAuthentication authentication;
 
@@ -91,6 +99,45 @@ public class CertificateController {
         return new ResponseEntity<>(certificate.isEnabled(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/students", method = RequestMethod.GET)
+    public ResponseEntity<?> getStudentsFromCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+
+        Certificate certificate = certificateDAO.findById(id);
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        List<User> users = new ArrayList<>();
+
+        for(StudentInfo studentInfo : certificate.getStudents())
+            users.add(studentInfo.getUser());
+
+        if (users.size()==0) return Responses.USERS_NOT_FOUND;
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/classes", method = RequestMethod.GET)
+    public ResponseEntity<?> getClassesFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+
+        Certificate certificate = certificateDAO.findById(id);
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        List<Clazz> classes = certificate.getClasses();
+
+        if (classes.size()==0) return Responses.CLASSES_NOT_FOUND;
+
+        return new ResponseEntity<>(classes, HttpStatus.OK);
+    }
+
     // ===================================================================================
     // PUT methods
     // ===================================================================================
@@ -138,10 +185,24 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        if (!certificateDAO.exists(id)) return Responses.CERTIFICATE_NOT_FOUND;
+        Certificate certificate = certificateDAO.findById(id);
+
+        if (certificate == null) return Responses.GRADE_NOT_FOUND;
+
+        // Remove grade from students, without deleting the student.
+        for(StudentInfo student : certificate.getStudents()){
+            student.setGrade(null);
+            studentInfoDAO.saveAndFlush(student);
+        }
+
+        // Remove grade from classes, without deleting the classes.
+        for(Clazz clazz : certificate.getClasses()){
+            clazz.setGrade(null);
+            classDAO.saveAndFlush(clazz);
+        }
 
         certificateDAO.delete(id);
-        return Responses.CERTIFICATE_DELETED;
+        return Responses.GRADE_DELETED;
 
     }
 

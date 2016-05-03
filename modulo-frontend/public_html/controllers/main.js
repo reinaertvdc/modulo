@@ -169,7 +169,6 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     };
 
     $scope.checkBackendConnectionLoop = function () {
-        console.log('test');
         $scope.checkBackendConnection();
         setTimeout(function() {
             if (!$scope.testedBackendConnectionSuccessfully) {

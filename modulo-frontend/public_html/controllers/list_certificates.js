@@ -1,7 +1,7 @@
 /**
  * Created by martijn on 14/04/16.
  */
-app.controller('ListCertificatesController', function ($scope, $http, $window, $compile) {
+app.controller('ListCertificatesController', function ($scope, $cookies, $http, $window, $compile) {
     // TODO implement controller
     //TODO test data vervangen door effectieve data
     const CERTIFICATES_LIST_ITEM_PREFIX = 'certificates-list-item-';
@@ -58,10 +58,7 @@ app.controller('ListCertificatesController', function ($scope, $http, $window, $
     $scope.swapEnabled = function(id){
         var certificate = $scope.certificates.get(id);
         certificate.enabled = !certificate.enabled;
-        var certificateModel = JSON.stringify({"certificateEntity":certificate});
-        $http.put('http://localhost:8080/certificate', certificateModel).success(function (response) {
-            $scope.certificates.set(id, response.certificateEntity);
-        });
+        $http.put('http://localhost:8080/certificate/id/' + id + '/' + (certificate.enabled ? 'enable' : 'disable'), null, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {});
     };
 
     $scope.removeCertificate = function (id) {
@@ -76,11 +73,9 @@ app.controller('ListCertificatesController', function ($scope, $http, $window, $
         $compile(CERTIFICATES_LIST_ELEMENT)($scope);
     };
 
-
-
-    $http.get('http://localhost:8080/certificate/all').success(function (response) {
+    $http.get('http://localhost:8080/certificate/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            $scope.addCertificate(item.certificateEntity);
+            $scope.addCertificate(item);
         });
 
         $scope.originalCertificates = new Map($scope.certificates);

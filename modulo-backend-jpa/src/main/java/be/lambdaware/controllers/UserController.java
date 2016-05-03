@@ -479,40 +479,20 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User user) {
-
+        //TODO lege parent veld toch updaten
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        userDAO.saveAndFlush(user);
+        User newUser = new User(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+        newUser.setParent(user.getParent());
+        userDAO.saveAndFlush(newUser);
+        StudentInfo info = user.getStudentInfo();
+        info.setUser(newUser);
+        studentInfoDAO.saveAndFlush(info);
+        newUser.setStudentInfo(info);
 
-
-//        String email = form.getFirst("email").toLowerCase();
-//        String firstName = form.getFirst("firstName");
-//        String lastName = form.getFirst("lastName");
-//        String password = form.getFirst("password");
-//        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
-//        UserRole role = UserRole.STUDENT;
-//        Date birthDate = Date.valueOf(form.getFirst("birthDate"));
-//        String birthPlace = form.getFirst("birthPlace");
-//        String nationality = form.getFirst("nationality");
-//        String nationalIdentificationNumber = form.getFirst("nationalIdentificationNumber");
-//        String street = form.getFirst("street");
-//        String houseNumber = form.getFirst("houseNumber");
-//        String postalCode = form.getFirst("postalCode");
-//        String city = form.getFirst("city");
-//        String phoneNumber = form.getFirst("phoneNumber");
-//        String emergencyNumber = form.getFirst("emergencyNumber");
-//        String bankAccount = form.getFirst("bankAccount");
-//
-//        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
-//
-//        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-//        StudentInfo studentInfo = new StudentInfo(birthDate, birthPlace, nationality, nationalIdentificationNumber, street, houseNumber, postalCode, city, phoneNumber, emergencyNumber, bankAccount);
-//        userDAO.saveAndFlush(user);
-//        user.setStudentInfo(studentInfo);
-//        studentInfoDAO.saveAndFlush(studentInfo);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
 
@@ -568,7 +548,7 @@ public class UserController {
 
 
         //TODO check conversions
-        if (user.getRole() == UserRole.STUDENT) {
+        /*if (user.getRole() == UserRole.STUDENT) {
 
             StudentInfo studentInfo = user.getStudentInfo();
             // setId(0) to identify that we need a new object.
@@ -628,8 +608,8 @@ public class UserController {
             } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
                 //nothing
             }
-        }
-
+        }*/
+        //TODO lege parent veld toch updaten
         userDAO.saveAndFlush(user);
 
         return new ResponseEntity<>(user, HttpStatus.OK);

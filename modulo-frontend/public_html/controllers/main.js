@@ -41,8 +41,8 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         COURSES: 'certificaten',
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
-        STUDENT_PROGRESS: 'voortgang_studenten',
-        TASK_MANAGEMENT: 'takenbeheer',
+        STUDENT_PROGRESS: 'voortgang',
+        TASK_MANAGEMENT: 'taken',
 
         PARAM_EDIT_USER_ID: 'gebruiker',
 
@@ -93,8 +93,9 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
                     || $cookies.getObject("user").role === UserType.STUDENT
                     || $cookies.getObject("user").role === UserType.PARENT;
             } else if (page === this.TASK_MANAGEMENT) {
-                return $cookies.getObject("user").role === UserType.TEACHER;
-
+                return $cookies.getObject("user").role === UserType.TEACHER
+                    || $cookies.getObject("user").role === UserType.STUDENT
+                    || $cookies.getObject("user").role === UserType.PARENT;
             }
 
             return false;

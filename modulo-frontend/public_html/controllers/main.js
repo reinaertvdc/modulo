@@ -45,13 +45,13 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         TASK_MANAGEMENT: 'taken',
 
         PARAM_EDIT_USER_ID: 'gebruiker',
-
         PARAM_MANAGE_CLASS_ID: 'klas',
         PARAM_CREATE_NEW_CLASS_ID: 'nieuw',
         PARAM_CLASS_TYPE: 'type',
         PARAM_MANAGE_COURSE_TOPIC_ID: 'vakthema',
         PARAM_CREATE_NEW_COURSE_TOPIC_ID: 'nieuw',
         PARAM_MANAGE_CLASS_MEMBERS: 'leerlingen',
+        PARAM_EDIT_TASK_ID: 'taak',
 
         pathToPage: function (path) {
             return path.replace(/\//g, '');

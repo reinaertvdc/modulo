@@ -18,7 +18,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         parent: null,
         gradeId: null,
         certificateId: null
-    }
+    };
 
     $scope.basicInfo = {
         id: null,

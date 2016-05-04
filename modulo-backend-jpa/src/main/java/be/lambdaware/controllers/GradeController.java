@@ -1,10 +1,12 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.models.*;
+import be.lambdaware.models.Clazz;
+import be.lambdaware.models.Grade;
+import be.lambdaware.models.StudentInfo;
+import be.lambdaware.models.User;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -146,7 +148,7 @@ public class GradeController {
     // ===================================================================================
 
     @RequestMapping(value = "/id/{id}/enable", method = RequestMethod.PUT)
-    public ResponseEntity<?> enabledCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> enableGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -162,7 +164,7 @@ public class GradeController {
     }
 
     @RequestMapping(value = "/id/{id}/disable", method = RequestMethod.PUT)
-    public ResponseEntity<?> disableCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> disableGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -177,12 +179,33 @@ public class GradeController {
         return Responses.GRADE_DISABLED;
     }
 
+    @RequestMapping(value = "/id/{id}/student/id/{studentId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> addStudentToGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id,@PathVariable long studentId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+//        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        Grade grade = gradeDAO.findById(id);
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        StudentInfo info = studentInfoDAO.findOne(studentId);
+
+        if(info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        info.setGrade(grade);
+
+        studentInfoDAO.saveAndFlush(info);
+        return Responses.GRADE_STUDENT_ADD;
+    }
+
     // ===================================================================================
     // Delete methods
     // ===================================================================================
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> deleteGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;

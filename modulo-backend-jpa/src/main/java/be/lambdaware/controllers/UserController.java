@@ -1,13 +1,12 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
+import be.lambdaware.response.StringMessage;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,11 @@ public class UserController {
     ClassDAO classDAO;
     @Autowired
     StudentInfoDAO studentInfoDAO;
+    @Autowired
+    BGVScoreDAO bgvScoreDAO;
+    @Autowired
+    PAVScoreDAO pavScoreDAO;
+
 
     @Autowired
     APIAuthentication authentication;
@@ -233,6 +237,7 @@ public class UserController {
         User parent = user.getParent();
 
         if (parent == null) return Responses.USER_NOT_FOUND;
+
         return new ResponseEntity<>(parent, HttpStatus.OK);
     }
 
@@ -299,11 +304,11 @@ public class UserController {
      * @return a {@link ResponseEntity} or {@link List<Clazz>}.
      */
     @RequestMapping(value = "/id/{id}/teaching", method = RequestMethod.GET)
-    public ResponseEntity<?> getTeachedClassed(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getTeachedClasses(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
@@ -368,7 +373,7 @@ public class UserController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
@@ -391,7 +396,7 @@ public class UserController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(id);
 
@@ -409,11 +414,57 @@ public class UserController {
         return new ResponseEntity<>(certificate, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/gradeId", method = RequestMethod.GET)
+    public ResponseEntity<?> getGradeIdFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        Grade grade = info.getGrade();
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        return new ResponseEntity<>(grade.getId(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/certificateId", method = RequestMethod.GET)
+    public ResponseEntity<?> getCertificateIdFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        Certificate certificate = info.getCertificate();
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        return new ResponseEntity<>(certificate.getId(), HttpStatus.OK);
+    }
+
     // ===================================================================================
     // POST methods
     // ===================================================================================
 
-    //TODO: example method to create a user with x-www-form-urlencoded parameters. Check http://stackoverflow.com/questions/11442632/how-can-i-post-data-as-form-data-instead-of-a-request-payload for angularjs impl.
+
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ResponseEntity<?> createAdmin(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
@@ -479,40 +530,22 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User user) {
-
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        userDAO.saveAndFlush(user);
+        User newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+        newUser.setParent(user.getParent());
+        userDAO.saveAndFlush(newUser);
 
+        if(user.getRole() != UserRole.STUDENT) return new ResponseEntity<>(newUser, HttpStatus.OK);
 
-//        String email = form.getFirst("email").toLowerCase();
-//        String firstName = form.getFirst("firstName");
-//        String lastName = form.getFirst("lastName");
-//        String password = form.getFirst("password");
-//        Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
-//        UserRole role = UserRole.STUDENT;
-//        Date birthDate = Date.valueOf(form.getFirst("birthDate"));
-//        String birthPlace = form.getFirst("birthPlace");
-//        String nationality = form.getFirst("nationality");
-//        String nationalIdentificationNumber = form.getFirst("nationalIdentificationNumber");
-//        String street = form.getFirst("street");
-//        String houseNumber = form.getFirst("houseNumber");
-//        String postalCode = form.getFirst("postalCode");
-//        String city = form.getFirst("city");
-//        String phoneNumber = form.getFirst("phoneNumber");
-//        String emergencyNumber = form.getFirst("emergencyNumber");
-//        String bankAccount = form.getFirst("bankAccount");
-//
-//        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
-//
-//        User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-//        StudentInfo studentInfo = new StudentInfo(birthDate, birthPlace, nationality, nationalIdentificationNumber, street, houseNumber, postalCode, city, phoneNumber, emergencyNumber, bankAccount);
-//        userDAO.saveAndFlush(user);
-//        user.setStudentInfo(studentInfo);
-//        studentInfoDAO.saveAndFlush(studentInfo);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        StudentInfo info = user.getStudentInfo();
+        info.setUser(newUser);
+        studentInfoDAO.saveAndFlush(info);
+        newUser.setStudentInfo(info);
+
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
 
@@ -527,6 +560,8 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
         User user = userDAO.findById(id);
+
+
 
         if (user == null) return Responses.USER_NOT_FOUND;
 
@@ -544,6 +579,8 @@ public class UserController {
         User user = userDAO.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
+        //TODO add to Responses
+        if (user.getId() == authentication.getAuthenticatedUser().getId()) return StringMessage.asEntity("You can not disable yourself",HttpStatus.BAD_REQUEST);
 
         user.setEnabled(false);
         userDAO.saveAndFlush(user);
@@ -551,88 +588,91 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @RequestBody User user) {
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public ResponseEntity<?> update(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User newUser) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User dataBaseUser = userDAO.findById(user.getId());
+        User oldUser = userDAO.findById(newUser.getId());
 
-        // Compare if a new password was set, if not, set the old password.
-        if (user.getPassword() == null || user.getPassword().equals(""))
-            user.setPassword(dataBaseUser.getPassword());
-        else
-            user.setPassword(authentication.SHA512(user.getPassword()));
-
-
-        //TODO check conversions
-        if (user.getRole() == UserRole.STUDENT) {
-
-            StudentInfo studentInfo = user.getStudentInfo();
-            // setId(0) to identify that we need a new object.
-            studentInfo.setId(0);
-            studentInfoDAO.saveAndFlush(studentInfo);
-            if (dataBaseUser.getRole() == UserRole.PARENT) {
-                for (User child : dataBaseUser.getChildren()) {
-                    child.setParent(null);
-                    userDAO.saveAndFlush(child);
-                }
-            }
-            else if (dataBaseUser.getRole() == UserRole.ADMIN) {
-                // nothing specific
-            }
-            else if (dataBaseUser.getRole() == UserRole.TEACHER) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            }
-        } else if (user.getRole() == UserRole.PARENT) {
-            if (dataBaseUser.getRole() == UserRole.STUDENT) {
-                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
-                user.setParent(null);
-            } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
-                // nothing
-            } else if (dataBaseUser.getRole() == UserRole.TEACHER) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            }
-        } else if (user.getRole() == UserRole.ADMIN) {
-            if (dataBaseUser.getRole() == UserRole.STUDENT) {
-                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
-                user.setParent(null);
-            } else if (dataBaseUser.getRole() == UserRole.PARENT) {
-                for (User child : dataBaseUser.getChildren()) {
-                    child.setParent(null);
-                    userDAO.saveAndFlush(child);
-                }
-            } else if (dataBaseUser.getRole() == UserRole.TEACHER) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            }
-        } else if (user.getRole() == UserRole.TEACHER) {
-            if (dataBaseUser.getRole() == UserRole.STUDENT) {
-                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
-                user.setParent(null);
-            } else if (dataBaseUser.getRole() == UserRole.PARENT) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
-                //nothing
-            }
+        // If not empty, update password
+        if (newUser.getPassword() != null && !newUser.getPassword().equals("")) {
+            log.info("A new password was provided.");
+            oldUser.setPassword(authentication.SHA512(newUser.getPassword()));
         }
 
-        userDAO.saveAndFlush(user);
+        if(newUser.getParent() != null) {
+            User parent = userDAO.findById(newUser.getParent().getId());
+            // set the parent
+            oldUser.setParent(parent);
+        }else{
+            // set the parent to null
+            oldUser.setParent(null);
+        }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+
+        // If the user's role is being changed
+        if(oldUser.getRole() != newUser.getRole()){
+            log.info(String.format("Role of %s is different from %s",oldUser,newUser));
+            if(oldUser.getRole() == UserRole.STUDENT){
+                log.info("Old user was a student. Remove student from possible classes.");
+                for(Clazz clazz : oldUser.getClasses()){
+                    clazz.getStudents().remove(oldUser);
+                }
+
+                log.info("Remove student from possible course toipcs.");
+                for(CourseTopic courseTopic : oldUser.getStudentInfo().getCourseTopics()){
+                    courseTopic.getStudents().remove(oldUser.getStudentInfo());
+                }
+
+                log.info("Delete BGV scores");
+                for(BGVScore bgvScore : oldUser.getStudentInfo().getBgvScores()){
+                    bgvScoreDAO.delete(bgvScore);
+                }
+
+                log.info("Delete PAV scores");
+                for(PAVScore pavScore : oldUser.getStudentInfo().getPavScores()){
+                    pavScoreDAO.delete(pavScore);
+                }
+
+                log.info("Removed parent");
+                oldUser.setParent(null);
+
+                log.info("Delete user's student info.");
+                studentInfoDAO.delete(oldUser.getStudentInfo());
+            }
+            if(oldUser.getRole() == UserRole.PARENT){
+                log.info("Old user was a parent. Remove parent from his children.");
+                for(User child : oldUser.getChildren()){
+                    child.setParent(null);
+                    userDAO.saveAndFlush(child);
+                }
+            }
+            if(oldUser.getRole() == UserRole.TEACHER){
+                log.info("Old user was a teacher. Remove teacher from his classes.");
+                for(Clazz clazz : oldUser.getTeachedClasses()) {
+                    clazz.setTeacher(null);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
+
+            if(newUser.getRole() == UserRole.STUDENT) {
+                log.info("The new user is a student. Create student info.");
+                StudentInfo info = newUser.getStudentInfo();
+                studentInfoDAO.save(info);
+                oldUser.setStudentInfo(info);
+            }
+
+            log.info(String.format("Updated role to %s.",oldUser,newUser.getRole()));
+            oldUser.setRole(newUser.getRole());
+        }
+
+        log.info("Saving user " + oldUser);
+        userDAO.saveAndFlush(oldUser);
+
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     // ===================================================================================

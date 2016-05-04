@@ -104,13 +104,17 @@
 <div class="form-group">
     <label for="input-parentStr">Ouder</label>
     <div class="row">
-        <div class="col-xs-10" class="form-group">
+        <div class="col-xs-8" class="form-group">
             <input id="input-parentStr" type="text" name="parentStr" class="form-control"
                    data-ng-model="parentStr" title="Ouder" readonly>
         </div>
         <div class="col-xs-2" class="form-group">
             <button type="button" class="btn btn-default btn-block" ng-click="open()">
                 <span class="glyphicon glyphicon-search"></span></button>
+        </div>
+        <div class="col-xs-2" class="form-group">
+            <button type="button" class=" btn btn-default btn-block" ng-click="removeParent()">
+                <span class="text-danger glyphicon glyphicon-remove"></span></button>
         </div>
     </div>
 </div>

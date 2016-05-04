@@ -13,7 +13,7 @@
                 </button>
                 <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
                     <li data-ng-repeat="role in userRolesKeys">
-                        <a href="" data-ng-click="setUserRole(role)">{{userRoles[role]}}</a>
+                        <a href="" data-ng-click="openRoleModal(role)">{{userRoles[role]}}</a>
                     </li>
                 </ul>
             </div>
@@ -28,8 +28,8 @@
 
             <div class="form-group">
                 <label for="input-password">Wachtwoord</label>
-                <input id="input-password" type="password" name="password" class="form-control"
-                       data-ng-model="basicInfo.password" title="Wachtwoord voor de gebruiker" required>
+                <input id="input-password" type="password" name="password" class="form-control" placeholder="Leeg laten indien niet aangepast moet worden"
+                       data-ng-model="basicInfo.password" title="Wachtwoord voor de gebruiker">
             </div>
 
             <div class="form-group">

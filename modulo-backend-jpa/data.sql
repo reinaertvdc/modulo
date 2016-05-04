@@ -104,9 +104,9 @@ INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 17);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 19);
 
 -- BGV scores
-INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (1, '2016-05-02', 'Goed gedaan', 'V', 1, 5);
-INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (2, '2016-05-02', 'Goed gedaan', 'V', 2, 5);
-INSERT INTO public.bgv_scores (id, graded_date, remarks, score, competence_id, student_id) VALUES (3, '2016-05-02', 'Dat kan beter', 'I', 3, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 1, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 2, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 3, 5);
 
 -- Objectives
 INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (1, null, true, 'Doelstelling 1', null, 1);
@@ -117,8 +117,8 @@ INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, 
 INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (6, null, true, 'Doelstelling C', null, 2);
 
 -- Scores
-INSERT INTO public.pav_scores (id, graded_date, remarks, score, objective_id, student_id) VALUES (1, '2016-05-02', 'Helemaal Oke', 'V', 1, 1);
-INSERT INTO public.pav_scores (id, graded_date, remarks, score, objective_id, student_id) VALUES (2, '2016-05-03', 'Goed gemaakt', 'V', 4, 2);
+INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (1, '1', 'Helemaal Oke', 'V', 1, 1);
+INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (2, '1', 'Goed gemaakt', 'V', 4, 2);
 
 -- Tasks
 INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (1, '2016-05-26', 'beschrijving', 'taak 1', 3);

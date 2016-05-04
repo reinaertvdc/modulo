@@ -127,13 +127,13 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         },
 
         setParameter: function (name, value) {
-            console.log(name + " " + value);
             return $location.search(name, value);
         },
 
-        removeAllParameters: function () {
+        removeAllParameters: function (value) {
             $location.url($location.path());
         }
+
     };
 
     $scope.form = {
@@ -186,4 +186,28 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
 
     $scope.userSexes = {"MALE": "Man", "FEMALE": "Vrouw"};
     $scope.userSexesKeys = Object.keys($scope.userSexes);
+
+
+    $scope.createAlertCookie= function(msg){
+        var alert = msg;
+        var expireTime = new Date();
+        var time = expireTime.getTime();
+        time += 1000*3; // 3sec expire tijd
+        expireTime.setTime(time);
+        $cookies.put("alert", alert, {'expires': expireTime});
+    }
+
+    $scope.isAlertEmpty = function(){
+        return $cookies.get("alert") != null;
+    }
+
+    $scope.getAlert = function(){
+        return $cookies.get("alert");
+    }
+
+    removeAlert = function () {
+        $cookies.put("alert", null, {'expires': new Date()});
+        $scope.location.url($location.path());
+    }
+
 });

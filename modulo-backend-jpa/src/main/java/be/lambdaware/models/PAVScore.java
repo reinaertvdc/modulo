@@ -22,8 +22,13 @@ public class PAVScore {
     @Enumerated(EnumType.STRING)
     private ScoreType score;
 
+//    @Column(nullable = false)
+//    private Date gradedDate;
+
+    //TODO add reference to course_topic
+
     @Column(nullable = false)
-    private Date gradedDate;
+    private int week;
 
     @Column
     private String remarks;
@@ -46,9 +51,9 @@ public class PAVScore {
 
     }
 
-    public PAVScore(ScoreType score, Date gradedDate, String remarks) {
+    public PAVScore(ScoreType score, int week, String remarks) {
         this.score = score;
-        this.gradedDate = gradedDate;
+        this.week = week;
         this.remarks = remarks;
     }
 
@@ -72,12 +77,12 @@ public class PAVScore {
         this.score = score;
     }
 
-    public Date getGradedDate() {
-        return gradedDate;
+    public int getWeek() {
+        return week;
     }
 
-    public void setGradedDate(Date gradedDate) {
-        this.gradedDate = gradedDate;
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public String getRemarks() {
@@ -132,7 +137,7 @@ public class PAVScore {
     public String toString() {
         String sb = "PAVScore{" + "id=" + id +
                 ", score=" + score +
-                ", gradedDate=" + gradedDate +
+                ", week=" + week +
                 ", remarks='" + remarks + '\'' +
                 '}';
         return sb;

@@ -50,9 +50,9 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
         $compile(BGVCLASS_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/class/teacher/' + $cookies.get("user").id).success(function (response) {
+    $http.get('http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/teaching', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            $scope.addClass(item.classEntity)
+            $scope.addClass(item)
         });
         $scope.refresh();
     });

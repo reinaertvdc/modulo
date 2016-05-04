@@ -24,8 +24,11 @@ public class BGVScore {
     @Enumerated(EnumType.STRING)
     private ScoreType score;
 
+//    @Column(nullable = false)
+//    private Date gradedDate;
+
     @Column(nullable = false)
-    private Date gradedDate;
+    private int week;
 
     @Column
     private String remarks;
@@ -49,9 +52,9 @@ public class BGVScore {
 
     }
 
-    public BGVScore(ScoreType score, Date gradedDate, String remarks) {
+    public BGVScore(ScoreType score, int week, String remarks) {
         this.score = score;
-        this.gradedDate = gradedDate;
+        this.week = week;
         this.remarks = remarks;
     }
 
@@ -75,12 +78,12 @@ public class BGVScore {
         this.score = score;
     }
 
-    public Date getGradedDate() {
-        return gradedDate;
+    public int getWeek() {
+        return week;
     }
 
-    public void setGradedDate(Date gradedDate) {
-        this.gradedDate = gradedDate;
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public String getRemarks() {
@@ -133,7 +136,7 @@ public class BGVScore {
     @Override
     public String toString() {
         String sb = "BGVScore{" + "remarks='" + remarks + '\'' +
-                ", gradedDate=" + gradedDate +
+                ", week=" + week +
                 ", score=" + score +
                 ", id=" + id +
                 '}';

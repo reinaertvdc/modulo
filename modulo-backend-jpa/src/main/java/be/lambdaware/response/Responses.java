@@ -27,6 +27,7 @@ public class Responses {
     private static final String classesNotFound = "The requested classes could not be found.";
     private static final String classNotFound = "The requested class could not be found.";
     private static final String classAddedStudent = "Student successfully added to class.";
+    private static final String classDeletedStudent = "Student successfully deleted from class.";
     private static final String classAddedTeacher = "Teacher successfully assigned to class.";
 
     private static final String certificateNotFound = "The requested certificate could not be found.";
@@ -34,16 +35,21 @@ public class Responses {
     private static final String certificateEnabled = "Certificate successfully enabled.";
     private static final String certificateDisabled = "Certificate successfully disabled.";
     private static final String certificateDeleted = "Certificate successfully deleted.";
+    private static final String certificateStudentAdded = "Certificate successfully added to student.";
+
+    private static final String subCertificatesNotFound = "The requested subcertificates could not be found.";
 
     private static final String gradeNotFound = "The requested grade could not be found.";
     private static final String gradesNotFound = "The requested certificates could not be found.";
     private static final String gradeEnabled = "Grade successfully enabled.";
     private static final String gradeDisabled = "Grade successfully disabled.";
     private static final String gradeDeleted = "Grade successfully deleted.";
+    private static final String gradeStudentAdded = "Grade successfully added to student.";
 
     private static final String studentInfoNotFound = "The requested student info could not be found.";
 
     private static final String bgvScoresNotFound = "The requested BGV scores could not be found";
+    private static final String pavScoresNotFound = "The requested PAV scores could not be found";
 
     private static final String tasksNotFound = "The requested tasks could not be found.";
     private static final String taskNotFound = "The requested task could not be found.";
@@ -71,22 +77,28 @@ public class Responses {
     public static final ResponseEntity<?> CLASS_NOT_FOUND = StringMessage.asEntity(classNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> CLASS_ADDED_STUDENT = StringMessage.asEntity(classAddedStudent, HttpStatus.OK);
     public static final ResponseEntity<?> CLASS_ADDED_TEACHER = StringMessage.asEntity(classAddedTeacher, HttpStatus.OK);
+    public static final ResponseEntity<?> CLASS_DELETED_STUDENT = StringMessage.asEntity(classDeletedStudent, HttpStatus.OK);
 
     public static final ResponseEntity<?> CERTIFICATE_NOT_FOUND = StringMessage.asEntity(certificateNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> CERTIFICATES_NOT_FOUND = StringMessage.asEntity(certificatesNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> CERTIFICATE_ENABLED = StringMessage.asEntity(certificateEnabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DISABLED = StringMessage.asEntity(certificateDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DELETED = StringMessage.asEntity(certificateDeleted, HttpStatus.OK);
+    public static final ResponseEntity<?> CERTIFICATE_STUDENT_ADD = StringMessage.asEntity(certificateStudentAdded, HttpStatus.OK);
+
+    public static final ResponseEntity<?> SUBCERTIFICATES_NOT_FOUND = StringMessage.asEntity(subCertificatesNotFound, HttpStatus.NOT_FOUND);
 
     public static final ResponseEntity<?> GRADE_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> GRADES_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> GRADE_ENABLED = StringMessage.asEntity(gradeEnabled, HttpStatus.OK);
     public static final ResponseEntity<?> GRADE_DISABLED = StringMessage.asEntity(gradeDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> GRADE_DELETED = StringMessage.asEntity(gradeDeleted, HttpStatus.OK);
+    public static final ResponseEntity<?> GRADE_STUDENT_ADD = StringMessage.asEntity(gradeStudentAdded, HttpStatus.OK);
 
     public static final ResponseEntity<?> STUDENT_INFO_NOT_FOUND = StringMessage.asEntity(studentInfoNotFound,HttpStatus.NOT_FOUND);
 
     public static final ResponseEntity<?> BGV_SCORES_NOT_FOUND = StringMessage.asEntity(bgvScoresNotFound,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> PAV_SCORES_NOT_FOUND = StringMessage.asEntity(pavScoresNotFound,HttpStatus.NOT_FOUND);
 
     public static final ResponseEntity<?> TASKS_NOT_FOUND = StringMessage.asEntity(tasksNotFound,HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> TASK_NOT_FOUND = StringMessage.asEntity(taskNotFound,HttpStatus.NOT_FOUND);

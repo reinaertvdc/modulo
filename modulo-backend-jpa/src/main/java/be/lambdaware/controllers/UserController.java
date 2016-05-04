@@ -554,7 +554,6 @@ public class UserController {
         // If the user's role is being changed
         if(oldUser.getRole() != newUser.getRole()){
             log.info(String.format("Role of %s is different from %s",oldUser,newUser));
-            // old student = student, delete student info
             if(oldUser.getRole() == UserRole.STUDENT){
                 log.info("Old user was a student. Remove student from possible classes.");
                 for(Clazz clazz : oldUser.getClasses()){
@@ -576,11 +575,35 @@ public class UserController {
                     pavScoreDAO.delete(pavScore);
                 }
 
+                log.info("Removed parent");
+                oldUser.setParent(null);
+
                 log.info("Delete user's student info.");
                 studentInfoDAO.delete(oldUser.getStudentInfo());
             }
+            if(oldUser.getRole() == UserRole.PARENT){
+                log.info("Old user was a parent. Remove parent from his children.");
+                for(User child : oldUser.getChildren()){
+                    child.setParent(null);
+                    userDAO.saveAndFlush(child);
+                }
+            }
+            if(oldUser.getRole() == UserRole.TEACHER){
+                log.info("Old user was a teacher. Remove teacher from his classes.");
+                for(Clazz clazz : oldUser.getTeachedClasses()) {
+                    clazz.setTeacher(null);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
 
-            log.info(String.format("Updated role of user %s to %s.",oldUser,newUser.getRole()));
+            if(newUser.getRole() == UserRole.STUDENT) {
+                log.info("The new user is a student. Create student info.");
+                StudentInfo info = newUser.getStudentInfo();
+                studentInfoDAO.save(info);
+                oldUser.setStudentInfo(info);
+            }
+
+            log.info(String.format("Updated role to %s.",oldUser,newUser.getRole()));
             oldUser.setRole(newUser.getRole());
         }
 

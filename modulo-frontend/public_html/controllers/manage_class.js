@@ -1,6 +1,8 @@
 app.controller('ManageClassController', function ($scope) {
     // TODO implement controller
-    
+
+    //TODO Vakthema tab niet tonen als BGV klas
+
     $scope.Tab = Object.freeze({
         STUDENT: 'Student',
         CLASS_TOPIC: 'Class_Topic',
@@ -13,7 +15,6 @@ app.controller('ManageClassController', function ($scope) {
         $scope.currentTab = tab;
     };
 
-
     $scope.getActiveClassComponent = function() {
         if($scope.currentTab == $scope.Tab.STUDENT){
             return 'views/components/manage_class_student_list.html'
@@ -23,4 +24,5 @@ app.controller('ManageClassController', function ($scope) {
             return 'views/components/manage_class_details.html'
         }
     };
+
 });

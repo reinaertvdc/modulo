@@ -46,7 +46,7 @@ public class ScoreController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(userId);
 
@@ -69,7 +69,7 @@ public class ScoreController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(userId);
 

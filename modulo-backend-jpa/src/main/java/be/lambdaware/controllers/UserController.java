@@ -598,8 +598,9 @@ public class UserController {
             oldUser.setPassword(authentication.SHA512(newUser.getPassword()));
         }
 
+        User parent = userDAO.findById(newUser.getId());
         // set the parent
-        oldUser.setParent(newUser.getParent());
+        oldUser.setParent(parent);
 
 
         // If the user's role is being changed

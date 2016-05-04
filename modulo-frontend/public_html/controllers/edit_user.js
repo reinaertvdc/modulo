@@ -135,7 +135,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
 
             if ($scope.basicInfo.role == "STUDENT") {
                 $scope.studentInfo = response.studentInfo;
-
+                
                 $http.get('http://localhost:8080/user/id/' + paramVal+'/parent', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     $scope.parentStr = response.firstName + ' ' + response.lastName;
                 });
@@ -173,12 +173,15 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         var model = $scope.basicInfo;
         if ($scope.basicInfo.role == 'STUDENT') {
             model.studentInfo = $scope.studentInfo;
-
-            $http.get('http://localhost:8080/user/id/' + $scope.studentInfo.parentId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
-                model.parent = response;
+            if($scope.studentInfo.parentId != null) {
+                $http.get('http://localhost:8080/user/id/' + $scope.studentInfo.parentId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    model.parent = response;
+                    $scope.createOrUpdateUser(model);
+                });
+            }
+            else{
                 $scope.createOrUpdateUser(model);
-            });
-
+            }
         }else{
             $scope.createOrUpdateUser(model);
         }
@@ -188,6 +191,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         model = JSON.stringify(model);
 
         if (paramVal == 'nieuw') {
+            console.log(model);
             $http({
                 method: 'POST', url: 'http://localhost:8080/user/', data: model,
                 headers: {'X-auth': $cookies.get("auth")}

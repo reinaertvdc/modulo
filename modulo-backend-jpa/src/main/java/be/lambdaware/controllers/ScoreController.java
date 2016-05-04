@@ -37,6 +37,8 @@ public class ScoreController {
     @Autowired
     APIAuthentication authentication;
 
+    //TODO sort scores by week
+
     // ===================================================================================
     // GET methods
     // ===================================================================================

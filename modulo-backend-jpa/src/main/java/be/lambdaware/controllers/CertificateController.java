@@ -174,6 +174,27 @@ public class CertificateController {
         return Responses.CERTIFICATE_DISABLED;
     }
 
+    @RequestMapping(value = "/id/{id}/student/id/{studentId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> addStudentToCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id,@PathVariable long studentId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+//        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
+
+        Certificate certificate = certificateDAO.findById(id);
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        StudentInfo info = studentInfoDAO.findOne(studentId);
+
+        if(info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        info.setCertificate(certificate);
+
+        studentInfoDAO.saveAndFlush(info);
+        return Responses.CERTIFICATE_STUDENT_ADD;
+    }
+
     // ===================================================================================
     // Delete methods
     // ===================================================================================

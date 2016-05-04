@@ -34,6 +34,7 @@ public class Responses {
     private static final String certificateEnabled = "Certificate successfully enabled.";
     private static final String certificateDisabled = "Certificate successfully disabled.";
     private static final String certificateDeleted = "Certificate successfully deleted.";
+    private static final String certificateStudentAdded = "Certificate successfully added to student.";
 
     private static final String subCertificatesNotFound = "The requested subcertificates could not be found.";
 
@@ -76,6 +77,7 @@ public class Responses {
     public static final ResponseEntity<?> CERTIFICATE_ENABLED = StringMessage.asEntity(certificateEnabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DISABLED = StringMessage.asEntity(certificateDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DELETED = StringMessage.asEntity(certificateDeleted, HttpStatus.OK);
+    public static final ResponseEntity<?> CERTIFICATE_STUDENT_ADD = StringMessage.asEntity(certificateStudentAdded, HttpStatus.OK);
 
     public static final ResponseEntity<?> SUBCERTIFICATES_NOT_FOUND = StringMessage.asEntity(subCertificatesNotFound, HttpStatus.NOT_FOUND);
 

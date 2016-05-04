@@ -14,29 +14,14 @@
 
     <br/>
 
-    <div class="form-group">
-        <label>PAV-klas</label>
-        <br/>
-        <div class="btn-group" data-uib-dropdown>
-            <button id="button-PAVClass" type="button" class="btn btn-default" data-uib-dropdown-toggle>
-                {{selectedPAVClass}}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
-                <li data-ng-repeat="PAVClass in PAVClasses">
-                    <a href="" data-ng-click="setSelectedPAVClass(PAVClass)">{{PAVClass.name}}</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
 
     <div class="panel panel-default">
         <table class="table table-condensed table-striped">
             <thead>
             <tr>
-                <th class="col-xs-6">Naam</th>
-                <th class="col-xs-4">Deadline</th>
+                <th class="col-xs-4">Naam</th>
+                <th class="col-xs-3">Klas</th>
+                <th class="col-xs-3">Deadline</th>
                 <th class="col-xs-1"></th>
                 <th class="col-xs-1"></th>
             </tr>

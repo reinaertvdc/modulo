@@ -50,6 +50,10 @@ public class Clazz {
     @JsonIgnore
     private List<User> students = new ArrayList<>();
 
+    @OneToMany(mappedBy = "clazz")
+    @JsonIgnore
+    private List<Task> tasks;
+
     // ===================================================================================
 
     public Clazz() {

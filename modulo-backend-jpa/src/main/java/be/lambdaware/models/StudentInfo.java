@@ -62,7 +62,7 @@ public class StudentInfo {
     // ===================================================================================
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",unique = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
     private User user;

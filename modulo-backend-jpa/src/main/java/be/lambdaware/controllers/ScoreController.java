@@ -82,7 +82,7 @@ public class ScoreController {
 
         List<PAVScore> pavScores = info.getPavScores();
 
-        if (pavScores.size() == 0) return Responses.BGV_SCORES_NOT_FOUND;
+        if (pavScores.size() == 0) return Responses.PAV_SCORES_NOT_FOUND;
 
         return new ResponseEntity<>(pavScores, HttpStatus.OK);
     }

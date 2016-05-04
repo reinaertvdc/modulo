@@ -35,6 +35,8 @@ public class Responses {
     private static final String certificateDisabled = "Certificate successfully disabled.";
     private static final String certificateDeleted = "Certificate successfully deleted.";
 
+    private static final String subCertificatesNotFound = "The requested subcertificates could not be found.";
+
     private static final String gradeNotFound = "The requested grade could not be found.";
     private static final String gradesNotFound = "The requested certificates could not be found.";
     private static final String gradeEnabled = "Grade successfully enabled.";
@@ -44,6 +46,7 @@ public class Responses {
     private static final String studentInfoNotFound = "The requested student info could not be found.";
 
     private static final String bgvScoresNotFound = "The requested BGV scores could not be found";
+    private static final String pavScoresNotFound = "The requested PAV scores could not be found";
 
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
@@ -74,6 +77,8 @@ public class Responses {
     public static final ResponseEntity<?> CERTIFICATE_DISABLED = StringMessage.asEntity(certificateDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> CERTIFICATE_DELETED = StringMessage.asEntity(certificateDeleted, HttpStatus.OK);
 
+    public static final ResponseEntity<?> SUBCERTIFICATES_NOT_FOUND = StringMessage.asEntity(subCertificatesNotFound, HttpStatus.NOT_FOUND);
+
     public static final ResponseEntity<?> GRADE_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> GRADES_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> GRADE_ENABLED = StringMessage.asEntity(gradeEnabled, HttpStatus.OK);
@@ -83,4 +88,5 @@ public class Responses {
     public static final ResponseEntity<?> STUDENT_INFO_NOT_FOUND = StringMessage.asEntity(studentInfoNotFound,HttpStatus.NOT_FOUND);
 
     public static final ResponseEntity<?> BGV_SCORES_NOT_FOUND = StringMessage.asEntity(bgvScoresNotFound,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> PAV_SCORES_NOT_FOUND = StringMessage.asEntity(pavScoresNotFound,HttpStatus.NOT_FOUND);
 }

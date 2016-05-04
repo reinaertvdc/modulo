@@ -23,7 +23,6 @@
 \usepackage{usecases}
 \usepackage{enumitem}
 
-
 \begin{document}
 \input{Voorblad}
 
@@ -31,7 +30,7 @@
 \newpage
 
 \section{Preface}
-Dit document is bedoeld voor het personeel van het Technisch Instituut Heilig Hart te Hasselt \cite{TIHH} zijnde de opdrachtgevers, het onderwijsteam en het ontwikkelingsteam van Modulo. In dit document worden alle vereisten van het softwarepakket geanalyseerd.
+Dit document is bedoeld voor het personeel van het Technisch Instituut Heilig Hart te Hasselt \cite{TIHH} zijnde de opdrachtgevers, voor het onderwijsteam en het ontwikkelingsteam van Modulo. In dit document worden alle vereisten van het softwarepakket geanalyseerd.
 
 
 \section{Inleiding}
@@ -41,8 +40,6 @@ Modulo is een Managementsysteem voor het Deeltijds Onderwijs (MDO) dat gebruikt 
 
 In sectie \ref{sec:general_descr} wordt allereerst een algemeen beeld gegeven van de werking van het DBSO en de precieze rol die Modulo daarin kan spelen. Vervolgens worden in sectie \ref{sec:user_req} alle vereisten van het softwarepakket tegenover de gebruiker besproken. Er wordt een uitgebreide lijst van vereiste functionaliteiten gegeven, alsook een analyse van het gebruik, de mogelijkheden voor ondersteuning en de juridische aspecten. Sectie \ref{sec:systeemarchitectuur} biedt een uiteenzetting van de gekozen technologieën om het softwarepakket te implementeren en in sectie \ref{sec:use_cases} wordt dieper ingegaan op de concrete stappen die verschillende types gebruikers moeten doorlopen om bepaalde acties te ondernemen. In de appendices tenslotte kunnen mockups gevonden worden die tonen hoe Modulo er voor de gebruiker uitziet.
 
-
-
 \section{Woordenlijst}  \label{sec:word_list} % voor de klant
 \def\arraystretch{1.8}
 \begin{tabularx}{\textwidth}{l | X}
@@ -50,7 +47,7 @@ In sectie \ref{sec:general_descr} wordt allereerst een algemeen beeld gegeven va
     \hline \hline
     MDO &`Managementsysteem voor het Deeltijds Onderwijs' is het antwoord op de vraag ``Wat is Modulo?''. Het is een softwarepakket voor het beheren van de gegevens van studenten binnen het DBSO. \\
     \hline
-    DBSO & `Deeltijds Beroepssecundair Onderwijs', of kortweg `deeltijds onderwijs', is een onderwijsvorm waarin studenten leren op school combineren met leren op werkplekken. Een lesweek bestaat uit 8 uur BGV en 7 uur PAV, de rest van de tijd brengen de studenten door op de werkvloer. \cite{DBSO} \\
+    DBSO & `Deeltijds Beroepssecundair Onderwijs', of kortweg `deeltijds onderwijs', is een onderwijsvorm waarin studenten `leren op school' combineren met `leren op werkplekken'. Een lesweek bestaat uit 8 uur `Beroepsgerichte Vorming' (BGV) en 7 uur `Project Algemene Vakken' (PAV), de rest van de tijd brengen de studenten door op de werkvloer. \cite{DBSO} \\
     \hline
     CDO & `Centra voor Deeltijds Onderwijs' zijn scholen die DBSO als onderwijsvorm hanteren. De opdrachtgever voor Modulo, het Technisch Instituut Heilig Hart te Hasselt \cite{TIHH}, is hier een voorbeeld van. \cite{CDO} \\
 \end{tabularx}
@@ -65,9 +62,9 @@ In sectie \ref{sec:general_descr} wordt allereerst een algemeen beeld gegeven va
     \hline
     Competentie & Het certificaat dat door middel van BGV verkregen kan worden, bestaat uit een verzameling deelcertificaten. Ieder deelcertificaat bestaat uit een lijst van competenties, vastgelegd door de Vlaamse overheid, die de studenten allemaal moeten halen om het deelcertificaat te verkrijgen. Een deelcertificaat kan op andere deelcertificaten voortbouwen, die dan ook in volgorde behaald moeten worden. \cite{Competenties} \\
     \hline
-    Doelstelling & Doelstellingen zijn eindtermen voor het secundair onderwijs die per graad door de Vlaamse overheid zijn vastgelegd. studenten moeten alle doelstellingen van alle graden behalen alvorens ze het diploma secundair onderwijs kunnen ontvangen. Binnen het DBSO zijn al deze doelstellingen ondergebracht in het vak PAV. De leerkrachten delen de doelstellingen op in samenhangende gehelen, zogeheten vakthema's, en brengen de doelstellingen vervolgens thema per thema bij aan de studenten. \cite{Doelstellingen} \\
+    Doelstelling & Doelstellingen zijn eindtermen voor het secundair onderwijs die per graad door de Vlaamse overheid zijn vastgelegd. Studenten moeten alle doelstellingen van alle graden behalen alvorens ze het diploma secundair onderwijs kunnen ontvangen. Binnen het DBSO zijn al deze doelstellingen ondergebracht in het vak PAV. De leerkrachten delen de doelstellingen op in samenhangende gehelen, zogeheten vakthema's, en brengen de doelstellingen vervolgens thema per thema bij aan de studenten. \cite{Doelstellingen} \\
     \hline
-    A,I,V & A (aangeboden), I (ingeoefend) en V (verworven) zijn de drie mogelijke toestanden die een aangeboden competentie of doelstelling op een bepaalde dag toegewezen kan krijgen. Indien de leerkracht `verworven' invult, betekent dit dat de student heeft aangetoond de competentie of doelstelling te beheersen, `ingeoefend' betekent dat de student inzet heeft getoond om de competentie of doelstelling te behalen maar deze nog niet volledig onder de knie heeft, en `aangeboden' betekent dat de student zich niet heeft ingezet of afwezig was. Binnen het TIHH, de opdrachtgever van dit softwarepakket, wordt een competentie of doelstelling pas als behaald beschouwd wanneer de student er drie keer een V (verworven) voor heeft gescoord, op drie verschillende dagen. Daarna wordt de student niet meer op de betreffende competentie of doelstelling beoordeeld.
+    A,I,V & A (aangeboden), I (ingeoefend) en V (verworven) zijn de drie mogelijke toestanden die een aangeboden competentie of doelstelling op een bepaalde dag toegewezen kan krijgen. Indien de leerkracht `verworven' invult, betekent dit dat de student heeft aangetoond de competentie of doelstelling te beheersen, `ingeoefend' betekent dat de student inzet heeft getoond om de competentie of doelstelling te behalen maar deze nog niet volledig onder de knie heeft, en `aangeboden' betekent dat de student zich niet heeft ingezet of afwezig was. Binnen het TIHH (Technisch Instituut Heilig Hart), de opdrachtgever van dit softwarepakket, wordt een competentie of doelstelling pas als behaald beschouwd wanneer de student er drie keer een V (verworven) voor heeft gescoord, op drie verschillende dagen. Daarna wordt de student niet meer op de betreffende competentie of doelstelling beoordeeld.
 \end{tabularx}
 
 
@@ -80,34 +77,55 @@ Het DBSO heeft slechts twee lesdagen waarop twee vakken worden aangeboden: BGV e
 
 Het doel van BGV is om de studenten alle kennis en vaardigheden bij te brengen die ze op de werkvloer nodig hebben. De inhoud van BGV hangt dan ook sterk af van de opleiding die de student volgt; BGV heeft een heel andere inhoud in de opleiding Metselaar dan in de opleiding Kok. Aan het einde van de opleiding krijgt de student een certificaat voor die opleiding uitgereikt. Om dit te behalen, moet de student eerst alle deelcertificaten binnen dit certificaat behalen (in het geval van Metselaar zijn dit er zes, waaronder `Basistechnieken metselwerk', `Bekisting' en `Funderingen op staal'). Om een deelcertificaat te behalen, moet de student alle bijhorende competenties beheersen (gemiddeld ongeveer dertig per deelcertificaat, voorbeelden binnen `Bekisting' zijn `elementen ontkisten' en `doorvoeringskokers plaatsen'). Het zijn deze competenties waar studenten wekelijks op beoordeeld worden.
 
-Het doel van PAV is om in alle doelstellingen van de 2de en 3de graad te voorzien, zodat de studenten hun diploma secundair onderwijs kunnen behalen. De inhoud van PAV wordt dan ook niet door de opleiding van de student bepaald, zoals bij BGV het geval is, maar wel door de graad waarin deze zit. Bijgevolg zitten studenten in twee verschillende klassen; een klas met studenten van dezelfde opleiding binnen BGV en een klas met studenten van dezelfde graad binnen PAV. Aangezien studenten pas vanaf het derde middelbaar naar het DBSO kunnen gaan, hoeven CDO enkel de 2de en 3de graad aan te bieden.
+Het doel van PAV is om in alle doelstellingen van de 2de en 3de graad te voorzien, zodat de studenten hun diploma secundair onderwijs kunnen behalen. De inhoud van PAV wordt dan ook niet door de opleiding van de student bepaald, zoals bij BGV het geval is, maar wel door de graad waarin deze zit. Bijgevolg zitten studenten in twee verschillende klassen; een klas met studenten van dezelfde opleiding binnen BGV en een klas met studenten van dezelfde graad binnen PAV. Aangezien studenten pas vanaf het derde middelbaar naar het DBSO kunnen gaan, hoeven CDO enkel de 2de en 3de graad aan te bieden. Leerkrachten groeperen doelstellingen in de vorm van vakthema's en presenteren deze zo aan de leerlingen. Ook kunnen leerkrachten remediëringsvakthema's voorzien die enkel de doelstellingen omvatten waar bepaalde studenten op achterlopen op de rest van de klas, bijvoorbeeld omdat ze de doelstellingen eerder niet verworven hebben of omdat ze later op het jaar zijn aangesloten. Deze vakthema's worden dan ook enkel aan de betreffende studenten in een klas aangeboden. 
+
+\begin{tikzpicture}[sibling distance=10em,
+  every node/.style = {shape=rectangle, rounded corners,
+    draw, align=center}]]
+    
+  \node {Opleiding}
+    child { node {Certificaat} 
+    	child { node {Deelcertficaat}  
+    		child { node {Competentie} } 
+    	} 
+    }
+    child { node {Graad}
+      child { node {Doelstelling } } 
+    };
+    
+    \node [draw] at (6.7, 0) {Vak}
+    child { node {PAV} 
+    	child { node {Vakthema}  
+    		child { node {Score} } } }
+    child { node {BGV}
+      child { node {Score } } };
+\end{tikzpicture}
 
 \subsection{Modulo}
-Modulo is een softwarepakket om gegevens over studenten bij te houden binnen scholen die het DBSO als onderwijsvorm toepassen. Het is echter geen algemeen beheersysteem; het bevat bijvoorbeeld geen functionaliteit om financiën te beheren, of om beschikbaar en aan te kopen lesmateriaal bij te houden.
+Modulo is een softwarepakket om gegevens over studenten bij te houden binnen scholen die het DBSO als onderwijsvorm toepassen. Het is echter geen algemeen beheersysteem; het bevat bijvoorbeeld geen functionaliteit om financiën te beheren. Wel houdt Modulo lijsten van klassen, aangeboden opleidingen en de voortgang van individuele studenten bij.
 
-Modulo onderscheidt vier types gebruikers: beheerders, leerkrachten, studenten en ouders. Alle gebruikers hebben een webapplicatie ter beschikking waarin de volledige functionaliteit van het softwarepakket voor dat type gebruiker vertegenwoordigd is. studenten en ouders hebben aanvullend toegang tot een Android applicatie, beschikbaar vanaf de Google Play Store.
+Modulo onderscheidt vier types gebruikers: beheerders, leerkrachten, studenten en ouders. Alle gebruikers hebben een webapplicatie ter beschikking waarin de volledige functionaliteit van het softwarepakket voor dat type gebruiker vertegenwoordigd is. Studenten en ouders hebben aanvullend toegang tot een Android applicatie, beschikbaar vanaf de Google Play Store.
 
-\newpage
-Het softwarepakket bestaat uit acht modules:
+Het softwarepakket bestaat uit zeven modules:
 
 \begin{enumerate}
-    \item Gebruikersbeheer
-    \item Klassenbeheer
-    \item Puntenbeheer
-    \item Voortgang van studenten
-    \item Beheer van graden en certificaten
-    \item Genereren van rapporten
-    \item Werkgeversbeheer
-    \item Genereren van werkgeverscontracten
+    \item \label{itm:mod_user_management} Gebruikersbeheer
+    \item \label{itm:mod_course_management} Beheer van graden en certificaten
+    \item \label{itm:mod_class_management} Klassenbeheer
+    \item \label{itm:mod_grades_management} Puntenbeheer
+    \item \label{itm:mod_student_progress} Voortgang van studenten
+    \item \label{itm:mod_employer_management} Werkgeversbeheer
+    \item \label{itm:mod_tasks} Taken
 \end{enumerate}
 
-Modules 1 en 2 zijn enkel beschikbaar voor beheerders. Modules 3-8 zijn beschikbaar voor leerkrachten. studenten en ouders beschikken enkel over module 5. Modulo is dus veruit het meest uitgebreid voor leerkrachten. De volgende paragrafen geven een algemeen beeld van de functionaliteiten van de verschillende modules. Voor een gedetailleerde stap-voor-stap beschrijving van de acties die gebruikers moeten nemen om bepaalde taken uit te voeren, kan sectie \ref{sec:use_cases} geraadpleegd worden.
+Modules \ref{itm:mod_user_management} en \ref{itm:mod_class_management} zijn enkel beschikbaar voor beheerders. Alle overige modules zijn beschikbaar voor leerkrachten. Studenten en ouders beschikken enkel over modules \ref{itm:mod_student_progress} en \ref{itm:mod_tasks}. Modulo is dus veruit het meest uitgebreid voor leerkrachten. De volgende paragrafen geven een algemeen beeld van de functionaliteiten van de verschillende modules. Voor een gedetailleerde stap-voor-stap beschrijving van de acties die gebruikers moeten nemen om bepaalde taken uit te voeren, kan sectie \ref{sec:use_cases} geraadpleegd worden.
 
-De taak van beheerders is, in één woord, `systeembeheer'. Via de module `Gebruikersbeheer' kunnen zij gebruikers toevoegen, verwijderen, bewerken en op actief of inactief zetten. Via de module `Beheer van graden en certificaten' kunnen zij de eindtermen van de twee vakken binnen het DBSO, BGV en PAV, aanpassen. Beheerders kunnen ook certificaten binnen BGV op inactief zetten, wanneer deze niet door de school worden aangeboden.
+\newpage
+Beheerders kunnen via module \ref{itm:mod_user_management} gebruikers toevoegen, verwijderen, bewerken en op actief of inactief zetten (wat hetzelfde effect heeft als een gebruiker verwijderen, met als verschil dat al diens gegevens bewaard blijven, waardoor de gebruiker later eenvoudig in zijn oorspronkelijke staat hersteld kan worden). Via module \ref{itm:mod_course_management} kunnen zij de eindtermen van de twee vakken binnen het DBSO, BGV en PAV, aanpassen. Beheerders kunnen ook certificaten binnen BGV op inactief zetten, wanneer deze niet door de school worden aangeboden.
 
-Leerkrachten kunnen allereerst klassen samenstellen, binnen BGV of PAV, waaraan zij les geven (module 3). Vervolgens kunnen zij binnen deze klassen per lesdag punten (A,I,V) aan studenten toekennen, met toevoeging van commentaar (module 4). Deze punten kunnen zij later ook opvragen in een scherm dat zowel algemene als gedetailleerde voortgang toont (module 5). Dit scherm kan ook worden omgezet in de vorm van een rapport en worden afgedrukt (module 6). Daarnaast kunnen leerkrachten de werkgeversdatabank, een lijst van alle werkgevers waar studenten hun praktijkdagen kunnen bij doorbrengen, bewerken, en kunnen ze studenten aan werkgevers koppelen (module 7). Tenslotte kunnen ze ook contracten tussen studenten en werkgevers genereren, op basis van sjablonen, en deze afdrukken om te laten ondertekenen (module 8).
+Leerkrachten kunnen allereerst klassen samenstellen, binnen BGV of PAV, waaraan zij les geven (module \ref{itm:mod_class_management}). Vervolgens kunnen zij binnen deze klassen per lesdag punten (A,I,V) aan studenten toekennen, met toevoeging van commentaar (module \ref{itm:mod_grades_management}). Deze punten kunnen zij later ook opvragen in een scherm dat zowel algemene als gedetailleerde voortgang toont, of ze kunnen de punten in rapport vorm afdrukken (module \ref{itm:mod_student_progress}). Daarnaast kunnen leerkrachten de werkgeversdatabank, een lijst van alle werkgevers waar studenten hun praktijkdagen kunnen bij doorbrengen, bewerken, kunnen ze studenten aan werkgevers koppelen en kunnen ze contracten tussen deze studenten en werkgevers genereren, op basis van sjablonen, en deze afdrukken om te laten ondertekenen (module \ref{itm:mod_employer_management}). Tenslotte kunnen leerkrachten taken aan studenten toekennen en vervolgens de inzendingen van de studenten beoordelen (module \ref{itm:mod_tasks}).
 
-Studenten en ouders kunnen enkel respectievelijk hun eigen voortgang en die van hun kinderen bekijken (module 5). Indien ouders meerdere kinderen op de school hebben, kunnen zij kiezen uit een lijst van kinderen om de voortgang van te bekijken. De voortgang kan bekeken worden zowel via de web- als via de mobiele applicatie. Het idee van de mobiele applicatie is om het laagdrempeliger te maken voor ouders en studenten om regelmatig de voortgang te bekijken.
+Studenten en ouders kunnen respectievelijk hun eigen voortgang en die van hun kinderen bekijken (module \ref{itm:mod_student_progress}). Indien ouders meerdere kinderen op de school hebben, kunnen zij kiezen uit een lijst van kinderen om de voortgang van te bekijken. De voortgang kan bekeken worden zowel via de web- als via de mobiele applicatie. Hetzelfde geldt voor taken; studenten kunnen een inzending maken voor aan hen toegekende taken (enkel via de web applicatie) en zowel ouders als kinderen kunnen de status van alle toegekende taken bekijken (zowel via de web- als de mobiele applicatie) (module \ref{itm:mod_tasks}).
 
 
 
@@ -117,55 +135,65 @@ Studenten en ouders kunnen enkel respectievelijk hun eigen voortgang en die van 
 
 \subsubsection{Gebruikersbeheer}
 \begin{enumerate}[label=F\arabic*]
-\item Het systeem moet toelaten om gebruikers toe te voegen en te verwijderen. Hierbij wordt een account voor de gebruiker aangemaakt (of verwijderd).
-\item \label{itm:account_info} Het systeem moet de beheerder toelaten om accountgerelateerde informatie \footnote{Dit zijn e-mailadres, wachtwoord, voornaam en achternaam.} van een gebruiker aan te passen.
-\item Het systeem moet toelaten om aan een gebruiker een rol (leerkracht, student, beheerder, ouder) toe te kennen.
-\item Het systeem moet toelaten om in te stellen of een gebruiker al dan niet actief is. Dit houdt in dat de gebruiker niet meer in het systeem voorkomt, maar alle persoonlijke info opgeslagen blijft in het systeem, voor het geval deze terug actief zou worden \footnote{Ter motivatie hiervan vermelden we dat het in het deeltijds onderwijs voorvalt dat studenten zich gedurende hun opleiding uitschrijven. Maar dan later, wanneer bv. blijkt dat ze geen werk vinden, ze alsnog hun opleiding willen verder zetten.}.
-\item \label{itm:pers_info} Het systeem moet toelaten om de persoonlijke informatie van een student \footnote{Deze info bestaat uit: geboortedatum, geboorteplaats, nationaliteit, rijksregisternummer, straat, nummer, bus, postcode, gemeente, gsm, telefoon ouders, rekeningnummer en het account van de ouder. We houden deze info alleen bij voor studenten omdat de school apart de gegevens van het personeel bijhoudt en we het telefoonnummer van de ouders bij de student bijhouden.} aan te passen.
-\item \label{itm:inschr_info} Het systeem moet toelaten om inschrijvingsgerelateerde informatie \footnote{Dit is de info over hun opleiding, bestaand uit hun graad en certificaat.} van een student aan te passen.
+\item \label{itm:account_info} Het systeem moet toelaten om gebruikers toe te voegen, waarbij een account voor de gebruiker wordt aangemaakt. Hierbij moet de accountgerelateerde informatie\footnote{Dit zijn de rol (leerkracht, student, beheerder, ouder), e-mailadres, wachtwoord, voornaam en achternaam.} worden ingevuld. Een gebruiker moet ook verwijderd en bewerkt kunnen worden. Er moet ook een overzicht voorzien worden van alle gebruikers in het systeem.
+\item \label{itm:student_info} Het systeem moet toelaten om voor een gebruiker met als rol `student' persoonlijke informatie\footnote{Deze info bestaat uit: geboortedatum, geboorteplaats, nationaliteit, rijksregisternummer, straat, nummer, bus, postcode, gemeente, gsm, telefoon ouders en rekeningnummer. We houden deze info alleen bij voor studenten omdat de school apart de gegevens van het personeel bijhoudt en we het telefoonnummer van de ouders bij de student bijhouden.} en inschrijvingsgerelateerde informatie\footnote{Dit is de info over hun opleiding, bestaande uit hun graad en certificaat.} in te vullen bij het aanmaken van de gebruiker, of aan te passen bij het bewerken van deze gebruiker.
+\item Het systeem moet toelaten om (het account van) \'e\'en ouder te koppelen aan een student. Per student wordt dus hoogstens \'e\'en ouder-account voorzien. Als ouder kan men de voortgang van de student(en) waaraan die ouder gekoppeld is, bekijken.
+\item Het systeem moet toelaten om in te stellen of een gebruiker al dan niet actief is. Een inactieve gebruiker komt niet meer voor in het systeem, maar alle persoonlijke info blijft beschikbaar. Daardoor kan de student zich niet meer aanmelden, en kunnen leerkrachten die student niet meer zien om er bv.\ een score aan toe te kennen. Indien later de gebruiker terug op actief gezet zou worden, moet men niet opnieuw alle info invullen\footnote{Ter motivatie hiervan vermelden we dat het in het deeltijds onderwijs voorvalt dat studenten zich gedurende hun opleiding uitschrijven. Maar dan later, wanneer bv. blijkt dat ze geen werk vinden, ze alsnog hun opleiding willen verder zetten.}.
 \end{enumerate}
 
 \subsubsection{Beheer van graden en certificaten}
 \begin{enumerate}[label=F\arabic*,resume]
-\item Het systeem moet de PAV-doelstellingen per graad, opgelegd door de overheid, voorzien. Deze moeten dus niet meer door de beheerder worden toegevoegd. De doelstellingen in deze lijst kunnen bewerkt worden door de beheerder. \footnote{De motivatie achter het manueel aanpassen van doelstellingen is dat deze doelstellingen door de overheid vaak moeilijk of onduidelijk verwoord zijn.}
-\item Het systeem moet de BGV-competenties per deelcertificaat per certificaat, opgelegd door de overheid, voorzien. Deze moeten dus niet meer door de beheerder worden toegevoegd. De competenties in deze lijst kunnen hernoemd worden door de beheerder.
-\item Het systeem moet toelaten om van een certificaat in te stellen of dit al dan niet door de school wordt aangeboden \footnote{De overheid lijst zo'n 150 certificaten op, maar een school zal er typisch slechts zo'n 20 aanbieden}.
+\item Het systeem moet een beheerder toelaten om de doelstellingen (binnen een graad) te bewerken. Er kunnen geen doelstellingen aangemaakt of verwijderd worden \footnote{De motivatie achter het manueel aanpassen van doelstellingen is dat deze doelstellingen door de overheid vaak moeilijk of onduidelijk verwoord zijn.}. Er moet een overzicht weergegeven kunnen worden van alle doelstellingen van een bepaalde graad.
+\item Het systeem moet een beheerder toelaten om de competenties (binnen een deelcertificaat, binnen een certificaat) te bewerken. Er kunnen geen competenties aangemaakt of verwijderd worden. Er moet een overzicht weergegeven kunnen worden van alle certificaten. Voor een certificaat moet er een overzicht weergegeven worden van de deelcertificaten. Voor een deelcertificaat moet er een overzicht weergegeven kunnen worden van de competenties.
+\item Het systeem moet toelaten om van een certificaat in te stellen of dit al dan niet door de school wordt aangeboden \footnote{De overheid lijst zo'n 150 certificaten op, maar een school zal er typisch slechts zo'n $20$ aanbieden}.
 \end{enumerate}
 
 \subsubsection{Klassenbeheer}
 \begin{enumerate}[label=F\arabic*,resume]
-\item Het systeem moet toelaten aan een leerkracht om PAV- en BGV-klassen toe te voegen, te verwijderen en te bewerken.
-\item Het systeem moet toelaten studenten aan klassen toe te wijzen.
+\item Het systeem moet een leerkracht toelaten om een PAV-klas aan te maken, te verwijderen en te bewerken. De naam en graad moeten ingevuld worden. Ook moet het systeem een overzicht kunnen geven van alle PAV-klassen waar de leerkracht les aan geeft.
+\item Het systeem moet een leerkracht toelaten om een BGV-klas aan te maken, te verwijderen en te bewerken. De naam en het certificaat moeten ingevuld worden. Ook moet het systeem een overzicht kunnen geven van alle BGV-klassen waar de leerkracht les aan geeft.
+\item Het systeem moet een leerkracht toelaten om studenten aan een klas toe te voegen, een overzicht op te vragen van de studenten die in de klas zitten, en er studenten uit te verwijderen.
+\item Het systeem moet een leerkracht toelaten om een vakthema voor een PAV-klas aan te maken, te verwijderen en te bewerken. De naam en beschrijving van het vakthema moeten ingevuld worden. Ook moet het systeem een overzicht kunnen geven van alle aangemaakte vakthema's. \footnote{Deze functie is niet mogelijk voor een BGV-klas.}
+\item Het systeem moet een leerkracht toelaten om een remediëringsvakthema voor een aantal studenten van een PAV-klas aan te maken, te verwijderen en te bewerken. De naam en beschrijving van het remediëringsvakthema moeten ingevuld worden. Ook moet het systeem een overzicht kunnen geven van alle aangemaakte remediëringsvakthema's. \footnote{Deze functie is niet mogelijk voor een BGV-klas.}
+\item Het systeem moet toelaten om doelstellingen aan een vakthema of remediëringsvakthema toe te voegen, een overzicht van de toegevoegde doelstellingen op te vragen, en er doelstellingen uit te verwijderen.
+\item Het systeem moet toelaten om bij het aanmaken van een vakthema een bestaand vakthema in te laden, als een soort template. Alleen de vakthema's die tot dezelfde graad behoren als de graad van de klas waarvoor het vakthema aangemaakt wordt, kunnen gekozen worden. De naam, beschrijving en doelstellingen worden dan automatisch ingevuld voor het nieuwe vakthema.
 \end{enumerate}
 
 \subsubsection{Puntenbeheer}
 \begin{enumerate}[label=F\arabic*,resume]
-\item Het systeem moet toelaten om een vakthema of remediëringstaak aan een aantal studenten van een klas toe te kennen. Deze worden opgebouwd uit doelstellingen. 
-\item Het systeem moet toelaten om een score (A,I,V) (zie woordenlijst) toe te kennen aan een doelstelling binnen een vakthema, voor een student.
-\item Het systeem moet toelaten om een score (A,I,V) toe te kennen aan een competentie binnen een deelcertificaat, voor een student.
-\item Het systeem moet automatisch het behalen van een competentie blokkeren voor een student, indien deze reeds drie maal verworven (score V) werd.  % 3x verwerven == behaald
-\item Het systeem moet toelaten om een beschrijving te geven bij het verwerven van een competentie of doelstelling, en de datum waarop deze verworven werd in te stellen.
+\item Het systeem moet toelaten om eenmalig een score (A,I,V) (zie woordenlijst) toe te kennen aan een doelstelling binnen een vakthema, voor een student. Ook moeten commentaar en de datum waarop de score behaald werd, ingesteld kunnen worden. Het systeem moet een overzicht kunnen geven van de toegekende score voor iedere doelstelling. De score, commentaar en datum moeten bewerkt kunnen worden.
+\item Het systeem moet toelaten om meermaals een score (A,I,V) toe te kennen aan een competentie binnen een deelcertificaat, voor een student. Ook moeten commentaar en de datum waarop de score behaald werd, ingesteld kunnen worden. Het systeem moet een overzicht kunnen geven van de toegekende score voor iedere competentie. De score, commentaar en datum moeten bewerkt kunnen worden.
+\item Het systeem moet toelaten om meerdere studenten gelijktijdig eenzelfde score (met eenzelfde commentaar en datum) toe te kennen. Dit is dus een multi-select. Ook voor het bewerken van scores (met commentaar en datum) moet deze multi-select mogelijk zijn.
+\item Het systeem moet automatisch het behalen van een competentie of doelstelling blokkeren voor een student, indien deze reeds drie maal verworven (score V) werd.
 \end{enumerate}
 
 \subsubsection{Voortgang van studenten}
 \begin{enumerate}[label=F\arabic*,resume]
-\item Het systeem moet het verloop van het jaar kunnen weergeven. Dit overzicht toont voor één student de behaalde scores (A, I, V) per competentie per week.
-\item Het systeem moet toelaten om een ingevuld rapport te genereren, voor een student.
-\item Het systeem moet bijhouden (loggen) wanneer een ouder of student de voortgang bekijkt.
+\item Het systeem moet het verloop van het jaar kunnen weergeven per student voor PAV. Dit overzicht toont de behaalde score (A, I, V) per doelstelling per week. In totaal zijn er $38$ lesweken.
+\item Het systeem moet het verloop van het jaar kunnen weergeven per student voor een deelcertificaat. Dit overzicht toont de behaalde score (A, I, V) per competentie (voor dat deelcertificaat) per week. In totaal zijn er $38$ lesweken.
+\item Het systeem moet toelaten om een ingevuld rapport te genereren, voor een student. Ten eerste geeft dit aan hoeveel procent van de doelstellingen behaald (drie maal verworven) werden in de huidige graad (op het moment van het genereren van het rapport). Ten tweede geeft het rapport per deelcertificaat aan hoeveel procent van de competenties behaald werden. Ten derde geeft het rapport een algemeen overzicht, waarin wordt aangegeven hoeveel procent van de doelstellingen en competenties van alle graden en deelcertificaten samen behaald werden.
+\item Het systeem moet loggen (timestamp bijhouden) wanneer een ouder of student de voortgang bekijkt. Als admin kan deze log opgevraagd worden. De log moet ook gewist kunnen worden \footnote{De motivatie hierachter is dat men de log aan het einde van het schooljaar niet meer nodig heeft.}.
 \end{enumerate}
 
 \subsubsection{Werkgeversbeheer}
 \begin{enumerate}[label=F\arabic*,resume]
-\item \label{itm:werkgever_info} Het systeem moet leerkrachten toelaten om werkgevers waar de school mee samenwerkt\footnote{In het deeltijds onderwijs werkt een school vaak samen met bedrijven. Info over deze bedrijven wordt gebruikt in item \ref{itm:werkgever1} en \ref{itm:werkgever2}. Een werkgever heeft geen account binnen Modulo.} toe te voegen en te verwijderen, en informatie over een werkgever\footnote{Dit zijn: bedrijfsnaam, juridische vorm, BTW nummer, RSZ nummer, IPK nummer, PC nummer, erkenning PC, adres, telefoon, fax, email, rekeningnummer, verantwoordelijke (persoon die de student in dienst neemt: naam, adres, telefoon, email).} aan te passen.
-\item Het systeem moet toelaten om voor een werkgever in te stellen of er momenteel al dan niet een actieve samenwerking is. Dit houdt in dat de werkgever al dan niet kan toegewezen worden aan een student (zie \ref{itm:werkgever1}). \footnote{De werkgever zal niet op ieder moment studenten kunnen te werk stellen.}
-\item \label{itm:werkgever1} Het systeem moet toelaten aan een leerkracht om een werkgever (waar de school mee samenwerkt) aan een student toe te wijzen.
+\item \label{itm:werkgever_info} Het systeem moet de beheerder toelaten om werkgevers waar de school mee samenwerkt toe te voegen \footnote{In het deeltijds onderwijs werkt een school vaak samen met bedrijven.}. Het systeem moet allerlei info bijhouden over de werkgever \footnote{Deze info bestaat uit de bedrijfsnaam, juridische vorm, BTW nummer, RSZ nummer, IPK nummer, PC nummer, erkenning PC, adres, telefoon, fax, email, rekeningnummer, naam en telefoon van de verantwoordelijke binnen het bedrijf.}. Een werkgever heeft geen account binnen Modulo, en dus geen toegang tot het systeem. Het systeem moet ook toelaten om een overzicht van alle werkgevers te geven, en een werkgever te bewerken of te verwijderen.
+\item \label{itm:werkgever1} Het systeem moet toelaten aan een leerkracht om een werkgever (waar de school mee samenwerkt) aan een student toe te wijzen. Ook moet het systeem een overzicht kunnen geven dat per student de toegewezen werkgever toont (indien reeds een werkgever werd toegewezen). Een koppeling moet ook verwijderd kunnen worden.
+\item Het systeem moet de beheerder toelaten om voor een werkgever in te stellen of er momenteel al dan niet een actieve samenwerking is. Dit houdt in dat de werkgever al dan niet door een leerkracht toegewezen kan worden aan een student (zie \ref{itm:werkgever1}). \footnote{De werkgever zal niet op ieder moment studenten kunnen te werk stellen.}
+\item \label{itm:werkgever2} Het systeem moet toelaten om een contract te genereren voor de samenwerking tussen een student en werkgever. Het contract moet alle persoonlijke info over de student (zie \ref{itm:student_info}) en alle info over de werkgever (zie \ref{itm:werkgever_info}) bevatten. Het precieze uitzicht van het contract wordt in appendix \ref{vbContract} getoond.
 \end{enumerate}
 
-\subsection{Genereren van werkgeverscontracten}
+\subsubsection{Takenbeheer}
 \begin{enumerate}[label=F\arabic*,resume]
-\item \label{itm:werkgever2} Het systeem moet toelaten om een contract te genereren voor de samenwerking tussen student en werkgever. In het gegenereerde contract moet alle info over de student en de werkgever automatisch worden ingevuld.
+\item Het systeem moet een leerkracht toelaten om een taak aan te maken, te verwijderen en te bewerken. De PAV-klas, naam van de taak, beschrijving en deadline van de taak moeten ingevuld worden. Ook moet het systeem een overzicht kunnen geven dat alle aangemaakte taken toont. \footnote{Deze functie is niet mogelijk voor een BGV-klas.}
+\item Het systeem moet een student toelaten om één bestand te uploaden als oplossing voor een taak.
+\item Het systeem moet een student toelaten om een overzicht op te vragen van alle taken waar hij/zij nog geen oplossing voor heeft geüpload.
+\item Het systeem moet een ouder toelaten om een overzicht op te vragen van alle taken waar zijn/haar kind nog geen oplossing voor heeft geüpload.
+\item Het systeem moet een leerkracht toelaten om voor een taak een overzicht op te vragen dat per leerling aangeeft of deze reeds een oplossing geüpload heeft, en welke score de leerkracht gaf (indien reeds een score gegeven werd).
+\item Het systeem moet een leerkracht toelaten om alle geüploade oplossingen voor een taak te downloaden. Dit zowel één voor één, als in één zip-bestand die alle taken bundelt.
+\item Het systeem moet een leerkracht toelaten om een student een score (A,I,V) te geven op een geüploade oplossing. Hierbij kan (optioneel) een korte commentaar geschreven worden. De score en commentaar moeten ook bewerkt kunnen worden.
+\item Het systeem moet toelaten om meerdere studenten gelijktijdig eenzelfde score en commentaar toe te kennen. Dit is dus een multi-select. Ook voor het bewerken van de score en commentaar moet deze multi-select mogelijk zijn.
 \end{enumerate}
-
 
 % extra's worden in 'systeemevolutie' besproken
 
@@ -176,12 +204,18 @@ Om een vlotte werking te bevorderen, kunnen meerdere items tegelijk uit lijsten 
 
 Consistentie wordt bereikt door middel van eenzelfde design (kleurenschema, fonts en ontwerp van elementen) over de gehele web- en mobiele applicatie heen. Ook een consistente woordkeuze (bv. voortgang van studenten wordt steeds `voortgang' genoemd en niet soms `punten' of `resultaten') en een consistente layout (bv. knoppen om items in een lijst te bewerken, toe te voegen of te verwijderen kunnen steeds in dezelfde plaats gevonden worden, of het nu om punten voor een vak of studenten in een klas gaat) dragen hiertoe bij.
 
+Modulo voorziet voor iedere graad reeds de bijhorende doelstellingen, opgelegd door de overheid. Ook voorziet Modulo reeds alle certificaten die door de overheid erkend zijn. De bijhorende deelcertificaten, met hun bijhorende competenties, worden ook voorzien. Hierdoor moet de admin al deze info niet meer zelf invullen bij het in gebruik nemen van Modulo.
+
+\todo[inline]{usability: gebruiksvriendelijke aanpak van vakthemas}
+
 \subsection{Reliability}
 Zowel de web- als de mobiele applicatie zijn slechts interfaces naar de back-end. Bijgevolg is uptime van de back-end servers essentieel voor de reliability van het softwarepakket. Om die reden wordt hosting van deze servers uitbesteed aan een gespecialiseerd bedrijf met een hoge uptime garantie, dat deze taak vermoedelijk goedkoper en betrouwbaarder kan uitvoeren dan het ontwikkelingsteam zelf.
 
 
 \subsection{Performance}
-Op het vlak van performantie zijn er geen specifieke vereisten, maar een vlotte werking van het softwarepakket is uiteraard belangrijk. Daarom moeten lange responstijden en merkbare laadtijden tot een minimum beperkt worden. Het ontwikkelingsteam profileert de performantie en voert optimalisaties door waar nodig en mogelijk. Volgens het RAIL performantie model \cite{RAIL}, moeten performantievertragingen beperkt worden tot 300ms - 1000ms. De gebruiker ervaart dan natuurlijke en progressieve voortgang van taken.
+Op het vlak van performantie zijn er geen specifieke vereisten, maar een vlotte werking van het softwarepakket is uiteraard belangrijk. Daarom moeten lange responstijden en merkbare laadtijden tot een minimum beperkt worden. Het ontwikkelingsteam profileert de performantie en voert optimalisaties door waar nodig en mogelijk. 
+% Deze tijd was onmogelijk, dus beter weglaten, als we dit nu toch niet kunnen waarmaken?
+% Volgens het RAIL performantie model \cite{RAIL}, moeten performantievertragingen beperkt worden tot 300ms - 1000ms. De gebruiker ervaart dan natuurlijke en progressieve voortgang van taken.
 
 
 \subsection{Supportability}
@@ -215,16 +249,22 @@ Het softwarepakket bestaat uit 3 deelsystemen:
   \label{fig:Systeemarchitectuur}
 \end{figure}
 
-De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Framework} \cite{Spring}. Voor de webapplicatie worden het \textit{AngularJS Framework} \cite{AngularJS} en het \textit{Bootstrap Framework} \cite{Bootstrap} gebruikt. De mobiele applicatie is beschikbaar voor het Android platform en wordt opnieuw in Java geïmplementeerd. De interactie tussen de front-end en back-end gebeurt door middel van zogenoemde \textit{RESTful} communicatie \cite{REST}. MySQL \cite{MySQL} wordt gebruikt als databasemanagementsysteem en wordt samen met de back-end gehost op een \textit{Tomcat} \cite{Tomcat} server.
+De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Framework} \cite{Spring}. Voor de webapplicatie worden het \textit{AngularJS Framework} \cite{AngularJS} en het \textit{Bootstrap Framework} \cite{Bootstrap} gebruikt. De mobiele applicatie is beschikbaar voor het Android platform en wordt opnieuw in Java geïmplementeerd. De interactie tussen de front-end en back-end gebeurt door middel van zogenoemde \textit{RESTful} communicatie \cite{REST}. MySQL \cite{MySQL} wordt gebruikt als databasemanagementsysteem en wordt samen met de back-end gehost op een \textit{Tomcat} \cite{Tomcat} server.\todo{Zin toegevoegd, klant + gratis = goed?} Deze technologie stack kan op vele systemen gratis geïnstalleerd worden.
 
 \newpage
 \subsection{Motivatie}
 \begin{description}
-    \item[Java] is een volwaardige objectgeoriënteerde programmeertaal. Het is een strongly typed programmeertaal die zich uitstekend leent voor business logic. Java beschikt over een groot aantal uitgebreide frameworks voor quasi alle denkbare toepassingen. We kiezen niet voor PHP, omdat deze taal niet voldoende object-georiënteerd is en weakly typed is. Java lijkt ook een betere keuze dan C\# wegens het cross-platform karakter van de taal.
-    \item[MySQL] is een vrij te gebruiken relationeel databasemanagementsysteem. Dit veel gebruikt relationeel databasesysteem voldoet aan al onze noden.
+    \item[Java] We wensen gebruik te maken van een programmeertaal die zich uitstekend leent voor business logica en veel gebruikt wordt in het enterprise landschap. De twee programeertalen die hiervoor typisch gebruikt worden zijn C\# en Java, waarbij onze keuze valt op Java. Eén van de voordelen van deze taal is het cross-platform karakter. Een bijkomend voordeel is dat Java beschikt over een uitgebreid aantal frameworks en bibliotheken die ontwikkeling vergemakkelijkt. Het is een robuuste en veel gebruikte taal die al meer dan 20 jaar wordt gebruikt en waar periodiek een nieuwe versie van worden uitgebracht door \textit{Oracle}. Ze is backwards compatible: oudere code werkt nog steeds op nieuwere versies van de \textit{Java Virtual Machine}.
+    
+    \item[MySQL] \todo{veranderen door PostresSQL} is een vrij te gebruiken relationeel database-managementsysteem, beheerd door \textit{Oracle}. Het systeem is al lang op de markt en heeft zich al meermaals bewezen. Het is een wijd geadopteerd systeem dat door vele bedrijven gebruikt wordt, onder andere door Smartschool. In vergelijking met andere database systemen, zoals Postgres, is het trager voor complexere queries, maar sneller voor eenvoudige queries. Omdat ons systeem juist enkel gebruik maakt van eenvoudige queries, is MySQL een goede keuze. 
+    
     \item[Spring Framework] is een antwoord op de kritiek die gericht is aan de werking van het klassieke Java EE. Eén van de grote sterktes is de uitgebreide documentatie. Met behulp van Spring is men in staat om snel een API te ontwikkelen. Ook hebben we het Jersey Framework overwogen, maar kozen we toch voor Spring wegens alle andere extra componenten die het framework te bieden heeft (o.a. Spring Web, Spring Security en Spring Data).
-    \item[Angular JS Framework] is een framework gebaseerd op JavaScript en dient als communicatiemiddel tussen back-end en front-end. Het is eenvoudig en handig voor snelle ontwikkeling van web pagina's. Ook is het gemakkelijk te combineren met HTML en CSS en is het compatibel met andere frameworks en libraries (bv. Bootstrap). We verkiezen AngularJS boven custom javascript om ons platform modulair, consistent en uitbreidbaar te houden.
-    \item[Bootstrap Framework] is een van de meest populaire HTML, CSS en JavaScript frameworks gebruikt voor de ontwikkeling van responsieve webapplicaties. Bootstrap maakt front-end web ontwikkeling sneller en makkelijker, het is flexibel en het levert zowel op desktop- als op mobiele platformen mooie resultaten op. Omdat Bootstrap gebruik maakt van JQuery functionaliteit en JQuery niet optimaal samenwerkt met AngularJS, wordt er gebruik gemaakt van de eenvoudige Angular-UI \cite{AngularUI} Bootstrap bibliotheek. 
+    
+    \item[AngularJS] is een JavaScript framework dat is ontwikkeld en voornamelijk wordt onderhouden door Google. Dit framework kende in de afgelopen jaren een explosieve groei en werd immens populair voor de ontwikkeling van \textit{single page applications}. Het grote voordeel van AngularJS ten opzichte van het tradionele JavaScript is de mogelijkheid tot een snellere ontwikkeling. Ook biedt het framework uitstekende mogelijkheden voor testing, dat de kwaliteit van het product alleen ten goede komt. \todo{Nog iets zeggen over versie 2 of enkel op de verdediging?}
+
+    \item[Bootstrap CSS] is een van de meest populaire CSS frameworks, ontwikkeld door Twitter, dat gebruikt wordt voor de ontwikkeling van responsieve webapplicaties. Voordelen zijn de vereenvoudigde en versnelde ontwikkeling, consitentie van de look-and-feel. Webpagina's met Bootstrap zijn \textit{responsive} out-of-the-box, d.w.z. dat de webpagina zich automatisch aanpast aan de grote van het beeldscherm.
+    Bootstrap maakt gebruik van JQuery, een andere JavaScript framework dat niet compatibel is met AngularJS. Om toch alle voordelen te kunnen gebruiken van Bootstrap, kan er gebruik gemaakt worden van de eenvoudige Angular-UI \cite{AngularUI} Bootstrap bibliotheek.
+    \todo{Jquery en Angular en compatibility misschien nog wat toelichten.}
 \end{description}
 
 
@@ -236,9 +276,9 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 %BEHEERDER
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+In alle use cases die in dit sectie voorkomen geldt de preconditie dat de leerkracht aangemeld is.
+
 \subsection{Beheerder}
-
-
 %Gebruikers toevoegen
 \begin{usecase}
     \addtitle{Use Case 1}{Gebruiker toevoegen} 
@@ -247,12 +287,12 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     } 
     \additemizedfield{Stakeholders en interests}{ 
         \item Beheerder: Andere mensen toegang geven tot het systeem.
-        \item student: De student krijgt toegang tot het systeem.
+        \item Student: De student krijgt toegang tot het systeem.
         \item Leerkracht: De leerkracht krijgt toegang tot het systeem.
         \item Ouder: De ouder krijgt toegang tot het systeem.
     }
     \addfield{Preconditie}{
-        De beheerder moet aangemeld zijn. De certificaten en graden moeten bestaan.
+        De certificaten en graden moeten bestaan.
     }
     \addfield{Postconditie}{
         De gegevens over de gebruiker worden correct opgeslagen.
@@ -262,8 +302,8 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
         \item Het systeem geeft een lijst weer van alle gebruikers.
         \item Beheerder kiest ``Toevoegen''.
         \item Systeem toont een dropdown waarmee de gebruikersrol dient ingesteld te worden, deze staat default op student.
-        \item Beheerder laat de dropdown op ``student'' staan.
-        \item Systeem toont een leeg formulier waarin alle informatie over de student moet worden ingevuld. Dit zijn de persoonlijke, accountgerelateerde en inschrijvingsgerelateerde informatie (zie \ref{itm:pers_info}, \ref{itm:account_info} en \ref{itm:inschr_info} ).
+        \item Beheerder kiest ``student''  als gebruikersrol.
+        \item Systeem toont een leeg formulier waarin alle informatie over de student moet worden ingevuld. Dit zijn de persoonlijke, accountgerelateerde en inschrijvingsgerelateerde informatie (zie \ref{itm:student_info}, \ref{itm:account_info} en \ref{itm:student_info} ).
         \item Beheerder vult alle benodigde informatie in.
         \item Beheerder bevestigt ingevulde informatie door op ``Aanmaken'' te klikken.
         \item Systeem toont de aangepaste lijst met gebruikers.
@@ -272,10 +312,8 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
         \item[5.a] Beheerder kiest ``leerkracht'' als gebruikersrol.
         \item[5.b] Beheerder kiest ``beheerder'' als gebruikersrol.
         \item[5.c] Beheerder kiest ``ouder'' als gebruikersrol.
-        \item[6.a] Alleen accountgerelateerde info moet ingevuld worden.
-        \item[6.b] Alleen accountgerelateerde info moet ingevuld worden.
-        \item[6.c] Alleen accountgerelateerde info moet ingevuld worden.
-        \item[9.a] Foutieve gegevens: Systeem behoud de huidige pagina en geeft een error message bij de foutieve informatie (user bestaat al, verkeerd formaat email of rekeningnummer.
+        \item[6.a-c] Alleen accountgerelateerde info moet ingevuld worden.
+        \item[9.a] Foutieve gegevens: Systeem behoudt de huidige pagina en geeft een error message bij de foutieve informatie (user bestaat al, verkeerd formaat email of rekeningnummer).
     }
     \addfield{Frequentie van voorkomen}{
         Op dagen waarop studenten zich in de school kunnen inschrijven, zal deze functie meermaals per dag gebruikt worden. Buiten deze periode wordt de functionaliteit amper gebruikt.
@@ -283,36 +321,87 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 \end{usecase}
 
 
-
-
-% Gebruikers wijzigen en verwijderen
+\todo{nakijken}
+% Gebruikers wijzigen
 \begin{usecase}
-    \addtitle{Use Case 2}{Gebruiker bewerken/verwijderen} 
+    \addtitle{Use Case 2}{Gebruiker bewerken} 
     \additemizedfield{Actoren}{
     	\item Beheerder
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        Beheerder meldt zich aan via de webapplicatie. Beheerder kiest ``Gebruikersbeheer''. Het systeem geeft een lijst weer van alle gebruikers. Hier kan de beheerder kiezen om een gebruiker te bewerken, verwijderen of actief/inactief te zetten door op het juiste icon te klikken. De gebruiker kiest voor bewerken, nu kan hij de rol, de persoonlijke, accountgerelateerde en inschrijvingsgerelateerde informatie (zie \ref{itm:pers_info}, \ref{itm:account_info} en \ref{itm:inschr_info} aanpassen.
+        Beheerder kiest ``Gebruikersbeheer''. Het systeem geeft een lijst weer van alle gebruikers. Hier kan de beheerder kiezen om een gebruiker te bewerken door op het icoon te klikken. 
+        De gebruiker kiest voor bewerken. Systeem toont een formulier waar alle   inschrijvingsgerelateerde informatie (zie \ref{itm:student_info}, \ref{itm:account_info} en \ref{itm:student_info}) reeds ingevuld is van de geselecteerde gebruiker. Deze info kan hier aangepast worden. De beheerder klikt op de knop ``Opslaan''.
     }
 \end{usecase}
 
-
-% certificaten beheren
+\todo{nakijken}
+% Gebruikers verwijderen
 \begin{usecase}
-    \addtitle{Use Case 3}{Graden/certificaten beheren} 
+    \addtitle{Use Case 3}{Gebruiker verwijderen} 
     \additemizedfield{Actoren}{
     	\item Beheerder
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        Beheerder meldt zich aan via de webapplicatie. Beheerder gaat naar het menu graden/certificaten. Men kiest voor PAV of BGV. In het geval van PAV kiest men vervolgens voor de graad die men wil bewerken. De beheerder krijgt nu een overzicht van de doelstellingen van die graad. Tenslotte klikt men op de doelstelling om deze te wijzigen. \\
-         \item[] \textbf{Alternatieve scenarios:} \\
-        Indien er voor BGV gekozen wordt, kiest men het certificaat. Hiervoor kan ingesteld worden of deze al dan niet wordt aangeboden door de school. De beheerder selecteert vervolgens het deelcertificaat dat gewijzigd moet worden. Het systeem toont de bijhorende competenties. De beheerder selecteert een competentie om deze aan te passen.\\
+        Beheerder kiest ``Gebruikersbeheer''. Het systeem geeft een lijst weer van alle gebruikers. Hier kan de beheerder kiezen om een gebruiker te verwijdere door op het icoon te klikken. 
+        De gebruiker kiest voor verwijderen. Systeem toont een pop-up met de vraag of de geselecteerde gebruiker zeker verwijderd wil worden. Beheerder klikt op de knop ``Bevestigen''.
+        \item[] \textbf{Alternatieve scenarios:} \\
+        De beheerder kan in de pop-up de actie annuleren door op de knop ``Annuleren'' te klikken.
     }
 \end{usecase}
 
 
+\todo{nakijken}
+% Certificaten beheren (actief/inactief)
+\begin{usecase}
+    \addtitle{Use Case 4}{Certificaten beheren} 
+    \additemizedfield{Actoren}{
+    	\item Beheerder
+    }
+    \addscenario{Beschrijving}{
+        \item[] \textbf{Hoofdscenario:} \\
+        Beheerder gaat naar het menu ``Certificaten''. Het systeem toont een lijst van alle certificaten. Achter ieder certificaat staat een icoon dat aanduidt of het certificaat actief of inactief staat. De beheerder scrollt tot hij het gewenste certificaat tegenkomt en klikt op het icoon. Het systeem toont een pop-up dat bevestiging vraagt. De beheerder klikt op ``Bevestigen''.
+        \item[] \textbf{Alternatief scenario:}\\
+        In plaats van te scrollen tot het gewenste certificaat gevonden is, zoekt de beheerder het certificaat aan de hand van een zoekbalk.\\
+        In plaats van akkoord te gaan met de wijziging, klikt de beheerder op ``Annuleer''.
+    }
+\end{usecase}
+
+
+\todo{nakijken}
+% Competenties (BGV) beheren
+\begin{usecase}
+    \addtitle{Use Case 5}{Competenties beheren} 
+    \additemizedfield{Actoren}{
+    	\item Beheerder
+    }
+    \addscenario{Beschrijving}{
+        \item[] \textbf{Hoofdscenario:} \\
+        Beheerder gaat naar het menu ``Opleidingen beheren''. Men kiest voor ``Competenties''. Het systeem toont een tree-view van de certificaten, waaronder de deelcertificaten staan, waaronder de competenties staan. De beheerder klikt het benodigde certificaat open, klikt het benodigde deelcertificaat open en klikt dan op het bewerk icoon van de competentie. Het systeem toont de beschrijving van de gekozen competentie. De beheerder bewerkt de informatie en klikt op ``Opslaan''.
+        \item[] \textbf{Alternatief scenario:} \\
+    	In plaats van certificaat en deelcertificaat open te klappen, kan er ook gezocht worden naar certificaten, deelcertificaten en competenties aan de hand van een zoekbalk.    
+      	}
+\end{usecase}
+
+
+
+% Doelstellingen (PAV) beheren
+\todo{nakijken}
+\begin{usecase}
+    \addtitle{Use Case 6}{Doelstellingen beheren} 
+    \additemizedfield{Actoren}{
+    	\item Beheerder
+    }
+    \addscenario{Beschrijving}{
+        \item[] \textbf{Hoofdscenario:} \\
+        Beheerder gaat naar het menu ``Opleidingen beheren''. Men kiest voor ``Doelstellingen''. Het systeem toont een tree-view van de graden, waaronder de doelstellingen staan. De beheerder klikt de benodigde graad open en klikt dan op het bewerk icoon van de doelstelling. Het systeem toont de beschrijving van de gekozen doelstelling. De beheerder bewerkt de informatie en klikt op ``Opslaan''.
+        \item[] \textbf{Alternatief scenario:} \\
+    	In plaats van graad open te klappen, kan er ook gezocht worden naar doelstellingen aan de hand van een zoekbalk.    
+      	}
+\end{usecase}
+
+\todo{usecase diagram updaten?}
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{uc_beheerder}
   \caption{Usecase diagram voor de beheerder}
@@ -327,48 +416,82 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 \vspace{3em}
 \subsection{Leerkracht}
 
-% Werkgevers beheren
+In alle use cases die in dit sectie voorkomen geldt de preconditie dat de leerkracht aangemeld is.
+
+\todo{nakijken}
+% Werkgevers toevoegen
 \begin{usecase}
-    \addtitle{Use Case 4}{Werkgevers beheren} 
+    \addtitle{Use Case 7}{Werkgevers toevoegen} 
     \additemizedfield{Actoren}{
     	\item Leerkracht
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        Leerkracht meldt zich aan via de webapplicatie. Leerkracht  kiest ``Werkgeversbeheer''. Lijst van werkgevers wordt getoond. De leerkracht kan werkgevers toevoegen, wijzigen en verwijderen. De informatie die ingevuld kan worden, kan terug gevonden worden in \ref{itm:werkgever_info}.
+		Leerkracht  kiest ``Werkgeversbeheer''. Systeem toont lijst van werkgevers. De beheerder klikt op de knop ``Toevoegen''. Het systeem toont een formulier waarin de werkgever info ingevuld kan worden (zie \ref{itm:werkgever_info}). De leerkracht vult alle informatie in en klikt op ``Toevoegen''.
+	}
+\end{usecase}
+
+\todo{nakijken}
+% Werkgevers bewerken
+\begin{usecase}
+    \addtitle{Use Case 8}{Werkgevers bewerken} 
+    \additemizedfield{Actoren}{
+    	\item Leerkracht
     }
+    \addscenario{Beschrijving}{
+        \item[] \textbf{Hoofdscenario:} \\
+		Leerkracht  kiest ``Werkgeversbeheer''. Systeem toont lijst van werkgevers. De beheerder klikt op het bewerk icoon dat achter iedere werkgever staat. Het systeem toont een formulier waarin de werkgever info ingevuld staat (zie \ref{itm:werkgever_info}). Hier bewerkt de leerkracht de info. De leerkracht vult alle informatie in en klikt op ``Opslaan''. Het systeem toont een pop-up met de vraag of de gebruiker zeker is om de gewijzigde info op te slaan. De leerkracht klikt op de knop ``Bevestigen''.
+		\item[] \textbf{Alternatief scenario:} \\
+		In plaats van te bevestigen annuleert de leerkracht het opslaan van de gewijzigde info door op de knop ``Annuleren'' te klikken.
+	}
+\end{usecase}
+
+\todo{nakijken}
+% Werkgevers bewerken
+\begin{usecase}
+    \addtitle{Use Case 8}{Werkgevers bewerken} 
+    \additemizedfield{Actoren}{
+    	\item Leerkracht
+    }
+    \addscenario{Beschrijving}{
+        \item[] \textbf{Hoofdscenario:} \\
+		Leerkracht  kiest ``Werkgeversbeheer''. Systeem toont lijst van werkgevers. De beheerder klikt op het verwijder icoon dat achter iedere werkgever staat. Het systeem toont een pop-up met de vraag of de gebruiker zeker is om de werkgever te verwijderen. De leerkracht klikt op de knop ``Bevestigen''.
+		\item[] \textbf{Alternatief scenario:} \\
+		In plaats van te bevestigen annuleert de leerkracht het verwijderen van de werkgever door op de knop ``Annuleren'' te klikken.
+	}
 \end{usecase}
 
 % Werkgever koppelen
 \begin{usecase}
-    \addtitle{Use Case 5}{Werkgever koppelen} 
+    \addtitle{Use Case 9}{Werkgever koppelen} 
     \additemizedfield{Actoren}{
     	\item Leerkracht
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-          Leerkracht meldt zich aan via de webapplicatie. De Leerkracht gaat naar ``Werkgever toewijzen'' binnen het menu ``Werkgeversbeheer''. Men selecteert de gewenste student en de gewenste werkgever, en kiest ervoor deze te koppelen.\\
+		De Leerkracht gaat naar ``Werkgever toewijzen'' binnen het menu ``Werkgeversbeheer''. Het systeem toont een lijst met de werkgevers en de student waaraan deze gekoppeld is. De leerkracht kiest om een nieuwe koppeling toe te voegen. Men zoekt en selecteert de gewenste student en de gewenste werkgever, en klikt op de knop ``Koppelen''.\\
     }
 \end{usecase}
 
 % Contract genereren
 \begin{usecase}
-    \addtitle{Use Case 6}{Contract genereren} 
+    \addtitle{Use Case 10}{Contract genereren} 
     \additemizedfield{Actoren}{
     	\item Leerkracht
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-          Leerkracht meldt zich aan via de webapplicatie. De Leerkracht gaat naar ``Contracten'' in het menu ``Werkgeversbeheer''. Het type contract wordt gekozen alsook de student waar een contract voor moet worden opgesteld. Info over de student en de werkgever worden automatisch ingevuld in het contract.\\
+          Leerkracht meldt zich aan via de webapplicatie. De Leerkracht gaat naar ``Contracten'' in het menu ``Werkgeversbeheer''. Het type contract wordt gekozen alsook de student waar een contract voor moet worden opgesteld. De leerkracht klikt op de knop ``Genereer contract''. Info over de student en de werkgever worden automatisch ingevuld in het contract. Het contract wordt automatisch in pdf formaat gedownload. \\
         \item[] \textbf{Alternatieve scenarios:} \\
         Er werd geen werkgever aan de student toegewezen (Use Case 5). De leerkracht krijgt hier een melding van, maar het contract wordt wel gegenereerd (zonder de informatie over de werkgever).\\
     }
 \end{usecase}
 
 
+\todo{Puntenbeheer bespreken in groep en fixen}
 % Puntenbeheer 
 \begin{usecase}
-    \addtitle{Use Case 7}{Puntenbeheer} 
+    \addtitle{Use Case 11}{Puntenbeheer} 
     \additemizedfield{Primaire actor}{
     	\item Leerkracht
     } 
@@ -415,8 +538,9 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 % !!!!!!!!!!! als je op een punt klikt krijg je een vakje met de commentaar te zien en voor pav het vakthema
 % !!!!!!!!!!! toch nie mogelijk maken om in de voortgang punten aan te passen ? anders moet ge gaan kijken welke dag behaald en dan terug naar punten geven gaan wat veel stappen zijn
 % Voortgang studenten (+rapporten)
+\todo{Voortgang studenten bespreken in groep en fixen}
 \begin{usecase}
-    \addtitle{Use Case 8}{Voortgang studenten} 
+    \addtitle{Use Case 12}{Voortgang studenten} 
     \additemizedfield{Actoren}{
     	\item Leerkracht
     }
@@ -428,6 +552,8 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     }
 \end{usecase}
 
+\todo{use case nummering verhogen vanaf hier}
+\todo{evt fully dressed use-case}
 % Klasbeer
 \begin{usecase}
     \addtitle{Use Case 9}{Klasbeheer} 
@@ -436,10 +562,13 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        Leerkracht meldt zich aan via de webapplicatie. Leekracht kiest ``Mijn klassen''. De leerkracht krijgt een lijst van klassen te zien waaraan hij/zij les geeft. De leerkracht kan hier klassen toevoegen en verwijderen. De leerkracht kan een klas selecteren en dan studenten toevoegen of verwijderen in de tab ``studenten''. De leerkracht kan een enkele student toevoegen maar ook meerdere via de knop ``Importeer studenten'' (De leerkracht kan zo bv. alle studenten van de 2de graad van een gekozen richting toevoegen aan zijn klas).
+        Leerkracht meldt zich aan via de webapplicatie. Leerkracht kiest ``Mijn klassen''. Het systeem toont een lijst van klassen waaraan de leerkracht les geeft. De leerkracht kan hier klassen toevoegen, wijzigen en verwijderen. De leerkracht kiest om een BGV- of PAV-klas te wijzigen. De leerkracht kiest om een PAV-klas te wijzigen. Het systeem toont een lijst van studenten in de tab ``Studenten''. De leerkracht klikt op de knop ``Toevoegen''. De leerkracht kiest een graad onder welke deze klas behoort via een dropdown (automatisch ingevuld met de huidige graad waaronder deze klas behoort). Het systeem toont een tree-view van studenten binnen deze graad onderverdeeld per certificaat waartoe ze behoren. De leerkracht kan een enkele student toevoegen door deze aan te vinken maar kan ook een certificaat aanvinken, alle studenten onder de certificaat worden dan toegevoegd aan de klas. (De leerkracht kan zo bv. alle studenten die ingeschreven zijn in de 2de graad en in het certificaat Metselaar toevoegen aan zijn klas).
+        \item[] \textbf{Alternatie scenarios:} \\
+        De leerkracht kiest om een BGV-klas te wijzigen. Het systeem toont een lijst van studenten in de tab ``Studenten''. De leerkracht klikt op de knop ``Toevoegen''. De leerkracht kiest een certificaat onder welke deze klas behoord via een dropdown (automatisch ingevuld met de huidige certificaat waaronder deze klas behoort). Het systeem toont een tree-view van studenten binnen de gekozen certificaat met het certificaat als root. De leerkracht kan studenten toevoegen op dezelfde manier als bij een PAV-klas. (De leerkracht kan zo bv. alle studenten die ingeschreven zijn voor het certificaat Metselaar toevoegen aan zijn klas).
     }
 \end{usecase}
 
+\todo{Remediëringstaak aparte use case}
 %Klasbeheer -  Vakthema's
 \begin{usecase}
     \addtitle{Use Case 10}{Klasbeheer -  Vakthema's} 
@@ -448,7 +577,12 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        Leerkracht navigeert naar zijn klassen (Use case 9). De leerkracht klikt op het bewerk icon van een klas. De leerkracht selecteert de tab ``Vakthema's''. De leerkracht krijgt een lijst van vakthema's te zien. De leerkracht kan hier vakthema's toevoegen, verwijderen en aanpassen. Bij het invullen van de gegevens van een vakthema kan de leerkracht doelstellingen kiezen uit een lijst van alle doelstellingen. Naast iedere doelstelling staat een tellertje dat aangeeft hoe vaak deze doelstelling reeds aan een vakthema werd toegekend \footnotemark.\\
+        Leerkracht navigeert naar zijn klassen (Use case 9). De leerkracht kiest om een PAV-klas te wijzigen. De leerkracht selecteert de tab ``Vakthema's''. Het systeem toont een lijst van vakthema's. De leerkracht kan een vakthema toevoegen, verwijderen of wijzigen.
+        \begin{itemize}
+            \item[1] De leerkracht kiest om een nieuw vakthema toe te voegen. Het systeem toont een textbox voor de in te vullen vaknaam en een lijst van alle doelstellingen. Naast iedere doelstelling staat een tellertje dat aangeeft hoe vaak deze doelstelling reeds aan een vakthema werd toegekend \footnotemark. De leerkracht vinkt de doelstellingen aan die aangeboden moeten worden binnen dit vakthema.
+            \item[2] De leerkracht kiest om een vakthema te wijzigen. De gegevens wijzigen werkt analoog met het toevoegen van een nieuw vakthema.
+            \item[3] De leekracht kiest om een vakthema te verwijderen. Het systeem verwijdert het gekozen vakthema.
+        \end{itemize}
         \item[] \textbf{Alternatieve scenarios:} \\
         Leerkracht maakt een nieuw vakthema aan en vinkt aan dat het gaat om een remediëringstaak (deze telt niet bij tot het aantal keer een doelstelling voorkomt binnen de verschillende vakthema's). De leerkracht krijgt een lijst van studenten uit deze klas te zien. De leerkracht selecteert de studenten die in aanmerking komen voor deze remediëringstaak.
     }
@@ -464,7 +598,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %student
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\todo{Use case commentaar Robin bespreken}
 \newpage
 \subsection{student}
 % Voortgang bekijken
@@ -477,7 +611,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        student meldt zich aan via de webapplicatie. student kiest ``Voortgang''. De voortgang voor BGV en PAV staan in aparte tabs. Het systeem geeft een wekelijks overzicht van wanneer competenties(BGV)/doelstellingen(PAV) behaald werden door deze student.
+        Student meldt zich aan via de webapplicatie. Student kiest ``Voortgang''. De voortgang voor BGV en PAV staan in aparte tabs. Het systeem geeft een wekelijks overzicht van wanneer competenties(BGV)/doelstellingen(PAV) behaald werden door deze student.
     }
 \end{usecase}
 
@@ -489,10 +623,25 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     }
     \addscenario{Beschrijving}{
         \item[] \textbf{Hoofdscenario:} \\
-        student meldt zich aan via de mobiele applicatie. student kiest ``Tussentijds rapport''. Het tussentijds rapport is opgedeeld in drie tabs nl. ``Alle'', ``BGV'' en ``PAV'' voor meer overzichtelijkheid. Het tussentijds rapport geeft een algemeen beeld van hoe de student het gedaan heeft tot nu toe a.d.v. cirkeldiagrammen (Per deelcertificaat/vakthema hoeveel competenties/doelstellingen ingeoefend en verworven zijn uit een totaal aantal te behalen competenties/doelstellingen).
+        Student meldt zich aan via de mobiele applicatie. Student kiest ``Tussentijds rapport''. Het tussentijds rapport is opgedeeld in drie tabs nl. ``Alle'', ``BGV'' en ``PAV'' voor meer overzichtelijkheid. Het tussentijds rapport geeft een algemeen beeld van hoe de student het gedaan heeft tot nu toe a.d.v. cirkeldiagrammen (Per deelcertificaat/vakthema hoeveel competenties/doelstellingen ingeoefend en verworven zijn uit een totaal aantal te behalen competenties/doelstellingen).
     }
 \end{usecase}
 
+\todo{Invullen van scenario, takenstatus bekijken in de app.}
+%Mobiele app - Tussentijd rapport
+\begin{usecase}
+    \addtitle{Use Case 13}{Mobiele app - Status taken} 
+    \additemizedfield{Actoren}{
+    	\item student
+    	\item ouder
+    }
+    \addscenario{Beschrijving}{
+        \item[] \textbf{Hoofdscenario:} \\
+        Test
+    }
+\end{usecase}
+
+\todo{usecase gaat over student, niet leerkracht}
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{uc_leerling}
   \caption{Usecase diagram voor de student}
@@ -504,15 +653,18 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Ouder}
+
+In alle use cases die in dit sectie voorkomen geldt de preconditie dat de ouder aangemeld is.
+
 % Voortgang bekijken
 \begin{usecase}
-\addtitle{Use Case 13}{Voortgang bekijken} 
+\addtitle{Use Case 14}{Voortgang bekijken} 
 \additemizedfield{Actoren}{
 	\item Ouder
 }
 \addscenario{Beschrijving}{
     \item[] \textbf{Hoofdscenario:} \\
-    Ouder meldt zich aan via de webapplicatie. Ouder kiest kiest ``Voortgang''. De voortgang voor BGV en PAV staan in aparte tabs. Het systeem geeft een wekelijks overzicht van wanneer competenties(BGV)/doelstellingen(PAV) behaald zijn door het kind.\\
+    Ouder kiest kiest ``Voortgang''. De voortgang voor BGV en PAV staan in aparte tabs. Het systeem geeft een wekelijks overzicht van wanneer competenties(BGV)/doelstellingen(PAV) behaald zijn door het kind.\\
     \item[] \textbf{Alternatieve scenarios:} \\
     Indien de ouder meerdere kinderen heeft in de school, kan in een apart menu het gewenste kind geselecteerd worden.
 }
@@ -520,7 +672,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
 
 %Mobiele app - Tussentijd rapport
 \begin{usecase}
-    \addtitle{Use Case 14}{Mobiele app - Tussentijds rapport} 
+    \addtitle{Use Case 15}{Mobiele app - Tussentijds rapport} 
     \additemizedfield{Actoren}{
     	\item Ouder
     }
@@ -617,7 +769,7 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     \textbf{Post-condities} & \begin{itemize}[leftmargin=*]
         \item user.naam werd userinfo.naam; aanpassing attribuut.
         \item user.voornaam werd userinfo.voornaam; aanpassing attribuut.
-        \item \dots  (alle attributen die persoonlijke informatie voorstellen, staan in \ref{itm:pers_info} opgesomd)
+        \item \dots  (alle attributen die persoonlijke informatie voorstellen, staan in \ref{itm:student_info} opgesomd)
         \item user.username werd userinfo.username; aanpassing attribuut.
         \item user.password werd userinfo.password; aanpassing attribuut.
         \item user.email werd userinfo.email; aanpassing attribuut.
@@ -628,7 +780,6 @@ De back-end wordt geïmplementeerd in Java, met behulp van het \textit{Spring Fr
     \hline
 \end{tabularx}\\
 
-\subsection{Puntenbeheer}
 \subsection{Puntenbeheer}
 \begin{tabularx}{\textwidth}{|l X|}
     \hline
@@ -979,6 +1130,9 @@ Onderstaande modules zijn mogelijke uitbreidingen, na de $3$ stappen uit de scop
 \end{figure}
 
 
+\newpage
+\includepdf[pages={1},scale=0.75,pagecommand=\section{Voorbeeld van een contract}\label{vbContract}]{vbcontract.pdf}
+\includepdf[pages=2-,scale=0.75,pagecommand={}]{vbcontract.pdf}
 
 
 \end{appendices}

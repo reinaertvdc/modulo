@@ -233,6 +233,7 @@ public class UserController {
         User parent = user.getParent();
 
         if (parent == null) return Responses.USER_NOT_FOUND;
+
         return new ResponseEntity<>(parent, HttpStatus.OK);
     }
 
@@ -531,88 +532,50 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @RequestBody User user) {
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User newUser) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User dataBaseUser = userDAO.findById(user.getId());
+        User oldUser = userDAO.findById(newUser.getId());
 
-        // Compare if a new password was set, if not, set the old password.
-        if (user.getPassword() == null || user.getPassword().equals(""))
-            user.setPassword(dataBaseUser.getPassword());
-        else
-            user.setPassword(authentication.SHA512(user.getPassword()));
+        // If not empty, update password
+        if (newUser.getPassword() != null && !newUser.getPassword().equals("")) {
+            log.info("A new password was provided.");
+            oldUser.setPassword(authentication.SHA512(newUser.getPassword()));
+        }
 
 
-        //TODO check conversions
-        /*if (user.getRole() == UserRole.STUDENT) {
+        // If the user's role is being changed
+        if(oldUser.getRole() != newUser.getRole()){
+            log.info(String.format("Role of %s is different from %s",oldUser,newUser));
+            // old student = student, delete student info
+            if(oldUser.getRole() == UserRole.STUDENT){
+                log.info("Old user was a student. Remove student from possible classes.");
+                // remove student from any class
+                for(Clazz clazz : oldUser.getClasses()){
+                    clazz.getStudents().remove(oldUser);
+                }
+                log.info("Remove student from possible course toipcs.");
+                // remove student from course topic
+                for(CourseTopic courseTopic : oldUser.getStudentInfo().getCourseTopics()){
+                    courseTopic.getStudents().remove(oldUser.getStudentInfo());
+                }
+                log.info("Delete user's student info and cascade delete scores");
+                // remove student info
+                studentInfoDAO.delete(oldUser.getStudentInfo());
+            }
 
-            StudentInfo studentInfo = user.getStudentInfo();
-            // setId(0) to identify that we need a new object.
-            studentInfo.setId(0);
-            studentInfoDAO.saveAndFlush(studentInfo);
-            if (dataBaseUser.getRole() == UserRole.PARENT) {
-                for (User child : dataBaseUser.getChildren()) {
-                    child.setParent(null);
-                    userDAO.saveAndFlush(child);
-                }
-            }
-            else if (dataBaseUser.getRole() == UserRole.ADMIN) {
-                // nothing specific
-            }
-            else if (dataBaseUser.getRole() == UserRole.TEACHER) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            }
-        } else if (user.getRole() == UserRole.PARENT) {
-            if (dataBaseUser.getRole() == UserRole.STUDENT) {
-                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
-                user.setParent(null);
-            } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
-                // nothing
-            } else if (dataBaseUser.getRole() == UserRole.TEACHER) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            }
-        } else if (user.getRole() == UserRole.ADMIN) {
-            if (dataBaseUser.getRole() == UserRole.STUDENT) {
-                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
-                user.setParent(null);
-            } else if (dataBaseUser.getRole() == UserRole.PARENT) {
-                for (User child : dataBaseUser.getChildren()) {
-                    child.setParent(null);
-                    userDAO.saveAndFlush(child);
-                }
-            } else if (dataBaseUser.getRole() == UserRole.TEACHER) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            }
-        } else if (user.getRole() == UserRole.TEACHER) {
-            if (dataBaseUser.getRole() == UserRole.STUDENT) {
-                studentInfoDAO.delete(dataBaseUser.getStudentInfo());
-                user.setParent(null);
-            } else if (dataBaseUser.getRole() == UserRole.PARENT) {
-                for (Clazz clazz : dataBaseUser.getTeachedClasses()) {
-                    clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
-                }
-            } else if (dataBaseUser.getRole() == UserRole.ADMIN) {
-                //nothing
-            }
-        }*/
-        //TODO lege parent veld toch updaten
-        userDAO.saveAndFlush(user);
+            log.info(String.format("Updated role of user %s to %s.",oldUser,newUser.getRole()));
+            oldUser.setRole(newUser.getRole());
+        }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        log.info("Saving user " + oldUser);
+        userDAO.saveAndFlush(oldUser);
+
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     // ===================================================================================

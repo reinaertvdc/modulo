@@ -121,7 +121,7 @@ public class CertificateController {
     }
 
     @RequestMapping(value = "/id/{id}/classes", method = RequestMethod.GET)
-    public ResponseEntity<?> getClassesFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getClassesFromCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -210,21 +210,19 @@ public class CertificateController {
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
-        // Remove grade from students, without deleting the student.
+
         for(StudentInfo student : certificate.getStudents()){
             student.setCertificate(null);
             studentInfoDAO.saveAndFlush(student);
         }
 
-        // Remove grade from classes, without deleting the classes.
         for(Clazz clazz : certificate.getClasses()){
             clazz.setCertificate(null);
             classDAO.saveAndFlush(clazz);
         }
 
         certificateDAO.delete(id);
-        //TODO change in CERTIFICATE_DELETED
-        return Responses.GRADE_DELETED;
+        return Responses.CERTIFICATE_DELETED;
 
     }
 

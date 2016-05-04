@@ -43,6 +43,7 @@ public class Responses {
     private static final String gradeEnabled = "Grade successfully enabled.";
     private static final String gradeDisabled = "Grade successfully disabled.";
     private static final String gradeDeleted = "Grade successfully deleted.";
+    private static final String gradeStudentAdded = "Grade successfully added to student.";
 
     private static final String studentInfoNotFound = "The requested student info could not be found.";
 
@@ -86,6 +87,7 @@ public class Responses {
     public static final ResponseEntity<?> GRADE_ENABLED = StringMessage.asEntity(gradeEnabled, HttpStatus.OK);
     public static final ResponseEntity<?> GRADE_DISABLED = StringMessage.asEntity(gradeDisabled, HttpStatus.OK);
     public static final ResponseEntity<?> GRADE_DELETED = StringMessage.asEntity(gradeDeleted, HttpStatus.OK);
+    public static final ResponseEntity<?> GRADE_STUDENT_ADD = StringMessage.asEntity(gradeStudentAdded, HttpStatus.OK);
 
     public static final ResponseEntity<?> STUDENT_INFO_NOT_FOUND = StringMessage.asEntity(studentInfoNotFound,HttpStatus.NOT_FOUND);
 

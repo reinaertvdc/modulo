@@ -533,7 +533,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User newUser = new User(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+        User newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
         newUser.setParent(user.getParent());
         userDAO.saveAndFlush(newUser);
 
@@ -598,7 +598,7 @@ public class UserController {
             oldUser.setPassword(authentication.SHA512(newUser.getPassword()));
         }
 
-        // set the parent 
+        // set the parent
         oldUser.setParent(newUser.getParent());
 
 

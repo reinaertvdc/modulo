@@ -4,7 +4,8 @@ import sys
 from downloader import Downloader
 from js_generator import JsGenerator
 from modular_certificate_parser import ModularCertificateParser
-from sql_generator import SqlGenerator
+from mysql_generator import MySqlGenerator
+from postgresql_generator import PostGreSqlGenerator
 from web_page_parser import WebPageParser
 
 
@@ -17,8 +18,9 @@ class CertificateCrawler:
     __MODULAR_CERTIFICATES_DIR = __CERTIFICATES_DIR + 'modular/'
     __LINEAR_CERTIFICATES_DIR = __CERTIFICATES_DIR + 'linear/'
     __OUTPUT_DIR = 'output/'
-    __SQL_OUTPUT_FILE_NAME = 'certificates.sql'
-    __JS_OUTPUT_FILE_NAME = 'certificates.js'
+    __MYSQL_OUTPUT_FILE_NAME = 'mysql.sql'
+    __POSTGRESQL_OUTPUT_FILE_NAME = 'postgresql.sql'
+    __JS_OUTPUT_FILE_NAME = 'javascript.js'
 
     def __init__(self):
         sys.stdout.write("\nCertificate crawler started!\n\n")
@@ -58,23 +60,27 @@ class CertificateCrawler:
     def parse_certificates(self):
         sys.stdout.write("Starting parser.\n")
         modular_certificate_parser = ModularCertificateParser()
-        sys.stdout.write("SQL output will be written to '" + self.__OUTPUT_DIR + self.__SQL_OUTPUT_FILE_NAME + "'.\n")
-        sql_generator = SqlGenerator(self.__OUTPUT_DIR, self.__SQL_OUTPUT_FILE_NAME)
-        sys.stdout.write("JS output will be written to '" + self.__OUTPUT_DIR + self.__JS_OUTPUT_FILE_NAME + "'.\n\n")
+        sys.stdout.write("MySQL written to '" + self.__OUTPUT_DIR + self.__MYSQL_OUTPUT_FILE_NAME + "'.\n")
+        mysql_generator = MySqlGenerator(self.__OUTPUT_DIR, self.__MYSQL_OUTPUT_FILE_NAME)
+        sys.stdout.write("PostGreSQL written to '" + self.__OUTPUT_DIR + self.__POSTGRESQL_OUTPUT_FILE_NAME + "'.\n")
+        postgresql_generator = PostGreSqlGenerator(self.__OUTPUT_DIR, self.__POSTGRESQL_OUTPUT_FILE_NAME)
+        sys.stdout.write("JavaScript written to '" + self.__OUTPUT_DIR + self.__JS_OUTPUT_FILE_NAME + "'.\n\n")
         js_generator = JsGenerator(self.__OUTPUT_DIR, self.__JS_OUTPUT_FILE_NAME)
 
-        #certificate = modular_certificate_parser.get_certificate(self.__MODULAR_CERTIFICATES_DIR + '021Bouwplaatsmachinist.pdf')
-        #sql_generator.write(certificate)
-        #js_generator.write(certificate)
-        #exit()
+        # certificate = modular_certificate_parser.get_certificate(self.__MODULAR_CERTIFICATES_DIR + '021Bouwplaatsmachinist.pdf')
+        # sql_generator.write(certificate)
+        # js_generator.write(certificate)
+        # exit()
         modular_certificate_file_names = os.listdir(self.__MODULAR_CERTIFICATES_DIR)
         n_modular_certificates = len(modular_certificate_file_names)
         i = 1
         for certificate_file_name in modular_certificate_file_names:
             sys.stdout.write("Parsing certificate " + str(i) + "/" + str(
                 n_modular_certificates) + " '" + certificate_file_name + "'...")
-            certificate = modular_certificate_parser.get_certificate(self.__MODULAR_CERTIFICATES_DIR + certificate_file_name)
-            sql_generator.write(certificate)
+            certificate = modular_certificate_parser.get_certificate(
+                self.__MODULAR_CERTIFICATES_DIR + certificate_file_name)
+            mysql_generator.write(certificate)
+            postgresql_generator.write(certificate)
             js_generator.write(certificate)
             sys.stdout.write(" Done.\n")
             i += 1

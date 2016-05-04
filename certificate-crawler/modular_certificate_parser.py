@@ -136,7 +136,14 @@ class ModularCertificateParser:
         return sources
 
     def __get_sub_certificate_categories(self, categories_source):
-        return []
+        # TODO remove dummy code
+        categories = []
+        i = 1
+        while i <= 5:
+            categories.append(CertificateComponent('Category ' + str(i), self.__get_competences(None)))
+            i += 1
+        return categories
+        # TODO debug
         categories = []
         category_names = []
         competences_sources = []
@@ -171,7 +178,13 @@ class ModularCertificateParser:
         return categories
 
     def __get_competences(self, competences_source):
-        return []
+        # TODO implement and remove dummy code
+        competences = []
+        i = 1
+        while i <= 8:
+            competences.append(CertificateComponent('Competence ' + str(i), None))
+            i += 1
+        return competences
 
     def get_certificate(self, path):
         # Series of spaces need to be removed because they sometimes occur mid-sentence, but all newlines need to be

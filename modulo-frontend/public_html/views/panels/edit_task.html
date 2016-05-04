@@ -1,4 +1,25 @@
 <div data-ng-controller="EditTaskController">
-    <!-- TODO create page -->
-    <h3>Bewerk taken</h3>
+    <h3 ng-bind="panelCaption"></h3>
+
+
+    <form role="form" data-ng-submit="submitForm()">
+        <div class="form-group">
+            <label>PAV-klas</label>
+            <br/>
+            <div class="btn-group" data-uib-dropdown>
+                <button id="button-PAVClass" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+                    {{selectedPAVClass}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+                    <li data-ng-repeat="PAVClass in PAVClasses">
+                        <a href="" data-ng-click="setSelectedPAVClass(PAVClass)">{{PAVClass.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </form>
 </div>
+
+

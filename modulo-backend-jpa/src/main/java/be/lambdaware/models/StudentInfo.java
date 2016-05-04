@@ -84,6 +84,10 @@ public class StudentInfo {
     @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 
+    @OneToMany(mappedBy = "studentInfo")
+    @JsonIgnore
+    private List<TaskScore> taskScores = new ArrayList<>();
+
     @ManyToMany(mappedBy = "students")
     @JsonIgnore
     private List<CourseTopic> courseTopics = new ArrayList<>();
@@ -273,6 +277,17 @@ public class StudentInfo {
         this.pavScores.add(pavScore);
         if (pavScore.getStudentInfo() != this) {
             pavScore.setStudentInfo(this);
+        }
+    }
+
+    public List<TaskScore> getTaskScores() { return taskScores; }
+
+    public void setTaskScores(List<TaskScore> taskScores) { this.taskScores = taskScores; }
+
+    public void addTaskScore(TaskScore taskScore) {
+        this.taskScores.add(taskScore);
+        if (taskScore.getStudentInfo() != this) {
+            taskScore.setStudentInfo(this);
         }
     }
 

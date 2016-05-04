@@ -51,6 +51,10 @@ public class Responses {
     private static final String bgvScoresNotFound = "The requested BGV scores could not be found";
     private static final String pavScoresNotFound = "The requested PAV scores could not be found";
 
+    private static final String tasksNotFound = "The requested tasks could not be found.";
+    private static final String taskNotFound = "The requested task could not be found.";
+    private static final String taskDeleted = "Task successfully deleted.";
+
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> UNAUTHORIZED = StringMessage.asEntity(unauthorized, HttpStatus.UNAUTHORIZED);
@@ -95,4 +99,9 @@ public class Responses {
 
     public static final ResponseEntity<?> BGV_SCORES_NOT_FOUND = StringMessage.asEntity(bgvScoresNotFound,HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> PAV_SCORES_NOT_FOUND = StringMessage.asEntity(pavScoresNotFound,HttpStatus.NOT_FOUND);
+
+    public static final ResponseEntity<?> TASKS_NOT_FOUND = StringMessage.asEntity(tasksNotFound,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> TASK_NOT_FOUND = StringMessage.asEntity(taskNotFound,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> TASK_DELETED = StringMessage.asEntity(taskDeleted, HttpStatus.OK);
+
 }

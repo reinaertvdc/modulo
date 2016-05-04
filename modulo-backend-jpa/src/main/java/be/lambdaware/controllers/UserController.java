@@ -6,6 +6,7 @@ import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
+import be.lambdaware.response.StringMessage;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -560,6 +561,8 @@ public class UserController {
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
         User user = userDAO.findById(id);
 
+
+
         if (user == null) return Responses.USER_NOT_FOUND;
 
         user.setEnabled(true);
@@ -576,6 +579,8 @@ public class UserController {
         User user = userDAO.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
+        //TODO add to Responses
+        if (user.getId() == authentication.getAuthenticatedUser().getId()) return StringMessage.asEntity("You can not disable yourself",HttpStatus.BAD_REQUEST);
 
         user.setEnabled(false);
         userDAO.saveAndFlush(user);

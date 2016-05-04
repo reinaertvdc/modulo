@@ -182,6 +182,27 @@ public class ClassController {
         return Responses.CLASS_ADDED_TEACHER;
     }
 
+    // ===================================================================================
+    // PUT methods
+    // ===================================================================================
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody Clazz clazz) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+
+        Clazz databseClazz = classDAO.findById(clazz.getId());
+        databseClazz.setName(clazz.getName());
+
+        classDAO.saveAndFlush(databseClazz);
+
+        return new ResponseEntity<>(databseClazz, HttpStatus.OK);
+    }
+
+    //TODO delete user from class
 
     // ===================================================================================
     // DELETE methods

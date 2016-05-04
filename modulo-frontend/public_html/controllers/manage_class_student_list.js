@@ -1,4 +1,4 @@
-app.controller('ManageClassStudentListController', function ($scope, $http, $compile) {
+app.controller('ManageClassStudentListController', function ($scope, $http, $compile, $cookies) {
     const STUDENT_LIST_ITEM_PREFIX = 'manage-student-list-item-';
     const STUDENT_LIST_ELEMENT = document.getElementById('manage-student-list-body');
 
@@ -11,26 +11,27 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
 
     $scope.addStudent = function (student) {
-        $scope.removeStudentFrontend(student.studentInfoEntity.id);
-        $scope.students.set(student.studentInfoEntity.id, student);
+        $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+            $scope.removeStudentFrontend(student.studentInfo.id);
+            student.certificate = response;
+            $scope.students.set(student.studentInfo.id, student);
 
+            var html =  '<tr id="' + $scope.toElementId(student.studentInfo.id) + '">' +
+                '<td>' + student.firstName + ' ' + student.lastName + '</td>' +
+                '<td>' + student.certificate.name + '</td>' +
+                '<td class="text-danger" ng-click="removeStudentBackend(' + student.studentInfo.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+                '</tr>';
 
-        /*----------------------------------------------------------------------------*/
-        // TODO eventueel certificaten toevoegen in de 2de iteratie
-        var html =  '<tr id="' + $scope.toElementId(student.studentInfoEntity.id) + '">' +
-            '<td>' + student.userEntity.firstName + ' ' + student.userEntity.lastName + '</td>' +
-            '<td>' + student.certificateEntity.name + '</td>' +
-            '<td class="text-danger" ng-click="removeStudentBackend(' + student.studentInfoEntity.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
-            '</tr>';
+            /*---------------------------------------------------------------------------------*/
+            var element = document.createElement('tr');
+            STUDENT_LIST_ELEMENT.appendChild(element);
 
-        /*---------------------------------------------------------------------------------*/
-        var element = document.createElement('tr');
-        STUDENT_LIST_ELEMENT.appendChild(element);
-
-        element.outerHTML = html;
+            element.outerHTML = html;
+        });
     };
 
     $scope.removeStudentBackend = function (id) {
+        //TODO refactor
         $scope.removeStudentFrontend(id);
        $http.delete('http://localhost:8080/class/' + $scope.classId + '/student/' + id).success(function (response) {
             if(response)
@@ -52,7 +53,7 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
         $compile(STUDENT_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/class/'+$scope.classId+'/students').success(function (response) {
+    $http.get('http://localhost:8080/class/id/'+$scope.classId+'/students', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
             $scope.addStudent(item);
         });

@@ -1,4 +1,4 @@
-app.controller('ManageClassDetailsController', function ($scope, $http) {
+app.controller('ManageClassDetailsController', function ($scope, $http, $cookies) {
     // TODO implement controller
     $scope.className = document.getElementById('className');
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
@@ -6,20 +6,18 @@ app.controller('ManageClassDetailsController', function ($scope, $http) {
 
     $scope.saveDetails = function(){
         $scope.class.name =  $scope.className.value;
-        var model = JSON.stringify({"classEntity": $scope.class});
+        var model = JSON.stringify($scope.class);
 
-        $http.put('http://localhost:8080/class', model).success(function (response) {
-            if(response){
-                console.log("PUT succes");
-            }
-            else {
-                console.log("PUT failed");
-            }
+        $http({
+            method: 'PUT', url: 'http://localhost:8080/class/', data: model,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            $scope.createAlertCookie('Klas bewerkt.');
         });
     }
 
-    $http.get('http://localhost:8080/class/' + $scope.classId).success(function (response) {
-        $scope.class = response.classEntity;
+    $http.get('http://localhost:8080/class/id/' + $scope.classId, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+        $scope.class = response;
         $scope.className.value = $scope.class.name;
     });
 });

@@ -413,7 +413,7 @@ public class UserController {
         return new ResponseEntity<>(certificate, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/id/{id}/gradeid", method = RequestMethod.GET)
+    @RequestMapping(value = "/id/{id}/gradeId", method = RequestMethod.GET)
     public ResponseEntity<?> getGradeIdFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
@@ -436,7 +436,7 @@ public class UserController {
         return new ResponseEntity<>(grade.getId(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/id/{id}/certificateid", method = RequestMethod.GET)
+    @RequestMapping(value = "/id/{id}/certificateId", method = RequestMethod.GET)
     public ResponseEntity<?> getCertificateIdFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
@@ -598,9 +598,14 @@ public class UserController {
             oldUser.setPassword(authentication.SHA512(newUser.getPassword()));
         }
 
-        User parent = userDAO.findById(newUser.getId());
-        // set the parent
-        oldUser.setParent(parent);
+        if(newUser.getParent() != null) {
+            User parent = userDAO.findById(newUser.getParent().getId());
+            // set the parent
+            oldUser.setParent(parent);
+        }else{
+            // set the parent to null
+            oldUser.setParent(null);
+        }
 
 
         // If the user's role is being changed

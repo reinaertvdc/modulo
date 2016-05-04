@@ -187,6 +187,16 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     $scope.userSexes = {"MALE": "Man", "FEMALE": "Vrouw"};
     $scope.userSexesKeys = Object.keys($scope.userSexes);
 
+
+    $scope.createAlertCookie= function(msg){
+        var alert = msg;
+        var expireTime = new Date();
+        var time = expireTime.getTime();
+        time += 1000*3; // 3sec expire tijd
+        expireTime.setTime(time);
+        $cookies.put("alert", alert, {'expires': expireTime});
+    }
+
     $scope.isAlertEmpty = function(){
         return $cookies.get("alert") != null;
     }

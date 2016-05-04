@@ -59,31 +59,12 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         $scope.studentInfo.gradeId = grade.id;
     };
 
-    $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
-        response.forEach(function (item) {
-            $scope.grades[item.id] = item;
-        });
-        var firstKey = (Object.keys($scope.grades)[0]);
-        $scope.selectedGrade = $scope.grades[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
-        $scope.studentInfo.gradeId = $scope.grades[firstKey].id;
-    });
-
-
     // CERTIFICATES
     $scope.certificates = {};
     $scope.setSelectedCert = function (cert) {
         $scope.selectedCert = cert.name;
         $scope.studentInfo.certificateId = cert.id;
     };
-    $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
-        response.forEach(function (item) {
-            $scope.certificates[item.id] = item;
-        });
-        var firstKey = (Object.keys($scope.certificates)[0]);
-        $scope.selectedCert = $scope.certificates[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
-        $scope.studentInfo.certificateId = $scope.certificates[firstKey].id;
-    });
-
 
     //PARENT SELECTION MODAL
     $scope.parents = [];
@@ -121,6 +102,25 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     if (paramVal == 'nieuw') {
         $scope.btnText = 'Aanmaken';
         $scope.panelCaption = 'Nieuwe gebruiker aanmaken';
+
+        $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            response.forEach(function (item) {
+                $scope.grades[item.id] = item;
+            });
+            var firstKey = (Object.keys($scope.grades)[0]);
+            $scope.selectedGrade = $scope.grades[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
+            $scope.studentInfo.gradeId = $scope.grades[firstKey].id;
+        });
+
+        $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            response.forEach(function (item) {
+                $scope.certificates[item.id] = item;
+            });
+
+            var firstKey = (Object.keys($scope.certificates)[0]);
+            $scope.studentInfo.certificateId = $scope.certificates[firstKey].id;
+            $scope.selectedCert = $scope.certificates[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
+        });
     }
 
 
@@ -135,9 +135,31 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
 
             if ($scope.basicInfo.role == "STUDENT") {
                 $scope.studentInfo = response.studentInfo;
-                
-                $http.get('http://localhost:8080/user/id/' + paramVal+'/parent', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+
+                $http.get('http://localhost:8080/user/id/' + paramVal+'/gradeId', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $scope.studentInfo.gradeId = response;
+
+                    $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                        response.forEach(function (item) {
+                            $scope.grades[item.id] = item;
+                        });
+                        $scope.selectedGrade = $scope.grades[$scope.studentInfo.gradeId].name;
+                    });
+
+                });
+                $http.get('http://localhost:8080/user/id/' + paramVal + '/certificateId', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $scope.studentInfo.certificateId = response;
+
+                    $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                        response.forEach(function (item) {
+                            $scope.certificates[item.id] = item;
+                        });
+                        $scope.selectedCert = $scope.certificates[$scope.studentInfo.certificateId].name;
+                    });
+                });
+                $http.get('http://localhost:8080/user/id/' + paramVal + '/parent', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     $scope.parentStr = response.firstName + ' ' + response.lastName;
+                    $scope.studentInfo.parentId = response.id;
                 });
             }
         });
@@ -191,34 +213,60 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         model = JSON.stringify(model);
 
         if (paramVal == 'nieuw') {
-            console.log(model);
             $http({
                 method: 'POST', url: 'http://localhost:8080/user/', data: model,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
-                $scope.location.openPage($scope.location.USER_MANAGEMENT);
-                $scope.createAlertCookie('Gebruiker toegevoegd.');
+                if($scope.basicInfo.role == 'STUDENT') {
+                    var user = response;
+                    $http({
+                        method: 'PUT',
+                        url: 'http://localhost:8080/certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+                        $http({
+                            method: 'PUT',
+                            url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
+                            headers: {'X-auth': $cookies.get("auth")}
+                        }).success(function (response) {
+                            $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                            $scope.createAlertCookie('Gebruiker toegevoegd.');
+                        });
+                    });
+                }
+                else{
+                    $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                    $scope.createAlertCookie('Gebruiker toegevoegd.');
+                }
             });
         } else if (paramVal) {
             $http({
-                method: 'PUT', url: 'http://localhost:8080/user/id/' + $scope.basicInfo.id, data: model,
+                method: 'PUT', url: 'http://localhost:8080/user/', data: model,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
-                $scope.location.openPage($scope.location.USER_MANAGEMENT);
-                $scope.createAlertCookie('Gebruiker bewerkt.');
-            }).error(function(response, code){
-                console.log(response.message);
+                if($scope.basicInfo.role == 'STUDENT') {
+                    var user = response;
+                    $http({
+                        method: 'PUT',
+                        url: 'http://localhost:8080/certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+                        $http({
+                            method: 'PUT',
+                            url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
+                            headers: {'X-auth': $cookies.get("auth")}
+                        }).success(function (response) {
+                            $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                            $scope.createAlertCookie('Gebruiker bewerkt.');
+                        });
+                    });
+                }
+                else{
+                    $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                    $scope.createAlertCookie('Gebruiker bewerkt.');
+                }
             });
         }
-    }
-
-    $scope.createAlertCookie= function(msg){
-        var alert = msg;
-        var expireTime = new Date();
-        var time = expireTime.getTime();
-        time += 1000*3; // 20min expire tijd
-        expireTime.setTime(time);
-        $cookies.put("alert", alert, {'expires': expireTime});
     }
 });
 

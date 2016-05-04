@@ -45,13 +45,13 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         TASK_MANAGEMENT: 'taken',
 
         PARAM_EDIT_USER_ID: 'gebruiker',
-
         PARAM_MANAGE_CLASS_ID: 'klas',
         PARAM_CREATE_NEW_CLASS_ID: 'nieuw',
         PARAM_CLASS_TYPE: 'type',
         PARAM_MANAGE_COURSE_TOPIC_ID: 'vakthema',
         PARAM_CREATE_NEW_COURSE_TOPIC_ID: 'nieuw',
         PARAM_MANAGE_CLASS_MEMBERS: 'leerlingen',
+        PARAM_EDIT_TASK_ID: 'taak',
 
         pathToPage: function (path) {
             return path.replace(/\//g, '');
@@ -127,13 +127,13 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         },
 
         setParameter: function (name, value) {
-            console.log(name + " " + value);
             return $location.search(name, value);
         },
 
-        removeAllParameters: function () {
+        removeAllParameters: function (value) {
             $location.url($location.path());
         }
+
     };
 
     $scope.form = {
@@ -186,4 +186,18 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
 
     $scope.userSexes = {"MALE": "Man", "FEMALE": "Vrouw"};
     $scope.userSexesKeys = Object.keys($scope.userSexes);
+
+    $scope.isAlertEmpty = function(){
+        return $cookies.get("alert") != null;
+    }
+
+    $scope.getAlert = function(){
+        return $cookies.get("alert");
+    }
+
+    removeAlert = function () {
+        $cookies.put("alert", null, {'expires': new Date()});
+        $scope.location.url($location.path());
+    }
+
 });

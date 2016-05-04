@@ -2,11 +2,9 @@ package be.lambdaware.controllers;
 
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.UserDAO;
+import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.UserRole;
-import be.lambdaware.models.Certificate;
-import be.lambdaware.models.Clazz;
-import be.lambdaware.models.Grade;
-import be.lambdaware.models.User;
+import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -46,6 +44,18 @@ public class ClassController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
         List<Clazz> classes = classDAO.findAll();
+
+        if (classes.size() == 0) return Responses.CLASSES_NOT_FOUND;
+        return new ResponseEntity<>(classes, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET)
+    public ResponseEntity<?> getAllByType(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable ClassType type) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        List<Clazz> classes = classDAO.findAllByType(type);
 
         if (classes.size() == 0) return Responses.CLASSES_NOT_FOUND;
         return new ResponseEntity<>(classes, HttpStatus.OK);

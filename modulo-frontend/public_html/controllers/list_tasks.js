@@ -8,22 +8,6 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
     $scope.removeId;
 
 
-    // TODO: set to actual default values
-    $scope.task = {
-        name: 'Taak 1',
-        dueDate: '1995-07-25',
-        description: 'Dit is de eerste taak die jullie moetn maken.',
-        pavClassId: null
-    };
-
-
-    // PAV classes
-    $scope.PAVClasses = {};  // gets filled up at bottom of script
-    $scope.setSelectedPAVClass = function (PAVClass) {
-        $scope.selectedPAVClass = PAVClass.name;
-        $scope.task.pavClassId = PAVClass.id;
-    };
-
     $scope.toElementId = function (id) {
         return TASK_LIST_ITEM_PREFIX + id;
     };
@@ -33,7 +17,7 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
         $scope.tasks.set(task.id, task);
 
         var html = '<tr id="' + $scope.toElementId(task.id) + '">' +
-            '<td>' + task.name + '</td><td>' + task.deadline + '</td>' +
+            '<td>' + task.name + '</td><td>' + task.clazz.name + '</td><td>' + task.deadline + '</td>' +
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_TASK_ID,' + task.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
             '<td class="text-danger" ng-click="openRemoveModal(' + task.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td></tr>';
 
@@ -43,7 +27,10 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
     };
 
     $scope.removeTaskBackend = function (id) {
-        $http.delete('http://localhost:8080/task/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+        $http({
+            method: 'DELETE', url: 'http://localhost:8080/task/id/' + id,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
             $scope.removeTaskFrontend(id);
         });
     };
@@ -55,19 +42,19 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
             element.parentElement.removeChild(element);
     };
 
-    // $scope.openRemoveModal = function (id) {
-    //     var modalInstance = $uibModal.open({
-    //         animation: true,
-    //         templateUrl: 'views/panels/remove_modal.html',
-    //         controller: 'RemoveModalInstanceCtrl',
-    //         resolve: {}
-    //     });
-    //     $scope.removeId = id;
-    //     modalInstance.result.then(function () {
-    //         $scope.removeUserBackend($scope.removeId)
-    //     }, function () {
-    //     });
-    // };
+    $scope.openRemoveModal = function (id) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/remove_modal.html',
+            controller: 'RemoveModalInstanceCtrl',
+            resolve: {}
+        });
+        $scope.removeId = id;
+        modalInstance.result.then(function () {
+            $scope.removeTaskBackend($scope.removeId)
+        }, function () {
+        });
+    };
 
 
     // Update the Angular controls that have been added in the HTML
@@ -77,36 +64,26 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
 
 
     // ACTUAL ACTIONS ON LOADED PAGE
-    // load all PAV classes for this teacher
+    // get all tasks associated with current teacher
     $http({
-        method: 'GET', url: 'http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/teaching/type/PAV',
+        method: 'GET', url: 'http://localhost:8080/task/teacher/' + $cookies.getObject("user").id,
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {
-            $scope.PAVClasses[item.id] = item;
+            $scope.addTask(item);
         });
-        var firstKey = (Object.keys($scope.PAVClasses)[0]);
-        $scope.selectedPAVClass = $scope.PAVClasses[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
-        $scope.task.pavClassId = $scope.PAVClasses[firstKey].id;
-
-        $http.get('http://localhost:8080/task/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
-            response.forEach(function (item) {
-                $scope.addTask(item);
-            });
-            $scope.originalTasks = new Map($scope.tasks);
-            $scope.refresh();
-        });
+        $scope.refresh();
     });
 });
 
 
-// app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
-//     $scope.modalTitle = "Verwijder gebruiker";
-//
-//     $scope.ok = function () {
-//         $uibModalInstance.close();
-//     };
-//     $scope.cancel = function () {
-//         $uibModalInstance.dismiss('cancel');
-//     };
-// });
+app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalObject = "taak";
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});

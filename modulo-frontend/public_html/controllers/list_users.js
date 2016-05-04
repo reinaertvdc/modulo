@@ -65,9 +65,16 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
         var html = '<tr id="' + $scope.toElementId(user.id) + '">' +
 
-            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.userRoles[user.role] + '</td>' +
-            '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>' +
-            '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
+            '<td>' + user.firstName + ' ' + user.lastName + '</td><td>' + user.email + '</td><td>' + $scope.userRoles[user.role] + '</td>';
+
+        if ($cookies.getObject("user").id === user.id) {
+            html += '<td><span ng-class="getClass(' + user.id + ')"></span></td>';
+        }
+        else {
+            html += '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
+        }
+
+            html += '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
         if ($cookies.getObject("user").id === user.id) {
             html += '<td><span class="glyphicon glyphicon-remove"></span></td></tr>';
         } else {
@@ -83,10 +90,18 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
     $scope.getClass = function (id) {
         var user = $scope.users.get(id);
-        if (!angular.isUndefined(user) && !user.enabled)
-            return "glyphicon glyphicon-remove-circle text-danger";
-        else
-            return "glyphicon glyphicon-ok-circle text-success";
+        if ($cookies.getObject("user").id === user.id) {
+            if (!angular.isUndefined(user) && !user.enabled)
+                return "glyphicon glyphicon-remove-circle";
+            else
+                return "glyphicon glyphicon-ok-circle";
+        }
+        else{
+            if (!angular.isUndefined(user) && !user.enabled)
+                return "glyphicon glyphicon-remove-circle text-danger";
+            else
+                return "glyphicon glyphicon-ok-circle text-success";
+        }
     };
 
     $scope.swapEnabled = function (id) {
@@ -165,7 +180,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
 
 app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    $scope.modalTitle = "Verwijder gebruiker";
+    $scope.modalObject = "gebruiker"
 
     $scope.ok = function () {
         $uibModalInstance.close();

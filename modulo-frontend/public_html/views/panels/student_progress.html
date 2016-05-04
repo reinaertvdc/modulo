@@ -1,4 +1,112 @@
+<style>
+    .tooltip-inner {
+        white-space: pre;
+        max-width: none;
+        text-align: left;
+    }
+</style>
+
 <div data-ng-controller="StudentProgressController">
-    <!-- TODO create page -->
-    <h3>Voortgang</h3>
+    <h3>Voortgang leerlingen</h3>
+    <br>
+    <br>
+    <form class="form-inline">
+        <div class="form-group">
+            <div id="class">
+                <div class="btn-group" uib-dropdown>
+                    <button id="clazz-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+                        {{selectedValues.class ? selectedClass : 'Klas'}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                        <li data-ng-repeat="class in classes">
+                            <a href="" data-ng-click="setSelectedClass(class)">{{class.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <div id="student">
+                <div class="btn-group" uib-dropdown>
+                    <button id="student-button" type="button" class="btn btn-default" uib-dropdown-toggle
+                            ng-disabled="disabled">
+                        {{selectedValues.student ? selectedStudent : "Student"}}
+                       <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                        <li data-ng-repeat="student in students">
+                            <a href="" data-ng-click="setSelectedStudent(student)">{{student.firstName + " " + student.lastName}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div id="subcertificate">
+                <div class="btn-group" uib-dropdown >
+                    <button id="certificate-button" type="button" class="btn btn-default" uib-dropdown-toggle
+                            ng-disabled="disabled">
+                        {{selectedValues.subcertificate ? selectedSubcertificate : "Subcertificaat"}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                        <li data-ng-repeat="subcertificate in subcertificates">
+                            <a href="" data-ng-click="setSelectedSubcertificate(subcertificate)">{{subcertificate.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+    <br>
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed">
+            <thead id="table-header">
+
+            </thead>
+            <tbody class="text-center" id="table-score-body">
+           <!-- <tr>
+                <td>doelstelling 1</td>
+                <td><span tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Vakthema: Taal
+Beschrijving: Heel goed gewerkt!">V</span></td>
+                <td>V</td>
+                <td>T</td>
+                <td>V</td>
+                <td> V</td>
+                <td> A</td>
+                <td> V</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>doelstelling 2</td>
+                <td> I</td>
+                <td> A</td>
+                <td> I</td>
+                <td> A</td>
+                <td></td>
+                <td> A</td>
+                <td> I</td>
+                <td> A</td>
+            </tr>
+            <tr>
+                <td>doelstelling 3</td>
+                <td></td>
+                <td></td>
+                <td> I</td>
+                <td> A</td>
+                <td> I</td>
+                <td> A</td>
+                <td> I</td>
+                <td> A</td>
+            </tr>-->
+            </tbody>
+        </table>
+    </div>
 </div>
+
+

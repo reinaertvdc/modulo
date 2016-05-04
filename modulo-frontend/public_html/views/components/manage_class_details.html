@@ -1,6 +1,10 @@
 <div data-ng-controller="ManageClassDetailsController">
     <br/>
     <br/>
+
+    <uib-alert ng-if="isAlertEmpty()" type="success" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
             <label for="class">Naam klas:</label>

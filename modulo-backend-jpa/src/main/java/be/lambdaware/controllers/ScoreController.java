@@ -1,9 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.BGVScore;
 import be.lambdaware.models.PAVScore;
@@ -34,6 +31,13 @@ public class ScoreController {
     @Autowired
     UserDAO userDAO;
 
+
+    @Autowired
+    BGVScoreDAO bgvScoreDAO;
+
+    @Autowired
+    PAVScoreDAO pavScoreDAO;
+
     @Autowired
     APIAuthentication authentication;
 
@@ -53,11 +57,14 @@ public class ScoreController {
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
+
+
+
         StudentInfo info = user.getStudentInfo();
 
         if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
 
-        List<BGVScore> bgvScores = info.getBgvScores();
+        List<BGVScore> bgvScores = bgvScoreDAO.findAllByStudentInfoOrderByWeekAsc(info);
 
         if (bgvScores.size() == 0) return Responses.BGV_SCORES_NOT_FOUND;
 
@@ -80,7 +87,7 @@ public class ScoreController {
 
         if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
 
-        List<PAVScore> pavScores = info.getPavScores();
+        List<PAVScore> pavScores = pavScoreDAO.findAllByStudentInfoOrderByWeekAsc(info);
 
         if (pavScores.size() == 0) return Responses.PAV_SCORES_NOT_FOUND;
 

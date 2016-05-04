@@ -598,6 +598,9 @@ public class UserController {
             oldUser.setPassword(authentication.SHA512(newUser.getPassword()));
         }
 
+        // set the parent 
+        oldUser.setParent(newUser.getParent());
+
 
         // If the user's role is being changed
         if(oldUser.getRole() != newUser.getRole()){

@@ -25,6 +25,8 @@ public class PAVScore {
 //    @Column(nullable = false)
 //    private Date gradedDate;
 
+    //TODO add reference to course_topic
+
     @Column(nullable = false)
     private int week;
 

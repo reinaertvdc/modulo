@@ -182,5 +182,32 @@ public class ClassController {
         return Responses.CLASS_ADDED_TEACHER;
     }
 
-    //TODO delete user from class
+
+    // ===================================================================================
+    // DELETE methods
+    // ===================================================================================
+
+
+    @RequestMapping(value = "/id/{id}/student/{studentId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteStudentFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long studentId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        Clazz clazz = classDAO.findById(id);
+        if (clazz == null) return Responses.CLASS_NOT_FOUND;
+
+        User student = userDAO.findById(studentId);
+
+        if (student == null) return Responses.USER_NOT_FOUND;
+        if (student.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        if(clazz.getStudents().contains(student)){
+            clazz.getStudents().remove(student);
+            classDAO.saveAndFlush(clazz);
+        }
+
+
+        return Responses.CLASS_DELETED_STUDENT;
+    }
 }

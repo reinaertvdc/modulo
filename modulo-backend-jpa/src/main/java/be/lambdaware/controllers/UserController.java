@@ -413,11 +413,57 @@ public class UserController {
         return new ResponseEntity<>(certificate, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/gradeid", method = RequestMethod.GET)
+    public ResponseEntity<?> getGradeIdFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        Grade grade = info.getGrade();
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        return new ResponseEntity<>(grade.getId(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/certificateid", method = RequestMethod.GET)
+    public ResponseEntity<?> getCertificateIdFromUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.findById(id);
+
+        if (user == null) return Responses.USER_NOT_FOUND;
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        StudentInfo info = user.getStudentInfo();
+
+        if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        Certificate certificate = info.getCertificate();
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        return new ResponseEntity<>(certificate.getId(), HttpStatus.OK);
+    }
+
     // ===================================================================================
     // POST methods
     // ===================================================================================
 
-    //TODO: example method to create a user with x-www-form-urlencoded parameters. Check http://stackoverflow.com/questions/11442632/how-can-i-post-data-as-form-data-instead-of-a-request-payload for angularjs impl.
+
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ResponseEntity<?> createAdmin(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody MultiValueMap<String, String> form) {
 
@@ -483,7 +529,6 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<?> createStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User user) {
-        //TODO lege parent veld toch updaten
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
@@ -491,6 +536,9 @@ public class UserController {
         User newUser = new User(user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
         newUser.setParent(user.getParent());
         userDAO.saveAndFlush(newUser);
+
+        if(user.getRole() != UserRole.STUDENT) return new ResponseEntity<>(newUser, HttpStatus.OK);
+
         StudentInfo info = user.getStudentInfo();
         info.setUser(newUser);
         studentInfoDAO.saveAndFlush(info);

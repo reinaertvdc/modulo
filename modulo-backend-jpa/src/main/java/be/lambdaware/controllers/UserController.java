@@ -1,8 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
@@ -37,6 +35,11 @@ public class UserController {
     ClassDAO classDAO;
     @Autowired
     StudentInfoDAO studentInfoDAO;
+    @Autowired
+    BGVScoreDAO bgvScoreDAO;
+    @Autowired
+    PAVScoreDAO pavScoreDAO;
+
 
     @Autowired
     APIAuthentication authentication;
@@ -533,7 +536,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateStudent(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User newUser) {
+    public ResponseEntity<?> update(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody User newUser) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -554,17 +557,26 @@ public class UserController {
             // old student = student, delete student info
             if(oldUser.getRole() == UserRole.STUDENT){
                 log.info("Old user was a student. Remove student from possible classes.");
-                // remove student from any class
                 for(Clazz clazz : oldUser.getClasses()){
                     clazz.getStudents().remove(oldUser);
                 }
+
                 log.info("Remove student from possible course toipcs.");
-                // remove student from course topic
                 for(CourseTopic courseTopic : oldUser.getStudentInfo().getCourseTopics()){
                     courseTopic.getStudents().remove(oldUser.getStudentInfo());
                 }
-                log.info("Delete user's student info and cascade delete scores");
-                // remove student info
+
+                log.info("Delete BGV scores");
+                for(BGVScore bgvScore : oldUser.getStudentInfo().getBgvScores()){
+                    bgvScoreDAO.delete(bgvScore);
+                }
+
+                log.info("Delete PAV scores");
+                for(PAVScore pavScore : oldUser.getStudentInfo().getPavScores()){
+                    pavScoreDAO.delete(pavScore);
+                }
+
+                log.info("Delete user's student info.");
                 studentInfoDAO.delete(oldUser.getStudentInfo());
             }
 

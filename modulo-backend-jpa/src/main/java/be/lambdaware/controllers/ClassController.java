@@ -181,4 +181,6 @@ public class ClassController {
 
         return Responses.CLASS_ADDED_TEACHER;
     }
+
+    //TODO delete user from class
 }

@@ -205,9 +205,8 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         return $cookies.get("alert");
     }
 
-    removeAlert = function () {
+    $scope.removeAlert = function () {
         $cookies.put("alert", null, {'expires': new Date()});
-        $scope.location.url($location.path());
     }
 
 });

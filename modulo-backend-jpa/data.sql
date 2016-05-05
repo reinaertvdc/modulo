@@ -25902,6 +25902,8 @@ INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_i
 INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (1, '2016-05-26', 'beschrijving', 'taak 1', 3);
 INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (2, '2016-05-24', 'niks', 'taak 2', 5);
 INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (3, '2016-05-28', 'derde taak', 'Taak 3', 4);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (4, '2017-05-17', 'dit is de 4e taak', 'Taak 4', 3);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (5, '2015-05-10', 'deze taak is gedaan', 'Taak 5', 3);
 
 -- Task scores
 INSERT INTO public.task_scores (id, graded_date, remarks, score, student_id, task_id) VALUES (1, '2016-05-17', 'goed zo', 'A', 1, 1);

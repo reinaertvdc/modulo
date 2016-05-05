@@ -22,7 +22,6 @@ public class TaskScore {
     // Fields
     // ===================================================================================
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ScoreType score;
 

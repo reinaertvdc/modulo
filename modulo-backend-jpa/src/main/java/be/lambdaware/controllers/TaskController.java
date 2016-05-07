@@ -86,8 +86,23 @@ public class TaskController {
         }
         teachedTasks.sort(new DateComparator());
 
-        if (teachedTasks.size() == 0) return Responses.TASKS_NOT_FOUND;
         return new ResponseEntity<>(teachedTasks, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/scores/{taskId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getTaskScores(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long taskId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        Task task = taskDAO.findById(taskId);
+        if (task == null) return Responses.TASK_NOT_FOUND;
+
+        List<TaskScore> scores = taskScoreDAO.findAllByTaskId(taskId);
+        scores.sort(new NameComparator());
+
+        return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
 
@@ -107,12 +122,24 @@ public class TaskController {
         for (User student : clazz.getStudents()) {
             TaskScore score = new TaskScore();
             score.setGradedDate(task.getDeadline());
-            score.setStudentInfo(student.getStudentInfo());
+            score.setUser(student);
             score.setTask(task);
             taskScoreDAO.saveAndFlush(score);
         }
 
         return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/scores", method = RequestMethod.POST)
+    public ResponseEntity<?> createScores(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<TaskScore> scores) {
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        taskScoreDAO.save(scores);
+        taskScoreDAO.flush();
+
+        return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
 
@@ -138,7 +165,7 @@ public class TaskController {
             for (User student : clazz.getStudents()) {
                 TaskScore score = new TaskScore();
                 score.setGradedDate(task.getDeadline());
-                score.setStudentInfo(student.getStudentInfo());
+                score.setUser(student);
                 score.setTask(task);
                 taskScoreDAO.saveAndFlush(score);
             }
@@ -164,19 +191,27 @@ public class TaskController {
         Task task = taskDAO.findById(id);
         if (task == null) return Responses.TASK_NOT_FOUND;
 
+        // delete all associated scores
+        taskScoreDAO.delete(task.getTaskScores());
+
         taskDAO.delete(id);
         return Responses.TASK_DELETED;
     }
 
 
-
-
     // Take care of sorting on date
-    public class DateComparator implements Comparator<Task>
-    {
-        public int compare(Task t1, Task t2)
-        {
+    public class DateComparator implements Comparator<Task> {
+        public int compare(Task t1, Task t2) {
             return t1.getDeadline().compareTo(t2.getDeadline());
+        }
+    }
+    // Take care of sorting on <firstname, lastname>
+    public class NameComparator implements Comparator<TaskScore> {
+        public int compare(TaskScore s1, TaskScore s2) {
+            if(s1.getUser().getFirstName().compareTo(s2.getUser().getFirstName()) != 0)
+                return s1.getUser().getFirstName().compareTo(s2.getUser().getFirstName());
+            else
+                return s1.getUser().getLastName().compareTo(s2.getUser().getLastName());
         }
     }
 }

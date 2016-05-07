@@ -84,7 +84,7 @@ public class StudentInfo {
     @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studentInfo")
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<TaskScore> taskScores = new ArrayList<>();
 
@@ -286,9 +286,6 @@ public class StudentInfo {
 
     public void addTaskScore(TaskScore taskScore) {
         this.taskScores.add(taskScore);
-        if (taskScore.getStudentInfo() != this) {
-            taskScore.setStudentInfo(this);
-        }
     }
 
     public List<CourseTopic> getCourseTopics() {

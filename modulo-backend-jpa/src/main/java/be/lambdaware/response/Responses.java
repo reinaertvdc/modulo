@@ -53,9 +53,14 @@ public class Responses {
 
     private static final String tasksNotFound = "The requested tasks could not be found.";
     private static final String taskNotFound = "The requested task could not be found.";
+    private static final String taskScoreNotFound = "The requested taskscore could not be found.";
     private static final String taskDeleted = "Task successfully deleted.";
 
     private static final String taskScoresDeleted = "Task scores successfully deleted.";
+    private static final String fileNotUploaded = "File could not be uploaded.";
+    private static final String fileUploaded = "File successfully uploaded.";
+    private static final String fileDownloaded = "File successfully downloaded.";
+    private static final String fileNotDownloaded = "File could not be downloaded.";
 
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
@@ -107,5 +112,11 @@ public class Responses {
     public static final ResponseEntity<?> TASK_DELETED = StringMessage.asEntity(taskDeleted, HttpStatus.OK);
 
     public static final ResponseEntity<?> TASK_SCORES_DELETED = StringMessage.asEntity(taskScoresDeleted, HttpStatus.OK);
+    public static final ResponseEntity<?> TASKSCORE_NOT_FOUND = StringMessage.asEntity(taskScoreNotFound,HttpStatus.NOT_FOUND);
+
+    public static final ResponseEntity<?> FILE_UPLOADED = StringMessage.asEntity(fileUploaded, HttpStatus.OK);
+    public static final ResponseEntity<?> FILE_DOWNLOADED = StringMessage.asEntity(fileDownloaded, HttpStatus.OK);
+    public static final ResponseEntity<?> FILE_NOT_UPLOADED = StringMessage.asEntity(fileNotUploaded,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> FILE_NOT_DOWNLOADED = StringMessage.asEntity(fileNotDownloaded,HttpStatus.NOT_FOUND);
 
 }

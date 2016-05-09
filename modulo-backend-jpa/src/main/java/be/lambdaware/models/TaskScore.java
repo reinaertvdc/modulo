@@ -31,6 +31,9 @@ public class TaskScore {
     @Column
     private String remarks;
 
+    @Column
+    private String fileName;
+
     // ===================================================================================
     // Relations
     // ===================================================================================
@@ -76,6 +79,10 @@ public class TaskScore {
 
     public void setGradedDate(Date gradedDate) { this.gradedDate = gradedDate; }
 
+    public String getFileName() { return fileName; }
+
+    public void setFileName(String fileName) { this.fileName = fileName; }
+
     // ===================================================================================
     // Relation Accessors
     // ===================================================================================
@@ -112,19 +119,20 @@ public class TaskScore {
         if (score != score1.score) return false;
         if (gradedDate != null ? !gradedDate.equals(score1.gradedDate) : score1.gradedDate != null) return false;
         if (remarks != null ? !remarks.equals(score1.remarks) : score1.remarks != null) return false;
+        if (fileName != null ? !fileName.equals(score1.fileName) : score1.fileName != null) return false;
         if (task != null ? !task.equals(score1.task) : score1.task != null) return false;
         return user != null ? user.equals(score1.user) : score1.user == null;
 
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "TaskScore{" +
                 "id=" + id +
                 ", score=" + score +
                 ", gradedDate=" + gradedDate +
                 ", remarks='" + remarks + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", task=" + task +
                 ", user=" + user +
                 '}';

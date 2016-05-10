@@ -52,6 +52,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         PARAM_CREATE_NEW_COURSE_TOPIC_ID: 'nieuw',
         PARAM_MANAGE_CLASS_MEMBERS: 'leerlingen',
         PARAM_EDIT_TASK_ID: 'taak',
+        PARAM_TASK_SCORES: 'taakscores',
 
         pathToPage: function (path) {
             return path.replace(/\//g, '');
@@ -69,6 +70,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
                 || page === this.SCORES_MANAGEMENT
                 || page === this.STUDENT_PROGRESS
                 || page === this.TASK_MANAGEMENT
+                || page === this.TASK_SCORES
         },
 
         userCanAccessPage: function (page) {
@@ -205,9 +207,8 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         return $cookies.get("alert");
     }
 
-    removeAlert = function () {
+    $scope.removeAlert = function () {
         $cookies.put("alert", null, {'expires': new Date()});
-        $scope.location.url($location.path());
     }
 
 });

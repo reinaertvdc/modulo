@@ -1,0 +1,62 @@
+<style>
+    .tooltip-inner {
+        white-space: pre;
+        max-width: none;
+        text-align: left;
+    }
+</style>
+
+
+<div data-ng-controller="TaskScoresController">
+    <h3 ng-bind="panelCaption"></h3>
+
+    <label>Beschrijving:</label>
+    <pre ng-bind="task.description"></pre>
+
+
+    <br/>
+
+
+    <div class="panel panel-default">
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th class="col-xs-1"><a href="" ng-click="toggleAll()">Alles/niets</a></th>
+                <th class="col-xs-9">Student</th>
+                <th class="col-xs-1">Inzending</th>
+                <th class="col-xs-1">Score</th>
+            </tr>
+            </thead>
+            <tbody id="table-scores-list-body"></tbody>
+        </table>
+    </div>
+
+
+    <br/>
+
+    <div class="form-group">
+        <label>Score:</label>
+        <div class="btn-group" data-uib-dropdown>
+            <button id="button-score" type="button" class="btn btn-default" data-uib-dropdown-toggle
+                    data-ng-disabled="disabled">
+                {{scoreStr}}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
+                <li><a href="" data-ng-click="scoreStr='Aangeboden'">Aangeboden</a></li>
+                <li><a href="" data-ng-click="scoreStr='Ingeoefend'">Ingeoefend</a></li>
+                <li><a href="" data-ng-click="scoreStr='Verworven'">Verworven</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Commentaar:</label>
+        <textarea id="input-description" class="form-control" rows="5" style="resize:none"
+                  data-ng-model="remarks"></textarea>
+    </div>
+
+    <button data-ng-click="submitForm()" class="btn btn-success btn-lg btn-block">
+        <span class="glyphicon glyphicon-plus-sign"></span> Score(s) toekennen
+    </button>
+</div>

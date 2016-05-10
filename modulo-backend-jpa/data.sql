@@ -25898,10 +25898,22 @@ INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, 
 INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (1, '1', 'Helemaal Oke', 'V', 1, 1);
 INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (2, '1', 'Goed gemaakt', 'V', 4, 2);
 
--- Tasks
-INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (1, '2016-05-26', 'beschrijving', 'taak 1', 3);
-INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (2, '2016-05-24', 'niks', 'taak 2', 5);
-INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (3, '2016-05-28', 'derde taak', 'Taak 3', 4);
 
--- Task scores
-INSERT INTO public.task_scores (id, graded_date, remarks, score, student_id, task_id) VALUES (1, '2016-05-17', 'goed zo', 'A', 1, 1);
+-- Tasks
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (320, '2016-05-13', 'Dit is wat jullie moeten doen:
+1. Gebruik Wikipedia
+2. Copy-paste alles
+3. Sla dat op als een Word document
+4. Upload naar Modulo.', 'Michiels Taak', 4);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (350, '2016-05-06', '', 'Oude taak', 3);
+
+-- Taskscores
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (336, '2016-05-13', null, null, 320, 16);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (337, '2016-05-13', null, null, 320, 17);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (335, '2016-05-13', '', 'A', 320, 14);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (338, '2016-05-13', 'Goed zo', 'I', 320, 19);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (362, '2016-05-06', null, null, 350, 9);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (363, '2016-05-06', null, null, 350, 11);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (364, '2016-05-06', null, null, 350, 13);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (360, '2016-05-06', null, null, 350, 6);
+INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (361, '2016-05-06', null, null, 350, 7);

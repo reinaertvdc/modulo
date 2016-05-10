@@ -22,7 +22,6 @@ public class TaskScore {
     // Fields
     // ===================================================================================
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ScoreType score;
 
@@ -32,18 +31,20 @@ public class TaskScore {
     @Column
     private String remarks;
 
+    @Column
+    private String fileName;
+
     // ===================================================================================
     // Relations
     // ===================================================================================
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "student_id")
-    @JsonIgnore
-    private StudentInfo studentInfo;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     // ===================================================================================
 
@@ -78,6 +79,10 @@ public class TaskScore {
 
     public void setGradedDate(Date gradedDate) { this.gradedDate = gradedDate; }
 
+    public String getFileName() { return fileName; }
+
+    public void setFileName(String fileName) { this.fileName = fileName; }
+
     // ===================================================================================
     // Relation Accessors
     // ===================================================================================
@@ -92,13 +97,12 @@ public class TaskScore {
         }
     }
 
-    public StudentInfo getStudentInfo() { return studentInfo; }
+    public User getUser() {
+        return user;
+    }
 
-    public void setStudentInfo(StudentInfo studentInfo) {
-        this.studentInfo = studentInfo;
-        if (studentInfo != null && !studentInfo.getTaskScores().contains(this)) {
-            studentInfo.getTaskScores().add(this);
-        }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // ===================================================================================
@@ -109,14 +113,15 @@ public class TaskScore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TaskScore taskScore = (TaskScore) o;
+        TaskScore score1 = (TaskScore) o;
 
-        if (id != taskScore.id) return false;
-        if (score != taskScore.score) return false;
-        if (!gradedDate.equals(taskScore.gradedDate)) return false;
-        if (!remarks.equals(taskScore.remarks)) return false;
-        if (!task.equals(taskScore.task)) return false;
-        return studentInfo.equals(taskScore.studentInfo);
+        if (id != score1.id) return false;
+        if (score != score1.score) return false;
+        if (gradedDate != null ? !gradedDate.equals(score1.gradedDate) : score1.gradedDate != null) return false;
+        if (remarks != null ? !remarks.equals(score1.remarks) : score1.remarks != null) return false;
+        if (fileName != null ? !fileName.equals(score1.fileName) : score1.fileName != null) return false;
+        if (task != null ? !task.equals(score1.task) : score1.task != null) return false;
+        return user != null ? user.equals(score1.user) : score1.user == null;
 
     }
 
@@ -127,8 +132,9 @@ public class TaskScore {
                 ", score=" + score +
                 ", gradedDate=" + gradedDate +
                 ", remarks='" + remarks + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", task=" + task +
-                ", studentInfo=" + studentInfo +
+                ", user=" + user +
                 '}';
     }
 }

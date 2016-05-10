@@ -1,113 +1,80 @@
-app.controller('ScoreManagementController', function ($scope) {
+app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
     // TODO implement controller
-    $scope.scoreHierarchy = [];
+    $scope.classes = [];
 
     $scope.visibleScores = {
-        subject: null,
-        course: null,
         schoolClass: null,
         module: null,
-
-        setSubject: function (subject) {
-            this.subject = subject;
-            this.course = null;
-            this.schoolClass = null;
-            this.module = null;
-        },
-
-        setCourse: function (course) {
-            this.course = course;
-            this.schoolClass = null;
-            this.module = null;
-        },
-
-        setSchoolClass: function (schoolClass) {
-            this.schoolClass = schoolClass;
-        },
-
-        setModule: function (module) {
-            this.module = module;
-        }
+        week: null
     };
 
-    $scope.selectedScore = null;
-
-    $scope.scores = [];
-
-    $scope.getScoreHierarchy = function() {
-        var subjects = [
-            {
-                name: 'BGV',
-                coursePlaceholder: 'Certificaat',
-                schoolClassPlaceholder: 'Klas',
-                modulePlaceholder: 'Deelcertificaat',
-                courses: ['Metselaar', 'BouwplaatsMachinist', 'Kok', 'Kassier']
-            },
-            {
-                name: 'PAV',
-                coursePlaceholder: 'Graad',
-                schoolClassPlaceholder: 'Klas',
-                modulePlaceholder: 'Vakthema',
-                courses: ['1ste graad', '2de graad']
+    $http({
+        method: 'GET', url: 'http://localhost:8080/user/id/'+ $cookies.getObject('user').id +'/teaching',
+        headers: {'X-auth': $cookies.get('auth')}
+    }).success(function (schoolClasses) {
+        schoolClasses.forEach(function (schoolClass) {
+            var clazz = {};
+            clazz.schoolClass = schoolClass;
+            clazz.modules = [];
+            if (schoolClass.type == 'BGV') {
+                $http({
+                    method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/certificate',
+                    headers: {'X-auth': $cookies.get('auth')}
+                }).success(function (certificate) {
+                    certificate.subCertificates.forEach(function (subCertificate) {
+                        clazz.modules.push(subCertificate);
+                    })
+                });
+            } else {
+                // TODO download vakthema's
             }
-        ];
+            $http({
+                method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/students',
+                headers: {'X-auth': $cookies.get('auth')}
+            }).success(function (students) {
+                clazz.students = [];
+                students.forEach(function (student) {
+                    var tempStudent = {};
+                    tempStudent.student = student;
+                    tempStudent.scores = [];
+                    if (schoolClass.type == 'BGV') {
+                        $http({
+                            method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/bgv',
+                            headers: {'X-auth': $cookies.get('auth')}
+                        }).success(function (bgvScores) {
+                            tempStudent.bgvScores = [];
+                            bgvScores.forEach(function (bgvScore) {
+                                tempStudent.scores.push(bgvScore)
+                            })
+                        });
+                    } else {
+                        $http({
+                            method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/pav',
+                            headers: {'X-auth': $cookies.get('auth')}
+                        }).success(function (pavScores) {
+                            tempStudent.pavScores = [];
+                            pavScores.forEach(function (pavScore) {
+                                tempStudent.scores.push(pavScore)
+                            })
+                        });
+                    }
+                    clazz.students.push(tempStudent);
+                })
+            });
+            $scope.classes.push(clazz);
+        })
+    });
 
-        for (var subjectIndex = 0; subjectIndex < subjects.length; subjectIndex++) {
-            var subject = subjects[subjectIndex];
-            var newSubject = {name: subject.name, coursePlaceholder: subject.coursePlaceholder, schoolClassPlaceholder: subject.schoolClassPlaceholder, modulePlaceholder: subject.modulePlaceholder, courses: []};
-            for (var courseIndex = 0; courseIndex < subject.courses.length; courseIndex++) {
-                var course = subject.courses[courseIndex];
-                var newCourse = {name: course, classes: [], modules: []};
-                for (var i = 1; i <= 4; i++) {
-                    newCourse.classes.push('Klas ' + i);
-                }
-                for (var i = 1; i <= 6; i++) {
-                    newCourse.modules.push(subject.modulePlaceholder + ' ' + i);
-                }
-                newSubject.courses.push(newCourse);
-            }
-            $scope.scoreHierarchy.push(newSubject);
+    $scope.getWeeks = function() {
+        var result = [];
+        for (var i = 1; i <= 38; i++) {
+            result.push(i);
         }
-
-        for (var i = 0; i < $scope.scoreHierarchy.length; i++) {
-            console.log($scope.scoreHierarchy[i].name);
-            for (var j = 0; j < $scope.scoreHierarchy[i].courses.length; j++) {
-                console.log('    ' + $scope.scoreHierarchy[i].courses[j].name);
-                for (var k = 0; k < $scope.scoreHierarchy[i].courses[j].classes.length; k++) {
-                    console.log('        ' + $scope.scoreHierarchy[i].courses[j].classes[k]);
-                }
-                for (var k = 0; k < $scope.scoreHierarchy[i].courses[j].modules.length; k++) {
-                    console.log('        ' + $scope.scoreHierarchy[i].courses[j].modules[k]);
-                }
-            }
-        }
+        return result;
     };
-
-    $scope.getScoreHierarchy();
-
-    $scope.competences = [
-        new Competence(1, 'Doelstelling 1', null),
-        new Competence(2, 'Doelstelling 2', null),
-        new Competence(3, 'Doelstelling 3', null),
-        new Competence(4, 'Doelstelling 4', null),
-        new Competence(5, 'Doelstelling 5', null)
-    ];
-
-    $scope.studentScores = [
-        new StudentScores('Jonas Verlinden', [Score.PRACTICED, Score.ACQUIRED, Score.PRACTICED, Score.PRACTICED, Score.ACQUIRED]),
-        new StudentScores('Niels Vanmunster', [Score.PRACTICED, Score.ACQUIRED, Score.PRACTICED, Score.ACQUIRED, Score.OFFERED]),
-        new StudentScores('Mohammed Vannitsen', [Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED]),
-        new StudentScores('Elise Vanderkruis', [Score.PRACTICED, Score.OFFERED, Score.PRACTICED, Score.ACQUIRED, Score.ACQUIRED]),
-        new StudentScores('Christophe Drozdzyniak', [Score.PRACTICED, Score.ACQUIRED, Score.OFFERED, Score.PRACTICED, Score.ACQUIRED]),
-        new StudentScores('Ivan De Vadder', [Score.ACQUIRED, Score.PRACTICED, Score.PRACTICED, Score.ACQUIRED, Score.PRACTICED]),
-        new StudentScores('Ward De Bever', [Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED, Score.OFFERED]),
-        new StudentScores('Frank Wilfrank', [Score.ACQUIRED, Score.PRACTICED, Score.OFFERED, Score.ACQUIRED, Score.PRACTICED])
-    ];
-    
-    $scope.selectedStudentScores = [];
 });
 
-app.controller('DatepickerPopupDemoCtrl', function ($scope) {
+/*app.controller('DatepickerPopupDemoCtrl', function ($scope) {
     $scope.today = function() {
         $scope.dt = new Date();
     };
@@ -201,4 +168,4 @@ app.controller('DatepickerPopupDemoCtrl', function ($scope) {
 
         return '';
     }
-});
+});*/

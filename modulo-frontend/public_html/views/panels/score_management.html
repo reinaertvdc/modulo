@@ -4,61 +4,35 @@
 
     <form name="form">
         <div class="btn-group" data-uib-dropdown>
-            <button id="button-subject" type="button" class="btn btn-default" data-uib-dropdown-toggle
-                    data-ng-disabled="disabled">
-                {{visibleScores.subject ? visibleScores.subject.name : 'Vak'}}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
-                <li data-ng-repeat="subject in scoreHierarchy"><a href=""
-                                                                  data-ng-click="visibleScores.setSubject(subject)">{{subject.name}}</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="btn-group" data-uib-dropdown data-ng-class="{hidden: !visibleScores.subject}">
-            <button id="button-course" type="button" class="btn btn-default" data-uib-dropdown-toggle
-                    data-ng-disabled="disabled">
-                {{visibleScores.course ? visibleScores.course.name : visibleScores.subject.coursePlaceholder}}
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-course">
-                <li data-ng-repeat="course in visibleScores.subject.courses"><a href=""
-                                                                                data-ng-click="visibleScores.setCourse(course)">{{course.name}}</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="btn-group" data-uib-dropdown data-ng-class="{hidden: !visibleScores.course}">
             <button id="button-school-class" type="button" class="btn btn-default" data-uib-dropdown-toggle
                     data-ng-disabled="disabled">
-                {{visibleScores.schoolClass ? visibleScores.schoolClass : visibleScores.subject.schoolClassPlaceholder}}
+                {{visibleScores.schoolClass ? visibleScores.schoolClass.schoolClass.name : 'Klas'}}
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
-                <li data-ng-repeat="schoolClass in visibleScores.course.classes"><a href=""
-                                                                                    data-ng-click="visibleScores.setSchoolClass(schoolClass)">{{schoolClass}}</a>
-                </li>
+                <li data-ng-repeat="clazz in classes"><a href="" data-ng-click="visibleScores.schoolClass = clazz">{{clazz.schoolClass.name}}</a></li>
             </ul>
         </div>
 
         <div class="btn-group" data-uib-dropdown data-ng-class="{hidden: !visibleScores.schoolClass}">
             <button id="button-module" type="button" class="btn btn-default" data-uib-dropdown-toggle
                     data-ng-disabled="disabled">
-                {{visibleScores.module ? visibleScores.module : visibleScores.subject.modulePlaceholder}}
+                {{visibleScores.module ? visibleScores.module.name : (visibleScores.schoolClass.schoolClass.type == 'BGV' ? 'Deelcertificaat' : 'Vakthema')}}
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
-                <li data-ng-repeat="module in visibleScores.course.modules"><a href=""
-                                                                               data-ng-click="visibleScores.setModule(module)">{{module}}</a>
-                </li>
+                <li data-ng-repeat="module in visibleScores.schoolClass.modules"><a href="" data-ng-click="visibleScores.module = module">{{module.name}}</a></li>
             </ul>
         </div>
 
-        <br>
-        <br>
+        <br><br>
 
-        <div ng-controller="DatepickerPopupDemoCtrl">
+        <div class="input-group">
+            <span class="input-group-addon" id="addon-week">Week</span>
+            <input type="number" min="1" max="38" class="form-control" id="input-week" aria-describedby="addon-week">
+        </div>
+
+        <!--<div ng-controller="DatepickerPopupDemoCtrl">
             <div class="row">
                 <div class="col-md-6">
                     <p class="input-group">
@@ -118,6 +92,6 @@
             <button type="submit" class="btn btn-success btn-lg btn-block">
                 <span class="glyphicon glyphicon-plus-sign"></span> Opslaan
             </button>
-        </div>
+        </div>-->
     </form>
 </div>

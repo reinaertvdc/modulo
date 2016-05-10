@@ -1,6 +1,7 @@
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class Grade {
     private List<Clazz> classes = new ArrayList<>();
 
     @OneToMany(mappedBy = "grade",orphanRemoval = true)
+    @JsonIgnore
     private List<Objective> objectives = new ArrayList<>();
 
     // ===================================================================================

@@ -36,6 +36,7 @@ public class Certificate {
     // ===================================================================================
 
     @OneToMany(mappedBy = "certificate", orphanRemoval = true)
+    @JsonIgnore
     private List<SubCertificate> subCertificates = new ArrayList<>();
 
     @OneToMany(mappedBy = "certificate")

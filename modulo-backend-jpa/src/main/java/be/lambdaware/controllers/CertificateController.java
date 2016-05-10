@@ -138,6 +138,24 @@ public class CertificateController {
         return new ResponseEntity<>(classes, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/subcertificates", method = RequestMethod.GET)
+    public ResponseEntity<?> getSubCertificatesFromCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+
+        Certificate certificate = certificateDAO.findById(id);
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        List<SubCertificate> subCertificates = certificate.getSubCertificates();
+
+        if (subCertificates.size()==0) return Responses.SUBCERTIFICATES_NOT_FOUND;
+
+        return new ResponseEntity<>(subCertificates, HttpStatus.OK);
+    }
+
     // ===================================================================================
     // PUT methods
     // ===================================================================================

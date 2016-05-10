@@ -3,10 +3,7 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.models.Clazz;
-import be.lambdaware.models.Grade;
-import be.lambdaware.models.StudentInfo;
-import be.lambdaware.models.User;
+import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -141,6 +138,24 @@ public class GradeController {
         if (classes.size()==0) return Responses.CLASSES_NOT_FOUND;
 
         return new ResponseEntity<>(classes, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/objectives", method = RequestMethod.GET)
+    public ResponseEntity<?> getObjectivesFromGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+
+        Grade grade = gradeDAO.findById(id);
+
+        if (grade == null) return Responses.GRADE_NOT_FOUND;
+
+        List<Objective> objectives = grade.getObjectives();
+
+        if (objectives.size()==0) return Responses.OBJECTIVES_NOT_FOUND;
+
+        return new ResponseEntity<>(objectives, HttpStatus.OK);
     }
 
     // ===================================================================================

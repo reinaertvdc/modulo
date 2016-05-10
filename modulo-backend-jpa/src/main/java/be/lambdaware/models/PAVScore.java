@@ -22,10 +22,9 @@ public class PAVScore {
     @Enumerated(EnumType.STRING)
     private ScoreType score;
 
-//    @Column(nullable = false)
-//    private Date gradedDate;
-
     //TODO add reference to course_topic
+//    @ManyToOne()
+//    private CourseTopic courseTopic
 
     @Column(nullable = false)
     private int week;

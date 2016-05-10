@@ -14,7 +14,7 @@
         android:textStyle="bold"
         android:padding="10sp"
         android:textSize="20sp"
-        android:text="Competentie"/>
+        android:text="Subcertificaat"/>
 
     <LinearLayout
         android:baselineAligned="false"

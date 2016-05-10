@@ -38,6 +38,7 @@ public class Responses {
     private static final String certificateStudentAdded = "Certificate successfully added to student.";
 
     private static final String subCertificatesNotFound = "The requested subcertificates could not be found.";
+    private static final String objectivesNotFound = "The requested objectives could not be found.";
 
     private static final String gradeNotFound = "The requested grade could not be found.";
     private static final String gradesNotFound = "The requested certificates could not be found.";
@@ -94,6 +95,7 @@ public class Responses {
     public static final ResponseEntity<?> CERTIFICATE_STUDENT_ADD = StringMessage.asEntity(certificateStudentAdded, HttpStatus.OK);
 
     public static final ResponseEntity<?> SUBCERTIFICATES_NOT_FOUND = StringMessage.asEntity(subCertificatesNotFound, HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> OBJECTIVES_NOT_FOUND = StringMessage.asEntity(objectivesNotFound, HttpStatus.NOT_FOUND);
 
     public static final ResponseEntity<?> GRADE_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> GRADES_NOT_FOUND = StringMessage.asEntity(gradeNotFound, HttpStatus.NOT_FOUND);

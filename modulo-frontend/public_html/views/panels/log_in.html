@@ -15,6 +15,10 @@
                    data-ng-model="formData.password" title="Wachtwoord van de gebruiker" required>
         </div>
 
+        <uib-alert ng-if="isAlertEmpty()" type="danger" close="removeAlert()">
+            {{getAlert()}}
+        </uib-alert>
+
         <button type="submit" class="btn btn-primary">
             <span class="glyphicon glyphicon-log-in"></span> Aanmelden
         </button>

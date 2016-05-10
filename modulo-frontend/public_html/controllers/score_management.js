@@ -1,6 +1,7 @@
 app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
     // TODO implement controller
-    $scope.classes = [];
+    $scope.bgvClasses = [];
+    $scope.pavClasses = [];
 
     $scope.visibleScores = {
         schoolClass: null,
@@ -14,6 +15,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
     }).success(function (schoolClasses) {
         schoolClasses.forEach(function (schoolClass) {
             var clazz = {};
+            clazz.type = schoolClass.type;
             clazz.schoolClass = schoolClass;
             clazz.modules = [];
             if (schoolClass.type == 'BGV') {
@@ -66,7 +68,12 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
                     clazz.students.push(tempStudent);
                 })
             });
-            $scope.classes.push(clazz);
+            console.log(clazz.type);
+            if (clazz.type == 'BGV') {
+                $scope.bgvClasses.push(clazz);
+            } else if (clazz.type == 'PAV') {
+                $scope.pavClasses.push(clazz);
+            }
         })
     });
 

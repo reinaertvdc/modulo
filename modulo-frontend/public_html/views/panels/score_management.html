@@ -10,7 +10,10 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
-                <li data-ng-repeat="clazz in classes"><a href="" data-ng-click="visibleScores.schoolClass = clazz">{{clazz.schoolClass.name}}</a></li>
+                <li class="dropdown-header">BGV</li>
+                <li data-ng-repeat="clazz in bgvClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz">{{clazz.schoolClass.name}}</a></li>
+                <li class="dropdown-header">PAV</li>
+                <li data-ng-repeat="clazz in pavClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz">{{clazz.schoolClass.name}}</a></li>
             </ul>
         </div>
 

@@ -21,9 +21,14 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
                     method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/certificate',
                     headers: {'X-auth': $cookies.get('auth')}
                 }).success(function (certificate) {
-                    certificate.subCertificates.forEach(function (subCertificate) {
-                        clazz.modules.push(subCertificate);
-                    })
+                    $http({
+                        method: 'GET', url: 'http://localhost:8080/certificate/id/'+ certificate.id +'/subcertificates',
+                        headers: {'X-auth': $cookies.get('auth')}
+                    }).success(function (subCertificates) {
+                        subCertificates.forEach(function (subCertificate) {
+                            clazz.modules.push(subCertificate);
+                        })
+                    });
                 });
             } else {
                 // TODO download vakthema's

@@ -19,8 +19,14 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.selectedClass = clazz.name;
         $scope.selectedValues.class = clazz;
         $scope.loadStudents(clazz.id);
-        if(clazz.type === "BGV")
+        if(clazz.type === "BGV") {
+            document.getElementById("studentForm").style.display = "inline-block";
+            document.getElementById("subcertificateForm").style.display = "inline-block";
             $scope.loadSubcertificates($scope.selectedValues.class.id)
+        }else{
+            document.getElementById("studentForm").style.display = "inline-block";
+            document.getElementById("subcertificateForm").style.display = "none";
+        }
 
     };
 
@@ -132,6 +138,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
 
     $scope.loadBGVScoreMatrix = function () {
+        document.getElementById("tableContainer").style.overflow = "scroll";
         $scope.tableRows = "";
 
         $scope.goals.forEach(function (category) {
@@ -243,16 +250,19 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
     };
 
     $scope.getScores = function () {
-        $http({
-            method: 'GET',
-            url: 'http://localhost:8080/score/id/' + $scope.selectedValues.student.id + '/' + $scope.selectedValues.class.type.toLowerCase(),
-            headers: {'X-auth': $cookies.get("auth")}
-        }).success(function (response) {
-            $scope.scores = response;
-            $scope.getGoals();
-        }).error(function (response, code) {
-            $scope.getGoals();
-        });
+        if ($scope.selectedValues.student !== null) {
+
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8080/score/id/' + $scope.selectedValues.student.id + '/' + $scope.selectedValues.class.type.toLowerCase(),
+                headers: {'X-auth': $cookies.get("auth")}
+            }).success(function (response) {
+                $scope.scores = response;
+                $scope.getGoals();
+            }).error(function (response, code) {
+                $scope.getGoals();
+            });
+        }
     }
 
 });

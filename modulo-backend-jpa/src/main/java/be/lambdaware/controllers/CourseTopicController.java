@@ -1,7 +1,6 @@
 package be.lambdaware.controllers;
 
 import be.lambdaware.dao.CourseTopicDAO;
-import be.lambdaware.models.Clazz;
 import be.lambdaware.models.CourseTopic;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;

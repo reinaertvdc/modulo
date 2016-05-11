@@ -136,6 +136,22 @@ public class ClassController {
         return new ResponseEntity<>(grade, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/coursetopics", method = RequestMethod.GET)
+    public ResponseEntity<?> getCourseTopicsFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        Clazz clazz = classDAO.findById(id);
+
+        if (clazz == null) return Responses.CLASS_NOT_FOUND;
+
+        List<CourseTopic> courseTopics = clazz.getCourseTopics();
+
+        if (courseTopics.size() == 0) return Responses.COURSE_TOPICS_NOT_FOUND;
+        return new ResponseEntity<>(courseTopics, HttpStatus.OK);
+    }
+
     // ===================================================================================
     // POST methods
     // ===================================================================================

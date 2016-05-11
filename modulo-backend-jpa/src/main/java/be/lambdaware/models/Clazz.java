@@ -54,6 +54,14 @@ public class Clazz {
     @JsonIgnore
     private List<Task> tasks;
 
+
+    //TODO er is geen koppeling met courseTopics
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "coursetopic_id")
+    @JsonIgnore
+    private List<CourseTopic> courseTopics;
+
     // ===================================================================================
 
     public Clazz() {
@@ -134,6 +142,10 @@ public class Clazz {
 
     public List<User> getStudents() {
         return students;
+    }
+
+    public List<CourseTopic> getCourseTopics() {
+        return courseTopics;
     }
 
     public void setStudents(List<User> students) {

@@ -57,6 +57,10 @@ public class Responses {
     private static final String taskScoreNotFound = "The requested taskscore could not be found.";
     private static final String taskDeleted = "Task successfully deleted.";
 
+    private static final String courseTopicsNotFound = "The requested course topics could not be found.";
+    private static final String courseTopicNotFound = "The requested course topic could not be found.";
+    private static final String courseTopicDeleted = "Course topic successfully deleted.";
+
     private static final String taskScoresDeleted = "Task scores successfully deleted.";
     private static final String fileNotUploaded = "File could not be uploaded.";
     private static final String fileUploaded = "File successfully uploaded.";
@@ -112,6 +116,10 @@ public class Responses {
     public static final ResponseEntity<?> TASKS_NOT_FOUND = StringMessage.asEntity(tasksNotFound,HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> TASK_NOT_FOUND = StringMessage.asEntity(taskNotFound,HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> TASK_DELETED = StringMessage.asEntity(taskDeleted, HttpStatus.OK);
+
+    public static final ResponseEntity<?> COURSE_TOPICS_NOT_FOUND = StringMessage.asEntity(courseTopicsNotFound,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> COURSE_TOPIC_NOT_FOUND = StringMessage.asEntity(courseTopicNotFound,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> COURSE_TOPIC_DELETED = StringMessage.asEntity(courseTopicDeleted, HttpStatus.OK);
 
     public static final ResponseEntity<?> TASK_SCORES_DELETED = StringMessage.asEntity(taskScoresDeleted, HttpStatus.OK);
     public static final ResponseEntity<?> TASKSCORE_NOT_FOUND = StringMessage.asEntity(taskScoreNotFound,HttpStatus.NOT_FOUND);

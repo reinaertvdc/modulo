@@ -13,7 +13,6 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
     $scope.goals = null;
     $scope.tableRows = "";
 
-
     // Classes
     $scope.classes = {};
     $scope.setSelectedClass = function (clazz) {
@@ -88,12 +87,22 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.getScores();
     };
 
-    $scope.loadSubcertificates = function (classId) {
+    $scope.loadCertificates = function (classId) {
         $http({
             method: 'GET', url: 'http://localhost:8080/class/id/' + classId + '/certificate',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
-            response.subCertificates.forEach(function (item) {
+            $scope.loadSubcertificates(response.id);
+        });
+    };
+
+    $scope.loadSubcertificates = function (certificateId) {
+        $http({
+            method: 'GET', url: 'http://localhost:8080/certificate/id/' + certificateId + '/subcertificates',
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            console.log(response);
+            response.forEach(function (item) {
                 $scope.subcertificates[item.id] = item;
             });
             var firstKey = (Object.keys($scope.subcertificates)[0]);
@@ -173,7 +182,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.createBGVRow = function (competence) {
         $scope.tableRows += '<tr>' +
-            '<td>' + competence.name + '</td>';
+            '<td class="fixed">' + competence.name + '</td>';
 
         if ($scope.scores === null) {
             for (i = 0; i < WEEKS; i++) {
@@ -197,7 +206,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.createPAVRow = function (objective) {
         $scope.tableRows += '<tr>' +
-            '<td>' + objective.name + '</td>';
+            '<td  class="fixed">' + objective.name + '</td>';
 
         if ($scope.scores === null) {
             for (i = 0; i < WEEKS; i++) {

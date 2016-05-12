@@ -1,4 +1,7 @@
 <div data-ng-controller="ManageClassStudentListController">
+    <uib-alert ng-if="isAlertEmpty()" type="success" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
     <br/>
     <br/>
     <div class="table-responsive">

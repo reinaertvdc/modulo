@@ -1,9 +1,14 @@
 package be.lambdaware.modulomobile;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,43 +29,94 @@ import org.eazegraph.lib.models.PieModel;
 import java.util.Random;
 
 public class
-MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+MainActivity extends AppCompatActivity {
 
-    private LinearLayout mMainLayout;
+//    private LinearLayout mMainLayout;
+
+    // Includes
+    DrawerLayout mDrawerLayout;
+    NavigationView mNavigationView;
+    FragmentManager mFragmentManager;
+    FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        SharedPreferences preferences = getSharedPreferences("data", MODE_PRIVATE);
+        String jsonUser = preferences.getString("UserObject", "");
 
-        mMainLayout = (LinearLayout) findViewById(R.id.ll_main_layout);
+        Log.i("MainActivity", preferences.getString("X-Auth", "empty"));
 
-        View header = navigationView.getHeaderView(0);
-        TextView textViewName = (TextView) header.findViewById(R.id.tv_name);
-        TextView textViewMail = (TextView) header.findViewById(R.id.tv_mail);
-
-        for (int i = 0; i < 6; i++) {
-            Random random = new Random();
-            int totalCount = random.nextInt(50) + 30;
-            int practicedCount = random.nextInt(20) + 10;
-            int acquiredCount = totalCount - practicedCount;
-            addScore("Subcertificaat " + (i + 1), totalCount, practicedCount, acquiredCount);
+        if (jsonUser.isEmpty()) {
+            Log.i("MainActivity", "Not login data found, starting login activity");
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+            finish();
         }
 
-        new AsyncRestCall(textViewName, textViewMail).execute();
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
+
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                mDrawerLayout.closeDrawers();
+                if (item.getItemId() == R.id.nav_tasks) {
+                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerView, new TaskFragment()).commit();
+
+                }
+
+                if (item.getItemId() == R.id.nav_progress) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
+                }
+
+                return false;
+
+            }
+        });
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
+                R.string.app_name);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
     }
+
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+////        mMainLayout = (LinearLayout) findViewById(R.id.ll_main_layout);
+//
+//        View header = navigationView.getHeaderView(0);
+//        TextView textViewName = (TextView) header.findViewById(R.id.tv_name);
+//        TextView textViewMail = (TextView) header.findViewById(R.id.tv_mail);
+//
+
 
     @Override
     public void onBackPressed() {
@@ -79,44 +135,28 @@ MainActivity extends AppCompatActivity
         return true;
     }
 
-    int i = 0;
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_progress) {
-            //TODO do something with nav progress
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    public void addScore(String competenceName, int totalCount, int practicedCount, int acquiredCount) {
-        View scoreLayout = LayoutInflater.from(this).inflate(R.layout.score_layout, mMainLayout, false);
-
-        TextView competenceView = (TextView) scoreLayout.findViewById(R.id.tv_competence);
-        TextView totalView = (TextView) scoreLayout.findViewById(R.id.tv_total);
-        TextView practicedView = (TextView) scoreLayout.findViewById(R.id.tv_practiced);
-        TextView acquiredView = (TextView) scoreLayout.findViewById(R.id.tv_acquired);
-        PieChart pieView = (PieChart) scoreLayout.findViewById(R.id.pc_chart);
-
-        competenceView.setText(competenceName);
-        totalView.setText(String.valueOf(totalCount));
-        practicedView.setText(String.valueOf(practicedCount));
-        acquiredView.setText(String.valueOf(acquiredCount));
-
-        int practicedPercentage = (int) (((practicedCount / (double) totalCount)) * 100);
-        int acquiredPercentage = (int) (((acquiredCount / (double) totalCount)) * 100);
-
-        pieView.addPieSlice(new PieModel("I", practicedPercentage, Color.parseColor("#FF0000")));
-        pieView.addPieSlice(new PieModel("V", acquiredPercentage, Color.parseColor("#00FF00")));
-
-
-        mMainLayout.addView(scoreLayout);
-    }
+//    public void addScore(String competenceName, int totalCount, int practicedCount, int acquiredCount) {
+//        View scoreLayout = LayoutInflater.from(this).inflate(R.layout.score_layout, mMainLayout, false);
+//
+//        TextView competenceView = (TextView) scoreLayout.findViewById(R.id.tv_competence);
+//        TextView totalView = (TextView) scoreLayout.findViewById(R.id.tv_total);
+//        TextView practicedView = (TextView) scoreLayout.findViewById(R.id.tv_practiced);
+//        TextView acquiredView = (TextView) scoreLayout.findViewById(R.id.tv_acquired);
+//        PieChart pieView = (PieChart) scoreLayout.findViewById(R.id.pc_chart);
+//
+//        competenceView.setText(competenceName);
+//        totalView.setText(String.valueOf(totalCount));
+//        practicedView.setText(String.valueOf(practicedCount));
+//        acquiredView.setText(String.valueOf(acquiredCount));
+//
+//        int practicedPercentage = (int) (((practicedCount / (double) totalCount)) * 100);
+//        int acquiredPercentage = (int) (((acquiredCount / (double) totalCount)) * 100);
+//
+//        pieView.addPieSlice(new PieModel("I", practicedPercentage, Color.parseColor("#FF0000")));
+//        pieView.addPieSlice(new PieModel("V", acquiredPercentage, Color.parseColor("#00FF00")));
+//
+//
+//        mMainLayout.addView(scoreLayout);
+//    }
 }

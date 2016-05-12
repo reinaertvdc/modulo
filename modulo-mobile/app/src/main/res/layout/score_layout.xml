@@ -6,20 +6,22 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+
+
     <TextView
-        android:id="@+id/tv_competence"
+        android:id="@+id/tv_sub_certificate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textStyle="bold"
         android:padding="10sp"
+        android:text="Subcertificaat Dummy"
         android:textSize="20sp"
-        android:text="Subcertificaat"/>
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
 
@@ -28,57 +30,46 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:collapseColumns="*"
-            android:paddingStart="20dp">
+            android:paddingStart="10dp">
 
             <TableRow
-                android:minHeight="80dp"
-                android:padding="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="Totaal"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="I"
-                    android:textColor="@color/colorRed"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="V"
-                    android:textColor="@color/colorGreen"
-                    android:textStyle="bold" />
-            </TableRow>
-
-            <TableRow
-                android:minHeight="80dp"
-                android:padding="10dp">
+                android:padding="12dp">
 
                 <TextView
                     android:id="@+id/tv_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
+                    android:layout_gravity="left|top"
+                    android:layout_weight="1"
+                    android:text="@string/total"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_total_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
                     android:layout_gravity="center|top"
                     android:layout_weight="1"
                     android:text="50" />
+            </TableRow>
+
+            <TableRow android:padding="12dp">
 
                 <TextView
-                    android:id="@+id/tv_practiced"
+                    android:id="@+id/tv_failed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left|top"
+                    android:layout_weight="1"
+                    android:text="Behaald"
+                    android:textColor="@color/colorGreen" />
+
+                <TextView
+                    android:id="@+id/tv_failed_score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
@@ -86,14 +77,31 @@
                     android:layout_weight="1"
                     android:text="24" />
 
+            </TableRow>
+
+            <TableRow
+
+                android:padding="12dp">
+
                 <TextView
-                    android:id="@+id/tv_acquired"
+                    android:id="@+id/tv_passed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left|top"
+                    android:layout_weight="1"
+                    android:text="Niet Behaald"
+                    android:textColor="@color/colorRed" />
+
+                <TextView
+                    android:id="@+id/tv_passed_score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_gravity="center|top"
                     android:layout_weight="1"
-                    android:text="26" />
+                    android:text="24" />
+
             </TableRow>
         </TableLayout>
 
@@ -107,8 +115,8 @@
                 android:id="@+id/pc_chart"
                 android:layout_width="match_parent"
                 android:layout_height="150dip"
-                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 app:egAutoCenter="true"
                 app:egInnerValueUnit="%"
                 app:egLegendTextSize="12sp"
@@ -117,5 +125,70 @@
                 app:egValueTextSize="15sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10sp"
+        android:textStyle="bold"
+        android:text="Details" />
+
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp">
+
+        <TableRow android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Aangeboden:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="2 / 10" />
+        </TableRow>
+
+        <TableRow android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Ingeoefend:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="4 / 10" />
+        </TableRow>
+
+        <TableRow android:padding="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Verworven:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="6 / 10" />
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>

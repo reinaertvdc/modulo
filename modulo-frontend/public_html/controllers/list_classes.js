@@ -1,4 +1,4 @@
-app.controller('ListClassesController', function ($scope , $http, $window, $compile, $cookies) {
+app.controller('ListClassesController', function ($scope , $http, $window, $compile, $uibModal, $cookies) {
     // TODO implement controller
 
     const CLASS_LIST_ITEM_PREFIX = 'class-list-item-';
@@ -18,7 +18,7 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
         var html = '<tr id="' + $scope.toElementId(addclass.id) + '">' +
             '<td>' + addclass.name + '</td>' +
             '<td class="text-info"  ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_ID,'+addclass.id+')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="removeClassBackend(' + addclass.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+            '<td class="text-danger" ng-click="openRemoveModal(' + addclass.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
 
         var element = document.createElement('tr');
@@ -32,9 +32,28 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
 
     };
 
+    $scope.openRemoveModal = function (id) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/remove_modal.html',
+            controller: 'RemoveClassModalInstanceCtrl',
+            resolve: {}
+        });
+        $scope.removeId = id;
+        modalInstance.result.then(function () {
+            $scope.removeClassBackend($scope.removeId)
+        }, function () {
+        });
+    };
+
     $scope.removeClassBackend = function (id) {
-        $scope.removeClassFrontend(id);
-        $http.delete('http://localhost:8080/class/'+id);
+        $http({
+            method: 'DELETE', url: 'http://localhost:8080/class/id/'+id,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            $scope.removeClassFrontend(id);
+            $scope.createAlertCookie('Klas verwijderd.');
+        });
     };
 
     $scope.removeClassFrontend = function (id) {
@@ -57,5 +76,16 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
         $scope.refresh();
     });
 
+});
+
+app.controller('RemoveClassModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalObject = "klas"
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });
 

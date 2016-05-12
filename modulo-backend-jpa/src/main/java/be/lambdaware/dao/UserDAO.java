@@ -2,6 +2,7 @@ package be.lambdaware.dao;
 
 
 import be.lambdaware.enums.UserRole;
+import be.lambdaware.models.Certificate;
 import be.lambdaware.models.StudentInfo;
 import be.lambdaware.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

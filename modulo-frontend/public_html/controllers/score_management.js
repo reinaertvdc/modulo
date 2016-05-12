@@ -6,7 +6,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
     $scope.visibleScores = {
         schoolClass: null,
         module: null,
-        week: null
+        week: 1
     };
 
     $http({
@@ -44,31 +44,20 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
                     var tempStudent = {};
                     tempStudent.student = student;
                     tempStudent.scores = [];
-                    if (schoolClass.type == 'BGV') {
-                        $http({
-                            method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/bgv',
-                            headers: {'X-auth': $cookies.get('auth')}
-                        }).success(function (bgvScores) {
-                            tempStudent.bgvScores = [];
-                            bgvScores.forEach(function (bgvScore) {
-                                tempStudent.scores.push(bgvScore)
-                            })
+                    $http({
+                        method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/' + clazz.type.toLowerCase(),
+                        headers: {'X-auth': $cookies.get('auth')}
+                    }).success(function (scores) {
+                        scores.forEach(function (score) {
+                            if (!tempStudent.scores[score.week]) {
+                                tempStudent.scores[score.week] = [];
+                            }
+                            tempStudent.scores[score.week][score.competence.id] = score;
                         });
-                    } else {
-                        $http({
-                            method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/pav',
-                            headers: {'X-auth': $cookies.get('auth')}
-                        }).success(function (pavScores) {
-                            tempStudent.pavScores = [];
-                            pavScores.forEach(function (pavScore) {
-                                tempStudent.scores.push(pavScore)
-                            })
-                        });
-                    }
+                    });
                     clazz.students.push(tempStudent);
                 })
             });
-            console.log(clazz.type);
             if (clazz.type == 'BGV') {
                 $scope.bgvClasses.push(clazz);
             } else if (clazz.type == 'PAV') {

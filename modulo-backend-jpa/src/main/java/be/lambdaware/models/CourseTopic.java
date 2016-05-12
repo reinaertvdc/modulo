@@ -38,6 +38,10 @@ public class CourseTopic {
     @JsonIgnore
     private List<Clazz> classes = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "grade_id")
+    private Grade grade;
+
     // ===================================================================================
 
     public CourseTopic() {
@@ -87,6 +91,10 @@ public class CourseTopic {
         }
     }
 
+    public List<Clazz> getClasses() {
+        return classes;
+    }
+
     public List<StudentInfo> getStudents() {
         return students;
     }
@@ -104,6 +112,7 @@ public class CourseTopic {
 
     // ===================================================================================
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,15 +120,24 @@ public class CourseTopic {
 
         CourseTopic that = (CourseTopic) o;
 
-        return id == that.id;
+        if (id != that.id) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (objectives != null ? !objectives.equals(that.objectives) : that.objectives != null) return false;
+        if (students != null ? !students.equals(that.students) : that.students != null) return false;
+        if (classes != null ? !classes.equals(that.classes) : that.classes != null) return false;
+        return grade != null ? grade.equals(that.grade) : that.grade == null;
 
     }
 
     @Override
     public String toString() {
-        String sb = "CourseTopic{" + "name='" + name + '\'' +
-                ", id=" + id +
+        return "CourseTopic{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", objectives=" + objectives +
+                ", students=" + students +
+                ", classes=" + classes +
+                ", grade=" + grade +
                 '}';
-        return sb;
     }
 }

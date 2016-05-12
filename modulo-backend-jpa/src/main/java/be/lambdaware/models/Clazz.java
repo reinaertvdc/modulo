@@ -137,12 +137,23 @@ public class Clazz {
         }
     }
 
-    public List<User> getStudents() {
-        return students;
-    }
-
     public List<CourseTopic> getCourseTopics() {
         return courseTopics;
+    }
+
+    public void setCourseTopics(List<CourseTopic> courseTopics) {
+        this.courseTopics = courseTopics;
+    }
+
+    public void addCourseTopics(CourseTopic courseTopic){
+        this.courseTopics.add(courseTopic);
+        if (!courseTopic.getClasses().contains(this)) {
+            courseTopic.getClasses().add(this);
+        }
+    }
+
+    public List<User> getStudents() {
+        return students;
     }
 
     public void setStudents(List<User> students) {

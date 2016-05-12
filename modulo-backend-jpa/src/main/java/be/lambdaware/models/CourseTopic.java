@@ -1,6 +1,7 @@
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.deploy.net.proxy.pac.PACFunctions;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,13 +27,26 @@ public class CourseTopic {
     // Relations
     // ===================================================================================
 
-    @OneToMany(mappedBy = "courseTopic")
+    @ManyToMany(mappedBy = "courseTopics")
+    @JsonIgnore
     private List<Objective> objectives = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "course_topics_students", joinColumns = @JoinColumn(name = "course_topic_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     @JsonIgnore
     private List<StudentInfo> students = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "courseTopics")
+    @JsonIgnore
+    private List<Clazz> classes = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "grade_id")
+    private Grade grade;
+
+    @OneToMany(mappedBy = "courseTopic")
+    @JsonIgnore
+    private List<PAVScore> pavScores = new ArrayList<>();
 
     // ===================================================================================
 
@@ -79,12 +93,22 @@ public class CourseTopic {
     public void addObjective(Objective objective) {
         this.objectives.add(objective);
         if (objective != null && objective.getCourseTopic() != this) {
-            objective.setCourseTopic(this);
+            objective.addCourseTopic(this);
         }
+    }
+
+    public List<Clazz> getClasses() {
+        return classes;
     }
 
     public List<StudentInfo> getStudents() {
         return students;
+    }
+
+    public List<PAVScore> getPavScores(){return pavScores;}
+
+    public void addPAVScore (PAVScore pavScore){
+        this.pavScores.add(pavScore);
     }
 
     public void setStudents(List<StudentInfo> students) {
@@ -100,6 +124,7 @@ public class CourseTopic {
 
     // ===================================================================================
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,15 +132,26 @@ public class CourseTopic {
 
         CourseTopic that = (CourseTopic) o;
 
-        return id == that.id;
+        if (id != that.id) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (objectives != null ? !objectives.equals(that.objectives) : that.objectives != null) return false;
+        if (students != null ? !students.equals(that.students) : that.students != null) return false;
+        if (classes != null ? !classes.equals(that.classes) : that.classes != null) return false;
+        if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
+        return pavScores != null ? pavScores.equals(that.pavScores) : that.pavScores == null;
 
     }
 
     @Override
     public String toString() {
-        String sb = "CourseTopic{" + "name='" + name + '\'' +
-                ", id=" + id +
+        return "CourseTopic{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", objectives=" + objectives +
+                ", students=" + students +
+                ", classes=" + classes +
+                ", grade=" + grade +
+                ", pavScores=" + pavScores +
                 '}';
-        return sb;
     }
 }

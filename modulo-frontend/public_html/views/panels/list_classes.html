@@ -1,5 +1,8 @@
 <div data-ng-controller="ListClassesController">
     <!-- TODO create page -->
+    <uib-alert ng-if="isAlertEmpty()" type="success" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
     <h3>Mijn klassen</h3>
 
         <div class="col-md-6">

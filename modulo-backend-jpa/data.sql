@@ -25844,15 +25844,15 @@ INSERT INTO public.grades (id, enabled, name) VALUES (1, true, 'Graad 1');
 INSERT INTO public.grades (id, enabled, name) VALUES (2, true, 'Graad 2');
 
 -- Insert Student Info
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (1, 'BE68539007547034', '1996-10-16', 'Hasselt', 'Hasselt', '32477152422', '10', '01234567891', 'belgisch', '32477123456', '3500', 'Hasseltstraat', 1, 1, 6);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (2, 'BE62539012547034', '1996-10-19', 'Hasselt', 'Hasselt', '32477152422', '10', '01234567891', 'belgisch', '32477123465', '3500', 'Hasseltstraat', 2, 2, 7);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (3, 'BE62539012137034', '1996-08-01', 'Hasselt', 'Beringen', '3248851324', '17', '01234567891', 'belgisch', '32477123465', '3580', 'Beringbaan', 1, 1, 9);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (4, 'BE62539012137034', '1996-08-01', 'Herk-de-Stad', 'Herk-de-Stad', '3248851324', '17', '01234567891', 'belgisch', '32477123465', '3580', 'Weg Naar Stevoort', 1, 1, 11);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (5, 'BE62539012137034', '1996-08-01', 'Genk', 'Genk', '3248851324', '22A', '01234567891', 'belgisch', '32477123465', '3580', 'Slagerstraat', 2, 2, 13);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (6, 'BE62539012137034', '1996-08-01', 'Genk', 'Genk', '3248851324', '22A', '01234567891', 'belgisch', '32477123465', '3580', 'Slagerstraat', 2, 2, 14);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (7, 'BE62539012137034', '1996-05-23', 'Heusden', 'Heusden', '3248851324', '112', '01234567891', 'belgisch', '32477123465', '3550', 'Katteveldstraat', 1, 1, 16);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (8, 'BE62539012137034', '1995-04-22', 'Heusden', 'Heusden', '3248851324', '112', '01234567891', 'belgisch', '32477123465', '3550', 'Katteveldstraat', 1, 1, 17);
-INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (9, 'BE62539012137034', '1996-08-01', 'Heusden', 'Lummen', '3248851324', '23', '01234567891', 'belgisch', '32477123465', '3560', 'Achterweg', 1, 1, 19);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (1, 'BE68539007547034', '1996-10-16', 'Hasselt', 'Hasselt', '32477152422', '10', '01234567891', 'belgisch', '32477123456', '3500', 'Hasseltstraat', 2, 1, 6);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (2, 'BE62539012547034', '1996-10-19', 'Hasselt', 'Hasselt', '32477152422', '10', '01234567891', 'belgisch', '32477123465', '3500', 'Hasseltstraat', 151, 2, 7);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (3, 'BE62539012137034', '1996-08-01', 'Hasselt', 'Beringen', '3248851324', '17', '01234567891', 'belgisch', '32477123465', '3580', 'Beringbaan', 2, 1, 9);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (4, 'BE62539012137034', '1996-08-01', 'Herk-de-Stad', 'Herk-de-Stad', '3248851324', '17', '01234567891', 'belgisch', '32477123465', '3580', 'Weg Naar Stevoort', 151, 1, 11);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (5, 'BE62539012137034', '1996-08-01', 'Genk', 'Genk', '3248851324', '22A', '01234567891', 'belgisch', '32477123465', '3580', 'Slagerstraat', 151, 2, 13);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (6, 'BE62539012137034', '1996-08-01', 'Genk', 'Genk', '3248851324', '22A', '01234567891', 'belgisch', '32477123465', '3580', 'Slagerstraat', 151, 2, 14);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (7, 'BE62539012137034', '1996-05-23', 'Heusden', 'Heusden', '3248851324', '112', '01234567891', 'belgisch', '32477123465', '3550', 'Katteveldstraat', 2, 1, 16);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (8, 'BE62539012137034', '1995-04-22', 'Heusden', 'Heusden', '3248851324', '112', '01234567891', 'belgisch', '32477123465', '3550', 'Katteveldstraat', 151, 1, 17);
+INSERT INTO public.student_info (id, bank_account, birth_date, birth_place, city, emergency_number, house_number, national_identification_number, nationality, phone_number, postal_code, street, certificate_id,grade_id, user_id) VALUES (9, 'BE62539012137034', '1996-08-01', 'Heusden', 'Lummen', '3248851324', '23', '01234567891', 'belgisch', '32477123465', '3560', 'Achterweg', 2, 1, 19);
 
 -- Class
 INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (1, 'Buitenschrijnwerker 1', 'BGV', 1, null, 2);
@@ -25887,16 +25887,16 @@ INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_
 INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 3, 5);
 
 -- Objectives
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (1, null, true, 'Doelstelling 1', null, 1);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (2, null, true, 'Doelstelling 2', null, 1);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (3, null, true, 'Doelstelling 3', null, 1);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (4, null, true, 'Doelstelling A', null, 2);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (5, null, true, 'Doelstelling B', null, 2);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (6, null, true, 'Doelstelling C', null, 2);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (1, null, true, 'Doelstelling 1', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (2, null, true, 'Doelstelling 2', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (3, null, true, 'Doelstelling 3', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (4, null, true, 'Doelstelling A', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (5, null, true, 'Doelstelling B', 2);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (6, null, true, 'Doelstelling C', 2);
 
 -- Scores
-INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (1, '1', 'Helemaal Oke', 'V', 1, 1);
-INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (2, '1', 'Goed gemaakt', 'V', 4, 2);
+INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (1, 'Helemaal Oke', 'V', 1, 1, 1, 1);
+INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (2, 'Goed gemaakt', 'V', 1, 2, 4, 1);
 
 
 -- Tasks
@@ -25917,3 +25917,19 @@ INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_i
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (364, '2016-05-06', null, null, 350, 13);
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (360, '2016-05-06', null, null, 350, 6);
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (361, '2016-05-06', null, null, 350, 7);
+
+-- CourseTopics
+INSERT INTO public.course_topics (id, name, grade_id) VALUES (1, 'Wiskunde 1', 1);
+INSERT INTO public.course_topics (id, name, grade_id) VALUES (2, 'Taal 1', 1);
+
+-- CourseTopic students
+INSERT INTO public.course_topics_students (course_topic_id, student_id) VALUES (1, 1);
+INSERT INTO public.course_topics_students (course_topic_id, student_id) VALUES (2, 1);
+
+-- Classes courseTopics
+INSERT INTO public.classes_course_topics (class_id, course_topic_id) VALUES (3, 1);
+INSERT INTO public.classes_course_topics (class_id, course_topic_id) VALUES (3, 2);
+
+-- objectives courseTopics
+INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (1, 1);
+INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (4, 2);

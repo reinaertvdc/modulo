@@ -136,6 +136,22 @@ public class ClassController {
         return new ResponseEntity<>(grade, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/type", method = RequestMethod.GET)
+    public ResponseEntity<?> getTypeFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        Clazz clazz = classDAO.findById(id);
+
+        if (clazz == null) return Responses.CLASS_NOT_FOUND;
+
+        ClassType type = clazz.getType();
+
+        if (type == null) return Responses.CLASS_TYPE_NOT_FOUND;
+        return new ResponseEntity<>(type, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/id/{id}/coursetopics", method = RequestMethod.GET)
     public ResponseEntity<?> getCourseTopicsFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
 
@@ -173,6 +189,9 @@ public class ClassController {
         if (!clazz.getStudents().contains(user)) {
             clazz.getStudents().add(user);
             classDAO.saveAndFlush(clazz);
+        }
+        else{
+            log.info("Student with ID: " + user.getId() + " already in class");
         }
 
         return Responses.CLASS_ADDED_STUDENT;
@@ -234,16 +253,27 @@ public class ClassController {
         Clazz clazz = classDAO.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
+        int prevSize = clazz.getStudents().size();
+
         User student = userDAO.findById(studentId);
 
         if (student == null) return Responses.USER_NOT_FOUND;
         if (student.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
+        int currentSize=0;
         if(clazz.getStudents().contains(student)){
             clazz.getStudents().remove(student);
+            currentSize = clazz.getStudents().size();
             classDAO.saveAndFlush(clazz);
+
+            student.getClasses().remove(clazz);
+            userDAO.saveAndFlush(student);
         }
 
+        int endSize = clazz.getStudents().size();
+        log.info("Prev size: " + prevSize);
+        log.info("current size: " + currentSize);
+        log.info("end size: " + endSize);
 
         return Responses.CLASS_DELETED_STUDENT;
     }

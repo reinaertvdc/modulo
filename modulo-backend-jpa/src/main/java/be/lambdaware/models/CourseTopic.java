@@ -27,7 +27,8 @@ public class CourseTopic {
     // Relations
     // ===================================================================================
 
-    @OneToMany(mappedBy = "courseTopic")
+    @ManyToMany(mappedBy = "courseTopics")
+    @JsonIgnore
     private List<Objective> objectives = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -92,7 +93,7 @@ public class CourseTopic {
     public void addObjective(Objective objective) {
         this.objectives.add(objective);
         if (objective != null && objective.getCourseTopic() != this) {
-            objective.setCourseTopic(this);
+            objective.addCourseTopic(this);
         }
     }
 
@@ -136,7 +137,8 @@ public class CourseTopic {
         if (objectives != null ? !objectives.equals(that.objectives) : that.objectives != null) return false;
         if (students != null ? !students.equals(that.students) : that.students != null) return false;
         if (classes != null ? !classes.equals(that.classes) : that.classes != null) return false;
-        return grade != null ? grade.equals(that.grade) : that.grade == null;
+        if (grade != null ? !grade.equals(that.grade) : that.grade != null) return false;
+        return pavScores != null ? pavScores.equals(that.pavScores) : that.pavScores == null;
 
     }
 
@@ -149,6 +151,7 @@ public class CourseTopic {
                 ", students=" + students +
                 ", classes=" + classes +
                 ", grade=" + grade +
+                ", pavScores=" + pavScores +
                 '}';
     }
 }

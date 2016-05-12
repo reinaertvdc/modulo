@@ -37,10 +37,9 @@ public class Objective {
     @JsonIgnore
     private Grade grade;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_topic_id")
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
-    private CourseTopic courseTopic;
+    private List<CourseTopic> courseTopics;
 
 
     //TODO deleting a Grade will result in deletion of all objectives and also all the scores. Invasive action!
@@ -111,12 +110,14 @@ public class Objective {
         }
     }
 
-    public CourseTopic getCourseTopic() {
-        return courseTopic;
+    public List<CourseTopic> getCourseTopic() {
+        return courseTopics;
     }
 
-    public void setCourseTopic(CourseTopic courseTopic) {
-        this.courseTopic = courseTopic;
+    public void setCourseTopic(List<CourseTopic> courseTopics){this.courseTopics = courseTopics;}
+
+    public void addCourseTopic(CourseTopic courseTopic) {
+        this.courseTopics.add(courseTopic);
         if (!courseTopic.getObjectives().contains(this)) {
             courseTopic.addObjective(this);
         }
@@ -139,6 +140,7 @@ public class Objective {
 
     // ===================================================================================
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,18 +148,27 @@ public class Objective {
 
         Objective objective = (Objective) o;
 
-        return id == objective.id;
+        if (id != objective.id) return false;
+        if (enabled != objective.enabled) return false;
+        if (name != null ? !name.equals(objective.name) : objective.name != null) return false;
+        if (customName != null ? !customName.equals(objective.customName) : objective.customName != null) return false;
+        if (grade != null ? !grade.equals(objective.grade) : objective.grade != null) return false;
+        if (courseTopics != null ? !courseTopics.equals(objective.courseTopics) : objective.courseTopics != null)
+            return false;
+        return pavScores != null ? pavScores.equals(objective.pavScores) : objective.pavScores == null;
 
     }
 
     @Override
     public String toString() {
-        String sb = "Objective{" + "id=" + id +
+        return "Objective{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", customName='" + customName + '\'' +
                 ", enabled=" + enabled +
+                ", grade=" + grade +
+                ", courseTopics=" + courseTopics +
+                ", pavScores=" + pavScores +
                 '}';
-        return sb;
     }
-
 }

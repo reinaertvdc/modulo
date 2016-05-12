@@ -25887,16 +25887,16 @@ INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_
 INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 3, 5);
 
 -- Objectives
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (1, null, true, 'Doelstelling 1', null, 1);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (2, null, true, 'Doelstelling 2', null, 1);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (3, null, true, 'Doelstelling 3', null, 1);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (4, null, true, 'Doelstelling A', null, 2);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (5, null, true, 'Doelstelling B', null, 2);
-INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, grade_id) VALUES (6, null, true, 'Doelstelling C', null, 2);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (1, null, true, 'Doelstelling 1', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (2, null, true, 'Doelstelling 2', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (3, null, true, 'Doelstelling 3', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (4, null, true, 'Doelstelling A', 1);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (5, null, true, 'Doelstelling B', 2);
+INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (6, null, true, 'Doelstelling C', 2);
 
 -- Scores
-INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (1, '1', 'Helemaal Oke', 'V', 1, 1);
-INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (2, '1', 'Goed gemaakt', 'V', 1, 2);
+INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (1, 'Helemaal Oke', 'V', 1, 1, 1, 1);
+INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (2, 'Goed gemaakt', 'V', 1, 2, 4, 1);
 
 
 -- Tasks
@@ -25919,4 +25919,17 @@ INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_i
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (361, '2016-05-06', null, null, 350, 7);
 
 -- CourseTopics
-INSERT INTO public.course_topics (id, name, grade_id) VALUES (1, 'Wiskunde 1', 2);
+INSERT INTO public.course_topics (id, name, grade_id) VALUES (1, 'Wiskunde 1', 1);
+INSERT INTO public.course_topics (id, name, grade_id) VALUES (2, 'Taal 1', 1);
+
+-- CourseTopic students
+INSERT INTO public.course_topics_students (course_topic_id, student_id) VALUES (1, 1);
+INSERT INTO public.course_topics_students (course_topic_id, student_id) VALUES (2, 1);
+
+-- Classes courseTopics
+INSERT INTO public.classes_course_topics (class_id, course_topic_id) VALUES (3, 1);
+INSERT INTO public.classes_course_topics (class_id, course_topic_id) VALUES (3, 2);
+
+-- objectives courseTopics
+INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (1, 1);
+INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (4, 2);

@@ -45,7 +45,7 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'views/panels/remove_modal.html',
-            controller: 'RemoveModalInstanceCtrl',
+            controller: 'RemoveTaskModalInstanceCtrl',
             resolve: {}
         });
         $scope.removeId = id;
@@ -76,7 +76,7 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
 });
 
 
-app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
+app.controller('RemoveTaskModalInstanceCtrl', function ($scope, $uibModalInstance) {
     $scope.modalObject = "taak";
 
     $scope.ok = function () {

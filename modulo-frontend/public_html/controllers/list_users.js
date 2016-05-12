@@ -139,7 +139,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'views/panels/remove_modal.html',
-            controller: 'RemoveModalInstanceCtrl',
+            controller: 'RemoveUserModalInstanceCtrl',
             resolve: {}
         });
         $scope.removeId = id;
@@ -179,7 +179,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 });
 
 
-app.controller('RemoveModalInstanceCtrl', function ($scope, $uibModalInstance) {
+app.controller('RemoveUserModalInstanceCtrl', function ($scope, $uibModalInstance) {
     $scope.modalObject = "gebruiker"
 
     $scope.ok = function () {

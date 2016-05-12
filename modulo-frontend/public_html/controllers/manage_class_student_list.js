@@ -12,32 +12,37 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
     $scope.addStudent = function (student) {
         $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
-            $scope.removeStudentFrontend(student.studentInfo.id);
+            $scope.removeStudentFrontend(student.id);
             student.certificate = response;
-            $scope.students.set(student.studentInfo.id, student);
+            $scope.students.set(student.id, student);
 
-            var html =  '<tr id="' + $scope.toElementId(student.studentInfo.id) + '">' +
+            var html =  '<tr id="' + $scope.toElementId(student.id) + '">' +
                 '<td>' + student.firstName + ' ' + student.lastName + '</td>' +
                 '<td>' + student.certificate.name + '</td>' +
-                '<td class="text-danger" ng-click="removeStudentBackend(' + student.studentInfo.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
-                '</tr>';
+                '<td class="text-danger" ng-click="removeStudentBackend(' + student.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td></tr>';
 
             /*---------------------------------------------------------------------------------*/
             var element = document.createElement('tr');
             STUDENT_LIST_ELEMENT.appendChild(element);
 
             element.outerHTML = html;
+
+            $scope.certificatesReady--;
+            $scope.refresh();
         });
     };
 
+    $scope.testClick = function(id){
+        console.log("CLICKED id: " + id);
+    }
+
     $scope.removeStudentBackend = function (id) {
-        //TODO refactor
-        $scope.removeStudentFrontend(id);
-       $http.delete('http://localhost:8080/class/' + $scope.classId + '/student/' + id).success(function (response) {
-            if(response)
-                console.log("Delete succes!");
-            else
-                console.log("Delete fail!");
+        $http({
+            method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + id,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            $scope.removeStudentFrontend(id);
+            $scope.createAlertCookie('Leerling verwijderd.');
         });
     };
 
@@ -50,14 +55,20 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
 // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {
-        $compile(STUDENT_LIST_ELEMENT)($scope);
+
+        if($scope.studentsReady && $scope.certificatesReady == 0) {
+            console.log("Test");
+            $compile(STUDENT_LIST_ELEMENT)($scope);
+        }
     };
 
     $http.get('http://localhost:8080/class/id/'+$scope.classId+'/students', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+        $scope.certificatesReady = response.length;
         response.forEach(function (item) {
             $scope.addStudent(item);
         });
-        $scope.refresh();
+        $scope.studentsReady = true;
+        console.log("students ready");
     });
 });
 

@@ -1,7 +1,7 @@
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.deploy.net.proxy.pac.PACFunctions;
+//import com.sun.deploy.net.proxy.pac.PACFunctions;
 
 import javax.persistence.*;
 import java.util.ArrayList;

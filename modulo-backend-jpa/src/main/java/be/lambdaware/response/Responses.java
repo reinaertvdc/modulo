@@ -28,6 +28,7 @@ public class Responses {
     private static final String classNotFound = "The requested class could not be found.";
     private static final String classAddedStudent = "Student successfully added to class.";
     private static final String classDeletedStudent = "Student successfully deleted from class.";
+    private static final String classDeletedStudents = "Students successfully deleted from class.";
     private static final String classAddedTeacher = "Teacher successfully assigned to class.";
     private static final String classTypeNotFound = "The requested class type could not be found.";
 
@@ -91,6 +92,7 @@ public class Responses {
     public static final ResponseEntity<?> CLASS_ADDED_STUDENT = StringMessage.asEntity(classAddedStudent, HttpStatus.OK);
     public static final ResponseEntity<?> CLASS_ADDED_TEACHER = StringMessage.asEntity(classAddedTeacher, HttpStatus.OK);
     public static final ResponseEntity<?> CLASS_DELETED_STUDENT = StringMessage.asEntity(classDeletedStudent, HttpStatus.OK);
+    public static final ResponseEntity<?> CLASS_DELETED_STUDENTS = StringMessage.asEntity(classDeletedStudents, HttpStatus.OK);
     public static final ResponseEntity<?> CLASS_TYPE_NOT_FOUND = StringMessage.asEntity(classTypeNotFound, HttpStatus.NOT_FOUND);
 
     public static final ResponseEntity<?> CERTIFICATE_NOT_FOUND = StringMessage.asEntity(certificateNotFound, HttpStatus.NOT_FOUND);

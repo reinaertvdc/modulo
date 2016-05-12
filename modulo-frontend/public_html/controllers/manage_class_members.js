@@ -1,68 +1,80 @@
-app.controller('ManageClassMembersController', function ($scope, $http) {
+app.controller('ManageClassMembersController', function ($scope, $http, $cookies) {
     // TODO implement controller
-    /*var json = "" +
-        '[' +
-        '{"text": "Parent 1",' +
-        '"nodes": [' +
-        '{"text": "Child 1",' +
-        '"nodes": [' +
-        '{"text": "Grandchild 1"},' +
-        '{"text": "Grandchild 2"}' +
-        ']' +
-        '},' +
-        '{"text": "Child 2"}' +
-        ']' +
-        '},' +
-        '{"text": "Parent 2"},' +
-        '{"text": "Parent 3"},' +
-        '{"text": "Parent 4"},' +
-        '{"text": "Parent 5"}' +
-        ']';
-
-    var jsonSmall = '[' +
-        '{"text": "Parent 1", "id": "1"},' +
-        '{"text": "Parent 1", "id": "2"},' +
-        '{"text": "Parent 1", "id": "3"},' +
-        '{"text": "Parent 1", "id": "4"},' +
-        '{"text": "Parent 1", "id": "5"}' +
-        ']';*/
-
     $scope.students = new Map();
     $scope.studentsInClass = [];
     $scope.jsonStudents = "";
 
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
 
-    $http.get('http://localhost:8080/class/'+$scope.classId+'/students').success(function (response) {
+    $scope.prevPage = function(){
+        //TODO implement return to students  list
+    }
+
+
+    $http.get('http://localhost:8080/class/id/'+$scope.classId+'/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
-            $scope.studentsInClass.push(item.studentInfoEntity.id);
+            $scope.studentsInClass.push(item.id);
         });
 
-        $http.get('http://localhost:8080/student/all').success(function (response) {
-            response.forEach(function (item) {
-                $scope.students.set(item.studentInfoEntity.id, item);
-            });
-            $scope.fillJsonUsers();
-            $scope.buildTree();
+        $http.get('http://localhost:8080/class/id/'+$scope.classId+'/type', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            $scope.classType = response;
+
+            if($scope.classType == "BGV") {
+                $http.get('http://localhost:8080/class/id/' + $scope.classId + '/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    var classCertificate = response;
+
+                    $http.get('http://localhost:8080/certificate/id/' + classCertificate.id + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                        response.forEach(function (item) {
+                            $scope.students.set(item.id, item);
+                        });
+                        $scope.categorizeStudentsByCertificate();
+                    });
+                });
+            }
+            else if($scope.classType == "PAV"){
+                $http.get('http://localhost:8080/class/id/' + $scope.classId + '/grade', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    var classGrade = response;
+
+                    $http.get('http://localhost:8080/grade/id/' + classGrade.id + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                        response.forEach(function (item) {
+                            $scope.students.set(item.id, item);
+                        });
+                        $scope.categorizeStudentsByCertificate();
+                    });
+                });
+            }
         });
     });
 
-    $scope.fillJsonUsers = function () {
-        var certificateStudents = new Map();
+    $scope.categorizeStudentsByCertificate = function () {
+        $scope.certificateStudents = new Map();
+        var i = 0;
         $scope.students.forEach(function (student, key) {
-            var certificate = student.certificateEntity;
-            if (certificateStudents.has(certificate.name)) {
-                certificateStudents.get(certificate.name).push(student);
-            }
-            else {
-                certificateStudents.set(certificate.name, []);
-                certificateStudents.get(certificate.name).push(student);
-            }
-        }, $scope.students);
 
+            $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                var certificate = response;
+                if ($scope.certificateStudents.has(certificate.name)) {
+                    $scope.certificateStudents.get(certificate.name).push(student);
+                }
+                else {
+                    $scope.certificateStudents.set(certificate.name, []);
+                    $scope.certificateStudents.get(certificate.name).push(student);
+                }
+
+                //laatste student dus start met de json string te vullen
+                if (i == $scope.students.size - 1) {
+                    $scope.fillJsonStudents();
+                    $scope.buildTree();
+                }
+                i++;
+            });
+        }, $scope.students);
+    }
+
+    $scope.fillJsonStudents = function () {
         $scope.jsonStudents += '[';
         var i = 0;
-        certificateStudents.forEach(function (students, key) {
+        $scope.certificateStudents.forEach(function (students, key) {
 
             $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
 
@@ -70,7 +82,7 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
             $scope.jsonStudents += '], ' +
                 '"state":{"checked": ' + allStudentChecked + '}}';
 
-            if (i < certificateStudents.size - 1) {
+            if (i < $scope.certificateStudents.size - 1) {
                 $scope.jsonStudents += ',';
             }
             i++;
@@ -83,17 +95,17 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         for (var i = 0; i < students.length; i++) {
             var inClass = false;
 
-            if($scope.studentInClass(students[i].studentInfoEntity.id)){
+            if($scope.studentInClass(students[i].id)){
                 inClass = true;
             }
             else if(allChecked){
                 allChecked = false;
             }
 
-            $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", ' +
+            $scope.jsonStudents += '{"text": "' + students[i].firstName + ' ' + students[i].lastName + '", ' +
                     '"parent": "' +  certificate + '", ' +
                 '"state":{"checked": ' + inClass + '}, ' +
-                '"studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+                '"studentId": "' + students[i].id + '"}';
 
             if (i < students.length - 1) {
                 $scope.jsonStudents += ',';
@@ -102,9 +114,9 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         return allChecked;
     }
 
-    $scope.studentInClass = function(studentInfoEntityId){
+    $scope.studentInClass = function(studentId){
         for(var i = 0; i < $scope.studentsInClass.length; i++){
-            if($scope.studentsInClass[i] == studentInfoEntityId){
+            if($scope.studentsInClass[i] == studentId){
                 return true;
             }
         }
@@ -120,18 +132,19 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
             showCheckbox: true,
             onNodeChecked: function (event, node) {
                 if(node.parent != null){
-                    $http.post('http://localhost:8080/class/' + $scope.classId + '/student/' + node.studentInfoId).success(function (response) {
-                        //TODO verwijder console log stuff
-                        if(response) {
-                            console.log("Post succes!");
+                    $http({
+                        method: 'POST', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + node.studentId,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+                        console.log("Post: " + node);
                             if($scope.allSiblingsChecked(node)){
                                 var parent = $('#treeview-checkable').treeview('getParent', node);
                                 $('#treeview-checkable').treeview('checkNode', [ parent.nodeId, { silent: true } ]);
                             }
-                        }
-                        else {
-                            console.log("Post fail!");
-                        }
+
+                            $scope.createAlertCookie('Student(en) toegevoegd.');
+                    }).error(function (error, code){
+                        console.log("error: " + error);
                     });
                 }
                 else{
@@ -140,18 +153,17 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
             },
             onNodeUnchecked: function (event, node) {
                 if(node.parent != null) {
-                    $http.delete('http://localhost:8080/class/' + $scope.classId + '/student/' + node.studentInfoId).success(function (response) {
-                        //TODO verwijder console log stuff
-                        if (response) {
-                            console.log("Delete succes!");
+                    $http({
+                        method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + node.studentId,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+                        console.log("Delete: " + node);
                             if($scope.allSiblingsChecked(node)){
                                 var parent = $('#treeview-checkable').treeview('getParent', node);
                                 $('#treeview-checkable').treeview('uncheckNode', [ parent.nodeId , { silent: true } ]);
                             }
-                        }
-                        else {
-                            console.log("Delete fail!");
-                        }
+
+                        $scope.createAlertCookie('Student(en) verwijderd.');
                     });
                 }
                 else{
@@ -161,18 +173,16 @@ app.controller('ManageClassMembersController', function ($scope, $http) {
         });
 
         $scope.checkChildNodes = function(parentNode){
-            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
-            allNodes.forEach(function(node){
-                if(node.parent == parentNode.text){
+            parentNode.nodes.forEach(function(node){
+                if(!node.state.checked){
                     $('#treeview-checkable').treeview('checkNode', [ node.nodeId ]);
                 }
             });
         }
 
         $scope.uncheckChildNodes = function(parentNode){
-            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
-            allNodes.forEach(function(node){
-                if(node.parent == parentNode.text){
+            parentNode.nodes.forEach(function(node){
+                if(node.state.checked){
                     $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
                 }
             });

@@ -6,6 +6,10 @@
             android:id="@+id/nav_progress"
             android:icon="@android:drawable/star_on"
             android:title="Voortgang" />
+        <item
+            android:id="@+id/nav_tasks"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Taken" />
     </group>
 
 </menu>

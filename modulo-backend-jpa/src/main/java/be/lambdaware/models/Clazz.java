@@ -54,11 +54,8 @@ public class Clazz {
     @JsonIgnore
     private List<Task> tasks;
 
-
-    //TODO er is geen koppeling met courseTopics
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "coursetopic_id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "classes_courseTopics", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "courseTopic_id"))
     @JsonIgnore
     private List<CourseTopic> courseTopics;
 

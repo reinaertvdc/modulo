@@ -34,6 +34,10 @@ public class CourseTopic {
     @JsonIgnore
     private List<StudentInfo> students = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "courseTopics")
+    @JsonIgnore
+    private List<Clazz> classes = new ArrayList<>();
+
     // ===================================================================================
 
     public CourseTopic() {

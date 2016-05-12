@@ -18,6 +18,4 @@ public interface CourseTopicDAO extends JpaRepository<CourseTopic, Long> {
 
     CourseTopic findByName(String name);
 
-    List<CourseTopic> findAllByClazz(Clazz clazz);
-
 }

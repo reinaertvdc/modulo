@@ -25896,7 +25896,7 @@ INSERT INTO public.objectives (id, custom_name, enabled, name, course_topic_id, 
 
 -- Scores
 INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (1, '1', 'Helemaal Oke', 'V', 1, 1);
-INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (2, '1', 'Goed gemaakt', 'V', 4, 2);
+INSERT INTO public.pav_scores (id, week, remarks, score, objective_id, student_id) VALUES (2, '1', 'Goed gemaakt', 'V', 1, 2);
 
 
 -- Tasks
@@ -25917,3 +25917,6 @@ INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_i
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (364, '2016-05-06', null, null, 350, 13);
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (360, '2016-05-06', null, null, 350, 6);
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (361, '2016-05-06', null, null, 350, 7);
+
+-- CourseTopics
+INSERT INTO public.course_topics (id, name, grade_id) VALUES (1, 'Wiskunde 1', 2);

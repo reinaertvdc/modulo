@@ -1,6 +1,7 @@
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.deploy.net.proxy.pac.PACFunctions;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class CourseTopic {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grade_id")
     private Grade grade;
+
+    @OneToMany(mappedBy = "courseTopic")
+    @JsonIgnore
+    private List<PAVScore> pavScores = new ArrayList<>();
 
     // ===================================================================================
 
@@ -97,6 +102,12 @@ public class CourseTopic {
 
     public List<StudentInfo> getStudents() {
         return students;
+    }
+
+    public List<PAVScore> getPavScores(){return pavScores;}
+
+    public void addPAVScore (PAVScore pavScore){
+        this.pavScores.add(pavScore);
     }
 
     public void setStudents(List<StudentInfo> students) {

@@ -3,6 +3,7 @@ package be.lambdaware.dao;
 
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.models.Clazz;
+import be.lambdaware.models.CourseTopic;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

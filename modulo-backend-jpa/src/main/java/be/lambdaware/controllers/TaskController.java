@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,7 +141,6 @@ public class TaskController {
 
     @RequestMapping(value = "/downloadAll/{taskId}", method = RequestMethod.GET)
     public ResponseEntity<?> downloadFilesForTask(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, HttpServletResponse response, @PathVariable long taskId) throws IOException {
-
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
@@ -218,7 +218,9 @@ public class TaskController {
     public ResponseEntity<?> uploadFile(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestParam MultipartFile file, @PathVariable long taskScoreId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
+
+        // TODO enable this check again (temp disabled for testing)
+        //if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
         TaskScore score = taskScoreDAO.findById(taskScoreId);
         if(score == null) return Responses.TASKSCORE_NOT_FOUND;

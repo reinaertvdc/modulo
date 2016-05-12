@@ -21,21 +21,26 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
     };
 
     $scope.addScore = function (score) {
-        score.checked = false;  // default checked state
-        $scope.scores.set(score.id, score);
+        var scoreObj = {'scoreObj': score, 'checked': false};
+        $scope.scores.set(score.id, scoreObj);
 
         var html = '<tr id="' + $scope.toElementId(score.id) + '">' +
             '<td align="center"><input type="checkbox" ng-model="scores.get(' + score.id + ').checked"></td>' +
-            '<td>' + score.user.firstName + ' ' + score.user.lastName + '</td>' +
-            '<td align="center"><span class="glyphicon glyphicon-download"></span></td>';
+            '<td>' + score.user.firstName + ' ' + score.user.lastName + '</td>';
+
+        // download icon
+        if (score.fileName == null || score.fileName == '')
+            html += '<td align="center"></td>';
+        else
+            html += '<td align="center"><span role="button" class="glyphicon glyphicon-download" ng-click="downloadFile(' + score.id + ')"></span></td>';
 
         // check if score already set
-        if(score.score == null)
+        if (score.score == null)
             html += '<td>' + "" + '</td>';
-        else if(score.remarks == null  ||  score.remarks == "")
+        else if (score.remarks == null || score.remarks == "")
             html += '<td align="center">' + score.score + '</td>';
         else
-            html += '<td align="center"><span tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Commentaar:\n' + score.remarks +'">' + score.score + '</span></td>';
+            html += '<td align="center"><div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Commentaar:\n' + score.remarks + '">' + score.score + '</div></td>';
 
         html += '</tr>';
         var element = document.createElement('tr');
@@ -46,10 +51,10 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
     $scope.toggleAll = function () {
         var cntChecked = 0;
         $scope.scores.forEach(function (score) {
-            if(score.checked)
+            if (score.checked)
                 cntChecked++;
         });
-        if(cntChecked == $scope.scores.size)
+        if (cntChecked == $scope.scores.size)
             $scope.selectNone();
         else
             $scope.selectAll();
@@ -66,10 +71,43 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
         });
     };
 
+    $scope.downloadFile = function (id) {
+        $scope.execDownload('http://localhost:8080/task/download/' + id,
+            $scope.scores.get(id).scoreObj.fileName);
+    }
+    $scope.downloadAll = function () {
+        $scope.execDownload('http://localhost:8080/task/downloadAll/' + taskId,
+            $scope.task.name + '.zip');
+    };
+
+    $scope.execDownload = function (url, destName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('X-auth', $cookies.get("auth"));
+        xhr.responseType = "blob";
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var blobURL = (window.URL || window.webkitURL).createObjectURL(xhr.response);
+                var anchor = document.createElement("a");
+                anchor.download = destName;
+                anchor.href = blobURL;
+                anchor.click();
+            }
+        };
+        xhr.send();
+    };
 
 
-    // ACTUAL ACTIONS ON LOADED PAGE
-    // get task info
+// ON SUBMIT
+    $scope.submitForm = function () {
+        console.log($scope.scores)
+        console.log($scope.scoreStrs[$scope.scoreStr])
+        console.log($scope.remarks)
+    };
+
+
+// ACTUAL ACTIONS ON LOADED PAGE
+// get task info
     $http({
         method: 'GET', url: 'http://localhost:8080/task/id/' + taskId,
         headers: {'X-auth': $cookies.get("auth")}
@@ -78,7 +116,7 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
         $scope.panelCaption = 'Taak quoteren: ' + $scope.task.name + ' (' + $scope.task.deadline + ')';
     });
 
-    // get all taskscores
+// get all taskscores
     $http({
         method: 'GET', url: 'http://localhost:8080/task/scores/' + taskId,
         headers: {'X-auth': $cookies.get("auth")}
@@ -90,10 +128,28 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
     });
 
 
-    // ON SUBMIT
-    $scope.submitForm = function () {
-        console.log($scope.scores)
-        console.log($scope.scoreStrs[$scope.scoreStr])
-        console.log($scope.remarks)
+
+
+
+    $scope.setFile = function (file) {
+        $scope.fd = new FormData();
+        $scope.fd.append("file", file);
+        $scope.$apply(function () {
+            $scope.fileNameStr = file.name;
+        });
     };
-});
+
+
+    $scope.uploadFile = function () {
+        $http({
+            method: 'POST', url: 'http://localhost:8080/task/upload/335', data: $scope.fd,
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined, 'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            console.log("succes: " + JSON.stringify(response));
+        }).error(function (response) {
+            console.log("error: " + JSON.stringify(response));
+        });
+    };
+})
+;

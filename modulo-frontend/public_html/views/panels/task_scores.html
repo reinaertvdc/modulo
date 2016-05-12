@@ -4,6 +4,31 @@
         max-width: none;
         text-align: left;
     }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    .panel {
+        margin-bottom: 0px;
+    }
 </style>
 
 
@@ -30,8 +55,13 @@
             <tbody id="table-scores-list-body"></tbody>
         </table>
     </div>
+    <button data-ng-click="downloadAll()" class="btn btn-default pull-right">
+        <span class="glyphicon glyphicon-download"></span> Alle inzendingen
+    </button>
 
 
+    <br/>
+    <br/>
     <br/>
 
     <div class="form-group">
@@ -59,4 +89,19 @@
     <button data-ng-click="submitForm()" class="btn btn-success btn-lg btn-block">
         <span class="glyphicon glyphicon-plus-sign"></span> Score(s) toekennen
     </button>
+
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+
+    <span class="input-group-btn">
+        <span class="btn btn-primary btn-file">
+            ••• <input type="file" onchange="angular.element(this).scope().setFile(this.files[0])"/>
+        </span>
+    </span>
+    <label>{{fileNameStr}}</label>
+    <span role="button" class="glyphicon glyphicon-upload" ng-click="uploadFile()"></span>
 </div>

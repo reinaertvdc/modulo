@@ -1,6 +1,8 @@
 package be.lambdaware.controllers;
 
+import be.lambdaware.dao.CertificateDAO;
 import be.lambdaware.dao.ClassDAO;
+import be.lambdaware.dao.StudentInfoDAO;
 import be.lambdaware.dao.UserDAO;
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.UserRole;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +33,10 @@ public class ClassController {
     ClassDAO classDAO;
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    CertificateDAO certificateDAO;
+    @Autowired
+    StudentInfoDAO studentInfoDAO;
     @Autowired
     APIAuthentication authentication;
 
@@ -276,5 +283,54 @@ public class ClassController {
         log.info("end size: " + endSize);
 
         return Responses.CLASS_DELETED_STUDENT;
+    }
+
+
+    @RequestMapping(value = "/id/{id}/students/certificate/{certificateId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteStudentFromClassByCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long certificateId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        Clazz clazz = classDAO.findById(id);
+        if (clazz == null) return Responses.CLASS_NOT_FOUND;
+
+        int prevSize = clazz.getStudents().size();
+
+        Certificate certificate = certificateDAO.findById(certificateId);
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        List<StudentInfo> studentInfoList = studentInfoDAO.findAllByCertificate(certificate);
+
+        if (studentInfoList.size() == 0) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        List<User> students = new ArrayList<>();
+        for (StudentInfo studentInfo: studentInfoList) {
+            log.info("TEST: " + studentInfo);
+            //TODO fix bug here
+            User student = userDAO.findByStudentInfo(studentInfo);
+
+            if (student == null) return Responses.USER_NOT_FOUND;
+
+            students.add(student);
+        }
+
+        for (User student: students) {
+            if (student.getRole() == UserRole.STUDENT) {
+
+                if (clazz.getStudents().contains(student)) {
+                    clazz.getStudents().remove(student);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
+        }
+        int currentSize = clazz.getStudents().size();
+
+        int endSize = clazz.getStudents().size();
+        log.info("Prev size: " + prevSize);
+        log.info("current size: " + currentSize);
+
+        return Responses.CLASS_DELETED_STUDENTS;
     }
 }

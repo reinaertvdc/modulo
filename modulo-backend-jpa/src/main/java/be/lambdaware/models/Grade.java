@@ -41,6 +41,10 @@ public class Grade {
     @JsonIgnore
     private List<Objective> objectives = new ArrayList<>();
 
+    @OneToMany(mappedBy = "grade")
+    @JsonIgnore
+    private List<CourseTopic> courseTopics;
+
     // ===================================================================================
 
     public Grade() {

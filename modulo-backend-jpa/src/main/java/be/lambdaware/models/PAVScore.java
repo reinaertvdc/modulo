@@ -44,6 +44,10 @@ public class PAVScore {
     @JoinColumn(name = "objective_id")
     private Objective objective;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "courseTopic_id")
+    private CourseTopic courseTopic;
+
     // ===================================================================================
 
     public PAVScore() {
@@ -110,6 +114,10 @@ public class PAVScore {
 
     public Objective getObjective() {
         return objective;
+    }
+
+    public CourseTopic getCourseTopic(){
+        return courseTopic;
     }
 
     public void setObjective(Objective objective) {

@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,13 +60,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "warddd@hotmail.com:password"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -312,6 +309,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mPassword;
         private final String credentials;
 
+        private String base64Auth;
+
         HttpURLConnection httpConnection;
 
         UserLoginTask(String email, String password) {
@@ -324,26 +323,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected String doInBackground(Void... params) {
 
             // params.
-            String webAddress = "http://10.0.2.2:8080/auth";
+            String webAddress = "http://192.168.1.48:8080/auth";
+
+            base64Auth = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT);
+
+            // response
             StringBuilder webResponse = new StringBuilder();
 
             try {
                 URL url = new URL(webAddress);
-
                 httpConnection = (HttpURLConnection) url.openConnection();
-                String base64Auth = Base64.encodeToString(credentials.getBytes(),Base64.DEFAULT);
-                Log.i("Authing","Using: "+credentials);
-                httpConnection.setRequestProperty("X-Auth", base64Auth);
-                InputStream in = new BufferedInputStream(httpConnection.getInputStream());
+                httpConnection.setRequestProperty("X-auth", base64Auth);
 
+                int status = httpConnection.getResponseCode();
+
+                Log.i("Status", "" + status);
+
+                InputStream in = new BufferedInputStream(httpConnection.getInputStream());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
 
                 String line;
                 while ((line = reader.readLine()) != null) {
                     webResponse.append(line);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                return "FAIL";
             } finally {
                 httpConnection.disconnect();
             }
@@ -355,22 +360,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final String response) {
             mAuthTask = null;
             showProgress(false);
-            Log.i("Login result",response);
 
-            try {
-                JSONObject jsonResponse = new JSONObject(response);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (response.equals("FAIL")) {
+                Log.i("LoginActivity", "Login failed.");
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
+            } else {
+                try {
+                    Log.i("LoginActivity", "Login success. Writing response and credentials to local storage.");
+                    JSONObject userObject = new JSONObject(response);
+                    SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                    editor.putString("UserObject", userObject.toString());
+                    editor.putString("X-Auth", base64Auth);
+                    editor.apply();
+
+                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-
-//            if (success) {
-//                finish();
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                LoginActivity.this.startActivity(intent);
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
         }
 
         @Override

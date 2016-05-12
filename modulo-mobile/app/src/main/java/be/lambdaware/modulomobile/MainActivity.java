@@ -1,7 +1,10 @@
 package be.lambdaware.modulomobile;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -41,24 +44,26 @@ MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         *Setup the DrawerLayout and NavigationView
-         */
+
+        SharedPreferences preferences = getSharedPreferences("data", MODE_PRIVATE);
+        String jsonUser = preferences.getString("UserObject", "");
+
+        Log.i("MainActivity", preferences.getString("X-Auth", "empty"));
+
+        if (jsonUser.isEmpty()) {
+            Log.i("MainActivity", "Not login data found, starting login activity");
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+            finish();
+        }
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        /**
-         * Lets inflate the very first fragment
-         * Here , we are inflating the TabFragment as the first Fragment
-         */
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
-        /**
-         * Setup click events on the Navigation View Items.
-         */
 
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -79,15 +84,11 @@ MainActivity extends AppCompatActivity {
 
             }
         });
-        /**
-         * Setup Drawer Toggle of the Toolbar
-         */
+
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
                 R.string.app_name);
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
     }

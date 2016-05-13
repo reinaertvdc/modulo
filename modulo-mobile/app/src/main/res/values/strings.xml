@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">Modulo Mobile</string>
+    <!-- Utility strings -->
+    <string name="preferences_name">data</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigatier</string>
+    <string name="navigation_drawer_close">Sluit navigatie</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Instellingen</string>
     <string name="title_activity_login">Aanmelden</string>
 
     <!-- Strings related to login -->

@@ -89,19 +89,19 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.getClass = function (id) {
-        var user = $scope.users.get(id);
-        if ($cookies.getObject("user").id === user.id) {
-            if (!angular.isUndefined(user) && !user.enabled)
-                return "glyphicon glyphicon-remove-circle";
-            else
-                return "glyphicon glyphicon-ok-circle";
-        }
-        else{
-            if (!angular.isUndefined(user) && !user.enabled)
-                return "glyphicon glyphicon-remove-circle text-danger";
-            else
-                return "glyphicon glyphicon-ok-circle text-success";
-        }
+            var user = $scope.users.get(id);
+            if ($cookies.getObject("user").id === user.id) {
+                if (!angular.isUndefined(user) && !user.enabled)
+                    return "glyphicon glyphicon-remove-circle";
+                else
+                    return "glyphicon glyphicon-ok-circle";
+            }
+            else {
+                if (!angular.isUndefined(user) && !user.enabled)
+                    return "glyphicon glyphicon-remove-circle text-danger";
+                else
+                    return "glyphicon glyphicon-ok-circle text-success";
+            }
     };
 
     $scope.swapEnabled = function (id) {
@@ -122,7 +122,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.removeUserBackend = function (id) {
-
         $http.delete('http://localhost:8080/user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
             $scope.removeUserFrontend(id);
         });

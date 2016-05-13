@@ -204,6 +204,44 @@ public class ClassController {
         return Responses.CLASS_ADDED_STUDENT;
     }
 
+    @RequestMapping(value = "/id/{id}/students/certificate/id/{certificateId}", method = RequestMethod.POST)
+    public ResponseEntity<?> addStudentsFromClassByCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long certificateId) {
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        Clazz clazz = classDAO.findById(id);
+        if (clazz == null) return Responses.CLASS_NOT_FOUND;
+
+        Certificate certificate = certificateDAO.findById(certificateId);
+
+        if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
+
+        List<StudentInfo> studentInfoList = studentInfoDAO.findAllByCertificate(certificate);
+
+        if (studentInfoList.size() == 0) return Responses.STUDENT_INFO_NOT_FOUND;
+
+        List<User> students = new ArrayList<>();
+        for (StudentInfo studentInfo: studentInfoList) {
+            User student = studentInfo.getUser();
+
+            if (student == null) return Responses.USER_NOT_FOUND;
+
+            students.add(student);
+        }
+
+        for (User student: students) {
+            if (student.getRole() == UserRole.STUDENT) {
+
+                if (!clazz.getStudents().contains(student)) {
+                    clazz.getStudents().add(student);
+                    classDAO.saveAndFlush(clazz);
+                }
+            }
+        }
+
+        return Responses.CLASS_ADDED_STUDENTS;
+    }
+
     @RequestMapping(value = "/id/{id}/teacher/{teacherId}", method = RequestMethod.POST)
     public ResponseEntity<?> addTeacherToClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long teacherId) {
 
@@ -260,42 +298,30 @@ public class ClassController {
         Clazz clazz = classDAO.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
-        int prevSize = clazz.getStudents().size();
-
         User student = userDAO.findById(studentId);
 
         if (student == null) return Responses.USER_NOT_FOUND;
         if (student.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
-        int currentSize=0;
         if(clazz.getStudents().contains(student)){
             clazz.getStudents().remove(student);
-            currentSize = clazz.getStudents().size();
             classDAO.saveAndFlush(clazz);
 
             student.getClasses().remove(clazz);
             userDAO.saveAndFlush(student);
         }
 
-        int endSize = clazz.getStudents().size();
-        log.info("Prev size: " + prevSize);
-        log.info("current size: " + currentSize);
-        log.info("end size: " + endSize);
-
         return Responses.CLASS_DELETED_STUDENT;
     }
 
 
-    @RequestMapping(value = "/id/{id}/students/certificate/{certificateId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteStudentFromClassByCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long certificateId) {
-
+    @RequestMapping(value = "/id/{id}/students/certificate/id/{certificateId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteStudentsFromClassByCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long certificateId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
         Clazz clazz = classDAO.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
-
-        int prevSize = clazz.getStudents().size();
 
         Certificate certificate = certificateDAO.findById(certificateId);
 
@@ -307,9 +333,7 @@ public class ClassController {
 
         List<User> students = new ArrayList<>();
         for (StudentInfo studentInfo: studentInfoList) {
-            log.info("TEST: " + studentInfo);
-            //TODO fix bug here
-            User student = userDAO.findByStudentInfo(studentInfo);
+            User student = studentInfo.getUser();
 
             if (student == null) return Responses.USER_NOT_FOUND;
 
@@ -325,11 +349,6 @@ public class ClassController {
                 }
             }
         }
-        int currentSize = clazz.getStudents().size();
-
-        int endSize = clazz.getStudents().size();
-        log.info("Prev size: " + prevSize);
-        log.info("current size: " + currentSize);
 
         return Responses.CLASS_DELETED_STUDENTS;
     }

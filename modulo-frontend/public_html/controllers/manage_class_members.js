@@ -7,7 +7,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
 
     $scope.prevPage = function(){
-        //TODO implement return to students  list
+        $scope.location.setParameter("leerlingen", null);
     }
 
 
@@ -16,6 +16,14 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
             $scope.studentsInClass.push(item.id);
         });
 
+        $scope.getStudents();
+    }).error(function(error, code){
+        if(code == 404){
+            $scope.getStudents();
+        }
+    });
+
+    $scope.getStudents = function(){
         $http.get('http://localhost:8080/class/id/'+$scope.classId+'/type', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             $scope.classType = response;
 
@@ -44,21 +52,24 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                 });
             }
         });
-    });
+    }
 
     $scope.categorizeStudentsByCertificate = function () {
         $scope.certificateStudents = new Map();
+        $scope.certificates = new Map();
         var i = 0;
         $scope.students.forEach(function (student, key) {
 
             $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                 var certificate = response;
-                if ($scope.certificateStudents.has(certificate.name)) {
-                    $scope.certificateStudents.get(certificate.name).push(student);
+                if ($scope.certificateStudents.has(certificate.id)) {
+                    $scope.certificateStudents.get(certificate.id).push(student);
                 }
                 else {
-                    $scope.certificateStudents.set(certificate.name, []);
-                    $scope.certificateStudents.get(certificate.name).push(student);
+                    $scope.certificates.set(certificate.id, certificate);
+                    $scope.certificateStudents.set(certificate.id, []);
+
+                    $scope.certificateStudents.get(certificate.id).push(student);
                 }
 
                 //laatste student dus start met de json string te vullen
@@ -68,17 +79,18 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                 }
                 i++;
             });
-        }, $scope.students);
+        });
     }
 
     $scope.fillJsonStudents = function () {
         $scope.jsonStudents += '[';
         var i = 0;
         $scope.certificateStudents.forEach(function (students, key) {
+            var certificate = $scope.certificates.get(key);
+            $scope.jsonStudents += '{"text": "' + certificate.name + '",' +
+            '"certificateId": "' +  certificate.id + '", ' + ' "nodes": [';
 
-            $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
-
-            var allStudentChecked = $scope.addStudents(students, key);
+            var allStudentChecked = $scope.addStudents(students, certificate);
             $scope.jsonStudents += '], ' +
                 '"state":{"checked": ' + allStudentChecked + '}}';
 
@@ -103,7 +115,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
             }
 
             $scope.jsonStudents += '{"text": "' + students[i].firstName + ' ' + students[i].lastName + '", ' +
-                    '"parent": "' +  certificate + '", ' +
+                    '"parent": "' +  certificate.id + '", ' +
                 '"state":{"checked": ' + inClass + '}, ' +
                 '"studentId": "' + students[i].id + '"}';
 
@@ -142,13 +154,18 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                                 $('#treeview-checkable').treeview('checkNode', [ parent.nodeId, { silent: true } ]);
                             }
 
-                            $scope.createAlertCookie('Student(en) toegevoegd.');
-                    }).error(function (error, code){
-                        console.log("error: " + error);
+                            $scope.createAlertCookie('Student toegevoegd.');
                     });
                 }
                 else{
-                    $scope.checkChildNodes(node);
+                    $http({
+                        method: 'POST', url: 'http://localhost:8080/class/id/' + $scope.classId + '/students/certificate/id/' + node.certificateId,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+
+                        $scope.checkChildNodes(node);
+                        $scope.createAlertCookie('Studenten toegevoegd.');
+                    });
                 }
             },
             onNodeUnchecked: function (event, node) {
@@ -157,17 +174,23 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                         method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + node.studentId,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
-                        console.log("Delete: " + node);
                             if($scope.allSiblingsChecked(node)){
                                 var parent = $('#treeview-checkable').treeview('getParent', node);
                                 $('#treeview-checkable').treeview('uncheckNode', [ parent.nodeId , { silent: true } ]);
                             }
 
-                        $scope.createAlertCookie('Student(en) verwijderd.');
+                        $scope.createAlertCookie('Student verwijderd.');
                     });
                 }
                 else{
-                    $scope.uncheckChildNodes(node);
+                    $http({
+                        method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/students/certificate/id/' + node.certificateId,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+
+                        $scope.uncheckChildNodes(node);
+                        $scope.createAlertCookie('Studenten verwijderd.');
+                    });
                 }
             }
         });
@@ -175,7 +198,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
         $scope.checkChildNodes = function(parentNode){
             parentNode.nodes.forEach(function(node){
                 if(!node.state.checked){
-                    $('#treeview-checkable').treeview('checkNode', [ node.nodeId ]);
+                    $('#treeview-checkable').treeview('checkNode', [ node.nodeId, { silent: true } ]);
                 }
             });
         }
@@ -183,7 +206,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
         $scope.uncheckChildNodes = function(parentNode){
             parentNode.nodes.forEach(function(node){
                 if(node.state.checked){
-                    $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
+                    $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId, { silent: true } ]);
                 }
             });
         }

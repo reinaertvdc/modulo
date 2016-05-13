@@ -1,4 +1,4 @@
-package be.lambdaware.modulomobile;
+package be.lambdaware.modulomobile.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import be.lambdaware.modulomobile.R;
 
-public class BGVFragment extends Fragment {
+
+public class TaskFragment extends Fragment {
 
     @Nullable
     @Override

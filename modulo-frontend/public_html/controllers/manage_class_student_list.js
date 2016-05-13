@@ -32,10 +32,6 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
         });
     };
 
-    $scope.testClick = function(id){
-        console.log("CLICKED id: " + id);
-    }
-
     $scope.removeStudentBackend = function (id) {
         $http({
             method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + id,
@@ -55,9 +51,7 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
 // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {
-
         if($scope.studentsReady && $scope.certificatesReady == 0) {
-            console.log("Test");
             $compile(STUDENT_LIST_ELEMENT)($scope);
         }
     };
@@ -68,7 +62,6 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
             $scope.addStudent(item);
         });
         $scope.studentsReady = true;
-        console.log("students ready");
     });
 });
 

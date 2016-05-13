@@ -1,29 +1,29 @@
-package be.lambdaware.modulomobile;
+package be.lambdaware.modulomobile.activities;
 
-import android.graphics.Color;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.TextView;
 
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.util.Random;
+import be.lambdaware.modulomobile.R;
+import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.fragments.TabFragment;
+import be.lambdaware.modulomobile.fragments.TaskFragment;
+import be.lambdaware.modulomobile.models.User;
 
 public class
 MainActivity extends AppCompatActivity {
@@ -41,24 +41,23 @@ MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         *Setup the DrawerLayout and NavigationView
-         */
+        // Initialize required settings
+        ApiAuthentication.init(this);
+
+        // Check if the application has been used before and has had a successful login
+        // Redirect back to the login activity when this is not the case
+        if (ApiAuthentication.getAuthenticationHeader().equals("empty")) {
+            goToLoginActivity();
+        }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        /**
-         * Lets inflate the very first fragment
-         * Here , we are inflating the TabFragment as the first Fragment
-         */
+        // Based on the users role, we hide some items.
+        hideMenuItemsByRole();
 
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
-        /**
-         * Setup click events on the Navigation View Items.
-         */
+        // Set users information in navigation drawer header
+        setUserInfoInHeader();
 
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -68,54 +67,49 @@ MainActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.containerView, new TaskFragment()).commit();
 
-                }
-
-                if (item.getItemId() == R.id.nav_progress) {
+                } else if (item.getItemId() == R.id.nav_progress) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
                 }
-
                 return false;
-
             }
         });
-        /**
-         * Setup Drawer Toggle of the Toolbar
-         */
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
+
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
                 R.string.app_name);
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
     }
 
+    private void goToLoginActivity() {
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//
-////        mMainLayout = (LinearLayout) findViewById(R.id.ll_main_layout);
-//
-//        View header = navigationView.getHeaderView(0);
-//        TextView textViewName = (TextView) header.findViewById(R.id.tv_name);
-//        TextView textViewMail = (TextView) header.findViewById(R.id.tv_mail);
-//
+    private void hideMenuItemsByRole() {
+        if (ApiAuthentication.getAuthenticatedUser().isStudent()) {
+            mNavigationView.getMenu().findItem(R.id.nav_children).setVisible(false);
+        }
+    }
 
+    private void setUserInfoInHeader() {
+        View header = mNavigationView.getHeaderView(0);
+        TextView tvName = (TextView) header.findViewById(R.id.tv_name);
+        TextView tvMail = (TextView) header.findViewById(R.id.tv_mail);
+
+        User user = ApiAuthentication.getAuthenticatedUser();
+
+        tvName.setText(user.getFullName());
+        tvMail.setText(user.getEmail());
+    }
 
     @Override
     public void onBackPressed() {

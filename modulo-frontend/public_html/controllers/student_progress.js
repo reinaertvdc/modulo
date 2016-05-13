@@ -82,8 +82,6 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.scores = null;
     }
 
-
-
     // subcertificates
     $scope.subcertificates = {};
     $scope.setSelectedSubcertificate = function (subcertificate) {
@@ -161,11 +159,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.createCategoryRow = function (name) {
         $scope.tableRows += '<tr>' +
-            '<td style="color:blue;">' + name + '</td>';
-
-        for (i = 0; i < WEEKS; i++) {
-             $scope.tableRows += '<td></td>';
-        }
+            '<td colspan="{{'+WEEKS+1+'}}" style="background-color: rgba(0,0,0,0.06); font-weight: bold; text-align: left;">' + name + '</td>';
 
         $scope.tableRows += '</tr>'
     }

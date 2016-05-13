@@ -1,4 +1,4 @@
-package be.lambdaware.modulomobile;
+package be.lambdaware.modulomobile.fragments;
 
 
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import be.lambdaware.modulomobile.R;
 
 
 public class GeneralFragment extends Fragment {

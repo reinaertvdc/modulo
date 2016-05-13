@@ -3,28 +3,49 @@
     <h3>Nieuwe klas aanmaken</h3>
     <br>
 
+    <uib-alert ng-if="isAlertEmpty()" type="danger" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
+
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
             <div>
                 <label for="class">Naam klas:</label>
-                <input type="text" class="form-control" id="class">
+                <input type="text" class="form-control" id="class" required>
             </div>
             <br>
-            <div ng-controller="DropdownCtrl">
-                <!-- Single button -->
-                <label for="class">Certificaat:</label><br>
-                <div class="btn-group" uib-dropdown is-open="status.isopen">
-                    <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
-                        Certificaat <span class="caret"></span>
+            <div ng-class="{'hidden': classType=='BGV'}" class="form-group">
+                <label>Graad</label>
+                <br/>
+                <div class="btn-group" data-uib-dropdown>
+                    <button id="grade-button" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+                        {{selectedGrade}}
+                        <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                        <li role="menuitem"><a href="">Metselaar</a></li>
-                        <li role="menuitem"><a href="">Winkelbediende</a></li>
+                    <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+                        <li data-ng-repeat="grade in grades">
+                            <a href="" data-ng-click="setSelectedGrade(grade)">{{grade.name}}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
-            <br>
-            <div>
+            <div ng-class="{'hidden': classType=='PAV'}" class="form-group">
+                <label>Certificaat</label>
+                <br/>
+                <div class="btn-group" data-uib-dropdown>
+                    <button id="certificate-button" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+                        {{selectedCert}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+                        <li data-ng-repeat="cert in certificates">
+                            <a href="" data-ng-click="setSelectedCert(cert)">{{cert.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-class="{'hidden': certificateId == null && gradeId == null}">
+                <br>
                 <label>Selecteer leerlingen:</label>
                 <div class="form-group">
                     <label for="input-check-node" class="sr-only">Search Tree:</label>
@@ -36,7 +57,7 @@
             </div>
         </div>
 
-        <button class="btn btn-success pull-right">
+        <button type="submit" class="btn btn-success btn-lg btn-block">
             <span class="glyphicon glyphicon-plus-sign"></span> Opslaan
         </button>
 

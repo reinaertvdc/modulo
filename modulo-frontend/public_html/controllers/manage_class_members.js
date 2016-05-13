@@ -7,7 +7,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
 
     $scope.prevPage = function(){
-        //TODO implement return to students  list
+        $scope.location.setParameter("leerlingen", null);
     }
 
 
@@ -155,8 +155,6 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                             }
 
                             $scope.createAlertCookie('Student toegevoegd.');
-                    }).error(function (error, code){
-                        console.log("error: " + error);
                     });
                 }
                 else{

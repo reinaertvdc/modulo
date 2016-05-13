@@ -1,37 +1,139 @@
-app.controller('NewClassController', function ($scope, $http) {
+app.controller('NewClassController', function ($scope, $http, $cookies) {
         // TODO implement controller
+
+    $scope.classType = $scope.location.getParameter($scope.location.PARAM_CLASS_TYPE);
+
+    if($scope.classType == "BGV") {
+        // CERTIFICATES
+        $scope.certificates = {};
+        $scope.setSelectedCert = function (cert) {
+            $scope.selectedCert = cert.name;
+            $scope.certificateId = cert.id;
+
+            $scope.getCertificateStudents();
+        };
+
+        $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            response.forEach(function (item) {
+                $scope.certificates[item.id] = item;
+            });
+
+            $scope.certificateId = null;
+            $scope.selectedCert = "Selecteer een certificaat";
+        });
+    }else if($scope.classType == "PAV"){
+        // GRADES
+        $scope.grades = {};
+        $scope.setSelectedGrade = function (grade) {
+            $scope.selectedGrade = grade.name;
+            $scope.gradeId = grade.id;
+
+            $scope.getGradeStudents();
+        };
+
+        $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            response.forEach(function (item) {
+                $scope.grades[item.id] = item;
+            });
+
+            $scope.gradeId = null;
+            $scope.selectedGrade = "Selecteer een graad";
+        });
+    }
+
+    $scope.submitForm = function () {
+        if($scope.classType=="BGV" && $scope.checkCertificateId()){
+
+        }
+        else if($scope.classType=="PAV" && $scope.checkGradeId()){
+
+        }
+    }
+
+    $scope.checkCertificateId = function(){
+        var valid = true;
+
+        if($scope.certificateId == null) {
+            valid = false;
+            $scope.createAlertCookie('Certificaat is niet ingevuld.');
+        }
+
+        return valid;
+    }
+
+    $scope.checkGradeId = function(){
+        var valid = true;
+
+        if($scope.gradeId == null) {
+            valid = false;
+            $scope.createAlertCookie('Graad is niet ingevuld.');
+        }
+
+        return valid;
+    }
+
     $scope.students = new Map();
     $scope.jsonStudents = "";
 
-        $http.get('http://localhost:8080/student/all').success(function (response) {
+    $scope.getCertificateStudents = function(){
+        $http.get('http://localhost:8080/certificate/id/' + $scope.certificateId + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
-                $scope.students.set(item.studentInfoEntity.id, item);
+                $scope.students.set(item.id, item);
             });
-            $scope.fillJsonStudents();
-            $scope.buildTree();
+            $scope.categorizeStudentsByCertificate();
         });
+    }
+
+    $scope.getGradeStudents = function(){
+        $http.get('http://localhost:8080/grade/id/' + $scope.gradeId + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            response.forEach(function (item) {
+                $scope.students.set(item.id, item);
+            });
+            $scope.categorizeStudentsByCertificate();
+        });
+    }
+
+    $scope.categorizeStudentsByCertificate = function () {
+        $scope.certificateStudents = new Map();
+        $scope.certificates = new Map();
+        var i = 0;
+        $scope.students.forEach(function (student, key) {
+
+            $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                var certificate = response;
+                if ($scope.certificateStudents.has(certificate.id)) {
+                    $scope.certificateStudents.get(certificate.id).push(student);
+                }
+                else {
+                    $scope.certificates.set(certificate.id, certificate);
+                    $scope.certificateStudents.set(certificate.id, []);
+
+                    $scope.certificateStudents.get(certificate.id).push(student);
+                }
+
+                //laatste student dus start met de json string te vullen
+                if (i == $scope.students.size - 1) {
+                    $scope.fillJsonStudents();
+                    $scope.buildTree();
+                }
+                i++;
+            });
+        });
+    }
 
     $scope.fillJsonStudents = function () {
-        var certificateStudents = new Map();
-        $scope.students.forEach(function (student, key) {
-            var certificate = student.certificateEntity;
-            if (certificateStudents.has(certificate.name)) {
-                certificateStudents.get(certificate.name).push(student);
-            }
-            else {
-                certificateStudents.set(certificate.name, []);
-                certificateStudents.get(certificate.name).push(student);
-            }
-        }, $scope.students);
-
         $scope.jsonStudents += '[';
         var i = 0;
-        certificateStudents.forEach(function (students, key) {
-            $scope.jsonStudents += '{"text": "' + key + '", "nodes": [';
-            $scope.addStudents(students, key);
-            $scope.jsonStudents += ']}';
+        $scope.certificateStudents.forEach(function (students, key) {
+            var certificate = $scope.certificates.get(key);
+            $scope.jsonStudents += '{"text": "' + certificate.name + '",' +
+                '"certificateId": "' +  certificate.id + '", ' + ' "nodes": [';
 
-            if (i < certificateStudents.size - 1) {
+            $scope.addStudents(students, certificate);
+            $scope.jsonStudents += '], ' +
+                '"state":{"checked": false}}';
+
+            if (i < $scope.certificateStudents.size - 1) {
                 $scope.jsonStudents += ',';
             }
             i++;
@@ -41,9 +143,10 @@ app.controller('NewClassController', function ($scope, $http) {
 
     $scope.addStudents = function (students, certificate) {
         for (var i = 0; i < students.length; i++) {
-            $scope.jsonStudents += '{"text": "' + students[i].userEntity.firstName + ' ' + students[i].userEntity.lastName + '", ' +
-                '"parent": "' +  certificate + '", ' +
-                '"studentInfoId": "' + students[i].studentInfoEntity.id + '"}';
+            $scope.jsonStudents += '{"text": "' + students[i].firstName + ' ' + students[i].lastName + '", ' +
+                '"parent": "' +  certificate.id + '", ' +
+                '"state":{"checked": false}, ' +
+                '"studentId": "' + students[i].id + '"}';
 
             if (i < students.length - 1) {
                 $scope.jsonStudents += ',';
@@ -66,39 +169,29 @@ app.controller('NewClassController', function ($scope, $http) {
                     }
                 }
                 else{
-                    $scope.checkChildNodes(node);
+                    node.nodes.forEach(function(node){
+                        if(!node.state.checked){
+                            $('#treeview-checkable').treeview('checkNode', [ node.nodeId, { silent: true } ]);
+                        }
+                    });
                 }
             },
             onNodeUnchecked: function (event, node) {
-                if (node.parent != null) {
-                    if ($scope.allSiblingsChecked(node)) {
+                if(node.parent != null) {
+                    if(!$scope.allSiblingsChecked(node)){
                         var parent = $('#treeview-checkable').treeview('getParent', node);
-                        $('#treeview-checkable').treeview('uncheckNode', [parent.nodeId, {silent: true}]);
+                        $('#treeview-checkable').treeview('uncheckNode', [ parent.nodeId , { silent: true } ]);
                     }
                 }
-                else {
-                    $scope.uncheckChildNodes(node);
+                else{
+                    node.nodes.forEach(function(node){
+                        if(node.state.checked){
+                            $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId, { silent: true } ]);
+                        }
+                    });
                 }
             }
         });
-
-        $scope.checkChildNodes = function(parentNode){
-            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
-            allNodes.forEach(function(node){
-                if(node.parent == parentNode.text){
-                    $('#treeview-checkable').treeview('checkNode', [ node.nodeId ]);
-                }
-            });
-        }
-
-        $scope.uncheckChildNodes = function(parentNode){
-            var allNodes = $('#treeview-checkable').treeview('getEnabled', parentNode.nodeId);
-            allNodes.forEach(function(node){
-                if(node.parent == parentNode.text){
-                    $('#treeview-checkable').treeview('uncheckNode', [ node.nodeId ]);
-                }
-            });
-        }
 
         $scope.allSiblingsChecked = function(node){
             var allChecked = true;
@@ -120,34 +213,10 @@ app.controller('NewClassController', function ($scope, $http) {
         var checkableNodes = findCheckableNodess();
         $('#input-check-node').on('keyup', function (e) {
             checkableNodes = findCheckableNodess();
-            //$('.check-node').prop('disabled', !(checkableNodes.length >= 1));
         });
 
         //Expand all
         $scope.checkableTree.treeview('expandAll', {silent: true});
     }
-});
 
-app.controller('DropdownCtrl', function ($scope, $log) {
-    $scope.items = [
-        'The first choice!',
-        'And another choice for you.',
-        'but wait! A third!'
-    ];
-
-    $scope.status = {
-        isopen: false
-    };
-
-    $scope.toggled = function(open) {
-        $log.log('Dropdown is now: ', open);
-    };
-
-    $scope.toggleDropdown = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
-    };
-
-    $scope.appendToEl = angular.element(document.querySelector('#dropdown-long-content'));
 });

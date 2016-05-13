@@ -13,5 +13,5 @@ public interface CertificateDAO extends JpaRepository<Certificate, Long> {
 
     Certificate findById(long id);
 
-    List<Certificate> findAllByEnabled(boolean enabled);
+    List<Certificate> findAllByEnabledOrderByNameAsc(boolean enabled);
 }

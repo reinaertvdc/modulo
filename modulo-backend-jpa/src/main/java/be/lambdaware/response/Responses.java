@@ -69,6 +69,8 @@ public class Responses {
     private static final String fileUploaded = "File successfully uploaded.";
     private static final String fileDownloaded = "File successfully downloaded.";
     private static final String fileNotDownloaded = "File could not be downloaded.";
+    private static final String taskUploadReset = "Upload succesfully reset.";
+
 
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
@@ -134,5 +136,7 @@ public class Responses {
     public static final ResponseEntity<?> FILE_DOWNLOADED = StringMessage.asEntity(fileDownloaded, HttpStatus.OK);
     public static final ResponseEntity<?> FILE_NOT_UPLOADED = StringMessage.asEntity(fileNotUploaded,HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> FILE_NOT_DOWNLOADED = StringMessage.asEntity(fileNotDownloaded,HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> TASK_UPLOAD_RESET = StringMessage.asEntity(taskUploadReset, HttpStatus.OK);
+
 
 }

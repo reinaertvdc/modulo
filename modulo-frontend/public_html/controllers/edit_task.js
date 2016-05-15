@@ -64,7 +64,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
                 method: 'POST', url: 'http://localhost:8080/task/', data: $scope.task,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
-                $scope.location.openPage($scope.location.TASK_MANAGEMENT);
+                $scope.location.openPage($scope.location.TASKS);
                 $scope.createAlertCookie('Taak toegevoegd.');
             });
 
@@ -73,7 +73,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
                 method: 'PUT', url: 'http://localhost:8080/task/', data: $scope.task,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
-                $scope.location.openPage($scope.location.TASK_MANAGEMENT);
+                $scope.location.openPage($scope.location.TASKS);
                 $scope.createAlertCookie('Taak bewerkt.');
             });
         }

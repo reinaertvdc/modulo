@@ -13,6 +13,7 @@ import be.lambdaware.models.User;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,7 +109,7 @@ public class TaskController {
         Task task = taskDAO.findById(taskId);
         if (task == null) return Responses.TASK_NOT_FOUND;
 
-        List<TaskScore> scores = taskScoreDAO.findAllByTaskId(taskId);
+        List<TaskScore> scores = taskScoreDAO.findAllByTask(task);
         scores.sort(new NameComparator());
 
         return new ResponseEntity<>(scores, HttpStatus.OK);
@@ -152,7 +153,7 @@ public class TaskController {
         File zipFile = new File(task.getName() + ".zip");
         FileOutputStream fos = new FileOutputStream(zipFile);
         ZipOutputStream zos = new ZipOutputStream(fos);
-        List<TaskScore> scores = taskScoreDAO.findAllByTaskId(taskId);
+        List<TaskScore> scores = taskScoreDAO.findAllByTask(task);
         for(TaskScore score : scores) {
             if(score.getFileName() != null)
                 addToZipFile(score, zos);
@@ -275,6 +276,23 @@ public class TaskController {
         // update actual task
         taskDAO.saveAndFlush(task);
         return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/score/{taskScoreId}/reset", method = RequestMethod.PUT)
+    public ResponseEntity<?> resetUpload(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long taskScoreId) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
+
+        TaskScore score = taskScoreDAO.findById(taskScoreId);
+        if(score == null) return Responses.TASKSCORE_NOT_FOUND;
+
+        score.setFileName(null);
+        taskScoreDAO.saveAndFlush(score);
+
+        return Responses.TASK_UPLOAD_RESET;
     }
 
 

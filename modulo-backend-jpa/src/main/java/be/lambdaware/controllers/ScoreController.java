@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -97,12 +98,26 @@ public class ScoreController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.findById(userId);
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
-        List<TaskScore> taskScores = taskScoreDAO.findAllByUser(user);
+        // get all tasks: first all without upload, then all with upload; both sorted on deadline
+        List<TaskScore> taskScores = taskScoreDAO.findAllByUserOrderByTaskDeadlineAsc(user);
+        List<TaskScore> uploaded = new ArrayList<TaskScore>();
+        List<TaskScore> notUploaded = new ArrayList<TaskScore>();
+        for (TaskScore score : taskScores) {
+            if(score.getFileName() != null)
+                uploaded.add(score);
+            else
+                notUploaded.add(score);
+        }
+        taskScores.clear();
+        taskScores.addAll(notUploaded);
+        taskScores.addAll(uploaded);
+
         return new ResponseEntity<>(taskScores, HttpStatus.OK);
     }
 }

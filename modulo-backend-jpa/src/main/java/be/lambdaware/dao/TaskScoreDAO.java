@@ -16,6 +16,6 @@ public interface TaskScoreDAO extends JpaRepository<TaskScore, Long> {
     TaskScore findById(long id);
     Long removeByTask(Task task);
     List<TaskScore> findAllByTask(Task task);
-    List<TaskScore> findAllByUser(User user);
+    List<TaskScore> findAllByUserOrderByTaskDeadlineAsc(User user);
 
 }

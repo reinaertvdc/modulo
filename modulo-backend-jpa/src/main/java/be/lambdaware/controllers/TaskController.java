@@ -13,11 +13,9 @@ import be.lambdaware.models.User;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -87,12 +84,10 @@ public class TaskController {
         List<Clazz> classes = user.getTeachedClasses();
         if (classes.size() == 0) return Responses.USER_NO_TEACHING;
 
-        // get all associated tasks for PAV classes
+        // get tasks associated to each clazz
         List<Task> teachedTasks = new ArrayList<Task>();
         for (Clazz clazz : classes) {
-            if (clazz.getType() == ClassType.PAV) {
-                teachedTasks.addAll(taskDAO.findAllByClazz(clazz));
-            }
+            teachedTasks.addAll(taskDAO.findAllByClazz(clazz));
         }
         teachedTasks.sort(new DateComparator());
 
@@ -115,25 +110,25 @@ public class TaskController {
         return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/download/{taskScoreId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/download/{taskScoreId}", method = RequestMethod.GET)
     public ResponseEntity<?> downloadFile(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, HttpServletResponse response, @PathVariable long taskScoreId) throws IOException {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!(authentication.isTeacher() || authentication.isStudent())) return Responses.UNAUTHORIZED;
 
         TaskScore score = taskScoreDAO.findById(taskScoreId);
-        if(score == null) return Responses.TASKSCORE_NOT_FOUND;
+        if (score == null) return Responses.TASKSCORE_NOT_FOUND;
 
         File file = new File("uploads/" + score.getId());  // the way the file is stored on server
-        if(!file.exists())
+        if (!file.exists())
             return Responses.FILE_NOT_DOWNLOADED;
 
-        String mimeType= URLConnection.guessContentTypeFromName(score.getFileName());
-        if(mimeType==null) mimeType = "application/octet-stream";
+        String mimeType = URLConnection.guessContentTypeFromName(score.getFileName());
+        if (mimeType == null) mimeType = "application/octet-stream";
 
         response.setContentType(mimeType);
-        response.setContentLength((int)file.length());
-        response.setHeader("Content-Disposition", "filename=\"" + score.getFileName() +"\"");
+        response.setContentLength((int) file.length());
+        response.setHeader("Content-Disposition", "filename=\"" + score.getFileName() + "\"");
 
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         FileCopyUtils.copy(inputStream, response.getOutputStream());
@@ -154,8 +149,8 @@ public class TaskController {
         FileOutputStream fos = new FileOutputStream(zipFile);
         ZipOutputStream zos = new ZipOutputStream(fos);
         List<TaskScore> scores = taskScoreDAO.findAllByTask(task);
-        for(TaskScore score : scores) {
-            if(score.getFileName() != null)
+        for (TaskScore score : scores) {
+            if (score.getFileName() != null)
                 addToZipFile(score, zos);
         }
         zos.close();
@@ -163,8 +158,8 @@ public class TaskController {
 
         // put the zip in response
         response.setContentType("application/zip");
-        response.setContentLength((int)zipFile.length());
-        response.setHeader("Content-Disposition", "filename=\"" + zipFile.getName() +"\"");
+        response.setContentLength((int) zipFile.length());
+        response.setHeader("Content-Disposition", "filename=\"" + zipFile.getName() + "\"");
         InputStream inputStream = new BufferedInputStream(new FileInputStream(zipFile));
         FileCopyUtils.copy(inputStream, response.getOutputStream());
 
@@ -204,7 +199,7 @@ public class TaskController {
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         // only update 'score' and 'remarks'
-        for(TaskScore score : scores) {
+        for (TaskScore score : scores) {
             TaskScore origScore = taskScoreDAO.findById(score.getId());
             origScore.setScore(score.getScore());
             origScore.setRemarks(score.getRemarks());
@@ -215,16 +210,20 @@ public class TaskController {
     }
 
 
-    @RequestMapping(value="/upload/{taskScoreId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/{taskScoreId}", method = RequestMethod.POST)
     public ResponseEntity<?> uploadFile(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestParam MultipartFile file, @PathVariable long taskScoreId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-
-        // TODO enable this check again (temp disabled for testing)
-        //if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
+        if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
         TaskScore score = taskScoreDAO.findById(taskScoreId);
-        if(score == null) return Responses.TASKSCORE_NOT_FOUND;
+        if (score == null) return Responses.TASKSCORE_NOT_FOUND;
+
+        // only allow upload if before deadline
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date date = new java.sql.Date(utilDate.getTime());
+        if(date.compareTo(score.getTask().getDeadline()) > 0)
+            return Responses.FILE_NOT_UPLOADED;
 
         if (!file.isEmpty()) {
             try {
@@ -257,8 +256,9 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        // if class changed, then delete old TaskScores and create new empty ones
         Task oldTask = taskDAO.findById(task.getId());
+
+        // if class changed, then delete old TaskScores and create new empty ones
         if (oldTask.getClazz().getId() != task.getClazz().getId()) {
             taskScoreDAO.removeByTask(oldTask);  // remove old scores
 
@@ -271,6 +271,15 @@ public class TaskController {
                 score.setTask(task);
                 taskScoreDAO.saveAndFlush(score);
             }
+        }
+        // update graded date
+        else {
+            List<TaskScore> taskScores = taskScoreDAO.findAllByTask(oldTask);
+            for (TaskScore score : taskScores) {
+                score.setGradedDate(task.getDeadline());
+            }
+            taskScoreDAO.save(taskScores);
+            taskScoreDAO.flush();
         }
 
         // update actual task
@@ -287,7 +296,13 @@ public class TaskController {
         if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
         TaskScore score = taskScoreDAO.findById(taskScoreId);
-        if(score == null) return Responses.TASKSCORE_NOT_FOUND;
+        if (score == null) return Responses.TASKSCORE_NOT_FOUND;
+
+        // only allow reset if before deadline
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date date = new java.sql.Date(utilDate.getTime());
+        if(date.compareTo(score.getTask().getDeadline()) > 0)
+            return Responses.TASK_UPLOAD_NOT_RESET;
 
         score.setFileName(null);
         taskScoreDAO.saveAndFlush(score);
@@ -318,7 +333,6 @@ public class TaskController {
     }
 
 
-
     // ===================================================================================
     // some helpers
     // ===================================================================================
@@ -329,10 +343,11 @@ public class TaskController {
             return t1.getDeadline().compareTo(t2.getDeadline());
         }
     }
+
     // Take care of sorting on <firstname, lastname>
     public class NameComparator implements Comparator<TaskScore> {
         public int compare(TaskScore s1, TaskScore s2) {
-            if(s1.getUser().getFirstName().compareTo(s2.getUser().getFirstName()) != 0)
+            if (s1.getUser().getFirstName().compareTo(s2.getUser().getFirstName()) != 0)
                 return s1.getUser().getFirstName().compareTo(s2.getUser().getFirstName());
             else
                 return s1.getUser().getLastName().compareTo(s2.getUser().getLastName());

@@ -7,6 +7,12 @@ import java.sql.Date;
  */
 public class Task {
 
+    public enum TaskStatus {
+        EMPTY,
+        SUBMITTED,
+        GRADED
+    }
+
     //string titel
     //string classname
     //date deadline
@@ -20,12 +26,16 @@ public class Task {
     private String remarks;
     private String description;
 
-    public Task(String name, Date deadLine, String score, String remarks, String description) {
+    private TaskStatus status;
+
+
+    public Task(String name, Date deadLine, String score, String remarks, String description, TaskStatus status) {
         this.name = name;
         this.deadLine = deadLine;
         this.score = score;
         this.remarks = remarks;
         this.description = description;
+        this.status = status;
     }
 
     public Task() {
@@ -69,5 +79,9 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
     }
 }

@@ -15,9 +15,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import be.lambdaware.modulomobile.R;
-import be.lambdaware.modulomobile.adapters.ScoreListAdapter;
 import be.lambdaware.modulomobile.adapters.TaskListAdapter;
-import be.lambdaware.modulomobile.models.Score;
 import be.lambdaware.modulomobile.models.Task;
 
 
@@ -42,13 +40,12 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         rvRecylcerView.setLayoutManager(layoutManager);
 
         ArrayList<Task> data = new ArrayList<>();
-        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"),"test","test","test"));
-        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"),"test","test","test"));
-        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"),"test","test","test"));
-        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"),"test","test","test"));
-        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"),"test","test","test"));
+        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"), "", "Remarks", "Description", Task.TaskStatus.EMPTY));
+        data.add(new Task("Opdracht 2", Date.valueOf("2016-05-02"), "", "Remarks", "Description", Task.TaskStatus.EMPTY));
+        data.add(new Task("Opdracht 3", Date.valueOf("2016-05-02"), "", "Remarks", "Description", Task.TaskStatus.SUBMITTED));
+        data.add(new Task("Opdracht 4", Date.valueOf("2016-05-02"), "V", "Remarks", "Description", Task.TaskStatus.GRADED));
 
-        scoreAdapter = new TaskListAdapter(getContext(),data);
+        scoreAdapter = new TaskListAdapter(getContext(), data);
         rvRecylcerView.setAdapter(scoreAdapter);
 
         srSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_task_refresh_layout);
@@ -59,8 +56,13 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        Log.i("GeneralFragment","Refreshing list...");
+        Log.i("GeneralFragment", "Refreshing list...");
         //TODO implement refresh from database.
         srSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public String toString() {
+        return "TaskFragment";
     }
 }

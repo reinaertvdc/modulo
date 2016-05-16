@@ -36,6 +36,7 @@ public class TabFragment extends Fragment {
          */
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
 
+
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -45,6 +46,18 @@ public class TabFragment extends Fragment {
 
         return x;
 
+    }
+
+    public void showGeneral() {
+        viewPager.setCurrentItem(0);
+    }
+
+    public void showBgv() {
+        viewPager.setCurrentItem(1);
+    }
+
+    public int getCurrentPage(){
+        return viewPager.getCurrentItem();
     }
 
     class MyAdapter extends FragmentPagerAdapter {
@@ -91,6 +104,11 @@ public class TabFragment extends Fragment {
             }
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "TabFragment";
     }
 
 }

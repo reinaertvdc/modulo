@@ -1,23 +1,20 @@
 package be.lambdaware.modulomobile.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.api.ApiAuthentication;
@@ -36,6 +33,9 @@ MainActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
+    private TabFragment tabFragment;
+    private TaskFragment taskFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ MainActivity extends AppCompatActivity {
         // Check if the application has been used before and has had a successful login
         // Redirect back to the login activity when this is not the case
         if (ApiAuthentication.getAuthenticationHeader().equals("empty")) {
-            Log.i("MainActivity","No valid login! Redirecting...");
+            Log.i("MainActivity", "No valid login! Redirecting...");
             goToLoginActivity();
             return;
         }
@@ -61,18 +61,20 @@ MainActivity extends AppCompatActivity {
         // Set users information in navigation drawer header
         setUserInfoInHeader();
 
+        taskFragment = new TaskFragment();
+        tabFragment = new TabFragment();
+
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 mDrawerLayout.closeDrawers();
                 if (item.getItemId() == R.id.nav_tasks) {
                     FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.containerView, new TaskFragment()).commit();
-
+                    fragmentTransaction.replace(R.id.containerView, taskFragment, "fragmentTag").commit();
                 } else if (item.getItemId() == R.id.nav_progress) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    xfragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
-                } else if(item.getItemId() == R.id.nav_logout) {
+                    xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
+                } else if (item.getItemId() == R.id.nav_logout) {
                     ApiAuthentication.clear(getApplicationContext());
                     goToLoginActivity();
                 }
@@ -82,7 +84,7 @@ MainActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
+        mFragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
@@ -122,7 +124,17 @@ MainActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (taskFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
+                FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
+            } else if (tabFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
+                if (tabFragment.getCurrentPage() == 1) {
+                    tabFragment.showGeneral();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+
         }
     }
 

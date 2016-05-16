@@ -54,8 +54,7 @@ public class Clazz {
     @JsonIgnore
     private List<Task> tasks;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "classes_courseTopics", joinColumns = @JoinColumn(name = "class_id"), inverseJoinColumns = @JoinColumn(name = "courseTopic_id"))
+    @OneToMany(mappedBy = "clazz")
     @JsonIgnore
     private List<CourseTopic> courseTopics;
 
@@ -147,9 +146,6 @@ public class Clazz {
 
     public void addCourseTopics(CourseTopic courseTopic){
         this.courseTopics.add(courseTopic);
-        if (!courseTopic.getClasses().contains(this)) {
-            courseTopic.getClasses().add(this);
-        }
     }
 
     public List<User> getStudents() {

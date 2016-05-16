@@ -88,10 +88,6 @@ public class StudentInfo {
     @JsonIgnore
     private List<TaskScore> taskScores = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "students")
-    @JsonIgnore
-    private List<CourseTopic> courseTopics = new ArrayList<>();
-
     // ===================================================================================
 
     public StudentInfo() {
@@ -286,21 +282,6 @@ public class StudentInfo {
 
     public void addTaskScore(TaskScore taskScore) {
         this.taskScores.add(taskScore);
-    }
-
-    public List<CourseTopic> getCourseTopics() {
-        return courseTopics;
-    }
-
-    public void setCourseTopics(List<CourseTopic> courseTopics) {
-        this.courseTopics = courseTopics;
-    }
-
-    public void addCourseTopic(CourseTopic courseTopic) {
-        this.courseTopics.add(courseTopic);
-        if (!courseTopic.getStudents().contains(this)) {
-            courseTopic.getStudents().add(this);
-        }
     }
 
     // ===================================================================================

@@ -623,8 +623,8 @@ public class UserController {
                 }
 
                 log.info("Remove student from possible course toipcs.");
-                for(CourseTopic courseTopic : oldUser.getStudentInfo().getCourseTopics()){
-                    courseTopic.getStudents().remove(oldUser.getStudentInfo());
+                for(CourseTopic courseTopic : oldUser.getCourseTopics()){
+                    courseTopic.getStudents().remove(oldUser);
                 }
 
                 log.info("Delete BGV scores");

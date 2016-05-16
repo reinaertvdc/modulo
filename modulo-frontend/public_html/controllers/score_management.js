@@ -1,4 +1,4 @@
-app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
+app.controller('ScoreManagementController', function ($scope, $http, $cookies, $window) {
     // TODO implement controller
     $scope.bgvClasses = [];
     $scope.pavClasses = [];
@@ -8,6 +8,8 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
         module: null,
         week: 1
     };
+
+    $scope.$watch('visibleScores', function(newval, oldval) {$scope.selectedStudentScores = []; $scope.updateTableHeaders();}, true);
 
     $http({
         method: 'GET', url: 'http://localhost:8080/user/id/'+ $cookies.getObject('user').id +'/teaching',
@@ -73,6 +75,50 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies) {
         }
         return result;
     };
+    
+    $scope.updateTableHeaders = function() {
+        var tables = document.getElementsByClassName('fixed-head');
+        for (var i = 0; i < tables.length; i++) {
+            var head = tables[i].getElementsByTagName('thead')[0];
+            var stubHead = tables[i].getElementsByClassName('stub-head')[0];
+            var headCells = head.getElementsByTagName('th');
+            var stubHeadCells = stubHead.getElementsByTagName('th');
+            for (var j = 0; j < headCells.length; j++) {
+                headCells[j].style.width = stubHeadCells[j].offsetWidth + 'px';
+            }
+        }
+    };
+
+    angular.element($window).bind('resize', function() {$scope.updateTableHeaders()});
+
+    $scope.updateScore = function() {
+        $http({
+            method: 'POST', url: 'http://localhost:8080/user/', data: model,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            if($scope.basicInfo.role == 'STUDENT') {
+                var user = response;
+                $http({
+                    method: 'PUT',
+                    url: 'http://localhost:8080/certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
+                    headers: {'X-auth': $cookies.get("auth")}
+                }).success(function (response) {
+                    $http({
+                        method: 'PUT',
+                        url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
+                        headers: {'X-auth': $cookies.get("auth")}
+                    }).success(function (response) {
+                        $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                        $scope.createAlertCookie('Gebruiker toegevoegd.');
+                    });
+                });
+            }
+            else{
+                $scope.location.openPage($scope.location.USER_MANAGEMENT);
+                $scope.createAlertCookie('Gebruiker toegevoegd.');
+            }
+        });
+    }
 });
 
 /*app.controller('DatepickerPopupDemoCtrl', function ($scope) {

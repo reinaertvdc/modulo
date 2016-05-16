@@ -2,6 +2,7 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
     const SCORES_LIST_ITEM_PREFIX = 'scores-list-item-';
     const SCORES_LIST_ELEMENT = document.getElementById('table-scores-list-body');
     var taskId = $scope.location.getParameter($scope.location.PARAM_TASK_SCORES);
+    $scope.dlAllDisabled = true;
 
     $scope.panelCaption = 'Taak quoteren: ';
     $scope.scores = new Map();
@@ -31,8 +32,10 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
         // download icon
         if (score.fileName == null || score.fileName == '')
             html += '<td align="center"></td>';
-        else
+        else {
             html += '<td align="center"><span role="button" class="glyphicon glyphicon-download" ng-click="downloadFile(' + score.id + ')"></span></td>';
+            $scope.dlAllDisabled = false;
+        }
 
         // check if score already set
         if (score.score == null)
@@ -74,35 +77,35 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
     $scope.downloadFile = function (id) {
         $scope.execDownload('http://localhost:8080/task/download/' + id,
             $scope.scores.get(id).scoreObj.fileName);
-    }
+    };
     $scope.downloadAll = function () {
         $scope.execDownload('http://localhost:8080/task/downloadAll/' + taskId,
             $scope.task.name + '.zip');
     };
 
-    $scope.execDownload = function (url, destName) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.setRequestHeader('X-auth', $cookies.get("auth"));
-        xhr.responseType = "blob";
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var blobURL = (window.URL || window.webkitURL).createObjectURL(xhr.response);
-                var anchor = document.createElement("a");
-                anchor.download = destName;
-                anchor.href = blobURL;
-                anchor.click();
-            }
-        };
-        xhr.send();
-    };
-
 
 // ON SUBMIT
     $scope.submitForm = function () {
-        console.log($scope.scores)
-        console.log($scope.scoreStrs[$scope.scoreStr])
-        console.log($scope.remarks)
+        // generate list of scores to send
+        var scoresSend = [];
+        $scope.scores.forEach(function (item) {
+            // only update checked scores
+            if (!item.checked)
+                return;
+
+            var scoreObj = item.scoreObj;
+            scoreObj.score = $scope.scoreStrs[$scope.scoreStr];
+            scoreObj.remarks = $scope.remarks;
+            scoresSend.push(scoreObj);
+        });
+
+        // send list of scores
+        $http({
+            method: 'POST', url: 'http://localhost:8080/task/scores', data: scoresSend,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            $window.location.reload(true);
+        });
     };
 
 
@@ -126,30 +129,4 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
         });
         $scope.refresh();
     });
-
-
-
-
-
-    $scope.setFile = function (file) {
-        $scope.fd = new FormData();
-        $scope.fd.append("file", file);
-        $scope.$apply(function () {
-            $scope.fileNameStr = file.name;
-        });
-    };
-
-
-    $scope.uploadFile = function () {
-        $http({
-            method: 'POST', url: 'http://localhost:8080/task/upload/335', data: $scope.fd,
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined, 'X-auth': $cookies.get("auth")}
-        }).success(function (response) {
-            console.log("succes: " + JSON.stringify(response));
-        }).error(function (response) {
-            console.log("error: " + JSON.stringify(response));
-        });
-    };
-})
-;
+});

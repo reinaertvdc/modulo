@@ -37,34 +37,32 @@
 
         <br>
 
-        <div class="table-responsive" data-ng-class="{hidden: !visibleScores.schoolClass}">
+        <div style="max-height: 600px; overflow: scroll;" class="table-responsive fixed-head" data-ng-class="{hidden: !visibleScores.schoolClass}">
             <table class="table table-bordered table-condensed">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
+                <thead style="margin-left: -1px; margin-top: -1px; position: absolute; overflow: hidden;">
+                <tr style="border-top: 1px solid rgb(221, 211, 211); border-left: 1px solid rgb(221, 211, 211);">
+                    <th style="background-color: white;"></th>
+                    <th style="background-color: white;" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
                 </tr>
                 </thead>
+                <tbody style="visibility: hidden" class="stub-head">
+                    <tr>
+                        <th></th>
+                        <th data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
+                    </tr>
+                </tbody>
                 <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories">
                     <tr><td style="background-color: rgba(0, 0, 0, 0.06); font-weight: bold;" colspan="{{visibleScores.schoolClass.students.length + 1}}">{{category.name}}</td></tr>
                     <tr data-ng-repeat="competence in category.competences" data-ng-init="competenceIndex = $index">
                         <td>{{competence.name}}</td>
-                        <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index" data-ng-class="{info: selectedStudentScores[competenceIndex][scoreIndex] == true}" data-ng-click="selectedStudentScores[competenceIndex][scoreIndex] = !selectedStudentScores[competenceIndex][scoreIndex];" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.scores[visibleScores.week][competence.id].score}}</td>
+                        <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index" data-ng-class="{info: selectedStudentScores[competence.id][scoreIndex] == true}" data-ng-click="selectedStudentScores[competence.id][scoreIndex] = !selectedStudentScores[competence.id][scoreIndex];" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.scores[visibleScores.week][competence.id].score}}</td>
                     </tr>
                 </tbody>
-
-
-
-                <!--<tbody class="text-center" data-ng-class="{hidden: !visibleScores.module}">
-                <tr data-ng-repeat="module in visibleScores.schoolClass.modules" data-ng-init="moduleIndex = $index">
-                    <td>{{module.name}}</td>
-                    <!--<td style="cursor: pointer; vertical-align: middle;" data-ng-repeat="score in visibleScores.schoolClass.students.scores" data-ng-init="scoreIndex = $index" data-ng-class="{info: selectedStudentScores[competenceIndex][studentScoreIndex] == true}" data-ng-click="selectedStudentScores[competenceIndex][studentScoreIndex] = !selectedStudentScores[competenceIndex][studentScoreIndex];">{{student.student.scores[competenceIndex]}}</td>-->
-                <!--</tr>
-                </tbody>-->
             </table>
         </div>
 
-        <br>
+        <br/>
+
         <div class="btn-group" data-uib-dropdown>
             <button id="button-score" type="button" class="btn btn-default" data-uib-dropdown-toggle
                     data-ng-disabled="disabled">
@@ -78,8 +76,7 @@
             </ul>
         </div>
 
-        <br/>
-        <br/>
+        <br/><br/>
 
         <div class="form-group">
             <label for="comment">Commentaar:</label>

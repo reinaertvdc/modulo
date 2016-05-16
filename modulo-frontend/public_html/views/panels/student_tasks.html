@@ -1,0 +1,73 @@
+<style>
+    .tooltip-inner {
+        white-space: pre;
+        max-width: none;
+        text-align: left;
+    }
+
+    .col-xs-1s {
+        width: 2%;
+        float: left;
+    }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+</style>
+
+
+<div data-ng-controller="StudentTasksController">
+    <uib-alert ng-if="isAlertEmpty()" type="success" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
+
+    <h3>Taken</h3>
+
+    <div>
+        <div class="input-group">
+            <input data-ng-model="searchKeyword" data-ng-change="searchTasks()" type="text" class="form-control"
+                   placeholder="Zoeken...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+        </div>
+    </div>
+
+
+    <br/>
+
+
+    <div class="panel panel-default">
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th class="col-xs-1s"></th>
+                <th class="col-xs-3">Taak</th>
+                <th class="col-xs-2">Klas</th>
+                <th class="col-xs-2">Deadline</th>
+                <th class="col-xs-3">Inzending</th>
+                <th class="col-xs-1">Score</th>
+            </tr>
+            </thead>
+            <tbody id="table-scores-list-body"></tbody>
+        </table>
+    </div>
+</div>
+

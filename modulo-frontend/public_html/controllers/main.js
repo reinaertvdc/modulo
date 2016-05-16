@@ -2,7 +2,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     // TODO finish controller
     $scope.account = {
         isLoggedIn: function () {
-            return  $cookies.get("auth") != null;
+            return $cookies.get("auth") != null;
         },
 
         logOut: function () {
@@ -32,6 +32,26 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         }
     };
 
+    $scope.getActiveTasksPanel = function () {
+        if (typeof $cookies.getObject('user') === 'undefined')
+            return '';
+
+        // teacher
+        if ($cookies.getObject('user').role === UserType.TEACHER) {
+            if ($scope.location.getParameter($scope.location.PARAM_EDIT_TASK_ID))
+                return 'views/panels/edit_task.html';
+            else if ($scope.location.getParameter($scope.location.PARAM_TASK_SCORES))
+                return 'views/panels/task_scores.html';
+            else
+                return 'views/panels/list_tasks.html';
+        } else
+
+        // student
+        if ($cookies.getObject('user').role === UserType.STUDENT) {
+            return 'views/panels/student_tasks.html';
+        }
+    };
+
     $scope.location = {
         HOME: 'startpagina',
         NOT_FOUND: 'pagina_niet_gevonden',
@@ -42,7 +62,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         MY_CLASSES: 'mijn_klassen',
         SCORES_MANAGEMENT: 'puntenbeheer',
         STUDENT_PROGRESS: 'voortgang',
-        TASK_MANAGEMENT: 'taken',
+        TASKS: 'taken',
 
         PARAM_EDIT_USER_ID: 'gebruiker',
         PARAM_MANAGE_CLASS_ID: 'klas',
@@ -69,8 +89,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
                 || page === this.MY_CLASSES
                 || page === this.SCORES_MANAGEMENT
                 || page === this.STUDENT_PROGRESS
-                || page === this.TASK_MANAGEMENT
-                || page === this.TASK_SCORES
+                || page === this.TASKS
         },
 
         userCanAccessPage: function (page) {
@@ -94,7 +113,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
                 return $cookies.getObject("user").role === UserType.TEACHER
                     || $cookies.getObject("user").role === UserType.STUDENT
                     || $cookies.getObject("user").role === UserType.PARENT;
-            } else if (page === this.TASK_MANAGEMENT) {
+            } else if (page === this.TASKS) {
                 return $cookies.getObject("user").role === UserType.TEACHER
                     || $cookies.getObject("user").role === UserType.STUDENT
                     || $cookies.getObject("user").role === UserType.PARENT;
@@ -157,7 +176,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         auth = $base64.encode(auth);
         $http({
             method: 'GET', url: 'http://localhost:8080/auth',
-            headers: {'X-auth': auth }
+            headers: {'X-auth': auth}
         }).success(function (response) {
             $scope.isConnectedToBackend = true;
             $scope.testedBackendConnectionSuccessfully = true;
@@ -173,7 +192,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
 
     $scope.checkBackendConnectionLoop = function () {
         $scope.checkBackendConnection();
-        setTimeout(function() {
+        setTimeout(function () {
             if (!$scope.testedBackendConnectionSuccessfully) {
                 $scope.isConnectedToBackend = false;
                 $scope.checkBackendConnectionLoop();
@@ -190,25 +209,43 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     $scope.userSexesKeys = Object.keys($scope.userSexes);
 
 
-    $scope.createAlertCookie= function(msg){
+    $scope.createAlertCookie = function (msg) {
         var alert = msg;
         var expireTime = new Date();
         var time = expireTime.getTime();
-        time += 1000*3; // 3sec expire tijd
+        time += 1000 * 3; // 3sec expire tijd
         expireTime.setTime(time);
         $cookies.put("alert", alert, {'expires': expireTime});
     }
 
-    $scope.isAlertEmpty = function(){
+    $scope.isAlertEmpty = function () {
         return $cookies.get("alert") != null;
     }
 
-    $scope.getAlert = function(){
+    $scope.getAlert = function () {
         return $cookies.get("alert");
     }
 
     $scope.removeAlert = function () {
         $cookies.put("alert", null, {'expires': new Date()});
     }
+
+
+    $scope.execDownload = function (url, destName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('X-auth', $cookies.get("auth"));
+        xhr.responseType = "blob";
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var blobURL = (window.URL || window.webkitURL).createObjectURL(xhr.response);
+                var anchor = document.createElement("a");
+                anchor.download = destName;
+                anchor.href = blobURL;
+                anchor.click();
+            }
+        };
+        xhr.send();
+    };
 
 });

@@ -1,1 +1,1 @@
-<div data-ng-include="location.getParameter(location.PARAM_EDIT_TASK_ID) ? 'views/panels/edit_task.html' : (location.getParameter(location.PARAM_TASK_SCORES) ? 'views/panels/task_scores.html' : 'views/panels/list_tasks.html')"></div>
+<div data-ng-include="getActiveTasksPanel()"></div>

@@ -22,7 +22,7 @@
 </style>
 
 <div data-ng-controller="StudentProgressController">
-    <h3>Voortgang leerlingen</h3>
+    <h3>Voortgang studenten</h3>
     <br>
     <br>
     <form class="form-inline">
@@ -64,7 +64,7 @@
                 <div class="btn-group" uib-dropdown >
                     <button id="certificate-button" type="button" class="btn btn-default" uib-dropdown-toggle
                             ng-disabled="disabled">
-                        {{selectedValues.subcertificate ? selectedSubcertificate : "Subcertificaat"}}
+                        {{selectedValues.subcertificate ? selectedSubcertificate : "Deelcertificaat"}}
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="button-school">

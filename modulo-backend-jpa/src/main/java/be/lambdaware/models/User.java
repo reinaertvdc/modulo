@@ -73,6 +73,10 @@ public class User {
     @JsonIgnore
     private List<User> children = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "students")
+    @JsonIgnore
+    private List<CourseTopic> courseTopics = new ArrayList<>();
+
     // ===================================================================================
 
     public User() {
@@ -227,7 +231,23 @@ public class User {
         }
     }
 
+    public List<CourseTopic> getCourseTopics() {
+        return courseTopics;
+    }
+
+    public void setCourseTopics(List<CourseTopic> courseTopics) {
+        this.courseTopics = courseTopics;
+    }
+
+    public void addCourseTopic(CourseTopic courseTopic) {
+        this.courseTopics.add(courseTopic);
+        if (!courseTopic.getStudents().contains(this)) {
+            courseTopic.getStudents().add(this);
+        }
+    }
+
     // ===================================================================================
+
 
     @Override
     public boolean equals(Object o) {
@@ -236,20 +256,41 @@ public class User {
 
         User user = (User) o;
 
-        return id == user.id;
+        if (id != user.id) return false;
+        if (enabled != user.enabled) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (sex != user.sex) return false;
+        if (role != user.role) return false;
+        if (teachedClasses != null ? !teachedClasses.equals(user.teachedClasses) : user.teachedClasses != null)
+            return false;
+        if (classes != null ? !classes.equals(user.classes) : user.classes != null) return false;
+        if (studentInfo != null ? !studentInfo.equals(user.studentInfo) : user.studentInfo != null) return false;
+        if (parent != null ? !parent.equals(user.parent) : user.parent != null) return false;
+        if (children != null ? !children.equals(user.children) : user.children != null) return false;
+        return courseTopics != null ? courseTopics.equals(user.courseTopics) : user.courseTopics == null;
 
     }
 
     @Override
     public String toString() {
-        String sb = "User{" + "id=" + id +
+        return "User{" +
+                "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", sex=" + sex +
                 ", role=" + role +
                 ", enabled=" + enabled +
+                ", teachedClasses=" + teachedClasses +
+                ", classes=" + classes +
+                ", studentInfo=" + studentInfo +
+                ", parent=" + parent +
+                ", children=" + children +
+                ", courseTopics=" + courseTopics +
                 '}';
-        return sb;
     }
 }

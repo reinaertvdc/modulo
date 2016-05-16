@@ -25919,16 +25919,12 @@ INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_i
 INSERT INTO public.task_scores (id, graded_date, remarks, score, task_id, user_id) VALUES (361, '2016-05-06', null, null, 350, 7);
 
 -- CourseTopics
-INSERT INTO public.course_topics (id, name, grade_id) VALUES (1, 'Wiskunde 1', 1);
-INSERT INTO public.course_topics (id, name, grade_id) VALUES (2, 'Taal 1', 1);
+INSERT INTO public.course_topics (id, name, clazz_id, grade_id) VALUES (1, 'Wiskunde 1', 3, 1);
+INSERT INTO public.course_topics (id, name, clazz_id, grade_id) VALUES (2, 'Taal 1', 3, 1);
 
 -- CourseTopic students
-INSERT INTO public.course_topics_students (course_topic_id, student_id) VALUES (1, 1);
-INSERT INTO public.course_topics_students (course_topic_id, student_id) VALUES (2, 1);
-
--- Classes courseTopics
-INSERT INTO public.classes_course_topics (class_id, course_topic_id) VALUES (3, 1);
-INSERT INTO public.classes_course_topics (class_id, course_topic_id) VALUES (3, 2);
+INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 6);
+INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 6);
 
 -- objectives courseTopics
 INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (1, 1);

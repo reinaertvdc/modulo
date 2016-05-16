@@ -4,7 +4,7 @@
 
     <div class="checkbox">
         <label>
-            <input id="remedïering" type="checkbox" > remediëring
+            <input id="remedïering" type="checkbox" ng-click="changeType()"> remediëring
         </label>
     </div>
 
@@ -21,13 +21,12 @@
 
         <br/>
 
-
-        <div class="panel panel-default">
+        <div id="studentsList" class="panel panel-default" style="display: none  ">
             <table class="table table-condensed table-striped">
                 <thead>
                 <tr>
                     <th class="col-xs-1"><a href="" ng-click="toggleAll('students')">Alles/niets</a></th>
-                    <th>Student</th>
+                    <th>Studenten</th>
                 </tr>
                 </thead>
                 <tbody id="table-students-list-body"></tbody>
@@ -46,74 +45,6 @@
             </table>
         </div>
 
-
-        <!--<label>Leerlingen:</label>
-        <div>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Zoeken...">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-        </span>
-            </div>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" >selecteer alles
-            </label>
-        </div>
-
-        <div>
-            <table id="mytbl" class="table table-hover table-condensed">
-                <tbody>
-                <tr>
-                    <td class="vcenter"><input type="checkbox" id="blahD" value="1"/></td>
-                    <td>Koen Lievens</td>
-                </tr>
-                <tr>
-                    <td class="vcenter"><input type="checkbox" id="blahK" value="1"/></td>
-                    <td>Janna Kempeneers</td>
-                </tr>
-                <tr>
-                    <td class="vcenter"><input type="checkbox" id="blahZ" value="1"/></td>
-                    <td>Maxime Pierards</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <label>Aangeboden doelstelling:</label>
-        <div>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Zoeken...">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
-        </span>
-            </div>
-        </div>
-
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" >selecteer alles
-            </label>
-        </div>
-        <div>
-            <table id="mytb" class="table table-hover table-condensed">
-                <tbody>
-                <tr>
-                    <td class="vcenter"><input type="checkbox" id="blahA" value="1"/></td>
-                    <td>Doelstelling 1</td>
-                </tr>
-                <tr>
-                    <td class="vcenter"><input type="checkbox" id="blahB" value="1"/></td>
-                    <td>Doelstelling 2</td>
-                </tr>
-                <tr>
-                    <td class="vcenter"><input type="checkbox" id="blahC" value="1"/></td>
-                    <td>Doelstelling 3</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>-->
         <button type="submit" class="btn btn-success btn-lg btn-block">
             <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken
         </button>

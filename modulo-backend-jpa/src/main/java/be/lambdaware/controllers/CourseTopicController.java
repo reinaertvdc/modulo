@@ -55,6 +55,44 @@ public class CourseTopicController {
         return new ResponseEntity<>(classes, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/id/{id}/students", method = RequestMethod.GET)
+    public ResponseEntity<?> getStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        CourseTopic courseTopic = courseTopicDAO.findById(id);
+
+        if (courseTopic == null) return Responses.COURSE_TOPICS_NOT_FOUND;
+        return new ResponseEntity<>(courseTopic.getStudents(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}/objectives", method = RequestMethod.GET)
+    public ResponseEntity<?> getObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        CourseTopic courseTopic = courseTopicDAO.findById(id);
+
+        if (courseTopic == null) return Responses.COURSE_TOPICS_NOT_FOUND;
+        return new ResponseEntity<>(courseTopic.getObjectives(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        CourseTopic courseTopic = courseTopicDAO.findById(id);
+
+        if (courseTopic == null) return Responses.COURSE_TOPICS_NOT_FOUND;
+        return new ResponseEntity<>(courseTopic, HttpStatus.OK);
+    }
 
 
     // ===================================================================================
@@ -79,13 +117,13 @@ public class CourseTopicController {
     }
 
     @RequestMapping(value = "/students/{courseTopicId}", method = RequestMethod.POST)
-    public ResponseEntity<?> setStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<User> students,  @PathVariable long courseTopicId) {
+    public ResponseEntity<?> setStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<User> students, @PathVariable long courseTopicId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         CourseTopic courseTopic = courseTopicDAO.findById(courseTopicId);
-        for(User student : students) {
+        for (User student : students) {
             User stud = userDAO.findById(student.getId());
             courseTopic.addStudent(stud);
         }
@@ -97,13 +135,13 @@ public class CourseTopicController {
 
 
     @RequestMapping(value = "/objectives/{courseTopicId}", method = RequestMethod.POST)
-    public ResponseEntity<?> setObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<Objective> objectives,  @PathVariable long courseTopicId) {
+    public ResponseEntity<?> setObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<Objective> objectives, @PathVariable long courseTopicId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         CourseTopic courseTopic = courseTopicDAO.findById(courseTopicId);
-        for(Objective obj : objectives) {
+        for (Objective obj : objectives) {
             Objective objective = objectiveDAO.findById(obj.getId());
             courseTopic.addObjective(objective);
         }
@@ -113,4 +151,22 @@ public class CourseTopicController {
         return new ResponseEntity<>(courseTopic, HttpStatus.OK);
     }
 
+
+    // ===================================================================================
+    // DELETE methods
+    // ===================================================================================
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> delete(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        CourseTopic courseTopic = courseTopicDAO.findById(id);
+        if (courseTopic == null) return Responses.COURSE_TOPIC_NOT_FOUND;
+
+        courseTopicDAO.delete(id);
+        return Responses.COURSE_TOPIC_DELETED;
+    }
 }

@@ -27,6 +27,9 @@ public class CourseTopic {
     @Column
     private String description;
 
+    @Column(nullable = false)
+    private boolean resit = true;
+
     // ===================================================================================
     // Relations
     // ===================================================================================
@@ -66,6 +69,15 @@ public class CourseTopic {
     // ===================================================================================
     // Field Accessors
     // ===================================================================================
+
+
+    public boolean isResit() {
+        return resit;
+    }
+
+    public void setResit(boolean resit) {
+        this.resit = resit;
+    }
 
     public long getId() {
         return id;
@@ -152,6 +164,7 @@ public class CourseTopic {
         CourseTopic that = (CourseTopic) o;
 
         if (id != that.id) return false;
+        if (resit != that.resit) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (objectives != null ? !objectives.equals(that.objectives) : that.objectives != null) return false;
@@ -162,13 +175,13 @@ public class CourseTopic {
 
     }
 
-
     @Override
     public String toString() {
         return "CourseTopic{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", resit=" + resit +
                 ", objectives=" + objectives +
                 ", students=" + students +
                 ", clazz=" + clazz +

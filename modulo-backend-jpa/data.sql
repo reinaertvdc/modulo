@@ -25894,10 +25894,20 @@ INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES 
 INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (5, null, true, 'Doelstelling B', 2);
 INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (6, null, true, 'Doelstelling C', 2);
 
+-- CourseTopics
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (1, 'blabla', 'Wiskunde 1', false, 3, 1);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (2, 'blabla' , 'Taal 1', false, 3, 1);
+
+-- CourseTopic students
+INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 6);
+INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 6);
+
+-- objectives courseTopics
+INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (1, 1);
+INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (4, 2);
 -- Scores
 INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (1, 'Helemaal Oke', 'V', 1, 1, 1, 1);
 INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (2, 'Goed gemaakt', 'V', 1, 2, 4, 1);
-
 
 -- Tasks
 INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (320, '2016-05-13', 'Dit is wat jullie moeten doen:
@@ -25923,14 +25933,3 @@ INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task
 INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task_id, user_id) VALUES (338, null, '2016-05-13', 'Goed zo', 'I', 320, 19);
 INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task_id, user_id) VALUES (826, null, '2016-05-06', null, null, 350, 19);
 
--- CourseTopics
-INSERT INTO public.course_topics (id, name, clazz_id, grade_id) VALUES (1, 'Wiskunde 1', 3, 1);
-INSERT INTO public.course_topics (id, name, clazz_id, grade_id) VALUES (2, 'Taal 1', 3, 1);
-
--- CourseTopic students
-INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 6);
-INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 6);
-
--- objectives courseTopics
-INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (1, 1);
-INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (4, 2);

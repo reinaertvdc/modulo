@@ -47,7 +47,9 @@ MainActivity extends AppCompatActivity {
         // Check if the application has been used before and has had a successful login
         // Redirect back to the login activity when this is not the case
         if (ApiAuthentication.getAuthenticationHeader().equals("empty")) {
+            Log.i("MainActivity","No valid login! Redirecting...");
             goToLoginActivity();
+            return;
         }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -70,6 +72,9 @@ MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.nav_progress) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
+                } else if(item.getItemId() == R.id.nav_logout) {
+                    ApiAuthentication.clear(getApplicationContext());
+                    goToLoginActivity();
                 }
                 return false;
             }

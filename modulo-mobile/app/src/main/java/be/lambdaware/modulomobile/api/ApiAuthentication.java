@@ -20,26 +20,29 @@ public class ApiAuthentication {
     private static User authenticatedUser;
 
     public static void init(Context context) {
-        if(base64Authentication == null) {
-            // Get name of prefrences
-            String preferencesName = context.getResources().getString(R.string.preferences_name);
-            // Load preferences
-            SharedPreferences preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
-            base64Authentication = preferences.getString("X-Auth", "empty");
+        // Get name of prefrences
+        String preferencesName = context.getResources().getString(R.string.preferences_name);
+        // Load preferences
+        SharedPreferences preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        base64Authentication = preferences.getString("X-Auth", "empty");
+        String jsonUser = preferences.getString("UserObject", "");
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        try {
+            authenticatedUser = gson.fromJson(jsonUser, User.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if(authenticatedUser == null) {
-            // Get name of prefrences
-            String preferencesName = context.getResources().getString(R.string.preferences_name);
-            // Load preferences
-            SharedPreferences preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
-            String jsonUser = preferences.getString("UserObject", "");
-            Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-            try {
-                authenticatedUser = gson.fromJson(jsonUser, User.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    }
+
+    public static void clear(Context context) {
+        // Get name of prefrences
+        String preferencesName = context.getResources().getString(R.string.preferences_name);
+        // Clear preferences
+        SharedPreferences preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("UserObject", "");
+        editor.putString("X-Auth", "empty");
+        editor.apply();
     }
 
     public static String getAuthenticationHeader() {

@@ -13,7 +13,6 @@ buildscript {
 }
 
 allprojects {
-	buildDir = "D:/temp"
     repositories {
         jcenter()
     }

@@ -320,7 +320,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected String doInBackground(Void... params) {
 
             // params.
-            String webAddress = "http://192.168.1.48:8080/auth";
+            String webAddress = "http://10.0.2.2:8080/auth";
 
             base64Auth = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT);
 

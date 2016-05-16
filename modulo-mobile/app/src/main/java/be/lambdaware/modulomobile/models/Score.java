@@ -3,7 +3,7 @@ package be.lambdaware.modulomobile.models;
 /**
  * Created by Hendrik on 13/05/2016.
  */
-public class SubCertificateScore {
+public class Score {
 
     private String name;
     private int totalCompetences;
@@ -14,7 +14,7 @@ public class SubCertificateScore {
     private int practiced;
     private int acquired;
 
-    public SubCertificateScore(String name,int totalCompetences, int totalPassed, int totalFailed, int offered, int practiced, int acquired) {
+    public Score(String name, int totalCompetences, int totalPassed, int totalFailed, int offered, int practiced, int acquired) {
         this.name = name;
         this.totalCompetences = totalCompetences;
         this.totalPassed = totalPassed;
@@ -24,7 +24,7 @@ public class SubCertificateScore {
         this.acquired = acquired;
     }
 
-    public SubCertificateScore() {}
+    public Score() {}
 
     public int getTotalCompetences() {
         return totalCompetences;
@@ -80,5 +80,12 @@ public class SubCertificateScore {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public float getPassedPercentage() {
+        return ((float)totalPassed / totalCompetences) * 100;
+    }
+    public float getFailedPercentage() {
+        return ((float)totalFailed / totalCompetences) * 100;
     }
 }

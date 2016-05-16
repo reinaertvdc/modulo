@@ -6,12 +6,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.ScoreListAdapter;
+import be.lambdaware.modulomobile.models.Score;
 
 
 public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -28,22 +32,32 @@ public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bgv, null);
 
-
-
-        rvRecylcerView = (RecyclerView) view.findViewById(R.id.rv_score_list);
+        rvRecylcerView = (RecyclerView) view.findViewById(R.id.rv_sub_certificate_score_list);
         rvRecylcerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getContext());
         rvRecylcerView.setLayoutManager(layoutManager);
 
-        scoreAdapter = new ScoreListAdapter();
+        ArrayList<Score> data = new ArrayList<>();
+        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
+        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
+        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
+        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
+        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
+
+        scoreAdapter = new ScoreListAdapter(getContext(),data);
         rvRecylcerView.setAdapter(scoreAdapter);
+
+        srSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_bgv_refresh_layout);
+        srSwipeRefreshLayout.setOnRefreshListener(this);
 
         return view;
     }
 
     @Override
     public void onRefresh() {
-
+        Log.i("BGVFragment","Refreshing list...");
+        //TODO implement refresh from database.
+        srSwipeRefreshLayout.setRefreshing(false);
     }
 }

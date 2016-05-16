@@ -1,5 +1,8 @@
 package be.lambdaware.modulomobile.adapters;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import be.lambdaware.modulomobile.R;
-import be.lambdaware.modulomobile.models.SubCertificateScore;
+import be.lambdaware.modulomobile.models.Score;
 
 /**
  * Created by Hendrik on 13/05/2016.
@@ -45,13 +50,12 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
         }
     }
 
-    private ArrayList<SubCertificateScore> data;
+    private Context context;
+    private List<Score> data;
 
-    public ScoreListAdapter() {
-        data = new ArrayList<>();
-        data.add(new SubCertificateScore("Bekisting", 50, 20, 30, 25, 1, 24));
-        data.add(new SubCertificateScore("Bekisting", 50, 20, 30, 25, 1, 24));
-        data.add(new SubCertificateScore("Bekisting", 50, 20, 30, 25, 1, 24));
+    public ScoreListAdapter(Context context,List<Score> data) {
+        this.context = context;
+        this.data = data;
     }
 
     @Override
@@ -66,7 +70,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        SubCertificateScore score = data.get(position);
+        Score score = data.get(position);
 
         if (score != null) {
             holder.tvSubCertificate.setText(score.getName());
@@ -74,6 +78,9 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
             holder.tvPassedScore.setText(String.valueOf(score.getTotalPassed()));
             holder.tvFailedScore.setText(String.valueOf(score.getTotalFailed()));
             //TODO update pie chart
+            holder.pcChart.addPieSlice(new PieModel("Niet Behaald", score.getFailedPercentage(), ContextCompat.getColor(context,R.color.colorRed)));
+            holder.pcChart.addPieSlice(new PieModel("Behaald", score.getPassedPercentage(), ContextCompat.getColor(context,R.color.colorGreen)));
+
             holder.tvOffered.setText(String.valueOf(score.getOffered()));
             holder.tvPracticed.setText(String.valueOf(score.getPracticed()));
             holder.tvAcquired.setText(String.valueOf(score.getAcquired()));

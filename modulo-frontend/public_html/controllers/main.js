@@ -209,26 +209,34 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     $scope.userSexesKeys = Object.keys($scope.userSexes);
 
 
-    $scope.createAlertCookie = function (msg) {
-        var alert = msg;
+    $scope.createAlertCookie = function (msg, alertType) {
+        if (typeof alertType === 'undefined')
+            alertType = "success";
+        var alert = {'msg': msg, 'alertType': alertType};
         var expireTime = new Date();
         var time = expireTime.getTime();
         time += 1000 * 3; // 3sec expire tijd
         expireTime.setTime(time);
-        $cookies.put("alert", alert, {'expires': expireTime});
-    }
+        $cookies.put("alert", JSON.stringify(alert), {'expires': expireTime});
+    };
 
     $scope.isAlertEmpty = function () {
         return $cookies.get("alert") != null;
-    }
+    };
 
     $scope.getAlert = function () {
-        return $cookies.get("alert");
-    }
+        var alert = JSON.parse($cookies.get("alert"));
+        return alert.msg;
+    };
+
+    $scope.getAlertType = function () {
+        var alert = JSON.parse($cookies.get("alert"));
+        return alert.alertType;
+    };
 
     $scope.removeAlert = function () {
         $cookies.put("alert", null, {'expires': new Date()});
-    }
+    };
 
 
     $scope.execDownload = function (url, destName) {

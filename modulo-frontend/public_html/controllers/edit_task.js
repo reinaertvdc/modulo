@@ -19,9 +19,9 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
 
 
     // ACTUAL ACTIONS ON LOADED PAGE
-    // load all PAV classes for this teacher
+    // load all classes for this teacher
     $http({
-        method: 'GET', url: 'http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/teaching/type/PAV',
+        method: 'GET', url: 'http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/teaching',
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {

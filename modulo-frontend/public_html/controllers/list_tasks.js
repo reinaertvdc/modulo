@@ -17,6 +17,7 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
 
         var html = '<tr id="' + $scope.toElementId(task.id) + '">' +
             '<td><a href="" ng-click="location.setParameter(location.PARAM_TASK_SCORES,' + task.id + ')">' + task.name + '</a></td><td>' + task.clazz.name + '</td><td>' + task.deadline + '</td>' +
+            '<td class="text-info" ng-click="duplicate(' + task.id + ')"><span role="button" class="glyphicon glyphicon-duplicate"></span></td>' +
             '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_TASK_ID,' + task.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
             '<td class="text-danger" ng-click="openRemoveModal(' + task.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td></tr>';
 

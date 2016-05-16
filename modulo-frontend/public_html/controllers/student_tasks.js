@@ -23,21 +23,34 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             html += '<td><span role="button" ng-class="getOpenedClass(' + score.id + ')" ng-click="scores.get(' + score.id + ').opened = !scores.get(' + score.id + ').opened""></span></td>';
 
         html += '<td>' + score.task.name + '</td>' +
-            '<td>' + score.task.clazz.name + '</td>' +
-            '<td>' + score.task.deadline + '</td>';
+            '<td>' + score.task.clazz.name + '</td>';
 
-        // upload or download icon
+        // check upload and deadline
+
+        if (score.fileName == null && (new Date() < new Date(score.task.deadline)))
+            html += '<td class="text-danger"><strong>' + score.task.deadline + '</strong></td>';
+        else
+            html += '<td>' + score.task.deadline + '</td>';
+
+        // upload
         if (score.fileName == null || score.fileName == '') {
             html += '<td><div class="row"> ' +
-                '<em class="col-xs-7 text-muted">{{getFilenameStr(' + score.id + ')}}</em>' +
-                '<span class="col-xs-2" align="center" input-group-btn"><span class=" btn btn-primary btn-file btn-sm">•••' +
-                '<input type="file" onchange="angular.element(this).scope().setFile(' + score.id + ',this.files[0])"/></span></span>' +
-                '<span role="button" ng-show="isVisible(' + score.id + ')" class="glyphicon glyphicon-upload col-xs-2" ng-click="uploadFile(' + score.id + ')"></span></div></td>';
-        } else {
+                '<em class="col-xs-7 text-muted">{{getFilenameStr(' + score.id + ')}}</em>';
+            if (new Date() < new Date(score.task.deadline)) {  // before deadline -> enable 'upload'
+                html += '<span class="col-xs-2" align="center" input-group-btn"><span class=" btn btn-primary btn-file btn-sm">•••' +
+                    '<input type="file" onchange="angular.element(this).scope().setFile(' + score.id + ',this.files[0])"/></span></span>' +
+                    '<span role="button" ng-show="isVisible(' + score.id + ')" class="glyphicon glyphicon-upload col-xs-2" ng-click="uploadFile(' + score.id + ')"></span>';
+            }
+            html += '</div></td>';
+        }
+        // download
+        else {
             html += '<td><div class="row"> ' +
                 '<em class="col-xs-7 text-muted">' + score.fileName + '</em>' +
-                '<span align="center" role="button" class="glyphicon glyphicon-download col-xs-2" ng-click="downloadFile(' + score.id + ')"></span>' +
-                '<span role="button" class="glyphicon glyphicon-remove col-xs-2" ng-click="openRemoveModal(' + score.id + ')"></span></div></td>';
+                '<span align="center" role="button" class="glyphicon glyphicon-download col-xs-2" ng-click="downloadFile(' + score.id + ')"></span>';
+            if (new Date() < new Date(score.task.deadline))  // before deadline -> enable 'remove'
+                html += '<span role="button" class="glyphicon glyphicon-remove col-xs-2" ng-click="openRemoveModal(' + score.id + ')"></span>';
+            html += '</div></td>';
         }
 
         // check if score already set
@@ -70,6 +83,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             return 'glyphicon glyphicon-chevron-right'
     };
 
+
     $scope.downloadFile = function (id) {
         $scope.execDownload('http://localhost:8080/task/download/' + id,
             $scope.scores.get(id).scoreObj.fileName);
@@ -95,6 +109,8 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
         }).success(function (response) {
             $window.location.reload(true);
             $scope.createAlertCookie('Upload verwijderd.');
+        }).error(function (response) {
+            $scope.createAlertCookie('Upload verwijderen mislukt.', "danger");
         });
     };
 
@@ -138,7 +154,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             $window.location.reload(true);
             $scope.createAlertCookie('Uploaden gelukt.');
         }).error(function (response) {
-            console.log("error: " + JSON.stringify(response));
+            $scope.createAlertCookie('Uploaden mislukt.', "danger");
         });
     };
 

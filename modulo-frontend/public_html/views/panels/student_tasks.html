@@ -34,7 +34,7 @@
 
 
 <div data-ng-controller="StudentTasksController">
-    <uib-alert ng-if="isAlertEmpty()" type="success" close="removeAlert()">
+    <uib-alert ng-if="isAlertEmpty()" type="{{getAlertType()}}" close="removeAlert()">
         {{getAlert()}}
     </uib-alert>
 

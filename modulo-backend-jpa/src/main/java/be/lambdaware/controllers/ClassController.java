@@ -1,9 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentInfoDAO;
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.dao.*;
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
@@ -35,6 +32,8 @@ public class ClassController {
     UserDAO userDAO;
     @Autowired
     CertificateDAO certificateDAO;
+    @Autowired
+    GradeDAO gradeDAO;
     @Autowired
     StudentInfoDAO studentInfoDAO;
     @Autowired
@@ -179,6 +178,62 @@ public class ClassController {
     // POST methods
     // ===================================================================================
 
+    @RequestMapping(value = "/teacher/id/{teacherId}/certificate/id/{certificateId}", method = RequestMethod.POST)
+    public ResponseEntity<?> createClassByTeacherAndCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long teacherId, @PathVariable long certificateId, @RequestBody Clazz clazz) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        User teacher = userDAO.findById(teacherId);
+
+        if(teacher == null)
+            return Responses.USERS_NOT_FOUND;
+        if(teacher.getRole() != UserRole.TEACHER)
+            return Responses.USER_NOT_TEACHER;
+
+        Certificate certificate = certificateDAO.findById(certificateId);
+        if(certificate == null)
+            return Responses.CERTIFICATE_NOT_FOUND;
+
+        if(clazz.getType() != ClassType.BGV)
+            return Responses.CLASS_TYPE_NOT_CORRECT;
+
+        Clazz newClazz = new Clazz(clazz.getName(), clazz.getType());
+        newClazz.setTeacher(teacher);
+        newClazz.setCertificate(certificate);
+        classDAO.saveAndFlush(newClazz);
+
+        return new ResponseEntity<>(newClazz, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/teacher/id/{teacherId}/grade/id/{gradeId}", method = RequestMethod.POST)
+    public ResponseEntity<?> createClassByTeacherAndGrade(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long teacherId, @PathVariable long gradeId, @RequestBody Clazz clazz) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        User teacher = userDAO.findById(teacherId);
+
+        if(teacher == null)
+            return Responses.USERS_NOT_FOUND;
+        if(teacher.getRole() != UserRole.TEACHER)
+            return Responses.USER_NOT_TEACHER;
+
+        Grade grade = gradeDAO.findById(gradeId);
+        if(grade == null)
+            return Responses.GRADE_NOT_FOUND;
+
+        if(clazz.getType() != ClassType.PAV)
+            return Responses.CLASS_TYPE_NOT_CORRECT;
+
+        Clazz newClazz = new Clazz(clazz.getName(), clazz.getType());
+        newClazz.setTeacher(teacher);
+        newClazz.setGrade(grade);
+        classDAO.saveAndFlush(newClazz);
+
+        return new ResponseEntity<>(newClazz, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/id/{id}/student/{studentId}", method = RequestMethod.POST)
     public ResponseEntity<?> addStudentToClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long studentId) {
 
@@ -201,7 +256,7 @@ public class ClassController {
             log.info("Student with ID: " + user.getId() + " already in class");
         }
 
-        return Responses.CLASS_ADDED_STUDENT;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/id/{id}/students/certificate/id/{certificateId}", method = RequestMethod.POST)
@@ -288,6 +343,23 @@ public class ClassController {
     // DELETE methods
     // ===================================================================================
 
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+
+        Clazz clazz = classDAO.findById(id);
+        if (clazz == null) return Responses.CLASS_NOT_FOUND;
+
+        clazz.clearStudents();
+        classDAO.saveAndFlush(clazz);
+
+        classDAO.delete(clazz);
+
+
+        return Responses.CLASS_DELETED;
+    }
 
     @RequestMapping(value = "/id/{id}/student/{studentId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteStudentFromClass(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long studentId) {

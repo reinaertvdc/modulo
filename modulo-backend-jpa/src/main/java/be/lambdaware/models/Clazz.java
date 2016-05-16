@@ -152,6 +152,10 @@ public class Clazz {
         return students;
     }
 
+    public void clearStudents(){
+        students.clear();
+    }
+
     public void setStudents(List<User> students) {
         this.students = students;
     }

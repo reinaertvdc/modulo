@@ -8,10 +8,11 @@
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
             <label for="class">Naam klas:</label>
-            <input type="text" id="className" class="form-control" id="class">
+            <input id="class" type="text" name="name" class="form-control" data-ng-model="class.name" title="Naam voor de klas" required>
         </div>
+
+        <button type="submit" class="btn btn-success pull-right">
+            <span class="glyphicon glyphicon-plus-sign"></span> Opslaan
+        </button>
     </form>
-    <button ng-click="saveDetails()" class="btn btn-success pull-right">
-        <span class="glyphicon glyphicon-plus-sign" ></span> Opslaan
-    </button>
 </div>

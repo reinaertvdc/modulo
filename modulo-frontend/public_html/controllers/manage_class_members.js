@@ -148,7 +148,6 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                         method: 'POST', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + node.studentId,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
-                        console.log("Post: " + node);
                             if($scope.allSiblingsChecked(node)){
                                 var parent = $('#treeview-checkable').treeview('getParent', node);
                                 $('#treeview-checkable').treeview('checkNode', [ parent.nodeId, { silent: true } ]);

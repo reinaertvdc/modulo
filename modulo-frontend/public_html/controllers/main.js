@@ -215,7 +215,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         var alert = {'msg': msg, 'alertType': alertType};
         var expireTime = new Date();
         var time = expireTime.getTime();
-        time += 1000 * 3; // 3sec expire tijd
+        time += 1000 * 1; // 3sec expire tijd
         expireTime.setTime(time);
         $cookies.put("alert", JSON.stringify(alert), {'expires': expireTime});
     };

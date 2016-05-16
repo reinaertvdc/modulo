@@ -1,11 +1,13 @@
 app.controller('ManageClassDetailsController', function ($scope, $http, $cookies) {
     // TODO implement controller
-    $scope.className = document.getElementById('className');
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
 
+    $scope.class = {
+        id: null,
+        name: null
+    };
 
-    $scope.saveDetails = function(){
-        $scope.class.name =  $scope.className.value;
+    $scope.submitForm = function () {
         var model = JSON.stringify($scope.class);
 
         $http({
@@ -17,7 +19,8 @@ app.controller('ManageClassDetailsController', function ($scope, $http, $cookies
     }
 
     $http.get('http://localhost:8080/class/id/' + $scope.classId, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
-        $scope.class = response;
-        $scope.className.value = $scope.class.name;
+        var clazz = response;
+        $scope.class.id = clazz.id;
+        $scope.class.name = clazz.name;
     });
 });

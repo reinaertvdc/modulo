@@ -30,6 +30,7 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> checkCredentials(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth) {
+        log.info("Getting authentication from "+auth);
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 

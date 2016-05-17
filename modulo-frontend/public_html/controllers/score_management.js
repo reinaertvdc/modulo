@@ -19,6 +19,27 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
 
     $scope.previousModule = null;
 
+    $scope.selectedStudentScores = [];
+
+    $scope.resetSelectedStudentScores = function () {
+        $scope.selectedStudentScores = [];
+        if ($scope.visibleScores.module == null) {
+            return;
+        }
+        var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
+        var goalIndex = 0;
+        for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
+            var competences = subCertificateCategories[categoryIndex].competences;
+            for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
+                $scope.selectedStudentScores[goalIndex] = [];
+                for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
+                    $scope.selectedStudentScores[goalIndex][studentIndex] = false;
+                }
+                goalIndex++;
+            }
+        }
+    };
+
     $http({
         method: 'GET', url: 'http://localhost:8080/user/id/'+ $cookies.getObject('user').id +'/teaching',
         headers: {'X-auth': $cookies.get('auth')}
@@ -106,7 +127,24 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         $scope.updateTableHeaders();
     }, 200);
 
-    $scope.updateScore = function() {
+    $scope.updateScores = function() {
+        var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
+        var goalIndex = 0;
+        for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
+            var competences = subCertificateCategories[categoryIndex].competences;
+            for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
+                $scope.selectedStudentScores[goalIndex] = [];
+                for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
+                    if ($scope.selectedStudentScores[goalIndex][studentIndex]) {
+                        console.log(goalIndex + ' ' + studentIndex);
+                    }
+                }
+                goalIndex++;
+            }
+        }
+        return;
+
+
         $http({
             method: 'POST', url: 'http://localhost:8080/user/', data: model,
             headers: {'X-auth': $cookies.get("auth")}

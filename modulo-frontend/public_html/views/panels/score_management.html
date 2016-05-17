@@ -11,9 +11,9 @@
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
                 <li class="dropdown-header">BGV</li>
-                <li data-ng-repeat="clazz in bgvClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz">{{clazz.schoolClass.name}}</a></li>
+                <li data-ng-repeat="clazz in bgvClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz; resetSelectedStudentScores();">{{clazz.schoolClass.name}}</a></li>
                 <li class="dropdown-header">PAV</li>
-                <li data-ng-repeat="clazz in pavClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz">{{clazz.schoolClass.name}}</a></li>
+                <li data-ng-repeat="clazz in pavClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz; resetSelectedStudentScores();">{{clazz.schoolClass.name}}</a></li>
             </ul>
         </div>
 
@@ -24,7 +24,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
-                <li data-ng-repeat="module in visibleScores.schoolClass.modules"><a href="" data-ng-click="visibleScores.module = module;">{{module.name}}</a></li>
+                <li data-ng-repeat="module in visibleScores.schoolClass.modules"><a href="" data-ng-click="visibleScores.module = module; resetSelectedStudentScores();">{{module.name}}</a></li>
             </ul>
         </div>
 
@@ -32,14 +32,14 @@
 
         <div class="input-group">
             <span class="input-group-addon" id="addon-week">Week</span>
-            <input type="number" min="1" max="38" class="form-control" id="input-week" aria-describedby="addon-week" data-ng-model="visibleScores.week">
+            <input type="number" min="1" max="38" class="form-control" id="input-week" aria-describedby="addon-week" data-ng-model="visibleScores.week" ng-change="resetSelectedStudentScores();">
         </div>
 
         <br>
 
         <div style="position: relative; overflow: hidden;">
         <div onscroll="updateTableHeaders()" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none; -o-user-select:none; max-height: 600px; overflow: scroll;" class="table-responsive fixed-head" data-ng-class="{hidden: !visibleScores.schoolClass}">
-            <table class="table table-bordered table-condensed">
+            <table class="table table-bordered table-condensed" data-ng-init="goalIndex = 0;">
                 <thead style="border-left: 1px solid rgb(221, 211, 211); margin-top: -1px; position: absolute; overflow: hidden; width: 65535px;">
                 <tr style="border-top: 1px solid rgb(221, 211, 211); z-index: -1000;">
                     <th style="background-color: white; display: inline-block; border-left: none; color: white;">.</th>
@@ -54,9 +54,9 @@
                 </tbody>
                 <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories" data-on-finish-render="tableFinished">
                     <tr><td style="background-color: rgba(0, 0, 0, 0.06); font-weight: bold;" colspan="{{visibleScores.schoolClass.students.length + 1}}">{{category.name}}</td></tr>
-                    <tr data-ng-repeat="competence in category.competences" data-ng-init="competenceIndex = $index">
+                    <tr data-ng-repeat="competence in category.competences" data-ng-init="competenceIndex = $index; temp = $parent.$parent.goalIndex; $parent.$parent.goalIndex = $parent.$parent.goalIndex + 1">
                         <td>{{competence.name}}</td>
-                        <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index" data-ng-class="{info: selectedStudentScores[competence.id][scoreIndex] == true}" data-ng-mousedown="selectedStudentScores[competence.id][scoreIndex] = !selectedStudentScores[competence.id][scoreIndex];" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.scores[visibleScores.week][competence.id].score}}</td>
+                        <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index;" data-ng-class="{info: selectedStudentScores[$parent.temp][scoreIndex] == true}" data-ng-mousedown="selectedStudentScores[$parent.temp][scoreIndex] = !selectedStudentScores[$parent.temp][scoreIndex];" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.scores[visibleScores.week][competence.id].score}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -84,7 +84,7 @@
             <label for="comment">Commentaar:</label>
             <textarea class="form-control" rows="5" id="comment"></textarea>
         </div>
-        <button type="submit" class="btn btn-success btn-lg btn-block">
+        <button type="submit" class="btn btn-success btn-lg btn-block" data-ng-click="updateScores()">
             <span class="glyphicon glyphicon-plus-sign"></span> Opslaan
         </button>
 

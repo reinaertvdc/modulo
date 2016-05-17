@@ -24,7 +24,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
-                <li data-ng-repeat="module in visibleScores.schoolClass.modules"><a href="" data-ng-click="visibleScores.module = module">{{module.name}}</a></li>
+                <li data-ng-repeat="module in visibleScores.schoolClass.modules"><a href="" data-ng-click="visibleScores.module = module;">{{module.name}}</a></li>
             </ul>
         </div>
 
@@ -37,12 +37,13 @@
 
         <br>
 
-        <div style="max-height: 600px; overflow: scroll;" class="table-responsive fixed-head" data-ng-class="{hidden: !visibleScores.schoolClass}">
+        <div style="position: relative; overflow: hidden;">
+        <div onscroll="updateTableHeaders()" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none; -o-user-select:none; max-height: 600px; overflow: scroll;" class="table-responsive fixed-head" data-ng-class="{hidden: !visibleScores.schoolClass}">
             <table class="table table-bordered table-condensed">
-                <thead style="margin-left: -1px; margin-top: -1px; position: absolute; overflow: hidden;">
-                <tr style="border-top: 1px solid rgb(221, 211, 211); border-left: 1px solid rgb(221, 211, 211);">
-                    <th style="background-color: white;"></th>
-                    <th style="background-color: white;" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
+                <thead style="border-left: 1px solid rgb(221, 211, 211); margin-top: -1px; position: absolute; overflow: hidden; width: 65535px;">
+                <tr style="border-top: 1px solid rgb(221, 211, 211); z-index: -1000;">
+                    <th style="background-color: white; display: inline-block; border-left: none; color: white;">.</th>
+                    <th style="background-color: white; display: inline-block; border-left: none;" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
                 </tr>
                 </thead>
                 <tbody style="visibility: hidden" class="stub-head">
@@ -51,14 +52,15 @@
                         <th data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
                     </tr>
                 </tbody>
-                <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories">
+                <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories" data-on-finish-render="tableFinished">
                     <tr><td style="background-color: rgba(0, 0, 0, 0.06); font-weight: bold;" colspan="{{visibleScores.schoolClass.students.length + 1}}">{{category.name}}</td></tr>
                     <tr data-ng-repeat="competence in category.competences" data-ng-init="competenceIndex = $index">
                         <td>{{competence.name}}</td>
-                        <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index" data-ng-class="{info: selectedStudentScores[competence.id][scoreIndex] == true}" data-ng-click="selectedStudentScores[competence.id][scoreIndex] = !selectedStudentScores[competence.id][scoreIndex];" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.scores[visibleScores.week][competence.id].score}}</td>
+                        <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index" data-ng-class="{info: selectedStudentScores[competence.id][scoreIndex] == true}" data-ng-mousedown="selectedStudentScores[competence.id][scoreIndex] = !selectedStudentScores[competence.id][scoreIndex];" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.scores[visibleScores.week][competence.id].score}}</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
         </div>
 
         <br/>

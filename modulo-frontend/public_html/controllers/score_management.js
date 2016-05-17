@@ -1,3 +1,11 @@
+updateTableHeaders = function() {
+    var tables = document.getElementsByClassName('fixed-head');
+    for (var i = 0; i < tables.length; i++) {
+        var head = tables[i].getElementsByTagName('thead')[0];
+        head.style.marginLeft = '-' + (tables[i].scrollLeft + 0) + 'px';
+    }
+};
+
 app.controller('ScoreManagementController', function ($scope, $http, $cookies, $window) {
     // TODO implement controller
     $scope.bgvClasses = [];
@@ -9,7 +17,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         week: 1
     };
 
-    $scope.$watch('visibleScores', function(newval, oldval) {$scope.selectedStudentScores = []; $scope.updateTableHeaders();}, true);
+    $scope.previousModule = null;
 
     $http({
         method: 'GET', url: 'http://localhost:8080/user/id/'+ $cookies.getObject('user').id +'/teaching',
@@ -90,6 +98,13 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
     };
 
     angular.element($window).bind('resize', function() {$scope.updateTableHeaders()});
+    setInterval(function() {
+        if ($scope.previousModule == $scope.visibleScores.module) {
+            return;
+        }
+        $scope.previousModule = $scope.visibleScores.module;
+        $scope.updateTableHeaders();
+    }, 200);
 
     $scope.updateScore = function() {
         $http({

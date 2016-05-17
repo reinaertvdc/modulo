@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.plugin2.applet.Plugin2ConsoleController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,8 @@ public class CourseTopicController {
     }
 
     @RequestMapping(value = "/id/{id}/students", method = RequestMethod.GET)
-    public ResponseEntity<?> getStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,
+                                         @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -69,7 +69,8 @@ public class CourseTopicController {
     }
 
     @RequestMapping(value = "/id/{id}/objectives", method = RequestMethod.GET)
-    public ResponseEntity<?> getObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> getObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,
+                                           @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -82,7 +83,8 @@ public class CourseTopicController {
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> get(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable
+            long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -100,7 +102,8 @@ public class CourseTopicController {
     // ===================================================================================
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> createCourseTopic(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody CourseTopic courseTopic) {
+    public ResponseEntity<?> createCourseTopic(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,
+                                               @RequestBody CourseTopic courseTopic) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
@@ -117,7 +120,8 @@ public class CourseTopicController {
     }
 
     @RequestMapping(value = "/students/{courseTopicId}", method = RequestMethod.POST)
-    public ResponseEntity<?> setStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<User> students, @PathVariable long courseTopicId) {
+    public ResponseEntity<?> setStudents(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,
+                                         @RequestBody ArrayList<User> students, @PathVariable long courseTopicId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
@@ -135,7 +139,9 @@ public class CourseTopicController {
 
 
     @RequestMapping(value = "/objectives/{courseTopicId}", method = RequestMethod.POST)
-    public ResponseEntity<?> setObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @RequestBody ArrayList<Objective> objectives, @PathVariable long courseTopicId) {
+    public ResponseEntity<?> setObjectives(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,
+                                           @RequestBody ArrayList<Objective> objectives, @PathVariable long
+                                                       courseTopicId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
@@ -157,7 +163,8 @@ public class CourseTopicController {
     // ===================================================================================
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id) {
+    public ResponseEntity<?> delete(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth,
+                                    @PathVariable long id) {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;

@@ -178,7 +178,14 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        taskDAO.saveAndFlush(task);
+        try {
+            taskDAO.save(task);
+        } catch (Exception e) {
+            System.out.println("bad request");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        taskDAO.flush();
+
         Clazz clazz = classDAO.findById(task.getClazz().getId());  // manually get clazz in order to get all students
 
         for (User student : clazz.getStudents()) {

@@ -11,7 +11,7 @@ import java.util.List;
  * Created by MichielVM on 3/05/2016.
  */
 @Entity
-@Table(name = "tasks")
+@Table(name = "tasks", uniqueConstraints = { @UniqueConstraint(columnNames = {"name","class_id"}) })
 public class Task {
 
     @Id
@@ -35,7 +35,6 @@ public class Task {
     // Relations
     // ===================================================================================
 
-    // TODO: on delete in controller: set the reference to the task to 'null' for all taskscores
     @OneToMany(mappedBy = "task")
     @JsonIgnore
     private List<TaskScore> taskScores = new ArrayList<>();

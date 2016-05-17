@@ -39,7 +39,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             if (new Date() < new Date(score.task.deadline)) {  // before deadline -> enable 'upload'
                 html += '<span class="col-xs-2" align="center" input-group-btn"><span class=" btn btn-primary btn-file btn-sm">•••' +
                     '<input type="file" onchange="angular.element(this).scope().setFile(' + score.id + ',this.files[0])"/></span></span>' +
-                    '<span role="button" ng-show="isVisible(' + score.id + ')" class="glyphicon glyphicon-upload col-xs-2" ng-click="uploadFile(' + score.id + ')"></span>';
+                    '<span role="button" ng-show="isVisible(' + score.id + ')" class="text-info glyphicon glyphicon-upload col-xs-2" ng-click="uploadFile(' + score.id + ')"></span>';
             }
             html += '</div></td>';
         }
@@ -47,9 +47,9 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
         else {
             html += '<td><div class="row"> ' +
                 '<em class="col-xs-7 text-muted">' + score.fileName + '</em>' +
-                '<span align="center" role="button" class="glyphicon glyphicon-download col-xs-2" ng-click="downloadFile(' + score.id + ')"></span>';
+                '<span align="center" role="button" class="text-info glyphicon glyphicon-download col-xs-2" ng-click="downloadFile(' + score.id + ')"></span>';
             if (new Date() < new Date(score.task.deadline))  // before deadline -> enable 'remove'
-                html += '<span role="button" class="glyphicon glyphicon-remove col-xs-2" ng-click="openRemoveModal(' + score.id + ')"></span>';
+                html += '<span role="button" class="text-danger glyphicon glyphicon-remove col-xs-2" ng-click="openRemoveModal(' + score.id + ')"></span>';
             html += '</div></td>';
         }
 

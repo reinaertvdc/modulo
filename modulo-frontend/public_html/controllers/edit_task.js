@@ -1,6 +1,13 @@
 app.controller('EditTaskController', function ($scope, $http, $window, $compile, $uibModal, $cookies) {
     var paramVal = $scope.location.getParameter($scope.location.PARAM_EDIT_TASK_ID);
 
+    // check 'duplicate' param
+    var params = ("" + paramVal).split("-");
+    var dupId = null;
+    if (params.length > 1) {
+        paramVal = params[0];  // remains the 'nieuw' or the id if not duplicate
+        dupId = params[1];
+    }
 
     $scope.task = {
         name: '',
@@ -28,8 +35,8 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
             $scope.PAVClasses[item.id] = item;
         });
 
-        // select first class if 'new'
-        if (paramVal == 'nieuw') {
+        // select first class if 'nieuw'
+        if (paramVal == 'nieuw' && dupId == null) {
             var firstKey = (Object.keys($scope.PAVClasses)[0]);
             $scope.selectedPAVClass = $scope.PAVClasses[firstKey].name;  // get first element in map  (anywhere else the Map is needed; array not feasible)
             $scope.task.clazz.id = $scope.PAVClasses[firstKey].id;
@@ -37,35 +44,46 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
     });
 
 
-    // new task
+    // new task or duplicate
     if (paramVal == 'nieuw') {
         $scope.btnText = 'Aanmaken';
         $scope.panelCaption = 'Nieuwe taak aanmaken';
         $scope.deadlineDate = new Date();
+        if (dupId != null) {
+            $http.get('http://localhost:8080/task/id/' + dupId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $scope.task = response;
+                $scope.deadlineDate = new Date($scope.task.deadline);
+                $scope.selectedPAVClass = $scope.task.clazz.name;
+            });
+        }
     }
     // edit task
-    else if (paramVal) {
-        $scope.btnText = 'Opslaan';
+    else {
         $http.get('http://localhost:8080/task/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             $scope.task = response;
             $scope.deadlineDate = new Date($scope.task.deadline);
             $scope.panelCaption = 'Taak bewerken: ' + $scope.task.name;
             $scope.selectedPAVClass = $scope.task.clazz.name;
         });
-    };
+        $scope.btnText = 'Opslaan';
+    }
 
 
     // ON SUBMIT
     $scope.submitForm = function () {
         $scope.task.deadline = $scope.deadlineDate.toISOString().substring(0, 10);  // extract date in format yyyy-MM-dd
-        
+
         if (paramVal == 'nieuw') {
+            if(dupId != null)
+                $scope.task.id = null;
             $http({
                 method: 'POST', url: 'http://localhost:8080/task/', data: $scope.task,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.location.openPage($scope.location.TASKS);
                 $scope.createAlertCookie('Taak toegevoegd.');
+            }).error(function (response) {
+                $scope.createAlertCookie('Je hebt deze taak reeds toegewezen aan deze klas', "danger");
             });
 
         } else if (paramVal) {

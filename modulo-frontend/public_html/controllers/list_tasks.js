@@ -56,6 +56,10 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
         });
     };
 
+    $scope.duplicate = function (id) {
+        $scope.location.setParameter($scope.location.PARAM_EDIT_TASK_ID, 'nieuw-' + id);
+    };
+
 
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {

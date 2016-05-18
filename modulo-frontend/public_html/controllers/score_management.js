@@ -60,7 +60,11 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                     }).success(function (subCertificates) {
                         subCertificates.forEach(function (subCertificate) {
                             clazz.modules.push(subCertificate);
-                        })
+                            subCertificate.subCertificateCategories.forEach(function (category) {
+                                category.competences.forEach(function (competence) {
+                                });
+                            });
+                        });
                     });
                 });
             } else {
@@ -133,10 +137,9 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
             var competences = subCertificateCategories[categoryIndex].competences;
             for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
-                $scope.selectedStudentScores[goalIndex] = [];
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
                     if ($scope.selectedStudentScores[goalIndex][studentIndex]) {
-                        console.log(goalIndex + ' ' + studentIndex);
+                        // TODO send request
                     }
                 }
                 goalIndex++;

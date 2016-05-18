@@ -28,6 +28,8 @@ public class ScoreController {
     ClassDAO classDAO;
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    CourseTopicDAO courseTopicDAO;
 
 
     @Autowired
@@ -36,6 +38,11 @@ public class ScoreController {
     PAVScoreDAO pavScoreDAO;
     @Autowired
     TaskScoreDAO taskScoreDAO;
+
+    @Autowired
+    CompetenceDAO competenceDAO;
+    @Autowired
+    ObjectiveDAO objectiveDAO;
 
     @Autowired
     APIAuthentication authentication;
@@ -119,5 +126,50 @@ public class ScoreController {
         taskScores.addAll(uploaded);
 
         return new ResponseEntity<>(taskScores, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{userId}/bgv/{competenceId}", method = RequestMethod.POST)
+    public ResponseEntity<?> addBGVScoreForUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId, @PathVariable long competenceId, @RequestBody BGVScore bgvScore) {
+
+        //if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        //if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        //if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.getOne(userId);
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        Competence competence = competenceDAO.findById(competenceId);
+        if (competence == null) return Responses.COMPETENCE_NOT_FOUND;
+
+        BGVScore newBgvScore = new BGVScore(bgvScore.getScore(), bgvScore.getWeek(), bgvScore.getRemarks());
+        newBgvScore.setCompetence(competence);
+        newBgvScore.setStudentInfo(user.getStudentInfo());
+        bgvScoreDAO.saveAndFlush(newBgvScore);
+
+        return new ResponseEntity<>(newBgvScore, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{userId}/pav/{courseTopicId}/{objectiveId}", method = RequestMethod.POST)
+    public ResponseEntity<?> addPAVScoreForUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId, @PathVariable long courseTopicId, @PathVariable long objectiveId, @RequestBody PAVScore pavScore) {
+
+        //if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        //if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        //if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+
+        User user = userDAO.getOne(userId);
+        if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
+
+        CourseTopic courseTopic = courseTopicDAO.findById(courseTopicId);
+        if (courseTopic == null) return Responses.COURSE_TOPIC_NOT_FOUND;
+
+        Objective objective = objectiveDAO.findById(objectiveId);
+        if (objective == null) return Responses.OBJECTIVE_NOT_FOUND;
+
+        PAVScore newPavScore = new PAVScore(pavScore.getScore(), pavScore.getWeek(), pavScore.getRemarks());
+        newPavScore.setObjective(objective);
+        newPavScore.setStudentInfo(user.getStudentInfo());
+        pavScoreDAO.saveAndFlush(newPavScore);
+
+        return new ResponseEntity<>(newPavScore, HttpStatus.OK);
     }
 }

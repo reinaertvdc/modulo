@@ -74,6 +74,9 @@ public class Responses {
     private static final String taskUploadReset = "Upload succesfully reset.";
     private static final String taskUploadNotReset = "Upload could not be reset.";
 
+    private static final String competenceNotFound = "The requested competence could not be found.";
+    private static final String objectiveNotFound = "The requested objective could not be found.";
+
 
     public static final ResponseEntity<?> AUTH_HEADER_EMPTY = StringMessage.asEntity(authHeaderEmpty, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
@@ -143,6 +146,9 @@ public class Responses {
     public static final ResponseEntity<?> FILE_NOT_DOWNLOADED = StringMessage.asEntity(fileNotDownloaded,HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> TASK_UPLOAD_RESET = StringMessage.asEntity(taskUploadReset, HttpStatus.OK);
     public static final ResponseEntity<?> TASK_UPLOAD_NOT_RESET = StringMessage.asEntity(taskUploadNotReset, HttpStatus.FORBIDDEN);
+
+    public static final ResponseEntity<?> COMPETENCE_NOT_FOUND = StringMessage.asEntity(competenceNotFound, HttpStatus.NOT_FOUND);
+    public static final ResponseEntity<?> OBJECTIVE_NOT_FOUND = StringMessage.asEntity(objectiveNotFound, HttpStatus.NOT_FOUND);
 
 
 }

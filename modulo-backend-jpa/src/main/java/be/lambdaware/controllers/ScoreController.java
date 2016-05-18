@@ -131,9 +131,9 @@ public class ScoreController {
     @RequestMapping(value = "/id/{userId}/bgv/{competenceId}", method = RequestMethod.POST)
     public ResponseEntity<?> addBGVScoreForUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId, @PathVariable long competenceId, @RequestBody BGVScore bgvScore) {
 
-        //if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
-        //if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        //if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.getOne(userId);
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -152,9 +152,9 @@ public class ScoreController {
     @RequestMapping(value = "/id/{userId}/pav/{courseTopicId}/{objectiveId}", method = RequestMethod.POST)
     public ResponseEntity<?> addPAVScoreForUser(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId, @PathVariable long courseTopicId, @PathVariable long objectiveId, @RequestBody PAVScore pavScore) {
 
-        //if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
-        //if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        //if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
+        if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
+        if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User user = userDAO.getOne(userId);
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;

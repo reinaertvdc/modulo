@@ -33,7 +33,9 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
             for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
                 $scope.selectedStudentScores[goalIndex] = [];
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    $scope.selectedStudentScores[goalIndex][studentIndex] = false;
+                    $scope.selectedStudentScores[goalIndex][studentIndex] = {};
+                    $scope.selectedStudentScores[goalIndex][studentIndex].competence = competences[competenceIndex].id;
+                    $scope.selectedStudentScores[goalIndex][studentIndex].state = false;
                 }
                 goalIndex++;
             }
@@ -134,108 +136,24 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
     $scope.updateScores = function() {
         var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
         var goalIndex = 0;
+        var model = {};
+        model.score = $scope.selectedScoreId;
+        model.week = $scope.visibleScores.week;
+        model.remarks = $scope.comment;
+        model = JSON.stringify(model);
         for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
             var competences = subCertificateCategories[categoryIndex].competences;
             for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    if ($scope.selectedStudentScores[goalIndex][studentIndex]) {
-                        // TODO send request
+                    if ($scope.selectedStudentScores[goalIndex][studentIndex].state) {
+                        $http({
+                            method: 'POST', url: 'http://localhost:8080/score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.selectedStudentScores[goalIndex][studentIndex].competence, data: model,
+                            headers: {'X-auth': $cookies.get("auth")}
+                        }).success(function (response) {});
                     }
                 }
                 goalIndex++;
             }
         }
-        return;
-
-
-        $http({
-            method: 'POST', url: 'http://localhost:8080/user/', data: model,
-            headers: {'X-auth': $cookies.get("auth")}
-        }).success(function (response) {
-            if($scope.basicInfo.role == 'STUDENT') {
-                var user = response;
-                $http({
-                    method: 'PUT',
-                    url: 'http://localhost:8080/certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
-                    headers: {'X-auth': $cookies.get("auth")}
-                }).success(function (response) {
-                    $http({
-                        method: 'PUT',
-                        url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
-                        headers: {'X-auth': $cookies.get("auth")}
-                    }).success(function (response) {
-                        $scope.location.openPage($scope.location.USER_MANAGEMENT);
-                        $scope.createAlertCookie('Gebruiker toegevoegd.');
-                    });
-                });
-            }
-            else{
-                $scope.location.openPage($scope.location.USER_MANAGEMENT);
-                $scope.createAlertCookie('Gebruiker toegevoegd.');
-            }
-        });
     }
 });
-
-/*app.controller('DatepickerPopupDemoCtrl', function ($scope) {
-    $scope.today = function() {
-        $scope.dt = new Date();
-    };
-    $scope.today();
-
-    $scope.clear = function() {
-        $scope.dt = null;
-    };
-
-    $scope.inlineOptions = {
-        customClass: getDayClass,
-        minDate: new Date(),
-        showWeeks: true
-    };
-
-    $scope.dateOptions = {
-        formatYear: 'yy',
-        startingDay: 1
-    };
-
-    $scope.toggleMin = function() {
-        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-    };
-
-    $scope.toggleMin();
-
-    $scope.open1 = function() {
-        $scope.popup1.opened = true;
-    };
-
-    $scope.setDate = function(year, month, day) {
-        $scope.dt = new Date(year, month, day);
-    };
-
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-    $scope.altInputFormats = ['M!/d!/yyyy'];
-
-    $scope.popup1 = {
-        opened: false
-    };
-
-    function getDayClass(data) {
-        var date = data.date,
-            mode = data.mode;
-        if (mode === 'day') {
-            var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-            for (var i = 0; i < $scope.events.length; i++) {
-                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-
-                if (dayToCheck === currentDay) {
-                    return $scope.events[i].status;
-                }
-            }
-        }
-
-        return '';
-    }
-});*/

@@ -51,7 +51,7 @@ public class CourseTopic {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
-    @OneToMany(mappedBy = "courseTopic", orphanRemoval = true)
+    @OneToMany(mappedBy = "courseTopic")
     @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 

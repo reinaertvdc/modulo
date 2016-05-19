@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.fragments.ChildSelectFragment;
 import be.lambdaware.modulomobile.fragments.TabFragment;
 import be.lambdaware.modulomobile.fragments.TaskFragment;
 import be.lambdaware.modulomobile.models.User;
@@ -34,6 +35,7 @@ MainActivity extends AppCompatActivity {
     FragmentTransaction mFragmentTransaction;
 
     private TabFragment tabFragment;
+    private ChildSelectFragment childFragment;
     private TaskFragment taskFragment;
 
     @Override
@@ -63,6 +65,7 @@ MainActivity extends AppCompatActivity {
 
         taskFragment = new TaskFragment();
         tabFragment = new TabFragment();
+        childFragment = new ChildSelectFragment();
 
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -74,6 +77,9 @@ MainActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.nav_progress) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
+                } else if (item.getItemId() == R.id.nav_children) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView, childFragment, "fragmentTag").commit();
                 } else if (item.getItemId() == R.id.nav_logout) {
                     ApiAuthentication.clear(getApplicationContext());
                     goToLoginActivity();
@@ -127,10 +133,16 @@ MainActivity extends AppCompatActivity {
             if (taskFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
                 FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                 xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
-            } else if (tabFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
+            }
+            else if (childFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
+                FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
+            }
+            else if (tabFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
                 if (tabFragment.getCurrentPage() == 1) {
                     tabFragment.showGeneral();
-                } else {
+                }
+                else {
                     super.onBackPressed();
                 }
             }

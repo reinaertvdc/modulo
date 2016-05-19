@@ -285,12 +285,6 @@ public class User {
                 ", sex=" + sex +
                 ", role=" + role +
                 ", enabled=" + enabled +
-                ", teachedClasses=" + teachedClasses +
-                ", classes=" + classes +
-                ", studentInfo=" + studentInfo +
-                ", parent=" + parent +
-                ", children=" + children +
-                ", courseTopics=" + courseTopics +
                 '}';
     }
 }

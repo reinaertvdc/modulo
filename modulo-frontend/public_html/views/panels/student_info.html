@@ -6,9 +6,9 @@
             {{selectedGrade}}
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+        <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-grade">
             <li data-ng-repeat="grade in grades">
-                <a href="" data-ng-click="setSelectedGrade(grade)">{{grade.name}}</a>
+                <a href="" data-ng-click="openGradeModal(grade)">{{grade.name}}</a>
             </li>
         </ul>
     </div>
@@ -18,11 +18,11 @@
     <label>Certificaat</label>
     <br/>
     <div class="btn-group" data-uib-dropdown>
-        <button id="button-subject" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+        <button id="button-cert" type="button" class="btn btn-default" data-uib-dropdown-toggle>
             {{selectedCert}}
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+        <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-cert">
             <li data-ng-repeat="cert in certificates">
                 <a href="" data-ng-click="setSelectedCert(cert)">{{cert.name}}</a>
             </li>
@@ -109,7 +109,7 @@
                    data-ng-model="parentStr" title="Ouder" readonly>
         </div>
         <div class="col-xs-2" class="form-group">
-            <button type="button" class="btn btn-default btn-block" ng-click="open()">
+            <button type="button" class="btn btn-default btn-block" ng-click="openParentModal()">
                 <span class="glyphicon glyphicon-search"></span></button>
         </div>
         <div class="col-xs-2" class="form-group">

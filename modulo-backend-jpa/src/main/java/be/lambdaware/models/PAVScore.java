@@ -3,7 +3,6 @@ package be.lambdaware.models;
 import be.lambdaware.enums.ScoreType;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 
 @Entity
@@ -21,10 +20,6 @@ public class PAVScore {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ScoreType score;
-
-    //TODO add reference to course_topic
-//    @ManyToOne()
-//    private CourseTopic courseTopic
 
     @Column(nullable = false)
     private int week;

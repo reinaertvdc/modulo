@@ -4,14 +4,14 @@
 
     <div class="checkbox">
         <label>
-            <input id="remedïering" type="checkbox" ng-click="changeType()"> remediëring
+            <input id="resit" type="checkbox" ng-click="changeType()"> remediëring
         </label>
     </div>
 
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
-            <label for="usr">Naam:</label>
-            <input type="text" class="form-control" id="usr"  data-ng-model="info.name" required>
+            <label for="name">Naam:</label>
+            <input type="text" class="form-control" id="name"  data-ng-model="info.name" required>
         </div>
 
         <div class="form-group">
@@ -46,7 +46,7 @@
         </div>
 
         <button type="submit" class="btn btn-success btn-lg btn-block">
-            <span class="glyphicon glyphicon-plus-sign"></span> Aanmaken
+            <span class="glyphicon glyphicon-plus-sign"></span> {{btnText}}
         </button>
     </form>
 </div>

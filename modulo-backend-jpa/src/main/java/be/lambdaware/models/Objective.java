@@ -37,7 +37,7 @@ public class Objective {
     @JsonIgnore
     private Grade grade;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "objectives")
     @JsonIgnore
     private List<CourseTopic> courseTopics;
 
@@ -117,10 +117,16 @@ public class Objective {
     public void setCourseTopic(List<CourseTopic> courseTopics){this.courseTopics = courseTopics;}
 
     public void addCourseTopic(CourseTopic courseTopic) {
-        this.courseTopics.add(courseTopic);
+        if(!this.courseTopics.contains(courseTopic))
+            this.courseTopics.add(courseTopic);
+
         if (!courseTopic.getObjectives().contains(this)) {
             courseTopic.addObjective(this);
         }
+    }
+
+    public void removeCourseTopic(CourseTopic courseTopic){
+        courseTopics.remove(courseTopic);
     }
 
     public List<PAVScore> getPavScores() {

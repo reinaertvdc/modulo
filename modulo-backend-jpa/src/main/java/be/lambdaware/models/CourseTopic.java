@@ -1,12 +1,11 @@
 package be.lambdaware.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.json.PackageVersion;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.sun.deploy.net.proxy.pac.PACFunctions;
 
 
 @Entity
@@ -34,13 +33,13 @@ public class CourseTopic {
     // Relations
     // ===================================================================================
 
-    @ManyToMany(mappedBy = "courseTopics")
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Objective> objectives = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinTable(name = "course_topic_students", joinColumns = @JoinColumn(name = "course_topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @JsonIgnore
     private List<User> students = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -51,8 +50,8 @@ public class CourseTopic {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "courseTopic")
-    @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 
     // ===================================================================================
@@ -111,13 +110,6 @@ public class CourseTopic {
         this.objectives = objectives;
     }
 
-    public void addObjective(Objective objective) {
-        this.objectives.add(objective);
-        if (objective != null && objective.getCourseTopic() != this) {
-            objective.addCourseTopic(this);
-        }
-    }
-
     public void setGrade(Grade grade){ this.grade = grade;}
 
     public Grade getGrade(){return this.grade;}
@@ -150,6 +142,30 @@ public class CourseTopic {
 
         if (!student.getCourseTopics().contains(this)) {
             student.getCourseTopics().add(this);
+        }
+    }
+
+    public void addObjective(Objective objective) {
+        if(!this.objectives.contains(objective)) {
+            this.objectives.add(objective);
+        }
+
+        if (!objective.getCourseTopic().contains(this)) {
+            objective.getCourseTopic().add(this);
+        }
+    }
+
+    public void removeStudent(User student){
+        this.students.remove(students);
+        if (student.getCourseTopics().contains(this)) {
+            student.getCourseTopics().remove(this);
+        }
+    }
+
+    public void removeObjective(Objective obj){
+        this.objectives.remove(obj);
+        if (obj.getCourseTopic().contains(this)) {
+            obj.getCourseTopic().remove(this);
         }
     }
 

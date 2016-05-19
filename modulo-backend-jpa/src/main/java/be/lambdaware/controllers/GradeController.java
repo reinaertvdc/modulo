@@ -3,6 +3,9 @@ package be.lambdaware.controllers;
 import be.lambdaware.dao.ClassDAO;
 import be.lambdaware.dao.GradeDAO;
 import be.lambdaware.dao.StudentInfoDAO;
+import be.lambdaware.dao.UserDAO;
+import be.lambdaware.enums.ClassType;
+import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
@@ -28,6 +31,8 @@ public class GradeController {
     StudentInfoDAO studentInfoDAO;
     @Autowired
     ClassDAO classDAO;
+    @Autowired
+    UserDAO userDAO;
 
     @Autowired
     APIAuthentication authentication;
@@ -201,6 +206,8 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 //        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
+        //TODO remove user from PAV-class
+
         Grade grade = gradeDAO.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
@@ -208,6 +215,26 @@ public class GradeController {
         StudentInfo info = studentInfoDAO.findOne(studentId);
 
         if(info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+        User user = info.getUser();
+
+        if(user.getRole() != UserRole.STUDENT) return  Responses.USER_NOT_STUDENT;
+        List<Clazz> classes = new ArrayList<>();
+
+        for(Clazz clazz: user.getClasses()){
+            if (clazz.getType() == ClassType.PAV){
+                if(clazz.getStudents().contains(user)){
+                    classes.add(clazz);
+                }
+            }
+        }
+
+        for(Clazz clazz: classes){
+            clazz.getStudents().remove(user);
+            classDAO.saveAndFlush(clazz);
+
+            user.getClasses().remove(clazz);
+            userDAO.saveAndFlush(user);
+        }
 
         info.setGrade(grade);
 

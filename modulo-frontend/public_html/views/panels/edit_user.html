@@ -7,11 +7,11 @@
             <label>Role van de gebruiker</label>
             <br/>
             <div class="btn-group" data-uib-dropdown>
-                <button id="button-subject" type="button" class="btn btn-default" data-uib-dropdown-toggle>
+                <button id="button-role" type="button" class="btn btn-default" data-uib-dropdown-toggle>
                     {{userRoles[basicInfo.role]}}
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-subject">
+                <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-role">
                     <li data-ng-repeat="role in userRolesKeys">
                         <a href="" data-ng-click="openRoleModal(role)">{{userRoles[role]}}</a>
                     </li>

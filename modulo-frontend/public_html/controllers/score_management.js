@@ -19,10 +19,10 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
 
     $scope.previousModule = null;
 
-    $scope.selectedStudentScores = [];
+    $scope.studentScoresTable = [];
 
-    $scope.resetSelectedStudentScores = function () {
-        $scope.selectedStudentScores = [];
+    $scope.resetstudentScoresTable = function () {
+        $scope.studentScoresTable = [];
         if ($scope.visibleScores.module == null) {
             return;
         }
@@ -31,11 +31,12 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
             var competences = subCertificateCategories[categoryIndex].competences;
             for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
-                $scope.selectedStudentScores[goalIndex] = [];
+                $scope.studentScoresTable[goalIndex] = [];
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    $scope.selectedStudentScores[goalIndex][studentIndex] = {};
-                    $scope.selectedStudentScores[goalIndex][studentIndex].competence = competences[competenceIndex].id;
-                    $scope.selectedStudentScores[goalIndex][studentIndex].state = false;
+                    $scope.studentScoresTable[goalIndex][studentIndex] = {};
+                    $scope.studentScoresTable[goalIndex][studentIndex].score = $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week][competences[competenceIndex].id];
+                    $scope.studentScoresTable[goalIndex][studentIndex].competence = competences[competenceIndex].id;
+                    $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
                 }
                 goalIndex++;
             }
@@ -145,11 +146,17 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
             var competences = subCertificateCategories[categoryIndex].competences;
             for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    if ($scope.selectedStudentScores[goalIndex][studentIndex].state) {
+                    if ($scope.studentScoresTable[goalIndex][studentIndex].selected) {
                         $http({
-                            method: 'POST', url: 'http://localhost:8080/score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.selectedStudentScores[goalIndex][studentIndex].competence, data: model,
+                            method: 'POST', url: 'http://localhost:8080/score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence, data: model,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {});
+                        if (!$scope.studentScoresTable[goalIndex][studentIndex].score) {
+                            $scope.studentScoresTable[goalIndex][studentIndex].score = {};
+                        }
+                        $scope.studentScoresTable[goalIndex][studentIndex].score.score = $scope.selectedScoreId;
+                        $scope.studentScoresTable[goalIndex][studentIndex].score.remarks = model.remarks;
+                        $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
                     }
                 }
                 goalIndex++;

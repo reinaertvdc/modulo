@@ -15,22 +15,42 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
         $scope.removeClassFrontend(addclass.id);
         $scope.classes.set(addclass.id, addclass);
 
-        var html = '<tr id="' + $scope.toElementId(addclass.id) + '">' +
-            '<td>' + addclass.name + '</td>' +
-            '<td class="text-info"  ng-click="location.setParameter(location.PARAM_MANAGE_CLASS_ID,'+addclass.id+')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="openRemoveModal(' + addclass.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
-            '</tr>';
 
-        var element = document.createElement('tr');
+        if(addclass.type == "BGV"){
+            var html = '<tr id="' + $scope.toElementId(addclass.id) + '">' +
+                '<td>' + addclass.name + '</td>' +
+                '<td class="text-info"  ng-click="editBGVClass('+addclass.id+')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
+                '<td class="text-danger" ng-click="openRemoveModal(' + addclass.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+                '</tr>';
+            var element = document.createElement('tr');
 
-        if(addclass.type == "BGV")
             BGVCLASS_LIST_ELEMENT.appendChild(element);
-        if(addclass.type == "PAV")
+        }
+        else if(addclass.type == "PAV") {
+            var html = '<tr id="' + $scope.toElementId(addclass.id) + '">' +
+                '<td>' + addclass.name + '</td>' +
+                '<td class="text-info"  ng-click="editPAVClass('+addclass.id+')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
+                '<td class="text-danger" ng-click="openRemoveModal(' + addclass.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+                '</tr>';
+            var element = document.createElement('tr');
+
             PAVCLASS_LIST_ELEMENT.appendChild(element);
+        }
 
         element.outerHTML = html;
 
     };
+
+    $scope.editBGVClass = function(classId){
+        $scope.location.setParameter($scope.location.PARAM_MANAGE_CLASS_ID, classId);
+        $scope.location.setParameter($scope.location.PARAM_CLASS_TYPE, 'BGV');
+    }
+
+
+    $scope.editPAVClass = function(classId){
+        $scope.location.setParameter($scope.location.PARAM_MANAGE_CLASS_ID, classId);
+        $scope.location.setParameter($scope.location.PARAM_CLASS_TYPE, 'PAV');
+    }
 
     $scope.openRemoveModal = function (id) {
         var modalInstance = $uibModal.open({

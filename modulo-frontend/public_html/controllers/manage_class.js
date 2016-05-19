@@ -1,7 +1,6 @@
 app.controller('ManageClassController', function ($scope) {
     // TODO implement controller
-
-    //TODO Vakthema tab niet tonen als BGV klas
+    $scope.classType = $scope.location.getParameter($scope.location.PARAM_CLASS_TYPE);
 
     $scope.Tab = Object.freeze({
         STUDENT: 'Student',

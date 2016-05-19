@@ -1,4 +1,4 @@
-package be.lambdaware.dao;
+package be.lambdaware.repos;
 
 import be.lambdaware.models.Task;
 import be.lambdaware.models.TaskScore;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by MichielVM on 5/05/2016.
  */
-public interface TaskScoreDAO extends JpaRepository<TaskScore, Long> {
+public interface TaskScoreRepo extends JpaRepository<TaskScore, Long> {
 
     TaskScore findById(long id);
     Long removeByTask(Task task);

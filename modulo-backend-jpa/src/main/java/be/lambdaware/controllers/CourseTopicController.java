@@ -1,6 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.*;
+import be.lambdaware.repos.*;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
@@ -24,17 +24,17 @@ public class CourseTopicController {
 
     private static Logger log = Logger.getLogger(CourseTopicController.class);
     @Autowired
-    CourseTopicDAO courseTopicDAO;
+    CourseTopicRepo courseTopicRepo;
     @Autowired
-    GradeDAO gradeDAO;
+    GradeRepo gradeRepo;
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
     @Autowired
-    ObjectiveDAO objectiveDAO;
+    ObjectiveRepo objectiveRepo;
     @Autowired
-    PAVScoreDAO pavScoreDAO;
+    PAVScoreRepo pavScoreRepo;
 
     @Autowired
     APIAuthentication authentication;
@@ -50,7 +50,7 @@ public class CourseTopicController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        List<CourseTopic> classes = courseTopicDAO.findAll();
+        List<CourseTopic> classes = courseTopicRepo.findAll();
 
         if (classes.size() == 0) return Responses.COURSE_TOPICS_NOT_FOUND;
         return new ResponseEntity<>(classes, HttpStatus.OK);
@@ -64,7 +64,7 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(id);
+        CourseTopic courseTopic = courseTopicRepo.findById(id);
 
         if (courseTopic == null) return Responses.COURSE_TOPICS_NOT_FOUND;
         return new ResponseEntity<>(courseTopic.getStudents(), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(id);
+        CourseTopic courseTopic = courseTopicRepo.findById(id);
 
         if (courseTopic == null) return Responses.COURSE_TOPICS_NOT_FOUND;
         return new ResponseEntity<>(courseTopic.getObjectives(), HttpStatus.OK);
@@ -92,7 +92,7 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(id);
+        CourseTopic courseTopic = courseTopicRepo.findById(id);
 
         if (courseTopic == null) return Responses.COURSE_TOPICS_NOT_FOUND;
         return new ResponseEntity<>(courseTopic, HttpStatus.OK);
@@ -110,13 +110,13 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        Clazz clazz = classDAO.findById(courseTopic.getClazz().getId());
-        Grade grade = gradeDAO.findById(courseTopic.getGrade().getId());
+        Clazz clazz = classRepo.findById(courseTopic.getClazz().getId());
+        Grade grade = gradeRepo.findById(courseTopic.getGrade().getId());
 
         courseTopic.setClazz(clazz);
         courseTopic.setGrade(grade);
 
-        courseTopicDAO.saveAndFlush(courseTopic);
+        courseTopicRepo.saveAndFlush(courseTopic);
 
         return new ResponseEntity<>(courseTopic, HttpStatus.OK);
     }
@@ -128,13 +128,13 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(courseTopicId);
+        CourseTopic courseTopic = courseTopicRepo.findById(courseTopicId);
         for (User student : students) {
-            User stud = userDAO.findById(student.getId());
+            User stud = userRepo.findById(student.getId());
             courseTopic.addStudent(stud);
         }
 
-        courseTopicDAO.saveAndFlush(courseTopic);
+        courseTopicRepo.saveAndFlush(courseTopic);
 
         return new ResponseEntity<>(courseTopic, HttpStatus.OK);
     }
@@ -148,13 +148,13 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(courseTopicId);
+        CourseTopic courseTopic = courseTopicRepo.findById(courseTopicId);
         for (Objective obj : objectives) {
-            Objective objective = objectiveDAO.findById(obj.getId());
+            Objective objective = objectiveRepo.findById(obj.getId());
             courseTopic.addObjective(objective);
         }
 
-        courseTopicDAO.saveAndFlush(courseTopic);
+        courseTopicRepo.saveAndFlush(courseTopic);
 
         return new ResponseEntity<>(courseTopic, HttpStatus.OK);
     }
@@ -172,21 +172,21 @@ public class CourseTopicController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()  && !authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(id);
+        CourseTopic courseTopic = courseTopicRepo.findById(id);
         if (courseTopic == null) return Responses.COURSE_TOPIC_NOT_FOUND;
 
-        CourseTopic topic = courseTopicDAO.findOne(id);
+        CourseTopic topic = courseTopicRepo.findOne(id);
         log.info("Trying to delete " + topic);
         log.info("Course topic has " + topic.getPavScores().size() + " scores");
 
         for(PAVScore score : topic.getPavScores()){
-            PAVScore pavScore = pavScoreDAO.getOne(score.getId());
+            PAVScore pavScore = pavScoreRepo.getOne(score.getId());
             pavScore.setStudentInfo(null);
             log.info("Deleting " + pavScore);
-            pavScoreDAO.saveAndFlush(pavScore);
+            pavScoreRepo.saveAndFlush(pavScore);
         }
 
-        courseTopicDAO.delete(id);
+        courseTopicRepo.delete(id);
         return Responses.COURSE_TOPIC_DELETED;
     }
 }

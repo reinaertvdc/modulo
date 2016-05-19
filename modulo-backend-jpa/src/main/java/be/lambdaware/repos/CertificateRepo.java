@@ -1,4 +1,4 @@
-package be.lambdaware.dao;
+package be.lambdaware.repos;
 
 
 import be.lambdaware.models.Certificate;
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface CertificateDAO extends JpaRepository<Certificate, Long> {
+public interface CertificateRepo extends JpaRepository<Certificate, Long> {
 
 
     Certificate findById(long id);

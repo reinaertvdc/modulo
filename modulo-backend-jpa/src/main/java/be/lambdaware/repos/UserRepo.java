@@ -1,8 +1,7 @@
-package be.lambdaware.dao;
+package be.lambdaware.repos;
 
 
 import be.lambdaware.enums.UserRole;
-import be.lambdaware.models.Certificate;
 import be.lambdaware.models.StudentInfo;
 import be.lambdaware.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +10,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface UserDAO extends JpaRepository<User, Long> {
+public interface UserRepo extends JpaRepository<User, Long> {
 
     //TODO resource: http://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
 

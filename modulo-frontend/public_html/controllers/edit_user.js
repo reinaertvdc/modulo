@@ -37,7 +37,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     $scope.openRoleModal = function (role) {
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'views/panels/role_modal.html',
+            templateUrl: 'views/panels/change_modal.html',
             controller: 'RoleModalInstanceCtrl',
             resolve: {}
         });
@@ -57,6 +57,19 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     $scope.setSelectedGrade = function (grade) {
         $scope.selectedGrade = grade.name;
         $scope.studentInfo.gradeId = grade.id;
+    };
+
+    $scope.openGradeModal = function (grade) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/change_modal.html',
+            controller: 'GradeModalInstanceCtrl',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            $scope.setSelectedGrade(grade);
+        });
     };
 
     // CERTIFICATES
@@ -79,7 +92,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         $scope.parentStr = '';
     }
 
-    $scope.open = function () {
+    $scope.openParentModal = function () {
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'views/panels/parent_modal.html',
@@ -229,14 +242,14 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
                             url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {
-                            $scope.location.openPage($scope.location.USER_MANAGEMENT);
                             $scope.createAlertCookie('Gebruiker toegevoegd.');
+                            $scope.location.openPage($scope.location.USER_MANAGEMENT);
                         });
                     });
                 }
                 else{
-                    $scope.location.openPage($scope.location.USER_MANAGEMENT);
                     $scope.createAlertCookie('Gebruiker toegevoegd.');
+                    $scope.location.openPage($scope.location.USER_MANAGEMENT);
                 }
             });
         } else if (paramVal) {
@@ -256,14 +269,14 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
                             url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {
-                            $scope.location.openPage($scope.location.USER_MANAGEMENT);
                             $scope.createAlertCookie('Gebruiker bewerkt.');
+                            $scope.location.openPage($scope.location.USER_MANAGEMENT);
                         });
                     });
                 }
                 else{
-                    $scope.location.openPage($scope.location.USER_MANAGEMENT);
                     $scope.createAlertCookie('Gebruiker bewerkt.');
+                    $scope.location.openPage($scope.location.USER_MANAGEMENT);
                 }
             });
         }
@@ -289,6 +302,21 @@ app.controller('ParentModalInstanceCtrl', function ($scope, $uibModalInstance, p
 
 app.controller('RoleModalInstanceCtrl', function ($scope, $uibModalInstance) {
     $scope.modalTitle = "Rol aanpassen";
+    $scope.modalBody = "Bent u zeker dat u de rol van deze gebruiker wilt veranderen?";
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+
+app.controller('GradeModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalTitle = "Graad aanpassen";
+    $scope.modalBody = "Bent u zeker dat u de graad van deze gebruiker wilt veranderen?\n" +
+    "De gebruiker zal uit zijn PAV-klassen worden verwijderd.";
 
     $scope.ok = function () {
         $uibModalInstance.close();

@@ -1,8 +1,11 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.GradeDAO;
-import be.lambdaware.dao.StudentInfoDAO;
+import be.lambdaware.repos.ClassRepo;
+import be.lambdaware.repos.GradeRepo;
+import be.lambdaware.repos.StudentInfoRepo;
+import be.lambdaware.repos.UserRepo;
+import be.lambdaware.enums.ClassType;
+import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
@@ -23,11 +26,13 @@ public class GradeController {
 
     private static Logger log = Logger.getLogger(GradeController.class);
     @Autowired
-    GradeDAO gradeDAO;
+    GradeRepo gradeRepo;
     @Autowired
-    StudentInfoDAO studentInfoDAO;
+    StudentInfoRepo studentInfoRepo;
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
+    @Autowired
+    UserRepo userRepo;
 
     @Autowired
     APIAuthentication authentication;
@@ -42,7 +47,7 @@ public class GradeController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        List<Grade> grades = gradeDAO.findAll();
+        List<Grade> grades = gradeRepo.findAll();
 
         if (grades.size() == 0) return Responses.GRADES_NOT_FOUND;
 
@@ -56,7 +61,7 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<Grade> grades = gradeDAO.findAllByEnabled(enabled);
+        List<Grade> grades = gradeRepo.findAllByEnabled(enabled);
 
         if (grades.size() == 0) return Responses.GRADES_NOT_FOUND;
         return new ResponseEntity<>(grades, HttpStatus.OK);
@@ -68,7 +73,7 @@ public class GradeController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
         return new ResponseEntity<>(grade, HttpStatus.OK);
@@ -82,7 +87,7 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
         return new ResponseEntity<>(grade.getName(), HttpStatus.OK);
@@ -95,7 +100,7 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
         return new ResponseEntity<>(grade.isEnabled(), HttpStatus.OK);
@@ -108,7 +113,7 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
@@ -129,7 +134,7 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
@@ -147,7 +152,7 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
@@ -169,12 +174,12 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
         grade.setEnabled(true);
-        gradeDAO.saveAndFlush(grade);
+        gradeRepo.saveAndFlush(grade);
         return Responses.GRADE_ENABLED;
     }
 
@@ -185,12 +190,12 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
         grade.setEnabled(true);
-        gradeDAO.saveAndFlush(grade);
+        gradeRepo.saveAndFlush(grade);
         return Responses.GRADE_DISABLED;
     }
 
@@ -201,17 +206,39 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 //        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Grade grade = gradeDAO.findById(id);
+        //TODO remove user from PAV-class
+
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
-        StudentInfo info = studentInfoDAO.findOne(studentId);
+        StudentInfo info = studentInfoRepo.findOne(studentId);
 
         if(info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+        User user = info.getUser();
+
+        if(user.getRole() != UserRole.STUDENT) return  Responses.USER_NOT_STUDENT;
+        List<Clazz> classes = new ArrayList<>();
+
+        for(Clazz clazz: user.getClasses()){
+            if (clazz.getType() == ClassType.PAV){
+                if(clazz.getStudents().contains(user)){
+                    classes.add(clazz);
+                }
+            }
+        }
+
+        for(Clazz clazz: classes){
+            clazz.getStudents().remove(user);
+            classRepo.saveAndFlush(clazz);
+
+            user.getClasses().remove(clazz);
+            userRepo.saveAndFlush(user);
+        }
 
         info.setGrade(grade);
 
-        studentInfoDAO.saveAndFlush(info);
+        studentInfoRepo.saveAndFlush(info);
         return Responses.GRADE_STUDENT_ADD;
     }
 
@@ -226,23 +253,23 @@ public class GradeController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Grade grade = gradeDAO.findById(id);
+        Grade grade = gradeRepo.findById(id);
 
         if (grade == null) return Responses.GRADE_NOT_FOUND;
 
         // Remove grade from students, without deleting the student.
         for(StudentInfo student : grade.getStudents()){
             student.setGrade(null);
-            studentInfoDAO.saveAndFlush(student);
+            studentInfoRepo.saveAndFlush(student);
         }
 
         // Remove grade from classes, without deleting the classes.
         for(Clazz clazz : grade.getClasses()){
             clazz.setGrade(null);
-            classDAO.saveAndFlush(clazz);
+            classRepo.saveAndFlush(clazz);
         }
 
-        gradeDAO.delete(id);
+        gradeRepo.delete(id);
         return Responses.GRADE_DELETED;
 
     }

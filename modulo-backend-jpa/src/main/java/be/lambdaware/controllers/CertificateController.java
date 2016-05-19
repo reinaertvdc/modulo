@@ -1,8 +1,8 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.CertificateDAO;
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.StudentInfoDAO;
+import be.lambdaware.repos.CertificateRepo;
+import be.lambdaware.repos.ClassRepo;
+import be.lambdaware.repos.StudentInfoRepo;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
@@ -23,11 +23,11 @@ public class CertificateController {
 
     private static Logger log = Logger.getLogger(CertificateController.class);
     @Autowired
-    CertificateDAO certificateDAO;
+    CertificateRepo certificateRepo;
     @Autowired
-    StudentInfoDAO studentInfoDAO;
+    StudentInfoRepo studentInfoRepo;
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
 
     @Autowired
     APIAuthentication authentication;
@@ -42,7 +42,7 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        List<Certificate> certificates = certificateDAO.findAll();
+        List<Certificate> certificates = certificateRepo.findAll();
 
         if (certificates.size() == 0) return Responses.CERTIFICATES_NOT_FOUND;
 
@@ -56,7 +56,7 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        List<Certificate> certificates = certificateDAO.findAllByEnabledOrderByNameAsc(enabled);
+        List<Certificate> certificates = certificateRepo.findAllByEnabledOrderByNameAsc(enabled);
 
         if (certificates.size() == 0) return Responses.CERTIFICATES_NOT_FOUND;
         return new ResponseEntity<>(certificates, HttpStatus.OK);
@@ -68,7 +68,7 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
         return new ResponseEntity<>(certificate, HttpStatus.OK);
@@ -81,7 +81,7 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
         return new ResponseEntity<>(certificate.getName(), HttpStatus.OK);
@@ -93,7 +93,7 @@ public class CertificateController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
         return new ResponseEntity<>(certificate.isEnabled(), HttpStatus.OK);
@@ -106,7 +106,7 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
@@ -127,7 +127,7 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
@@ -145,7 +145,7 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
@@ -167,12 +167,12 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
         certificate.setEnabled(true);
-        certificateDAO.saveAndFlush(certificate);
+        certificateRepo.saveAndFlush(certificate);
         return Responses.CERTIFICATE_ENABLED;
     }
 
@@ -183,12 +183,12 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
         certificate.setEnabled(false);
-        certificateDAO.saveAndFlush(certificate);
+        certificateRepo.saveAndFlush(certificate);
         return Responses.CERTIFICATE_DISABLED;
     }
 
@@ -199,17 +199,17 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 //        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
-        StudentInfo info = studentInfoDAO.findOne(studentId);
+        StudentInfo info = studentInfoRepo.findOne(studentId);
 
         if(info == null) return Responses.STUDENT_INFO_NOT_FOUND;
 
         info.setCertificate(certificate);
 
-        studentInfoDAO.saveAndFlush(info);
+        studentInfoRepo.saveAndFlush(info);
         return Responses.CERTIFICATE_STUDENT_ADD;
     }
 
@@ -224,22 +224,22 @@ public class CertificateController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        Certificate certificate = certificateDAO.findById(id);
+        Certificate certificate = certificateRepo.findById(id);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
 
         for(StudentInfo student : certificate.getStudents()){
             student.setCertificate(null);
-            studentInfoDAO.saveAndFlush(student);
+            studentInfoRepo.saveAndFlush(student);
         }
 
         for(Clazz clazz : certificate.getClasses()){
             clazz.setCertificate(null);
-            classDAO.saveAndFlush(clazz);
+            classRepo.saveAndFlush(clazz);
         }
 
-        certificateDAO.delete(id);
+        certificateRepo.delete(id);
         return Responses.CERTIFICATE_DELETED;
 
     }

@@ -1,6 +1,6 @@
 package be.lambdaware.security;
 
-import be.lambdaware.dao.UserDAO;
+import be.lambdaware.repos.UserRepo;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.User;
 import org.apache.log4j.Logger;
@@ -15,7 +15,7 @@ import java.security.MessageDigest;
 public class APIAuthentication {
 
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
 
     private User authenticatedUser;
 
@@ -29,7 +29,7 @@ public class APIAuthentication {
         String password = decodedLogin.split(":")[1];
         String hashedPassword = SHA512(password);
 
-        User user = userDAO.findByEmail(email);
+        User user = userRepo.findByEmail(email);
         if ((user != null) && (user.getPassword().equals(hashedPassword))) {
             authenticatedUser = user;
             return true;

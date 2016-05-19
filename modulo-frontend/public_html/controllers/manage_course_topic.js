@@ -16,8 +16,9 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
         description: '',
         students: [],
         objectives: [],
-        clazz: { id: parseInt(paramClass)},
-        grade: { id: null}
+        clazz: {id: parseInt(paramClass)},
+        grade: {id: null},
+        pavScores: []
     };
 
 
@@ -26,86 +27,146 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {
-            $scope.addStudents(item);
+            $scope.addStudent(item);
         });
+        $http({
+            method: 'GET', url: 'http://localhost:8080/class/id/' + paramClass + '/grade',
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            $scope.info.grade.id = response.id;
+            $http({
+                method: 'GET', url: 'http://localhost:8080/grade/id/' + response.id + '/objectives',
+                headers: {'X-auth': $cookies.get("auth")}
+            }).success(function (response) {
+                response.forEach(function (item) {
+                    $scope.addObjectives(item);
+
+                });
+                $scope.loadPage();
+                $scope.refresh();
+            })
+        })
     });
 
-    $http({
-        method: 'GET', url: 'http://localhost:8080/class/id/' + paramClass + '/grade',
-        headers: {'X-auth': $cookies.get("auth")}
-    }).success(function (response) {
-        $scope.info.grade.id = response.id;
+
+    $scope.loadPage = function () {
+
+        if(paramCourse == $scope.location.PARAM_CREATE_NEW_COURSE_TOPIC_ID)
+        {
+            $scope.panelCaption = 'Nieuw vakthema aanmaken';
+            $scope.btnText = 'Aanmaken';
+
+        }
+        else
+        if (paramCourse) {
+            $scope.panelCaption = 'Vakthema bewerken';
+            $scope.btnText = 'Opslaan';
+
+            $http({
+                method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse,
+                headers: {'X-auth': $cookies.get("auth")}
+            }).success(function (response) {
+                $scope.info.description = response.description;
+                $scope.info.name = response.name;
+                $scope.info.id = response.id;
+                $scope.info.resit = response.resit;
+                if (response.resit === true) {
+                    $scope.setStudents();
+                    document.getElementById("resit").checked = true;
+                    $scope.changeType();
+                }
+                $scope.setObjectives();
+                $scope.setPAVScores();
+
+                $scope.refresh();
+            });
+        }
+    };
+
+    $scope.setStudents = function () {
+
+        $scope.students.forEach(function (student) {
+            student.checked = false;
+        });
+
         $http({
-            method: 'GET', url: 'http://localhost:8080/grade/id/' + response.id+ '/objectives',
+            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse + '/students',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             response.forEach(function (item) {
-                $scope.addObjectives(item);
-
+                $scope.students.get(item.id).checked = true;
             });
-            $scope.refresh();
         })
-    })
-
-    if (paramCourse == $scope.location.PARAM_CREATE_NEW_COURSE_TOPIC_ID) {
-        $scope.panelCaption = 'Nieuw vakthema aanmaken';
-        $scope.btnText = 'Aanmaken';
+    };
 
 
-    } else if(paramCourse){
-        $scope.panelCaption = 'Vakthema bewerken';
-        $scope.btnText = 'Opslaan';
+    $scope.setObjectives = function () {
 
         $http({
-            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse,
+            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse + '/objectives',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
-                       
-        });
-    }
+            response.forEach(function (item) {
+                $scope.objectives.get(item.id).checked = true;
+            });
+        })
+    };
+
+    $scope.setPAVScores = function () {
+        $http({
+            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse + '/pavscores',
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            if(response != undefined) {
+                response.forEach(function (item) {
+                    $scope.info.pavScores.push({id: item.id});
+                });
+            }
+        })
+    };
+
+
 
     $scope.submitForm = function () {
+
+        if($scope.info.resit === false){
+            $scope.students.forEach(function (student) {
+                student.checked = true;
+            });
+        }
+
         $scope.students.forEach(function (student){
-            console.log(student);
             if(student.checked === true)
                 $scope.info.students.push({id: student.studentObj.id});
         });
 
         $scope.objectives.forEach(function (objective){
-            console.log(objective);
-            if(objective.checked === true)
-                $scope.info.objectives.push({id: objective.objectiveObj.id});
+
+            if(objective.checked === true) {
+                console.log(objective.objectiveObj.id);
+                $scope.info.objectives.push({id: objective.objectiveObj.id})
+            }
         });
 
         if(paramCourse == $scope.location.PARAM_CREATE_NEW_COURSE_TOPIC_ID) {
-            console.log($scope.info);
             $http({
                 method: 'POST', url: 'http://localhost:8080/coursetopic/', data: $scope.info,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
-                $http({
-                    method: 'POST',
-                    url: 'http://localhost:8080/coursetopic/students/' + response.id,
-                    data: $scope.info.students,
-                    headers: {'X-auth': $cookies.get("auth")}
-                }).success(function (response) {
-
-                });
-
-                $http({
-                    method: 'POST',
-                    url: 'http://localhost:8080/coursetopic/objectives/' + response.id,
-                    data: $scope.info.objectives,
-                    headers: {'X-auth': $cookies.get("auth")}
-                }).success(function (response) {
-                    $scope.location.openPage($scope.location.MY_CLASSES);
-                    $scope.location.setParameter($scope.location.PARAM_MANAGE_CLASS_ID, paramClass);
-                    $scope.createAlertCookie('Vakthema toegevoegd.');
-                });
-
+                $scope.location.openPage($scope.location.MY_CLASSES);
+                $scope.location.setParameter($scope.location.PARAM_MANAGE_CLASS_ID, paramClass);
+                $scope.createAlertCookie('Vakthema toegevoegd.');
             });
         }else if(paramCourse) {
 
+            $http({
+                method: 'PUT', url: 'http://localhost:8080/coursetopic/', data: $scope.info,
+                headers: {'X-auth': $cookies.get("auth")}
+            }).success(function (response) {
+                $scope.location.openPage($scope.location.MY_CLASSES);
+                $scope.location.setParameter($scope.location.PARAM_MANAGE_CLASS_ID, paramClass);
+                $scope.createAlertCookie('Vakthema bewerkt.');
+            });
         }
     };
 
@@ -125,18 +186,20 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
     };
 
     $scope.changeType = function () {
-        var checkbox =   document.getElementById("studentsList");
+        var checkbox = document.getElementById("resit");
+        var list = document.getElementById("studentsList");
         if(checkbox.checked == true) {
-            checkbox.style.display = "block";
+            list.style.display = "block";
             $scope.info.resit = true;
         }else{
-            checkbox.style.display = "none";
+            list.style.display = "none";
             $scope.info.resit = false;
         }
-    }
+        $scope.refresh();
+    };
 
 
-    $scope.addStudents = function (student) {
+    $scope.addStudent = function (student) {
         var studentObj = {'studentObj': student, 'checked': true};
         $scope.students.set(student.id, studentObj);
 

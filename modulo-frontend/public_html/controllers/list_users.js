@@ -71,7 +71,10 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             html += '<td><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
         else {
-            html += '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
+            //with status modal pop-up
+            //html += '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
+            //without pop-up
+            html += '<td ng-click="swapEnabled(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
 
             html += '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
@@ -118,6 +121,11 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             user.enabled = !user.enabled;
+
+            if(user.enabled)
+                $scope.createAlertCookie('Gebruiker actief gezet.');
+            else
+                $scope.createAlertCookie('Gebruiker inactief gezet.');
         });
     };
 

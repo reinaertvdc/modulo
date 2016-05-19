@@ -1,35 +1,52 @@
-app.controller('ManageClassCourseTopicListController', function ($scope) {
+app.controller('ManageClassCourseTopicListController', function ($scope, $http, $window, $compile, $uibModal, $cookies) {
     const COURSE_TOPIC_LIST_ITEM_PREFIX = 'manage-course-topic-list-item-';
     const COURSE_TOPIC_LIST_ELEMENT = document.getElementById('manage-course-topic-list-body');
-
+    const paramClass = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
     $scope.courseTopics = new Map();
+
+    $http({
+        method: 'GET', url: 'http://localhost:8080/class/id/' + paramClass + '/coursetopics',
+        headers: {'X-auth': $cookies.get("auth")}
+    }).success(function (response) {
+        response.forEach(function (item) {
+            $scope.addCourseTopic(item)
+        });
+        $scope.refresh();
+    });
 
     $scope.toElementId = function (id) {
         return COURSE_TOPIC_LIST_ITEM_PREFIX + id;
     };
 
     $scope.addCourseTopic = function (courseTopic) {
-        $scope.removeClassFrontend(courseTopic.id);
+        $scope.removeCourseTopicFrontend(courseTopic.id);
         $scope.courseTopics.set(courseTopic.id, courseTopic);
 
-        var html = '<tr id="' + $scope.toElementId(addclass.id) + '">' +
+        var html = '<tr id="' + $scope.toElementId(courseTopic.id) + '">' +
             '<td>' + courseTopic.name + '</td>' +
             '<td class="text-info"  ng-click="location.setParameter(location.PARAM_MANAGE_COURSE_TOPIC_ID,'+courseTopic.id+')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
             '<td class="text-danger" ng-click="removeCourseTopicBackend(' +  courseTopic.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
 
         var element = document.createElement('tr');
+        COURSE_TOPIC_LIST_ELEMENT.appendChild(element);
         element.outerHTML = html;
 
     };
 
     $scope.removeCourseTopicBackend = function (id) {
         $scope.removeCourseTopicFrontend(id);
-        //$http.delete('http://localhost:8080/class/'+id);
+        $http({
+            method: 'DELETE', url: 'http://localhost:8080/coursetopic/id/' + id,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            $scope.refresh();
+        });
+
     };
 
     $scope.removeCourseTopicFrontend = function (id) {
-        $scope.classes.delete(id);
+        $scope.courseTopics.delete(id);
         var element = document.getElementById($scope.toElementId(id));
         if (element !== null)
             element.parentElement.removeChild(element);
@@ -40,11 +57,5 @@ app.controller('ManageClassCourseTopicListController', function ($scope) {
         $compile(COURSE_TOPIC_LIST_ELEMENT)($scope);
     };
 
-   /* $http.get('http://localhost:8080/class/teacher/' + $scope.backend.getUser().id).success(function (response) {
-        response.forEach(function (item) {
-            $scope.addCourseTopic(item.classEntity)
-        });
-        $scope.refresh();
-    });*/
     
 });

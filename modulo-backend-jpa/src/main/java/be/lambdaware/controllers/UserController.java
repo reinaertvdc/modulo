@@ -1,6 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.*;
+import be.lambdaware.repos.*;
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +30,15 @@ public class UserController {
 
 
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
     @Autowired
-    StudentInfoDAO studentInfoDAO;
+    StudentInfoRepo studentInfoRepo;
     @Autowired
-    BGVScoreDAO bgvScoreDAO;
+    BGVScoreRepo bgvScoreRepo;
     @Autowired
-    PAVScoreDAO pavScoreDAO;
+    PAVScoreRepo pavScoreRepo;
 
 
     @Autowired
@@ -64,7 +63,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<User> users = userDAO.findAll();
+        List<User> users = userRepo.findAll();
 
         if (users.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -84,7 +83,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -104,7 +103,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findByEmail(email);
+        User user = userRepo.findByEmail(email);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         else return new ResponseEntity<>(user, HttpStatus.OK);
@@ -124,7 +123,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<User> users = userDAO.findAllByFirstNameIgnoreCase(firstName);
+        List<User> users = userRepo.findAllByFirstNameIgnoreCase(firstName);
 
         if (users.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -144,7 +143,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<User> users = userDAO.findAllByLastNameIgnoreCase(lastName);
+        List<User> users = userRepo.findAllByLastNameIgnoreCase(lastName);
 
         if (users.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -164,7 +163,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<User> users = userDAO.findAllByRole(role);
+        List<User> users = userRepo.findAllByRole(role);
 
         if (users.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -184,7 +183,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        List<User> users = userDAO.findAllByEnabled(enabled);
+        List<User> users = userRepo.findAllByEnabled(enabled);
 
         if (users.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -204,7 +203,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(parentId);
+        User user = userRepo.findById(parentId);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.PARENT) return Responses.USER_NOT_PARENT;
@@ -229,7 +228,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(childId);
+        User user = userRepo.findById(childId);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -255,7 +254,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         log.info(user);
 
@@ -285,7 +284,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -310,7 +309,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
@@ -329,7 +328,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
@@ -361,8 +360,8 @@ public class UserController {
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         List<User> records = new ArrayList<>();
-        records.addAll(userDAO.findAllByFirstNameContainingIgnoreCase(query));
-        records.addAll(userDAO.findAllByLastNameContainingIgnoreCase(query));
+        records.addAll(userRepo.findAllByFirstNameContainingIgnoreCase(query));
+        records.addAll(userRepo.findAllByLastNameContainingIgnoreCase(query));
 
         if (records.size() == 0) return Responses.USERS_NOT_FOUND;
         return new ResponseEntity<>(records, HttpStatus.OK);
@@ -375,7 +374,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -398,7 +397,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -421,7 +420,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -444,7 +443,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -479,10 +478,10 @@ public class UserController {
         Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.ADMIN;
 
-        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+        if (userRepo.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
 
         User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-        userDAO.saveAndFlush(user);
+        userRepo.saveAndFlush(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -500,10 +499,10 @@ public class UserController {
         Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.PARENT;
 
-        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+        if (userRepo.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
 
         User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-        userDAO.saveAndFlush(user);
+        userRepo.saveAndFlush(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -521,10 +520,10 @@ public class UserController {
         Sex sex = form.getFirst("sex").equals("MALE") ? Sex.MALE : Sex.FEMALE;
         UserRole role = UserRole.TEACHER;
 
-        if (userDAO.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
+        if (userRepo.findByEmail(email) != null) return Responses.USER_EMAIL_EXISTS;
 
         User user = new User(email, authentication.SHA512(password), firstName, lastName, sex, role, true);
-        userDAO.saveAndFlush(user);
+        userRepo.saveAndFlush(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -536,13 +535,13 @@ public class UserController {
 
         User newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
         newUser.setParent(user.getParent());
-        userDAO.saveAndFlush(newUser);
+        userRepo.saveAndFlush(newUser);
 
         if(user.getRole() != UserRole.STUDENT) return new ResponseEntity<>(newUser, HttpStatus.OK);
 
         StudentInfo info = user.getStudentInfo();
         info.setUser(newUser);
-        studentInfoDAO.saveAndFlush(info);
+        studentInfoRepo.saveAndFlush(info);
         newUser.setStudentInfo(info);
 
         return new ResponseEntity<>(newUser, HttpStatus.OK);
@@ -559,14 +558,14 @@ public class UserController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
 
 
         if (user == null) return Responses.USER_NOT_FOUND;
 
         user.setEnabled(true);
-        userDAO.saveAndFlush(user);
+        userRepo.saveAndFlush(user);
         return Responses.USER_ENABLED;
     }
 
@@ -576,14 +575,14 @@ public class UserController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         //TODO add to Responses
         if (user.getId() == authentication.getAuthenticatedUser().getId()) return StringMessage.asEntity("You can not disable yourself",HttpStatus.BAD_REQUEST);
 
         user.setEnabled(false);
-        userDAO.saveAndFlush(user);
+        userRepo.saveAndFlush(user);
         return Responses.USER_DISABLED;
     }
 
@@ -595,7 +594,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User oldUser = userDAO.findById(newUser.getId());
+        User oldUser = userRepo.findById(newUser.getId());
 
         // If not empty, update password
         if (newUser.getPassword() != null && !newUser.getPassword().equals("")) {
@@ -604,7 +603,7 @@ public class UserController {
         }
 
         if(newUser.getParent() != null) {
-            User parent = userDAO.findById(newUser.getParent().getId());
+            User parent = userRepo.findById(newUser.getParent().getId());
             // set the parent
             oldUser.setParent(parent);
         }else{
@@ -629,39 +628,39 @@ public class UserController {
 
                 log.info("Delete BGV scores");
                 for(BGVScore bgvScore : oldUser.getStudentInfo().getBgvScores()){
-                    bgvScoreDAO.delete(bgvScore);
+                    bgvScoreRepo.delete(bgvScore);
                 }
 
                 log.info("Delete PAV scores");
                 for(PAVScore pavScore : oldUser.getStudentInfo().getPavScores()){
-                    pavScoreDAO.delete(pavScore);
+                    pavScoreRepo.delete(pavScore);
                 }
 
                 log.info("Removed parent");
                 oldUser.setParent(null);
 
                 log.info("Delete user's student info.");
-                studentInfoDAO.delete(oldUser.getStudentInfo());
+                studentInfoRepo.delete(oldUser.getStudentInfo());
             }
             if(oldUser.getRole() == UserRole.PARENT){
                 log.info("Old user was a parent. Remove parent from his children.");
                 for(User child : oldUser.getChildren()){
                     child.setParent(null);
-                    userDAO.saveAndFlush(child);
+                    userRepo.saveAndFlush(child);
                 }
             }
             if(oldUser.getRole() == UserRole.TEACHER){
                 log.info("Old user was a teacher. Remove teacher from his classes.");
                 for(Clazz clazz : oldUser.getTeachedClasses()) {
                     clazz.setTeacher(null);
-                    classDAO.saveAndFlush(clazz);
+                    classRepo.saveAndFlush(clazz);
                 }
             }
 
             if(newUser.getRole() == UserRole.STUDENT) {
                 log.info("The new user is a student. Create student info.");
                 StudentInfo info = newUser.getStudentInfo();
-                studentInfoDAO.save(info);
+                studentInfoRepo.save(info);
                 oldUser.setStudentInfo(info);
             }
 
@@ -670,7 +669,7 @@ public class UserController {
         }
 
         log.info("Saving user " + oldUser);
-        userDAO.saveAndFlush(oldUser);
+        userRepo.saveAndFlush(oldUser);
 
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
@@ -686,7 +685,7 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(id);
+        User user = userRepo.findById(id);
 
         if (user == null) return Responses.USER_NOT_FOUND;
 
@@ -694,25 +693,25 @@ public class UserController {
             // unreference children when parent is deleted
             for (User child : user.getChildren()) {
                 child.setParent(null);
-                userDAO.saveAndFlush(child);
+                userRepo.saveAndFlush(child);
             }
         }
         if (user.getRole() == UserRole.STUDENT) {
             // remove this student from the classes first
             for (Clazz clazz : user.getClasses()) {
                 clazz.getStudents().remove(user);
-                classDAO.saveAndFlush(clazz);
+                classRepo.saveAndFlush(clazz);
             }
         }
         if (user.getRole() == UserRole.TEACHER) {
             // remove this teacher from the classes first
             for (Clazz clazz : user.getTeachedClasses()) {
                 clazz.setTeacher(null);
-                classDAO.saveAndFlush(clazz);
+                classRepo.saveAndFlush(clazz);
             }
         }
 
-        userDAO.delete(id);
+        userRepo.delete(id);
         return Responses.USER_DELETED;
 
     }

@@ -1,4 +1,4 @@
-package be.lambdaware.dao;
+package be.lambdaware.repos;
 
 
 import be.lambdaware.models.PAVScore;
@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface PAVScoreDAO extends JpaRepository<PAVScore, Long> {
+public interface PAVScoreRepo extends JpaRepository<PAVScore, Long> {
 
 
     PAVScore findById(long id);

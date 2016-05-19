@@ -5,7 +5,7 @@
 
     <ul class="nav nav-tabs">
         <li role="presentation" data-ng-class="{active: currentTab === Tab.STUDENT}"><a href="" data-ng-click="switchTab(Tab.STUDENT)">Leerlingen</a></li>
-        <li role="presentation" data-ng-class="{active: currentTab === Tab.CLASS_TOPIC}"><a href="" data-ng-click="switchTab(Tab.CLASS_TOPIC)">Vakthema's</a></li>
+        <li role="presentation" data-ng-class="{hidden: classType == 'BGV', active: currentTab === Tab.CLASS_TOPIC}"><a href="" data-ng-click="switchTab(Tab.CLASS_TOPIC)">Vakthema's</a></li>
         <li role="presentation" data-ng-class="{active: currentTab === Tab.DETAIL}"><a href="" data-ng-click="switchTab(Tab.DETAIL)">Details</a></li>
     </ul>
 

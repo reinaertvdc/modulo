@@ -1,6 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.*;
+import be.lambdaware.repos.*;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
 import be.lambdaware.response.Responses;
@@ -21,28 +21,28 @@ public class ScoreController {
 
     private static Logger log = Logger.getLogger(CertificateController.class);
     @Autowired
-    CertificateDAO certificateDAO;
+    CertificateRepo certificateRepo;
     @Autowired
-    StudentInfoDAO studentInfoDAO;
+    StudentInfoRepo studentInfoRepo;
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
     @Autowired
-    CourseTopicDAO courseTopicDAO;
+    CourseTopicRepo courseTopicRepo;
 
 
     @Autowired
-    BGVScoreDAO bgvScoreDAO;
+    BGVScoreRepo bgvScoreRepo;
     @Autowired
-    PAVScoreDAO pavScoreDAO;
+    PAVScoreRepo pavScoreRepo;
     @Autowired
-    TaskScoreDAO taskScoreDAO;
+    TaskScoreRepo taskScoreRepo;
 
     @Autowired
-    CompetenceDAO competenceDAO;
+    CompetenceRepo competenceRepo;
     @Autowired
-    ObjectiveDAO objectiveDAO;
+    ObjectiveRepo objectiveRepo;
 
     @Autowired
     APIAuthentication authentication;
@@ -58,7 +58,7 @@ public class ScoreController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(userId);
+        User user = userRepo.findById(userId);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -70,7 +70,7 @@ public class ScoreController {
 
         if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
 
-        List<BGVScore> bgvScores = bgvScoreDAO.findAllByStudentInfoOrderByWeekAsc(info);
+        List<BGVScore> bgvScores = bgvScoreRepo.findAllByStudentInfoOrderByWeekAsc(info);
 
         if (bgvScores.size() == 0) return Responses.BGV_SCORES_NOT_FOUND;
 
@@ -84,7 +84,7 @@ public class ScoreController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(userId);
+        User user = userRepo.findById(userId);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
@@ -93,7 +93,7 @@ public class ScoreController {
 
         if (info == null) return Responses.STUDENT_INFO_NOT_FOUND;
 
-        List<PAVScore> pavScores = pavScoreDAO.findAllByStudentInfoOrderByWeekAsc(info);
+        List<PAVScore> pavScores = pavScoreRepo.findAllByStudentInfoOrderByWeekAsc(info);
 
         if (pavScores.size() == 0) return Responses.PAV_SCORES_NOT_FOUND;
 
@@ -107,12 +107,12 @@ public class ScoreController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.findById(userId);
+        User user = userRepo.findById(userId);
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
         // get all tasks: first all without upload, then all with upload; both sorted on deadline
-        List<TaskScore> taskScores = taskScoreDAO.findAllByUserOrderByTaskDeadlineAsc(user);
+        List<TaskScore> taskScores = taskScoreRepo.findAllByUserOrderByTaskDeadlineAsc(user);
         List<TaskScore> uploaded = new ArrayList<TaskScore>();
         List<TaskScore> notUploaded = new ArrayList<TaskScore>();
         for (TaskScore score : taskScores) {
@@ -135,16 +135,16 @@ public class ScoreController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.getOne(userId);
+        User user = userRepo.getOne(userId);
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
-        Competence competence = competenceDAO.findById(competenceId);
+        Competence competence = competenceRepo.findById(competenceId);
         if (competence == null) return Responses.COMPETENCE_NOT_FOUND;
 
         BGVScore newBgvScore = new BGVScore(bgvScore.getScore(), bgvScore.getWeek(), bgvScore.getRemarks());
         newBgvScore.setCompetence(competence);
         newBgvScore.setStudentInfo(user.getStudentInfo());
-        bgvScoreDAO.saveAndFlush(newBgvScore);
+        bgvScoreRepo.saveAndFlush(newBgvScore);
 
         return new ResponseEntity<>(newBgvScore, HttpStatus.OK);
     }
@@ -156,19 +156,19 @@ public class ScoreController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin() && !authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        User user = userDAO.getOne(userId);
+        User user = userRepo.getOne(userId);
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
-        CourseTopic courseTopic = courseTopicDAO.findById(courseTopicId);
+        CourseTopic courseTopic = courseTopicRepo.findById(courseTopicId);
         if (courseTopic == null) return Responses.COURSE_TOPIC_NOT_FOUND;
 
-        Objective objective = objectiveDAO.findById(objectiveId);
+        Objective objective = objectiveRepo.findById(objectiveId);
         if (objective == null) return Responses.OBJECTIVE_NOT_FOUND;
 
         PAVScore newPavScore = new PAVScore(pavScore.getScore(), pavScore.getWeek(), pavScore.getRemarks());
         newPavScore.setObjective(objective);
         newPavScore.setStudentInfo(user.getStudentInfo());
-        pavScoreDAO.saveAndFlush(newPavScore);
+        pavScoreRepo.saveAndFlush(newPavScore);
 
         return new ResponseEntity<>(newPavScore, HttpStatus.OK);
     }

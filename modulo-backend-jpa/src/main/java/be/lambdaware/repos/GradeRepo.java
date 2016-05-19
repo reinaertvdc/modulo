@@ -1,4 +1,4 @@
-package be.lambdaware.dao;
+package be.lambdaware.repos;
 
 
 import be.lambdaware.models.Grade;
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface GradeDAO extends JpaRepository<Grade, Long> {
+public interface GradeRepo extends JpaRepository<Grade, Long> {
 
 
     Grade findById(long id);

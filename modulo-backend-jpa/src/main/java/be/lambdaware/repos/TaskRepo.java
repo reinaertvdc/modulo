@@ -1,4 +1,4 @@
-package be.lambdaware.dao;
+package be.lambdaware.repos;
 
 import be.lambdaware.models.Clazz;
 import be.lambdaware.models.Task;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Transactional
-public interface TaskDAO extends JpaRepository<Task, Long> {
+public interface TaskRepo extends JpaRepository<Task, Long> {
 
     Task findById(long id);
 

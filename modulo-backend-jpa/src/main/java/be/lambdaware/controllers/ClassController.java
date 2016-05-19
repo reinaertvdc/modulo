@@ -1,6 +1,6 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.*;
+import be.lambdaware.repos.*;
 import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.*;
@@ -27,15 +27,15 @@ public class ClassController {
 
     private static Logger log = Logger.getLogger(ClassController.class);
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
     @Autowired
-    CertificateDAO certificateDAO;
+    CertificateRepo certificateRepo;
     @Autowired
-    GradeDAO gradeDAO;
+    GradeRepo gradeRepo;
     @Autowired
-    StudentInfoDAO studentInfoDAO;
+    StudentInfoRepo studentInfoRepo;
     @Autowired
     APIAuthentication authentication;
 
@@ -49,7 +49,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        List<Clazz> classes = classDAO.findAll();
+        List<Clazz> classes = classRepo.findAll();
 
         if (classes.size() == 0) return Responses.CLASSES_NOT_FOUND;
         return new ResponseEntity<>(classes, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        List<Clazz> classes = classDAO.findAllByType(type);
+        List<Clazz> classes = classRepo.findAllByType(type);
 
         if (classes.size() == 0) return Responses.CLASSES_NOT_FOUND;
         return new ResponseEntity<>(classes, HttpStatus.OK);
@@ -73,7 +73,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
         return new ResponseEntity<>(clazz, HttpStatus.OK);
@@ -85,7 +85,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
@@ -100,7 +100,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
@@ -116,7 +116,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
@@ -132,7 +132,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
@@ -148,7 +148,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
@@ -164,7 +164,7 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
 
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
@@ -184,14 +184,14 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        User teacher = userDAO.findById(teacherId);
+        User teacher = userRepo.findById(teacherId);
 
         if(teacher == null)
             return Responses.USERS_NOT_FOUND;
         if(teacher.getRole() != UserRole.TEACHER)
             return Responses.USER_NOT_TEACHER;
 
-        Certificate certificate = certificateDAO.findById(certificateId);
+        Certificate certificate = certificateRepo.findById(certificateId);
         if(certificate == null)
             return Responses.CERTIFICATE_NOT_FOUND;
 
@@ -201,7 +201,7 @@ public class ClassController {
         Clazz newClazz = new Clazz(clazz.getName(), clazz.getType());
         newClazz.setTeacher(teacher);
         newClazz.setCertificate(certificate);
-        classDAO.saveAndFlush(newClazz);
+        classRepo.saveAndFlush(newClazz);
 
         return new ResponseEntity<>(newClazz, HttpStatus.OK);
     }
@@ -212,14 +212,14 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        User teacher = userDAO.findById(teacherId);
+        User teacher = userRepo.findById(teacherId);
 
         if(teacher == null)
             return Responses.USERS_NOT_FOUND;
         if(teacher.getRole() != UserRole.TEACHER)
             return Responses.USER_NOT_TEACHER;
 
-        Grade grade = gradeDAO.findById(gradeId);
+        Grade grade = gradeRepo.findById(gradeId);
         if(grade == null)
             return Responses.GRADE_NOT_FOUND;
 
@@ -229,7 +229,7 @@ public class ClassController {
         Clazz newClazz = new Clazz(clazz.getName(), clazz.getType());
         newClazz.setTeacher(teacher);
         newClazz.setGrade(grade);
-        classDAO.saveAndFlush(newClazz);
+        classRepo.saveAndFlush(newClazz);
 
         return new ResponseEntity<>(newClazz, HttpStatus.OK);
     }
@@ -240,17 +240,17 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
-        User user = userDAO.findById(studentId);
+        User user = userRepo.findById(studentId);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
         if (!clazz.getStudents().contains(user)) {
             clazz.getStudents().add(user);
-            classDAO.saveAndFlush(clazz);
+            classRepo.saveAndFlush(clazz);
         }
         else{
             log.info("Student with ID: " + user.getId() + " already in class");
@@ -264,14 +264,14 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
-        Certificate certificate = certificateDAO.findById(certificateId);
+        Certificate certificate = certificateRepo.findById(certificateId);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
-        List<StudentInfo> studentInfoList = studentInfoDAO.findAllByCertificate(certificate);
+        List<StudentInfo> studentInfoList = studentInfoRepo.findAllByCertificate(certificate);
 
         if (studentInfoList.size() == 0) return Responses.STUDENT_INFO_NOT_FOUND;
 
@@ -289,7 +289,7 @@ public class ClassController {
 
                 if (!clazz.getStudents().contains(student)) {
                     clazz.getStudents().add(student);
-                    classDAO.saveAndFlush(clazz);
+                    classRepo.saveAndFlush(clazz);
                 }
             }
         }
@@ -303,16 +303,16 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
-        User teacher = userDAO.findById(teacherId);
+        User teacher = userRepo.findById(teacherId);
 
         if (teacher == null) return Responses.USER_NOT_FOUND;
         if (teacher.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
 
         clazz.setTeacher(teacher);
-        classDAO.saveAndFlush(clazz);
+        classRepo.saveAndFlush(clazz);
 
         return Responses.CLASS_ADDED_TEACHER;
     }
@@ -329,10 +329,10 @@ public class ClassController {
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
 
-        Clazz databseClazz = classDAO.findById(clazz.getId());
+        Clazz databseClazz = classRepo.findById(clazz.getId());
         databseClazz.setName(clazz.getName());
 
-        classDAO.saveAndFlush(databseClazz);
+        classRepo.saveAndFlush(databseClazz);
 
         return new ResponseEntity<>(databseClazz, HttpStatus.OK);
     }
@@ -349,13 +349,13 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
         clazz.clearStudents();
-        classDAO.saveAndFlush(clazz);
+        classRepo.saveAndFlush(clazz);
 
-        classDAO.delete(clazz);
+        classRepo.delete(clazz);
 
 
         return Responses.CLASS_DELETED;
@@ -367,20 +367,20 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
-        User student = userDAO.findById(studentId);
+        User student = userRepo.findById(studentId);
 
         if (student == null) return Responses.USER_NOT_FOUND;
         if (student.getRole() != UserRole.STUDENT) return Responses.USER_NOT_STUDENT;
 
         if(clazz.getStudents().contains(student)){
             clazz.getStudents().remove(student);
-            classDAO.saveAndFlush(clazz);
+            classRepo.saveAndFlush(clazz);
 
             student.getClasses().remove(clazz);
-            userDAO.saveAndFlush(student);
+            userRepo.saveAndFlush(student);
         }
 
         return Responses.CLASS_DELETED_STUDENT;
@@ -392,14 +392,14 @@ public class ClassController {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
 
-        Clazz clazz = classDAO.findById(id);
+        Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
 
-        Certificate certificate = certificateDAO.findById(certificateId);
+        Certificate certificate = certificateRepo.findById(certificateId);
 
         if (certificate == null) return Responses.CERTIFICATE_NOT_FOUND;
 
-        List<StudentInfo> studentInfoList = studentInfoDAO.findAllByCertificate(certificate);
+        List<StudentInfo> studentInfoList = studentInfoRepo.findAllByCertificate(certificate);
 
         if (studentInfoList.size() == 0) return Responses.STUDENT_INFO_NOT_FOUND;
 
@@ -417,7 +417,7 @@ public class ClassController {
 
                 if (clazz.getStudents().contains(student)) {
                     clazz.getStudents().remove(student);
-                    classDAO.saveAndFlush(clazz);
+                    classRepo.saveAndFlush(clazz);
                 }
             }
         }

@@ -1,10 +1,9 @@
 package be.lambdaware.controllers;
 
-import be.lambdaware.dao.ClassDAO;
-import be.lambdaware.dao.TaskDAO;
-import be.lambdaware.dao.TaskScoreDAO;
-import be.lambdaware.dao.UserDAO;
-import be.lambdaware.enums.ClassType;
+import be.lambdaware.repos.ClassRepo;
+import be.lambdaware.repos.TaskRepo;
+import be.lambdaware.repos.TaskScoreRepo;
+import be.lambdaware.repos.UserRepo;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.Clazz;
 import be.lambdaware.models.Task;
@@ -39,13 +38,13 @@ import java.util.zip.ZipOutputStream;
 public class TaskController {
 
     @Autowired
-    TaskDAO taskDAO;
+    TaskRepo taskRepo;
     @Autowired
-    TaskScoreDAO taskScoreDAO;
+    TaskScoreRepo taskScoreRepo;
     @Autowired
-    UserDAO userDAO;
+    UserRepo userRepo;
     @Autowired
-    ClassDAO classDAO;
+    ClassRepo classRepo;
 
     @Autowired
     APIAuthentication authentication;
@@ -61,7 +60,7 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        Task task = taskDAO.findById(id);
+        Task task = taskRepo.findById(id);
 
         if (task == null) return Responses.TASK_NOT_FOUND;
         return new ResponseEntity<>(task, HttpStatus.OK);
@@ -76,7 +75,7 @@ public class TaskController {
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         // get all PAV classes for this teacher
-        User user = userDAO.findById(teacher);
+        User user = userRepo.findById(teacher);
 
         if (user == null) return Responses.USER_NOT_FOUND;
         if (user.getRole() != UserRole.TEACHER) return Responses.USER_NOT_TEACHER;
@@ -87,7 +86,7 @@ public class TaskController {
         // get tasks associated to each clazz
         List<Task> teachedTasks = new ArrayList<Task>();
         for (Clazz clazz : classes) {
-            teachedTasks.addAll(taskDAO.findAllByClazz(clazz));
+            teachedTasks.addAll(taskRepo.findAllByClazz(clazz));
         }
         teachedTasks.sort(new DateComparator());
 
@@ -101,10 +100,10 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        Task task = taskDAO.findById(taskId);
+        Task task = taskRepo.findById(taskId);
         if (task == null) return Responses.TASK_NOT_FOUND;
 
-        List<TaskScore> scores = taskScoreDAO.findAllByTask(task);
+        List<TaskScore> scores = taskScoreRepo.findAllByTask(task);
         scores.sort(new NameComparator());
 
         return new ResponseEntity<>(scores, HttpStatus.OK);
@@ -116,7 +115,7 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!(authentication.isTeacher() || authentication.isStudent())) return Responses.UNAUTHORIZED;
 
-        TaskScore score = taskScoreDAO.findById(taskScoreId);
+        TaskScore score = taskScoreRepo.findById(taskScoreId);
         if (score == null) return Responses.TASKSCORE_NOT_FOUND;
 
         File file = new File("uploads/" + score.getId());  // the way the file is stored on server
@@ -141,14 +140,14 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        Task task = taskDAO.findById(taskId);
+        Task task = taskRepo.findById(taskId);
         if (task == null) return Responses.TASK_NOT_FOUND;
 
         // create the zipfile
         File zipFile = new File(task.getName() + ".zip");
         FileOutputStream fos = new FileOutputStream(zipFile);
         ZipOutputStream zos = new ZipOutputStream(fos);
-        List<TaskScore> scores = taskScoreDAO.findAllByTask(task);
+        List<TaskScore> scores = taskScoreRepo.findAllByTask(task);
         for (TaskScore score : scores) {
             if (score.getFileName() != null)
                 addToZipFile(score, zos);
@@ -179,21 +178,21 @@ public class TaskController {
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         try {
-            taskDAO.save(task);
+            taskRepo.save(task);
         } catch (Exception e) {
             System.out.println("bad request");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        taskDAO.flush();
+        taskRepo.flush();
 
-        Clazz clazz = classDAO.findById(task.getClazz().getId());  // manually get clazz in order to get all students
+        Clazz clazz = classRepo.findById(task.getClazz().getId());  // manually get clazz in order to get all students
 
         for (User student : clazz.getStudents()) {
             TaskScore score = new TaskScore();
             score.setGradedDate(task.getDeadline());
             score.setUser(student);
             score.setTask(task);
-            taskScoreDAO.saveAndFlush(score);
+            taskScoreRepo.saveAndFlush(score);
         }
 
         return new ResponseEntity<>(task, HttpStatus.OK);
@@ -207,10 +206,10 @@ public class TaskController {
 
         // only update 'score' and 'remarks'
         for (TaskScore score : scores) {
-            TaskScore origScore = taskScoreDAO.findById(score.getId());
+            TaskScore origScore = taskScoreRepo.findById(score.getId());
             origScore.setScore(score.getScore());
             origScore.setRemarks(score.getRemarks());
-            taskScoreDAO.saveAndFlush(origScore);
+            taskScoreRepo.saveAndFlush(origScore);
         }
 
         return new ResponseEntity<>(scores, HttpStatus.OK);
@@ -223,7 +222,7 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
-        TaskScore score = taskScoreDAO.findById(taskScoreId);
+        TaskScore score = taskScoreRepo.findById(taskScoreId);
         if (score == null) return Responses.TASKSCORE_NOT_FOUND;
 
         // only allow upload if before deadline
@@ -241,7 +240,7 @@ public class TaskController {
                 stream.close();
 
                 score.setFileName(file.getOriginalFilename());  // save original filename
-                taskScoreDAO.saveAndFlush(score);
+                taskScoreRepo.saveAndFlush(score);
                 return Responses.FILE_UPLOADED;
             } catch (Exception e) {
                 return Responses.FILE_NOT_UPLOADED;
@@ -263,34 +262,34 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        Task oldTask = taskDAO.findById(task.getId());
+        Task oldTask = taskRepo.findById(task.getId());
 
         // if class changed, then delete old TaskScores and create new empty ones
         if (oldTask.getClazz().getId() != task.getClazz().getId()) {
-            taskScoreDAO.removeByTask(oldTask);  // remove old scores
+            taskScoreRepo.removeByTask(oldTask);  // remove old scores
 
             // create scores for new class
-            Clazz clazz = classDAO.findById(task.getClazz().getId());
+            Clazz clazz = classRepo.findById(task.getClazz().getId());
             for (User student : clazz.getStudents()) {
                 TaskScore score = new TaskScore();
                 score.setGradedDate(task.getDeadline());
                 score.setUser(student);
                 score.setTask(task);
-                taskScoreDAO.saveAndFlush(score);
+                taskScoreRepo.saveAndFlush(score);
             }
         }
         // update graded date
         else {
-            List<TaskScore> taskScores = taskScoreDAO.findAllByTask(oldTask);
+            List<TaskScore> taskScores = taskScoreRepo.findAllByTask(oldTask);
             for (TaskScore score : taskScores) {
                 score.setGradedDate(task.getDeadline());
             }
-            taskScoreDAO.save(taskScores);
-            taskScoreDAO.flush();
+            taskScoreRepo.save(taskScores);
+            taskScoreRepo.flush();
         }
 
         // update actual task
-        taskDAO.saveAndFlush(task);
+        taskRepo.saveAndFlush(task);
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
@@ -302,7 +301,7 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isStudent()) return Responses.UNAUTHORIZED;
 
-        TaskScore score = taskScoreDAO.findById(taskScoreId);
+        TaskScore score = taskScoreRepo.findById(taskScoreId);
         if (score == null) return Responses.TASKSCORE_NOT_FOUND;
 
         // only allow reset if before deadline
@@ -312,7 +311,7 @@ public class TaskController {
             return Responses.TASK_UPLOAD_NOT_RESET;
 
         score.setFileName(null);
-        taskScoreDAO.saveAndFlush(score);
+        taskScoreRepo.saveAndFlush(score);
 
         return Responses.TASK_UPLOAD_RESET;
     }
@@ -329,13 +328,13 @@ public class TaskController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
-        Task task = taskDAO.findById(id);
+        Task task = taskRepo.findById(id);
         if (task == null) return Responses.TASK_NOT_FOUND;
 
         // delete all associated scores
-        taskScoreDAO.delete(task.getTaskScores());
+        taskScoreRepo.delete(task.getTaskScores());
 
-        taskDAO.delete(id);
+        taskRepo.delete(id);
         return Responses.TASK_DELETED;
     }
 

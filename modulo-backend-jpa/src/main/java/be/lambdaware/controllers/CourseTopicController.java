@@ -22,7 +22,7 @@ import java.util.List;
 @CrossOrigin
 public class CourseTopicController {
 
-    private static Logger log = Logger.getLogger(GradeController.class);
+    private static Logger log = Logger.getLogger(CourseTopicController.class);
     @Autowired
     CourseTopicDAO courseTopicDAO;
     @Autowired
@@ -33,6 +33,8 @@ public class CourseTopicController {
     UserDAO userDAO;
     @Autowired
     ObjectiveDAO objectiveDAO;
+    @Autowired
+    PAVScoreDAO pavScoreDAO;
 
     @Autowired
     APIAuthentication authentication;
@@ -168,10 +170,21 @@ public class CourseTopicController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
+        if (!authentication.isTeacher()  && !authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         CourseTopic courseTopic = courseTopicDAO.findById(id);
         if (courseTopic == null) return Responses.COURSE_TOPIC_NOT_FOUND;
+
+        CourseTopic topic = courseTopicDAO.findOne(id);
+        log.info("Trying to delete " + topic);
+        log.info("Course topic has " + topic.getPavScores().size() + " scores");
+
+        for(PAVScore score : topic.getPavScores()){
+            PAVScore pavScore = pavScoreDAO.getOne(score.getId());
+            pavScore.setStudentInfo(null);
+            log.info("Deleting " + pavScore);
+            pavScoreDAO.saveAndFlush(pavScore);
+        }
 
         courseTopicDAO.delete(id);
         return Responses.COURSE_TOPIC_DELETED;

@@ -1,12 +1,12 @@
 package be.lambdaware.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.json.PackageVersion;
-//import com.sun.deploy.net.proxy.pac.PACFunctions;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.sun.deploy.net.proxy.pac.PACFunctions;
 
 
 @Entity
@@ -51,7 +51,7 @@ public class CourseTopic {
     @JoinColumn(name = "grade_id")
     private Grade grade;
 
-    @OneToMany(mappedBy = "courseTopic")
+    @OneToMany(mappedBy = "courseTopic", orphanRemoval = true)
     @JsonIgnore
     private List<PAVScore> pavScores = new ArrayList<>();
 
@@ -182,11 +182,8 @@ public class CourseTopic {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", resit=" + resit +
-                ", objectives=" + objectives +
-                ", students=" + students +
                 ", clazz=" + clazz +
                 ", grade=" + grade +
-                ", pavScores=" + pavScores +
                 '}';
     }
 }

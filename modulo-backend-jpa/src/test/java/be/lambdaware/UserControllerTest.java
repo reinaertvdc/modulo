@@ -21,6 +21,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class UserControllerTest {
 
+    static {
+        System.setProperty("spring.datasource.url", "jdbc:postgresql://localhost:5432/modulo_test");
+    }
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 

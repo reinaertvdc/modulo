@@ -25836,6 +25836,13 @@ INSERT INTO public.grades (id, enabled, name) VALUES (3, true, '3e graad 3e leer
 
 
 
+<<<<<<< HEAD
+=======
+-- BGV scores
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 22081, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 22082, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 22083, 5);
+>>>>>>> d334ca516d4c8e045e16ba2ddd6700a3f736f889
 
 ----------------
 -- OBJECTIVES --

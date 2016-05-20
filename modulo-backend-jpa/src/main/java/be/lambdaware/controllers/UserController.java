@@ -201,7 +201,6 @@ public class UserController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
         User user = userRepo.findById(parentId);
 

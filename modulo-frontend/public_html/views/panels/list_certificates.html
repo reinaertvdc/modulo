@@ -2,6 +2,10 @@
     <!-- TODO create page -->
     <h3>Certificaten</h3>
 
+    <uib-alert ng-if="isAlertEmpty()" type="success" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
+
     <div>
         <div class="input-group">
             <input data-ng-model="certificateSearchKeyword" data-ng-change="searchCertificates()" type="text" class="form-control" placeholder="Zoeken...">

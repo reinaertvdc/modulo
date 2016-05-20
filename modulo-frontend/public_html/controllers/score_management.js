@@ -28,18 +28,25 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         }
         var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
         var goalIndex = 0;
-        for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
-            var competences = subCertificateCategories[categoryIndex].competences;
-            for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
-                $scope.studentScoresTable[goalIndex] = [];
-                for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    $scope.studentScoresTable[goalIndex][studentIndex] = {};
-                    $scope.studentScoresTable[goalIndex][studentIndex].score = $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week][competences[competenceIndex].id];
-                    $scope.studentScoresTable[goalIndex][studentIndex].competence = competences[competenceIndex].id;
-                    $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
+        if ($scope.visibleScores.schoolClass.type == 'BGV') {
+            for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
+                var competences = subCertificateCategories[categoryIndex].competences;
+                for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
+                    $scope.studentScoresTable[goalIndex] = [];
+                    for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
+                        $scope.studentScoresTable[goalIndex][studentIndex] = {};
+                        if (!$scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week]) {
+                            $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week] = [];
+                        }
+                        $scope.studentScoresTable[goalIndex][studentIndex].score = $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week][competences[competenceIndex].id];
+                        $scope.studentScoresTable[goalIndex][studentIndex].competence = competences[competenceIndex].id;
+                        $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
+                    }
+                    goalIndex++;
                 }
-                goalIndex++;
             }
+        } else {
+
         }
     };
 
@@ -63,15 +70,25 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                     }).success(function (subCertificates) {
                         subCertificates.forEach(function (subCertificate) {
                             clazz.modules.push(subCertificate);
-                            subCertificate.subCertificateCategories.forEach(function (category) {
-                                category.competences.forEach(function (competence) {
-                                });
-                            });
                         });
                     });
                 });
             } else {
-                // TODO download vakthema's
+                $http({
+                    method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/coursetopics',
+                    headers: {'X-auth': $cookies.get('auth')}
+                }).success(function (courseTopics) {
+                    courseTopics.forEach(function (courseTopic) {
+                        $http({
+                            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + courseTopic.id + '/objectives',
+                            headers: {'X-auth': $cookies.get('auth')}
+                        }).success(function (objectives) {
+                            objectives.forEach(function (objective) {
+                                clazz.modules.push(courseTopic);
+                            });
+                        });
+                    });
+                });
             }
             $http({
                 method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/students',
@@ -90,7 +107,11 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                             if (!tempStudent.scores[score.week]) {
                                 tempStudent.scores[score.week] = [];
                             }
-                            tempStudent.scores[score.week][score.competence.id] = score;
+                            if (schoolClass.type == 'BGV') {
+                                tempStudent.scores[score.week][score.competence.id] = score;
+                            } else {
+                                tempStudent.scores[score.week][score.objective.id] = score;
+                            }
                         });
                     });
                     clazz.students.push(tempStudent);

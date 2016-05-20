@@ -11,9 +11,9 @@
             </button>
             <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-school">
                 <li class="dropdown-header">BGV</li>
-                <li data-ng-repeat="clazz in bgvClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz; resetstudentScoresTable();">{{clazz.schoolClass.name}}</a></li>
+                <li data-ng-repeat="clazz in bgvClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz; visibleScores.module = null; resetstudentScoresTable();">{{clazz.schoolClass.name}}</a></li>
                 <li class="dropdown-header">PAV</li>
-                <li data-ng-repeat="clazz in pavClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz; resetstudentScoresTable();">{{clazz.schoolClass.name}}</a></li>
+                <li data-ng-repeat="clazz in pavClasses"><a href="" data-ng-click="visibleScores.schoolClass = clazz; visibleScores.module = null; resetstudentScoresTable();">{{clazz.schoolClass.name}}</a></li>
             </ul>
         </div>
 

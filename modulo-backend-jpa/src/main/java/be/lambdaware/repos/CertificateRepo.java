@@ -14,4 +14,5 @@ public interface CertificateRepo extends JpaRepository<Certificate, Long> {
     Certificate findById(long id);
 
     List<Certificate> findAllByEnabledOrderByNameAsc(boolean enabled);
+
 }

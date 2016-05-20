@@ -37,7 +37,7 @@ public class CourseTopic {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Objective> objectives = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinTable(name = "course_topic_students", joinColumns = @JoinColumn(name = "course_topic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> students = new ArrayList<>();

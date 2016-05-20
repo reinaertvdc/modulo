@@ -31,7 +31,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
     };
 
     $http({
-        method: 'GET', url: 'http://localhost:8080/user/id/' + $cookies.getObject('user').id + '/teaching',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'user/id/' + $cookies.getObject('user').id + '/teaching',
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {
@@ -60,7 +60,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.loadStudents = function (classId) {
         $http({
-            method: 'GET', url: 'http://localhost:8080/class/id/' + classId + '/students',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + classId + '/students',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             response.forEach(function (item) {
@@ -93,7 +93,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.loadCertificates = function (classId) {
         $http({
-            method: 'GET', url: 'http://localhost:8080/class/id/' + classId + '/certificate',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + classId + '/certificate',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $scope.loadSubcertificates(response.id);
@@ -102,7 +102,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.loadSubcertificates = function (certificateId) {
         $http({
-            method: 'GET', url: 'http://localhost:8080/certificate/id/' + certificateId + '/subcertificates',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'certificate/id/' + certificateId + '/subcertificates',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             response.forEach(function (item) {
@@ -240,11 +240,11 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
     $scope.getGrade = function () {
         if ($scope.selectedValues.subcertificate === null) {
             $http({
-                method: 'GET', url: 'http://localhost:8080/class/id/' + $scope.selectedValues.class.id + '/grade',
+                method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.selectedValues.class.id + '/grade',
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $http({
-                    method: 'GET', url: 'http://localhost:8080/grade/id/' + response.id+ '/objectives',
+                    method: 'GET', url: $scope.SERVER_ADDRESS + 'grade/id/' + response.id+ '/objectives',
                     headers: {'X-auth': $cookies.get("auth")}
                 }).success(function (response) {
                     $scope.goals = response;
@@ -264,7 +264,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
             $http({
                 method: 'GET',
-                url: 'http://localhost:8080/score/id/' + $scope.selectedValues.student.id + '/' + $scope.selectedValues.class.type.toLowerCase(),
+                url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.selectedValues.student.id + '/' + $scope.selectedValues.class.type.toLowerCase(),
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.scores = response;

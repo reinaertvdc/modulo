@@ -75,11 +75,11 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
     };
 
     $scope.downloadFile = function (id) {
-        $scope.execDownload('http://localhost:8080/task/download/' + id,
+        $scope.execDownload($scope.SERVER_ADDRESS + 'task/download/' + id,
             $scope.scores.get(id).scoreObj.fileName);
     };
     $scope.downloadAll = function () {
-        $scope.execDownload('http://localhost:8080/task/downloadAll/' + taskId,
+        $scope.execDownload($scope.SERVER_ADDRESS + 'task/downloadAll/' + taskId,
             $scope.task.name + '.zip');
     };
 
@@ -101,7 +101,7 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
 
         // send list of scores
         $http({
-            method: 'POST', url: 'http://localhost:8080/task/scores', data: scoresSend,
+            method: 'POST', url: $scope.SERVER_ADDRESS + 'task/scores', data: scoresSend,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $window.location.reload(true);
@@ -112,7 +112,7 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
 // ACTUAL ACTIONS ON LOADED PAGE
 // get task info
     $http({
-        method: 'GET', url: 'http://localhost:8080/task/id/' + taskId,
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'task/id/' + taskId,
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         $scope.task = response;
@@ -121,7 +121,7 @@ app.controller('TaskScoresController', function ($scope, $http, $window, $compil
 
 // get all taskscores
     $http({
-        method: 'GET', url: 'http://localhost:8080/task/scores/' + taskId,
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'task/scores/' + taskId,
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {

@@ -23,19 +23,19 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
 
 
     $http({
-        method: 'GET', url: 'http://localhost:8080/class/id/' + paramClass + '/students',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + paramClass + '/students',
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {
             $scope.addStudent(item);
         });
         $http({
-            method: 'GET', url: 'http://localhost:8080/class/id/' + paramClass + '/grade',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + paramClass + '/grade',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $scope.info.grade.id = response.id;
             $http({
-                method: 'GET', url: 'http://localhost:8080/grade/id/' + response.id + '/objectives',
+                method: 'GET', url: $scope.SERVER_ADDRESS + 'grade/id/' + response.id + '/objectives',
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 response.forEach(function (item) {
@@ -63,7 +63,7 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
             $scope.btnText = 'Opslaan';
 
             $http({
-                method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse,
+                method: 'GET', url: $scope.SERVER_ADDRESS + 'coursetopic/id/' + paramCourse,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.info.description = response.description;
@@ -90,7 +90,7 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
         });
 
         $http({
-            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse + '/students',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'coursetopic/id/' + paramCourse + '/students',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             response.forEach(function (item) {
@@ -103,7 +103,7 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
     $scope.setObjectives = function () {
 
         $http({
-            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse + '/objectives',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'coursetopic/id/' + paramCourse + '/objectives',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             response.forEach(function (item) {
@@ -114,7 +114,7 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
 
     $scope.setPAVScores = function () {
         $http({
-            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + paramCourse + '/pavscores',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'coursetopic/id/' + paramCourse + '/pavscores',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             if(response != undefined) {
@@ -150,7 +150,7 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
 
         if(paramCourse == $scope.location.PARAM_CREATE_NEW_COURSE_TOPIC_ID) {
             $http({
-                method: 'POST', url: 'http://localhost:8080/coursetopic/', data: $scope.info,
+                method: 'POST', url: $scope.SERVER_ADDRESS + 'coursetopic/', data: $scope.info,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.location.openPage($scope.location.MY_CLASSES);
@@ -160,7 +160,7 @@ app.controller('ManageCourseTopicController', function ($scope, $http, $window, 
         }else if(paramCourse) {
 
             $http({
-                method: 'PUT', url: 'http://localhost:8080/coursetopic/', data: $scope.info,
+                method: 'PUT', url: $scope.SERVER_ADDRESS + 'coursetopic/', data: $scope.info,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.location.openPage($scope.location.MY_CLASSES);

@@ -5,7 +5,7 @@ app.controller('ManageClassCourseTopicListController', function ($scope, $http, 
     $scope.courseTopics = new Map();
 
     $http({
-        method: 'GET', url: 'http://localhost:8080/class/id/' + paramClass + '/coursetopics',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + paramClass + '/coursetopics',
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {
@@ -37,7 +37,7 @@ app.controller('ManageClassCourseTopicListController', function ($scope, $http, 
     $scope.removeCourseTopicBackend = function (id) {
         $scope.removeCourseTopicFrontend(id);
         $http({
-            method: 'DELETE', url: 'http://localhost:8080/coursetopic/id/' + id,
+            method: 'DELETE', url: $scope.SERVER_ADDRESS + 'coursetopic/id/' + id,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $scope.refresh();

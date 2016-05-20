@@ -25883,9 +25883,9 @@ INSERT INTO public.classes_users (class_id, user_id) VALUES (4, 19);
 INSERT INTO public.classes_users (class_id, user_id) VALUES (1, 19);
 
 -- BGV scores
-INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 1, 5);
-INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 2, 5);
-INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 3, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 22081, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 22082, 5);
+INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 22083, 5);
 
 -- Objectives
 INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES (1, null, true, 'informatief lezen', 1);

@@ -71,9 +71,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             html += '<td><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
         else {
-            //with status modal pop-up
-            //html += '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
-            //without pop-up
             html += '<td ng-click="swapEnabled(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
 
@@ -117,7 +114,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             enabledOrDisabled = "disable";
 
         $http({
-            method: 'PUT', url: 'http://localhost:8080/user/id/' + user.id + '/' + enabledOrDisabled,
+            method: 'PUT', url: $scope.SERVER_ADDRESS + 'user/id/' + user.id + '/' + enabledOrDisabled,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             user.enabled = !user.enabled;
@@ -130,7 +127,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.removeUserBackend = function (id) {
-        $http.delete('http://localhost:8080/user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+        $http.delete($scope.SERVER_ADDRESS + 'user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
             $scope.removeUserFrontend(id);
         });
     };
@@ -155,27 +152,14 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         }, function () {
         });
     };
-
-    $scope.openStatusModal = function (id) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'views/panels/user_status_modal.html',
-            controller: 'StatusModalInstanceCtrl',
-            resolve: {}
-        });
-        $scope.swapId = id;
-        modalInstance.result.then(function () {
-            $scope.swapEnabled($scope.swapId)
-        }, function () {
-        });
-    };
+    
 
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {
         $compile(USER_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/user/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'user/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
             $scope.addUser(item);
         });

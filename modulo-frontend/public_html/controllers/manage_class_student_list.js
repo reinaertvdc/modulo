@@ -11,7 +11,7 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
 
     $scope.addStudent = function (student) {
-        $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'user/id/'+student.id+'/certificate', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
             $scope.removeStudentFrontend(student.id);
             student.certificate = response;
             $scope.students.set(student.id, student);
@@ -34,7 +34,7 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
 
     $scope.removeStudentBackend = function (id) {
         $http({
-            method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + id,
+            method: 'DELETE', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/student/' + id,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $scope.removeStudentFrontend(id);
@@ -56,7 +56,7 @@ app.controller('ManageClassStudentListController', function ($scope, $http, $com
         }
     };
 
-    $http.get('http://localhost:8080/class/id/'+$scope.classId+'/students', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'class/id/'+$scope.classId+'/students', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
         $scope.certificatesReady = response.length;
         response.forEach(function (item) {
             $scope.addStudent(item);

@@ -28,7 +28,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
     // ACTUAL ACTIONS ON LOADED PAGE
     // load all classes for this teacher
     $http({
-        method: 'GET', url: 'http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/teaching',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'user/id/' + $cookies.getObject("user").id + '/teaching',
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {
@@ -50,7 +50,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
         $scope.panelCaption = 'Nieuwe taak aanmaken';
         $scope.deadlineDate = new Date();
         if (dupId != null) {
-            $http.get('http://localhost:8080/task/id/' + dupId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            $http.get($scope.SERVER_ADDRESS + 'task/id/' + dupId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                 $scope.task = response;
                 $scope.deadlineDate = new Date($scope.task.deadline);
                 $scope.selectedPAVClass = $scope.task.clazz.name;
@@ -59,7 +59,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
     }
     // edit task
     else {
-        $http.get('http://localhost:8080/task/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'task/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             $scope.task = response;
             $scope.deadlineDate = new Date($scope.task.deadline);
             $scope.panelCaption = 'Taak bewerken: ' + $scope.task.name;
@@ -77,7 +77,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
             if(dupId != null)
                 $scope.task.id = null;
             $http({
-                method: 'POST', url: 'http://localhost:8080/task/', data: $scope.task,
+                method: 'POST', url: $scope.SERVER_ADDRESS + 'task/', data: $scope.task,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.location.openPage($scope.location.TASKS);
@@ -88,7 +88,7 @@ app.controller('EditTaskController', function ($scope, $http, $window, $compile,
 
         } else if (paramVal) {
             $http({
-                method: 'PUT', url: 'http://localhost:8080/task/', data: $scope.task,
+                method: 'PUT', url: $scope.SERVER_ADDRESS + 'task/', data: $scope.task,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.location.openPage($scope.location.TASKS);

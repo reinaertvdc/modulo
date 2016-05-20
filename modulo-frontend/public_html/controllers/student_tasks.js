@@ -85,7 +85,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
 
 
     $scope.downloadFile = function (id) {
-        $scope.execDownload('http://localhost:8080/task/download/' + id,
+        $scope.execDownload($scope.SERVER_ADDRESS + 'task/download/' + id,
             $scope.scores.get(id).scoreObj.fileName);
     };
 
@@ -104,7 +104,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
 
     $scope.removeUploadBackend = function (id) {
         $http({
-            method: 'PUT', url: 'http://localhost:8080/task/score/' + id + '/reset',
+            method: 'PUT', url: $scope.SERVER_ADDRESS + 'task/score/' + id + '/reset',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $window.location.reload(true);
@@ -146,7 +146,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
 
     $scope.uploadFile = function (id) {
         $http({
-            method: 'POST', url: 'http://localhost:8080/task/upload/' + id,
+            method: 'POST', url: $scope.SERVER_ADDRESS + 'task/upload/' + id,
             data: $scope.scores.get(id).fd,
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined, 'X-auth': $cookies.get("auth")}
@@ -162,7 +162,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
     // ACTUAL ACTIONS ON LOADED PAGE
     // get all tasks associated with current student
     $http({
-        method: 'GET', url: 'http://localhost:8080/score/id/' + $cookies.getObject("user").id + '/tasks',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + $cookies.getObject("user").id + '/tasks',
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {

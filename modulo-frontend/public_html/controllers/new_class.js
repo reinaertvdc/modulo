@@ -19,7 +19,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
             $scope.getCertificateStudents();
         };
 
-        $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
                 $scope.certificates[item.id] = item;
             });
@@ -37,7 +37,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
             $scope.getGradeStudents();
         };
 
-        $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
                 $scope.grades[item.id] = item;
             });
@@ -76,7 +76,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
     }
     $scope.getCertificateStudents = function(){
         $scope.resetPage();
-        $http.get('http://localhost:8080/certificate/id/' + $scope.certificateId + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'certificate/id/' + $scope.certificateId + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
                 $scope.students.set(item.id, item);
             });
@@ -86,7 +86,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
 
     $scope.getGradeStudents = function(){
         $scope.resetPage();
-        $http.get('http://localhost:8080/grade/id/' + $scope.gradeId + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'grade/id/' + $scope.gradeId + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
                 $scope.students.set(item.id, item);
             });
@@ -100,7 +100,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
         var i = 0;
         $scope.students.forEach(function (student, key) {
 
-            $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            $http.get($scope.SERVER_ADDRESS + 'user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                 var certificate = response;
                 if ($scope.certificateStudents.has(certificate.id)) {
                     $scope.certificateStudents.get(certificate.id).push(student);
@@ -228,7 +228,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
         var model = JSON.stringify($scope.class);
         if($scope.classType=="BGV" && $scope.checkCertificateId()){
             $http({
-                method: 'POST', url: 'http://localhost:8080/class/teacher/id/' + $cookies.getObject("user").id + "/certificate/id/" + $scope.certificateId, data: model,
+                method: 'POST', url: $scope.SERVER_ADDRESS + 'class/teacher/id/' + $cookies.getObject("user").id + "/certificate/id/" + $scope.certificateId, data: model,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.classId = response.id;
@@ -241,7 +241,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
         }
         else if($scope.classType=="PAV" && $scope.checkGradeId()){
             $http({
-                method: 'POST', url: 'http://localhost:8080/class/teacher/id/' + $cookies.getObject("user").id + "/grade/id/" + $scope.gradeId, data: model,
+                method: 'POST', url: $scope.SERVER_ADDRESS + 'class/teacher/id/' + $cookies.getObject("user").id + "/grade/id/" + $scope.gradeId, data: model,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $scope.classId = response.id;
@@ -257,7 +257,7 @@ app.controller('NewClassController', function ($scope, $http, $cookies) {
 
     $scope.addStudentsToClass = function(i){
         $http({
-            method: 'POST', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + $scope.studentsToAdd[i],
+            method: 'POST', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/student/' + $scope.studentsToAdd[i],
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             i++

@@ -6,11 +6,13 @@ app.controller('LogInController', function ($scope, $http, $base64, $cookies) {
         auth = $base64.encode(auth);
 
         $http({
-            method: 'GET', url: 'http://localhost:8080/auth',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'auth',
             headers: {'X-auth': auth }
         }).success(function (response) {
             $cookies.put('auth', auth);
             $cookies.putObject('user', response);
+
+            $scope.account.logIn();
         }).error(function (response, code){
             $scope.createAlertCookie('Ongeldig e-mailadres en/of wachtwoord. De ingegeven combinatie bestaat niet.');
         });

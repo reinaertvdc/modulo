@@ -28,7 +28,7 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
 
     $scope.removeTaskBackend = function (id) {
         $http({
-            method: 'DELETE', url: 'http://localhost:8080/task/id/' + id,
+            method: 'DELETE', url: $scope.SERVER_ADDRESS + 'task/id/' + id,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $scope.removeTaskFrontend(id);
@@ -70,7 +70,7 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
     // ACTUAL ACTIONS ON LOADED PAGE
     // get all tasks associated with current teacher
     $http({
-        method: 'GET', url: 'http://localhost:8080/task/teacher/' + $cookies.getObject("user").id,
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'task/teacher/' + $cookies.getObject("user").id,
         headers: {'X-auth': $cookies.get("auth")}
     }).success(function (response) {
         response.forEach(function (item) {

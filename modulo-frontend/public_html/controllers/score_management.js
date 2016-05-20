@@ -28,23 +28,30 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         }
         var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
         var goalIndex = 0;
-        for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
-            var competences = subCertificateCategories[categoryIndex].competences;
-            for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
-                $scope.studentScoresTable[goalIndex] = [];
-                for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    $scope.studentScoresTable[goalIndex][studentIndex] = {};
-                    $scope.studentScoresTable[goalIndex][studentIndex].score = $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week][competences[competenceIndex].id];
-                    $scope.studentScoresTable[goalIndex][studentIndex].competence = competences[competenceIndex].id;
-                    $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
+        if ($scope.visibleScores.schoolClass.type == 'BGV') {
+            for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
+                var competences = subCertificateCategories[categoryIndex].competences;
+                for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
+                    $scope.studentScoresTable[goalIndex] = [];
+                    for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
+                        $scope.studentScoresTable[goalIndex][studentIndex] = {};
+                        if (!$scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week]) {
+                            $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week] = [];
+                        }
+                        $scope.studentScoresTable[goalIndex][studentIndex].score = $scope.visibleScores.schoolClass.students[studentIndex].scores[$scope.visibleScores.week][competences[competenceIndex].id];
+                        $scope.studentScoresTable[goalIndex][studentIndex].competence = competences[competenceIndex].id;
+                        $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
+                    }
+                    goalIndex++;
                 }
-                goalIndex++;
             }
+        } else {
+
         }
     };
 
     $http({
-        method: 'GET', url: 'http://localhost:8080/user/id/'+ $cookies.getObject('user').id +'/teaching',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'user/id/'+ $cookies.getObject('user').id +'/teaching',
         headers: {'X-auth': $cookies.get('auth')}
     }).success(function (schoolClasses) {
         schoolClasses.forEach(function (schoolClass) {
@@ -54,27 +61,39 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
             clazz.modules = [];
             if (schoolClass.type == 'BGV') {
                 $http({
-                    method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/certificate',
+                    method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/'+ schoolClass.id +'/certificate',
                     headers: {'X-auth': $cookies.get('auth')}
                 }).success(function (certificate) {
                     $http({
-                        method: 'GET', url: 'http://localhost:8080/certificate/id/'+ certificate.id +'/subcertificates',
+                        method: 'GET', url: $scope.SERVER_ADDRESS + 'certificate/id/'+ certificate.id +'/subcertificates',
                         headers: {'X-auth': $cookies.get('auth')}
                     }).success(function (subCertificates) {
                         subCertificates.forEach(function (subCertificate) {
                             clazz.modules.push(subCertificate);
-                            subCertificate.subCertificateCategories.forEach(function (category) {
-                                category.competences.forEach(function (competence) {
-                                });
-                            });
                         });
                     });
                 });
             } else {
-                // TODO download vakthema's
+                $http({
+                    method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/coursetopics',
+                    headers: {'X-auth': $cookies.get('auth')}
+                }).success(function (courseTopics) {
+                    courseTopics.forEach(function (courseTopic) {
+                        clazz.modules.push(courseTopic);
+                        $http({
+                            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + courseTopic.id + '/objectives',
+                            headers: {'X-auth': $cookies.get('auth')}
+                        }).success(function (objectives) {
+                            objectives.forEach(function (objective) {
+                                console.log(objective);
+                                //clazz.modules.push(courseTopic);
+                            });
+                        });
+                    });
+                });
             }
             $http({
-                method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/students',
+                method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/'+ schoolClass.id +'/students',
                 headers: {'X-auth': $cookies.get('auth')}
             }).success(function (students) {
                 clazz.students = [];
@@ -83,14 +102,18 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                     tempStudent.student = student;
                     tempStudent.scores = [];
                     $http({
-                        method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/' + clazz.type.toLowerCase(),
+                        method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + student.id + '/' + clazz.type.toLowerCase(),
                         headers: {'X-auth': $cookies.get('auth')}
                     }).success(function (scores) {
                         scores.forEach(function (score) {
                             if (!tempStudent.scores[score.week]) {
                                 tempStudent.scores[score.week] = [];
                             }
-                            tempStudent.scores[score.week][score.competence.id] = score;
+                            if (schoolClass.type == 'BGV') {
+                                tempStudent.scores[score.week][score.competence.id] = score;
+                            } else {
+                                tempStudent.scores[score.week][score.objective.id] = score;
+                            }
                         });
                     });
                     clazz.students.push(tempStudent);
@@ -148,7 +171,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
                     if ($scope.studentScoresTable[goalIndex][studentIndex].selected) {
                         $http({
-                            method: 'POST', url: 'http://localhost:8080/score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence, data: model,
+                            method: 'POST', url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence, data: model,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {});
                         if (!$scope.studentScoresTable[goalIndex][studentIndex].score) {

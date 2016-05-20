@@ -57,8 +57,16 @@ app.controller('ListCertificatesController', function ($scope, $cookies, $http, 
 
     $scope.swapEnabled = function(id){
         var certificate = $scope.certificates.get(id);
-        certificate.enabled = !certificate.enabled;
-        $http.put('http://localhost:8080/certificate/id/' + id + '/' + (certificate.enabled ? 'enable' : 'disable'), null, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {});
+        $http.put($scope.SERVER_ADDRESS + 'certificate/id/' + id + '/' + (certificate.enabled ? 'disable' : 'enable'), null, {headers: {'X-auth': $cookies.get("auth")}})
+            .success(function (response) {
+                certificate.enabled = !certificate.enabled;
+
+                if(certificate.enabled)
+                    $scope.createAlertCookie('Certificaat actief gezet.');
+                else
+                    $scope.createAlertCookie('Certificaat inactief gezet.');
+
+            });
     };
 
     $scope.removeCertificate = function (id) {
@@ -73,7 +81,7 @@ app.controller('ListCertificatesController', function ($scope, $cookies, $http, 
         $compile(CERTIFICATES_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/certificate/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'certificate/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
             $scope.addCertificate(item);
         });

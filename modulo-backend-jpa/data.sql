@@ -25836,14 +25836,6 @@ INSERT INTO public.grades (id, enabled, name) VALUES (3, true, '3e graad 3e leer
 
 
 
-<<<<<<< HEAD
-=======
--- BGV scores
-INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 22081, 5);
-INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 22082, 5);
-INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 22083, 5);
->>>>>>> d334ca516d4c8e045e16ba2ddd6700a3f736f889
-
 ----------------
 -- OBJECTIVES --
 ----------------
@@ -26125,7 +26117,7 @@ INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id
     INSERT INTO public.classes_users (class_id, user_id) VALUES (5, 44);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (5, 46);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (5, 48);
-INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (6, 'Glaswerker', 'BGV', 116, null, 7);
+INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (6, 'Glaswerker', 'BGV', 116, null, 3);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (6, 50);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (6, 52);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (6, 54);
@@ -26170,7 +26162,7 @@ INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id
     INSERT INTO public.classes_users (class_id, user_id) VALUES (10, 49);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (10, 50);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (10, 51);
-INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (11, '7e jaar', 'PAV', null, 3, 7);
+INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id) VALUES (11, '7e jaar', 'PAV', null, 3, 3);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (11, 52);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (11, 53);
     INSERT INTO public.classes_users (class_id, user_id) VALUES (11, 54);

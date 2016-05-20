@@ -1,7 +1,11 @@
-app.controller('StudentProgressController', function ($scope, $http, $cookies, $compile) {
+app.controller('StudentProgressController', function ($scope, $http, $cookies, $compile, $timeout) {
     const HEADER_ELEMENT = document.getElementById('table-header');
     const SCORE_ELEMENT = document.getElementById('table-score-body');
     const WEEKS = 43;
+
+    $scope.scores = null;
+    $scope.goals = null;
+    $scope.tableRows = "";
 
     $scope.selectedValues = {
         class: null,
@@ -9,50 +13,91 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         subcertificate: null
     };
 
-    $scope.scores = null;
-    $scope.goals = null;
-    $scope.tableRows = "";
+    $scope.loadClassData = function () {
+        var requestURL = "";
+        if($cookies.getObject("user").role === UserType.STUDENT){
+            $scope.selectedValues.student = $cookies.getObject("user");
+            requestURL = $scope.SERVER_ADDRESS + '/user/id/' + $cookies.getObject('user').id + '/classes';
+        }else if($cookies.getObject("user").role === UserType.PARENT){
+            if($cookies.getObject("child") != null) {
+                requestURL = $scope.SERVER_ADDRESS + '/user/id/' + $cookies.getObject("child").id + '/classes';
+                $scope.selectedValues.student = $cookies.getObject("child");
+            }
+        }else{
+            requestURL = $scope.SERVER_ADDRESS + '/user/id/' + $cookies.getObject('user').id + '/teaching';
+        }
+        $http({
+            method: 'GET', url: requestURL,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            response.forEach(function (item) {
+                $scope.classes[item.id] = item;
+            });
+            var firstKey = (Object.keys($scope.classes)[0]);
+            $scope.selectedClass = $scope.classes[firstKey].name;
+        });
+    };
+
+    $scope.loadClassData();
+
+    $scope.$watch(function() { if($cookies.getObject("child") != undefined) {
+                                    return $cookies.getObject("child").id;
+                                }else
+                                    return;
+                                }, function(newValue) {
+        if($cookies.getObject("child") != undefined) {
+            $scope.refreshValues();
+            $scope.loadClassData();
+        }
+    });
+
+    $scope.refreshValues = function () {
+        $scope.selectedValues.class = null;
+        $scope.selectedValues.student = null;
+        $scope.selectedValues.subcertificate = null;
+        document.getElementById("subcertificateForm").style.display = "none";
+        document.getElementById("tableContainer").style.overflow = "hidden";
+        $scope.removeTableContent();
+    };
 
     // Classes
     $scope.classes = {};
     $scope.setSelectedClass = function (clazz) {
+        $scope.removeTableContent();
         $scope.selectedClass = clazz.name;
         $scope.selectedValues.class = clazz;
-        $scope.loadStudents(clazz.id);
+
         if(clazz.type === "BGV") {
-            document.getElementById("studentForm").style.display = "inline-block";
             document.getElementById("subcertificateForm").style.display = "inline-block";
-            $scope.loadSubcertificates($scope.selectedValues.class.id)
+            $scope.loadCertificates($scope.selectedValues.class.id)
         }else{
-            document.getElementById("studentForm").style.display = "inline-block";
+            $scope.subcertificates = {};
+            $scope.selectedValues.subcertificate = null;
             document.getElementById("subcertificateForm").style.display = "none";
         }
 
+        if($cookies.getObject("user").role === UserType.TEACHER) {
+            $scope.loadStudents(clazz.id);
+            document.getElementById("studentForm").style.display = "inline-block";
+        }else
+            $scope.getNewContent();
+
+
     };
-
-    $http({
-        method: 'GET', url: $scope.SERVER_ADDRESS + 'user/id/' + $cookies.getObject('user').id + '/teaching',
-        headers: {'X-auth': $cookies.get("auth")}
-    }).success(function (response) {
-        response.forEach(function (item) {
-            $scope.classes[item.id] = item;
-        });
-        var firstKey = (Object.keys($scope.classes)[0]);
-        $scope.selectedClass = $scope.classes[firstKey].name;
-    });
-
 
     // Student
     $scope.students = {};
     $scope.setSelectedStudent = function (student) {
         $scope.selectedStudent = student.firstName + " " + student.lastName;
         $scope.selectedValues.student = student;
+        $scope.getNewContent();
 
-        $scope.removeTableContent();
+    };
 
-        if ($scope.selectedValues.class.type === "PAV")
+    $scope.getNewContent = function () {
+        if ($scope.selectedValues.class.type === "PAV") {
             $scope.getScores();
-        else{
+        }else{
             if($scope.selectedValues.subcertificate !== null)
                 $scope.getScores();
         }
@@ -63,6 +108,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/' + classId + '/students',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
+            $scope.students = {};
             response.forEach(function (item) {
                 $scope.students[item.id] = item;
             });
@@ -80,7 +126,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         }
 
         $scope.scores = null;
-    }
+    };
 
     // subcertificates
     $scope.subcertificates = {};
@@ -105,6 +151,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             method: 'GET', url: $scope.SERVER_ADDRESS + 'certificate/id/' + certificateId + '/subcertificates',
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
+            $scope.subcertificates = {};
             response.forEach(function (item) {
                 $scope.subcertificates[item.id] = item;
             });
@@ -112,6 +159,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             $scope.selectedSubcertificates = $scope.subcertificates[firstKey].name;
         });
     };
+
 
     $scope.initHeader = function () {
         var html = '<tr><th></th>';
@@ -126,15 +174,9 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         element.outerHTML = html;
     };
 
-
-    // Update the Angular controls that have been added in the HTML
-    $scope.refresh = function () {
-        $compile(SCORE_ELEMENT)($scope);
-    };
-
-
-
+    // BGV
     $scope.loadBGVScoreMatrix = function () {
+        console.log("bgv");
         document.getElementById("tableContainer").style.overflow = "scroll";
         $scope.tableRows = "";
 
@@ -162,23 +204,6 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             '<td colspan="{{'+WEEKS+1+'}}" style="background-color: rgba(0,0,0,0.06); font-weight: bold; text-align: left;">' + name + '</td>';
 
         $scope.tableRows += '</tr>'
-    }
-
-
-    $scope.loadPAVScoreMatrix = function () {
-        document.getElementById("tableContainer").style.overflow = "auto";
-        $scope.tableRows = "";
-
-        $scope.goals.forEach(function (objective) {
-            $scope.createPAVRow(objective);
-        });
-
-        var element = document.createElement('tr');
-        SCORE_ELEMENT.appendChild(element);
-        element.outerHTML = $scope.tableRows;
-        $scope.refresh();
-        $scope.initHeader();
-
     };
 
     $scope.createBGVRow = function (competence) {
@@ -194,7 +219,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             for (i = 0; i < WEEKS; i++) {
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
-                    if (competence.name === item.competence.name && i === parseInt(item.week)) {
+                    if (competence.id === item.competence.id && i === parseInt(item.week)) {
                         hulp = '<td id="tableContent" tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Beschrijving: ' + item.remarks +'" >';
                         hulp += item.score;
                         return;
@@ -209,11 +234,28 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.tableRows += '</tr>'
     };
 
+    // PAV
+    $scope.loadPAVScoreMatrix = function () {
+        console.log("PAV");
+        document.getElementById("tableContainer").style.overflow = "auto";
+        $scope.tableRows = "";
+
+        $scope.goals.forEach(function (objective) {
+            $scope.createPAVRow(objective);
+        });
+
+        var element = document.createElement('tr');
+        SCORE_ELEMENT.appendChild(element);
+        element.outerHTML = $scope.tableRows;
+        $scope.refresh();
+        $scope.initHeader();
+
+    };
 
     $scope.createPAVRow = function (objective) {
         $scope.tableRows += '<tr>' +
             '<td  class="fixed">' + objective.name + '</td>';
-
+        
         if ($scope.scores === null) {
             for (i = 0; i < WEEKS; i++) {
                 $scope.tableRows += '<td></td>';
@@ -229,7 +271,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
                     }
                 });
                 if(hulp === '')
-                    hulp = '<td></td>'
+                    hulp = '<td></td>';
                 $scope.tableRows += hulp;
                 $scope.tableRows += '</td>';
             }
@@ -257,11 +299,9 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         }
     };
 
-
-
     $scope.getScores = function () {
+        $scope.scores = null;
         if ($scope.selectedValues.student !== null) {
-
             $http({
                 method: 'GET',
                 url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.selectedValues.student.id + '/' + $scope.selectedValues.class.type.toLowerCase(),
@@ -274,5 +314,11 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             });
         }
     }
+
+    // Update the Angular controls that have been added in the HTML
+    $scope.refresh = function () {
+        $compile(SCORE_ELEMENT)($scope);
+    };
+
 
 });

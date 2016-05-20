@@ -71,9 +71,6 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             html += '<td><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
         else {
-            //with status modal pop-up
-            //html += '<td ng-click="openStatusModal(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
-            //without pop-up
             html += '<td ng-click="swapEnabled(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
 
@@ -155,20 +152,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         }, function () {
         });
     };
-
-    $scope.openStatusModal = function (id) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'views/panels/user_status_modal.html',
-            controller: 'StatusModalInstanceCtrl',
-            resolve: {}
-        });
-        $scope.swapId = id;
-        modalInstance.result.then(function () {
-            $scope.swapEnabled($scope.swapId)
-        }, function () {
-        });
-    };
+    
 
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {

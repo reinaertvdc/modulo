@@ -2,74 +2,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
     // TODO finish controller
     $scope.SERVER_ADDRESS = 'http://localhost:8080/';
 
-    $scope.checkedChildren = false;
-
-    $scope.getChildren = function(){
-        $http.get('http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/children', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
-            response.forEach(function (item) {
-                $scope.children[item.id] = item;
-            });
-
-            if($cookies.getObject("child") != null){
-                $scope.selectedChildName = $cookies.getObject("child").firstName;
-            }
-            else {
-                var firstKey = (Object.keys($scope.children)[0]);
-                $scope.selectedChildName = $scope.children[firstKey].firstName;
-                $cookies.putObject("child", $scope.children[firstKey]);
-            }
-            $scope.checkedChildren = true;
-        });
-    }
-
-    $scope.checkChildrenLoop = function () {
-        if($scope.account.isLoggedIn()) {
-            $scope.getChildren();
-            setTimeout(function () {
-                if (!$scope.checkedChildren) {
-                    $scope.checkChildrenLoop();
-                }
-            }, (3 * 1000));
-        }
-    };
-        $scope.account = {
-            logIn: function (user) {
-                 $scope.fillUserAndChildren(user);
-            },
-            
-            isLoggedIn: function () {
-                var auth = $cookies.get("auth");
-                return  auth != null;
-            },
-
-            logOut: function () {
-                $cookies.putObject('user', null, {'expires': new Date()});
-                $cookies.put("auth", null, {'expires': new Date()});
-                $cookies.put("child", null, {'expires': new Date()});
-                $scope.userName = "";
-                $scope.userRole = "";
-            }
-        };
-
-    $scope.fillUserAndChildren = function(user){
-        $scope.userName = user.firstName + " " + user.lastName;
-        $scope.userRole = user.role;
-
-        if($scope.userRole ==  "PARENT") {
-            $scope.children = {};
-            $scope.setSelectedChild = function (child) {
-                $scope.selectedChildName = child.firstName;
-                $cookies.putObject("child", child);
-            };
-            $scope.checkChildrenLoop();
-        }
-    }
-
-        if($scope.account.isLoggedIn()){
-            var user = $cookies.getObject("user");
-            $scope.fillUserAndChildren(user);
-        }
-
+    $scope.loadPages = function(){
         $scope.getActiveMyClassesPanel = function () {
             if ($scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID)) {
                 if ($scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID) == $scope.location.PARAM_CREATE_NEW_CLASS_ID && $scope.location.getParameter($scope.location.PARAM_CLASS_TYPE)) {
@@ -227,24 +160,24 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
 
         $scope.testedBackendConnectionSuccessfully = false;
 
-    $scope.checkBackendConnection = function () {
-        var auth = 'ping:ping';
-        auth = $base64.encode(auth);
-        $http({
-            method: 'GET', url: $scope.SERVER_ADDRESS + 'auth',
-            headers: {'X-auth': auth}
-        }).success(function (response) {
-            $scope.isConnectedToBackend = true;
-            $scope.testedBackendConnectionSuccessfully = true;
-        }).error(function (response, code) {
-            if (code > 0) {
+        $scope.checkBackendConnection = function () {
+            var auth = 'ping:ping';
+            auth = $base64.encode(auth);
+            $http({
+                method: 'GET', url: $scope.SERVER_ADDRESS + 'auth',
+                headers: {'X-auth': auth}
+            }).success(function (response) {
                 $scope.isConnectedToBackend = true;
                 $scope.testedBackendConnectionSuccessfully = true;
-            } else {
-                $scope.isConnectedToBackend = false;
-            }
-        });
-    };
+            }).error(function (response, code) {
+                if (code > 0) {
+                    $scope.isConnectedToBackend = true;
+                    $scope.testedBackendConnectionSuccessfully = true;
+                } else {
+                    $scope.isConnectedToBackend = false;
+                }
+            });
+        };
 
         $scope.checkBackendConnectionLoop = function () {
             $scope.checkBackendConnection();
@@ -256,8 +189,8 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
             }, (3 * 1000));
         };
 
-    // enable to automatically check backend connection
-    //$scope.checkBackendConnectionLoop();
+        // enable to automatically check backend connection
+        //$scope.checkBackendConnectionLoop();
 
         $scope.userRoles = {"STUDENT": "Student", "TEACHER": "Leerkracht", "ADMIN": "Beheerder", "PARENT": "Ouder"};
         $scope.userRolesKeys = Object.keys($scope.userRoles);
@@ -312,5 +245,68 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
             };
             xhr.send();
         };
+
+    }
+
+    $scope.getChildren = function(){
+        $http.get('http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/children', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            response.forEach(function (item) {
+                $scope.children[item.id] = item;
+            });
+
+            if($cookies.getObject("child") != null){
+                $scope.selectedChildName = $cookies.getObject("child").firstName;
+            }
+            else {
+                var firstKey = (Object.keys($scope.children)[0]);
+                $scope.selectedChildName = $scope.children[firstKey].firstName;
+                $cookies.putObject("child", $scope.children[firstKey]);
+            }
+
+            $scope.loadPages();
+        });
+    }
+
+    $scope.account = {
+        logIn: function () {
+            $scope.fillUserAndChildren();
+        },
+
+        isLoggedIn: function () {
+            var auth = $cookies.get("auth");
+            return  auth != null;
+        },
+
+        logOut: function () {
+            $cookies.putObject('user', null, {'expires': new Date()});
+            $cookies.put("auth", null, {'expires': new Date()});
+            $cookies.put("child", null, {'expires': new Date()});
+            $scope.userName = "";
+            $scope.userRole = "";
+        }
+    };
+
+    $scope.fillUserAndChildren = function(){
+        var user = $cookies.getObject("user");
+        $scope.userName = user.firstName + " " + user.lastName;
+        $scope.userRole = user.role;
+
+        if($scope.userRole ==  "PARENT") {
+            $scope.children = {};
+            $scope.setSelectedChild = function (child) {
+                $scope.selectedChildName = child.firstName;
+                $cookies.putObject("child", child);
+            };
+            $scope.getChildren();
+        }else{
+            $scope.loadPages();
+        }
+    }
+
+    if ($scope.account.isLoggedIn()) {
+        $scope.fillUserAndChildren();
+    } else {
+        $scope.loadPages();
+    }
 
  });

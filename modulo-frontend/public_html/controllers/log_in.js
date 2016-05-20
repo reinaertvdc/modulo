@@ -12,7 +12,7 @@ app.controller('LogInController', function ($scope, $http, $base64, $cookies) {
             $cookies.put('auth', auth);
             $cookies.putObject('user', response);
 
-            $scope.account.logIn(response);
+            $scope.account.logIn();
         }).error(function (response, code){
             $scope.createAlertCookie('Ongeldig e-mailadres en/of wachtwoord. De ingegeven combinatie bestaat niet.');
         });

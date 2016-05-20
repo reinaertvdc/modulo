@@ -117,7 +117,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             enabledOrDisabled = "disable";
 
         $http({
-            method: 'PUT', url: 'http://localhost:8080/user/id/' + user.id + '/' + enabledOrDisabled,
+            method: 'PUT', url: $scope.SERVER_ADDRESS + 'user/id/' + user.id + '/' + enabledOrDisabled,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             user.enabled = !user.enabled;
@@ -130,7 +130,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.removeUserBackend = function (id) {
-        $http.delete('http://localhost:8080/user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+        $http.delete($scope.SERVER_ADDRESS + 'user/id/' + id, {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
             $scope.removeUserFrontend(id);
         });
     };
@@ -175,7 +175,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         $compile(USER_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/user/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'user/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
             $scope.addUser(item);
         });

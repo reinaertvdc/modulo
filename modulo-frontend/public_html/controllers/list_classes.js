@@ -68,7 +68,7 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
 
     $scope.removeClassBackend = function (id) {
         $http({
-            method: 'DELETE', url: 'http://localhost:8080/class/id/'+id,
+            method: 'DELETE', url: $scope.SERVER_ADDRESS + 'class/id/'+id,
             headers: {'X-auth': $cookies.get("auth")}
         }).success(function (response) {
             $scope.removeClassFrontend(id);
@@ -89,7 +89,7 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
         $compile(BGVCLASS_LIST_ELEMENT)($scope);
     };
 
-    $http.get('http://localhost:8080/user/id/' + $cookies.getObject("user").id + '/teaching', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'user/id/' + $cookies.getObject("user").id + '/teaching', {headers: {'X-Auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
             $scope.addClass(item)
         });

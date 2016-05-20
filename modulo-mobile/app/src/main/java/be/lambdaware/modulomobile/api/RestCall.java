@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
+import org.json.JSONException;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -30,6 +32,7 @@ public class RestCall extends AsyncTask<String, Void, String> {
 
         String webAddress = params[0];
         StringBuilder webResponse = new StringBuilder();
+        Log.i("REST","Executing request to : " + webAddress);
 
         try {
             URL url = new URL(webAddress);
@@ -56,6 +59,10 @@ public class RestCall extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String response) {
-        callback.onSuccess(response);
+        try {
+            callback.onSuccess(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -81,7 +81,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
 
     //PARENT SELECTION MODAL
     $scope.parents = [];
-    $http.get('http://localhost:8080/user/role/PARENT', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'user/role/PARENT', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
                 $scope.parents.push(item);
         });
@@ -116,7 +116,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         $scope.btnText = 'Aanmaken';
         $scope.panelCaption = 'Nieuwe gebruiker aanmaken';
 
-        $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
                 $scope.grades[item.id] = item;
             });
@@ -125,7 +125,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
             $scope.studentInfo.gradeId = $scope.grades[firstKey].id;
         });
 
-        $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
                 $scope.certificates[item.id] = item;
             });
@@ -141,7 +141,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     else if (paramVal) {
         $scope.btnText = 'Opslaan';
 
-        $http.get('http://localhost:8080/user/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'user/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             $scope.basicInfo = response;
             $scope.panelCaption = 'Gebruiker bewerken: ' + $scope.basicInfo.firstName + ' ' + $scope.basicInfo.lastName;
 
@@ -149,10 +149,10 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
             if ($scope.basicInfo.role == "STUDENT") {
                 $scope.studentInfo = response.studentInfo;
 
-                $http.get('http://localhost:8080/user/id/' + paramVal+'/gradeId', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $http.get($scope.SERVER_ADDRESS + 'user/id/' + paramVal+'/gradeId', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     $scope.studentInfo.gradeId = response;
 
-                    $http.get('http://localhost:8080/grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $http.get($scope.SERVER_ADDRESS + 'grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                         response.forEach(function (item) {
                             $scope.grades[item.id] = item;
                         });
@@ -160,17 +160,17 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
                     });
 
                 });
-                $http.get('http://localhost:8080/user/id/' + paramVal + '/certificateId', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $http.get($scope.SERVER_ADDRESS + 'user/id/' + paramVal + '/certificateId', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     $scope.studentInfo.certificateId = response;
 
-                    $http.get('http://localhost:8080/certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $http.get($scope.SERVER_ADDRESS + 'certificate/enabled/' + true, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                         response.forEach(function (item) {
                             $scope.certificates[item.id] = item;
                         });
                         $scope.selectedCert = $scope.certificates[$scope.studentInfo.certificateId].name;
                     });
                 });
-                $http.get('http://localhost:8080/user/id/' + paramVal + '/parent', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $http.get($scope.SERVER_ADDRESS + 'user/id/' + paramVal + '/parent', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     $scope.parentStr = response.firstName + ' ' + response.lastName;
                     $scope.studentInfo.parentId = response.id;
                 });
@@ -209,7 +209,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         if ($scope.basicInfo.role == 'STUDENT') {
             model.studentInfo = $scope.studentInfo;
             if($scope.studentInfo.parentId != null) {
-                $http.get('http://localhost:8080/user/id/' + $scope.studentInfo.parentId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $http.get($scope.SERVER_ADDRESS + 'user/id/' + $scope.studentInfo.parentId, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     model.parent = response;
                     $scope.createOrUpdateUser(model);
                 });
@@ -227,19 +227,19 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
 
         if (paramVal == 'nieuw') {
             $http({
-                method: 'POST', url: 'http://localhost:8080/user/', data: model,
+                method: 'POST', url: $scope.SERVER_ADDRESS + 'user/', data: model,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 if($scope.basicInfo.role == 'STUDENT') {
                     var user = response;
                     $http({
                         method: 'PUT',
-                        url: 'http://localhost:8080/certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
+                        url: $scope.SERVER_ADDRESS + 'certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
                         $http({
                             method: 'PUT',
-                            url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
+                            url: $scope.SERVER_ADDRESS + 'grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {
                             $scope.createAlertCookie('Gebruiker toegevoegd.');
@@ -254,19 +254,19 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
             });
         } else if (paramVal) {
             $http({
-                method: 'PUT', url: 'http://localhost:8080/user/', data: model,
+                method: 'PUT', url: $scope.SERVER_ADDRESS + 'user/', data: model,
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 if($scope.basicInfo.role == 'STUDENT') {
                     var user = response;
                     $http({
                         method: 'PUT',
-                        url: 'http://localhost:8080/certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
+                        url: $scope.SERVER_ADDRESS + 'certificate/id/' + $scope.studentInfo.certificateId + '/student/id/' + user.studentInfo.id,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
                         $http({
                             method: 'PUT',
-                            url: 'http://localhost:8080/grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
+                            url: $scope.SERVER_ADDRESS + 'grade/id/' + $scope.studentInfo.gradeId + '/student/id/' + user.studentInfo.id,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {
                             $scope.createAlertCookie('Gebruiker bewerkt.');

@@ -51,7 +51,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
     };
 
     $http({
-        method: 'GET', url: 'http://localhost:8080/user/id/'+ $cookies.getObject('user').id +'/teaching',
+        method: 'GET', url: $scope.SERVER_ADDRESS + 'user/id/'+ $cookies.getObject('user').id +'/teaching',
         headers: {'X-auth': $cookies.get('auth')}
     }).success(function (schoolClasses) {
         schoolClasses.forEach(function (schoolClass) {
@@ -61,11 +61,11 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
             clazz.modules = [];
             if (schoolClass.type == 'BGV') {
                 $http({
-                    method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/certificate',
+                    method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/'+ schoolClass.id +'/certificate',
                     headers: {'X-auth': $cookies.get('auth')}
                 }).success(function (certificate) {
                     $http({
-                        method: 'GET', url: 'http://localhost:8080/certificate/id/'+ certificate.id +'/subcertificates',
+                        method: 'GET', url: $scope.SERVER_ADDRESS + 'certificate/id/'+ certificate.id +'/subcertificates',
                         headers: {'X-auth': $cookies.get('auth')}
                     }).success(function (subCertificates) {
                         subCertificates.forEach(function (subCertificate) {
@@ -91,7 +91,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                 });
             }
             $http({
-                method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/students',
+                method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/'+ schoolClass.id +'/students',
                 headers: {'X-auth': $cookies.get('auth')}
             }).success(function (students) {
                 clazz.students = [];
@@ -100,7 +100,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                     tempStudent.student = student;
                     tempStudent.scores = [];
                     $http({
-                        method: 'GET', url: 'http://localhost:8080/score/id/' + student.id + '/' + clazz.type.toLowerCase(),
+                        method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + student.id + '/' + clazz.type.toLowerCase(),
                         headers: {'X-auth': $cookies.get('auth')}
                     }).success(function (scores) {
                         scores.forEach(function (score) {
@@ -169,7 +169,7 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                 for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
                     if ($scope.studentScoresTable[goalIndex][studentIndex].selected) {
                         $http({
-                            method: 'POST', url: 'http://localhost:8080/score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence, data: model,
+                            method: 'POST', url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence, data: model,
                             headers: {'X-auth': $cookies.get("auth")}
                         }).success(function (response) {});
                         if (!$scope.studentScoresTable[goalIndex][studentIndex].score) {

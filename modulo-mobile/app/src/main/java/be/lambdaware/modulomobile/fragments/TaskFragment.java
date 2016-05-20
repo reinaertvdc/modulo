@@ -11,20 +11,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Date;
 import java.util.ArrayList;
 
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.TaskListAdapter;
+import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.api.RestCall;
+import be.lambdaware.modulomobile.api.RestCallback;
 import be.lambdaware.modulomobile.models.Task;
 
 
-public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RestCallback {
 
     // This recyclerview will contain all the scores as cards.
     private RecyclerView rvRecylcerView;
-    private RecyclerView.Adapter scoreAdapter;
+    private RecyclerView.Adapter taskAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private RestCall restCall;
 
     private SwipeRefreshLayout srSwipeRefreshLayout;
 
@@ -40,29 +48,80 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         rvRecylcerView.setLayoutManager(layoutManager);
 
         ArrayList<Task> data = new ArrayList<>();
-        data.add(new Task("Opdracht 1", Date.valueOf("2016-05-02"), "", "Remarks", "Description", Task.TaskStatus.EMPTY));
-        data.add(new Task("Opdracht 2", Date.valueOf("2016-05-02"), "", "Remarks", "Description", Task.TaskStatus.EMPTY));
-        data.add(new Task("Opdracht 3", Date.valueOf("2016-05-02"), "", "Remarks", "Description", Task.TaskStatus.SUBMITTED));
-        data.add(new Task("Opdracht 4", Date.valueOf("2016-05-02"), "V", "Remarks", "Description", Task.TaskStatus.GRADED));
 
-        scoreAdapter = new TaskListAdapter(getContext(), data);
-        rvRecylcerView.setAdapter(scoreAdapter);
+
+        taskAdapter = new TaskListAdapter(getContext(), data);
+        rvRecylcerView.setAdapter(taskAdapter);
 
         srSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_task_refresh_layout);
         srSwipeRefreshLayout.setOnRefreshListener(this);
+
+        srSwipeRefreshLayout.setRefreshing(true);
+        loadTasks();
 
         return view;
     }
 
     @Override
     public void onRefresh() {
-        Log.i("GeneralFragment", "Refreshing list...");
-        //TODO implement refresh from database.
+        loadTasks();
+    }
+
+    private void loadTasks() {
+        restCall = new RestCall(this);
+        restCall.execute("http://10.0.2.2:8080/score/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/tasks");
+    }
+
+
+    @Override
+    public void onSuccess(String response) throws JSONException {
+        Log.i("Tasks", response);
         srSwipeRefreshLayout.setRefreshing(false);
+
+        JSONArray JSONArray = new JSONArray(response);
+
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        for (int i = 0; i < JSONArray.length(); i++) {
+            JSONObject scoreObject = JSONArray.getJSONObject(i);
+            JSONObject taskObject = scoreObject.getJSONObject("task");
+            JSONObject clazzObject = taskObject.getJSONObject("clazz");
+
+            Date deadline = Date.valueOf(taskObject.getString("deadline"));
+            String name = taskObject.getString("name");
+            String className = clazzObject.getString("name");
+            String score = scoreObject.getString("score");
+            String remarks = scoreObject.getString("remarks");
+            String fileName = scoreObject.getString("fileName");
+
+            String description = taskObject.getString("description");
+
+            Task.TaskStatus status = Task.TaskStatus.EMPTY;
+            if (!fileName.equals("null") && score.equals("null")) {
+                status = Task.TaskStatus.SUBMITTED;
+            }
+            if (!score.equals("null")) {
+                status = Task.TaskStatus.GRADED;
+            }
+
+            if (remarks.equals("null") || remarks.equals("")) remarks = "Geen opmerkingen.";
+            if (description.equals("null") || description.equals(""))
+                description = "Geen beschrijving.";
+            if (score.equals("null") || score.equals("")) score = "Geen score.";
+            if (fileName.equals("null") || fileName.equals("")) fileName = "Geen bestand.";
+
+            tasks.add(new Task(className + " " + name, deadline, score, remarks, description, status));
+        }
+
+        taskAdapter = new TaskListAdapter(getContext(), tasks);
+        rvRecylcerView.setAdapter(taskAdapter);
+
     }
 
     @Override
     public String toString() {
         return "TaskFragment";
     }
+
+
 }

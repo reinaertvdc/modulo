@@ -11,7 +11,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
     }
 
 
-    $http.get('http://localhost:8080/class/id/'+$scope.classId+'/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+    $http.get($scope.SERVER_ADDRESS + 'class/id/'+$scope.classId+'/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
         response.forEach(function (item) {
             $scope.studentsInClass.push(item.id);
         });
@@ -24,14 +24,14 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
     });
 
     $scope.getStudents = function(){
-        $http.get('http://localhost:8080/class/id/'+$scope.classId+'/type', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+        $http.get($scope.SERVER_ADDRESS + 'class/id/'+$scope.classId+'/type', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             $scope.classType = response;
 
             if($scope.classType == "BGV") {
-                $http.get('http://localhost:8080/class/id/' + $scope.classId + '/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $http.get($scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     var classCertificate = response;
 
-                    $http.get('http://localhost:8080/certificate/id/' + classCertificate.id + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $http.get($scope.SERVER_ADDRESS + 'certificate/id/' + classCertificate.id + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                         response.forEach(function (item) {
                             $scope.students.set(item.id, item);
                         });
@@ -40,10 +40,10 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                 });
             }
             else if($scope.classType == "PAV"){
-                $http.get('http://localhost:8080/class/id/' + $scope.classId + '/grade', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                $http.get($scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/grade', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                     var classGrade = response;
 
-                    $http.get('http://localhost:8080/grade/id/' + classGrade.id + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+                    $http.get($scope.SERVER_ADDRESS + 'grade/id/' + classGrade.id + '/students', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                         response.forEach(function (item) {
                             $scope.students.set(item.id, item);
                         });
@@ -60,7 +60,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
         var i = 0;
         $scope.students.forEach(function (student, key) {
 
-            $http.get('http://localhost:8080/user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
+            $http.get($scope.SERVER_ADDRESS + 'user/id/'+student.id+'/certificate', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
                 var certificate = response;
                 if ($scope.certificateStudents.has(certificate.id)) {
                     $scope.certificateStudents.get(certificate.id).push(student);
@@ -145,7 +145,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
             onNodeChecked: function (event, node) {
                 if(node.parent != null){
                     $http({
-                        method: 'POST', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + node.studentId,
+                        method: 'POST', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/student/' + node.studentId,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
                             if($scope.allSiblingsChecked(node)){
@@ -158,7 +158,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                 }
                 else{
                     $http({
-                        method: 'POST', url: 'http://localhost:8080/class/id/' + $scope.classId + '/students/certificate/id/' + node.certificateId,
+                        method: 'POST', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/students/certificate/id/' + node.certificateId,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
 
@@ -170,7 +170,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
             onNodeUnchecked: function (event, node) {
                 if(node.parent != null) {
                     $http({
-                        method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/student/' + node.studentId,
+                        method: 'DELETE', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/student/' + node.studentId,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
                             if($scope.allSiblingsChecked(node)){
@@ -183,7 +183,7 @@ app.controller('ManageClassMembersController', function ($scope, $http, $cookies
                 }
                 else{
                     $http({
-                        method: 'DELETE', url: 'http://localhost:8080/class/id/' + $scope.classId + '/students/certificate/id/' + node.certificateId,
+                        method: 'DELETE', url: $scope.SERVER_ADDRESS + 'class/id/' + $scope.classId + '/students/certificate/id/' + node.certificateId,
                         headers: {'X-auth': $cookies.get("auth")}
                     }).success(function (response) {
 

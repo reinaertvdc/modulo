@@ -1,5 +1,6 @@
 app.controller('MainController', function ($scope, $location, $base64, $cookies, $http) {
-    // TODO finish controller
+    $scope.SERVER_ADDRESS = 'http://localhost:8080/';
+
     $scope.account = {
         isLoggedIn: function () {
             return $cookies.get("auth") != null;
@@ -175,7 +176,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         var auth = 'ping:ping';
         auth = $base64.encode(auth);
         $http({
-            method: 'GET', url: 'http://localhost:8080/auth',
+            method: 'GET', url: $scope.SERVER_ADDRESS + 'auth',
             headers: {'X-auth': auth}
         }).success(function (response) {
             $scope.isConnectedToBackend = true;
@@ -200,7 +201,8 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         }, (3 * 1000));
     };
 
-    $scope.checkBackendConnectionLoop();
+    // enable to automatically check backend connection
+    //$scope.checkBackendConnectionLoop();
 
     $scope.userRoles = {"STUDENT": "Student", "TEACHER": "Leerkracht", "ADMIN": "Beheerder", "PARENT": "Ouder"};
     $scope.userRolesKeys = Object.keys($scope.userRoles);

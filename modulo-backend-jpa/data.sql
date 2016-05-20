@@ -25961,15 +25961,15 @@ INSERT INTO public.objectives (id, custom_name, enabled, name, grade_id) VALUES 
 -----------
 
 -- ADMINISTRATORS
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (1, 'admin@school.be', true, 'Pieter', 'Beheerder', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'ADMIN', 'MALE', null);
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (2, 'beheerder@school.be', true, 'Ada', 'Admin', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'ADMIN', 'FEMALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (1, 'pieter.goossens@tihh.be', true, 'Pieter', 'Goossens', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'ADMIN', 'MALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (2, 'emma.mertens@tihh.be', true, 'Emma', 'Mertens', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'ADMIN', 'FEMALE', null);
 
 -- TEACHERS
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (3, 'steven.put@school.be', true, 'Steven', 'Put', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'MALE', null);
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (4, 'dirk.stevens@school.be', true, 'Dirk', 'Stevens', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'MALE', null);
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (5, 'marina.vissers@school.be', true, 'Marina', 'Vissers', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'FEMALE', null);
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (6, 'elsa.vanherk@school.be', true, 'Elsa', 'Vanherk', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'FEMALE', null);
-INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (7, 'erik.sterckx@school.be', true, 'Erik', 'Sterckx', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'MALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (3, 'steven.jacobs@tihh.be', true, 'Steven', 'Jacobs', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'MALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (4, 'peter.desmet@tihh.be', true, 'Peter', 'De Smet', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'MALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (5, 'marina.vissers@tihh.be', true, 'Marina', 'Vissers', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'FEMALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (6, 'elsa.vanherk@tihh.be', true, 'Elsa', 'Vanherk', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'FEMALE', null);
+INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (7, 'erik.sterckx@tihh.be', true, 'Erik', 'Sterckx', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'TEACHER', 'MALE', null);
 
 -- PARENTS AND STUDENTS
 INSERT INTO public.users (id, email, enabled, first_name, last_name, password, role, sex, parent_id) VALUES (8, 'jdedoncker@telenet.be', true, 'Jan', 'De Doncker', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'PARENT', 'MALE', null);
@@ -26179,19 +26179,83 @@ INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id
 -------------------
 -- COURSE TOPICS --
 -------------------
---INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (1, '', 'Functionele tekstgeletterdheid', false, 11, 3);
---INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (2, '', 'Functionele kwantitatieve geletterdheid', false, 11, 3);
---INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (3, '', 'Functionele ict-geletterdheid', false, 11, 3);
---INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (4, '', 'Problemen oplossen', false, 11, 3);
---INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (5, '', 'Werken in teamverband', false, 11, 3);
-
-
-
-
-
-
-
-
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (1, 'De studenten voeren in de klas opzoekwerk uit naar de argumenten voor en tegen abortus. Vervolgens schrijven de studenten een verslag waarin ze deze argumenten tegen elkaar afwegen, hun eigen mening geven en deze motiveren.', 'Onderzoeksverslag abortus', false, 11, 3);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 75);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 76);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 77);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 78);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 79);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 80);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 59);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 58);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 57);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 56);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 55);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 54);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 53);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 52);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (2, 'De studenten krijgen teksten en statistische data over de Belgische populatie aangeboden, zoeken hieruit zelf de relevante informatie voor een gegeven opdracht en presenteren deze op een overzichtelijke manier.', 'Statistieken Belgische populatie', false, 11, 3);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (2, 81);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (2, 82);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (2, 83);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (2, 84);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (2, 85);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (2, 86);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 59);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 58);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 57);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 56);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 55);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 54);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 53);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 52);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (3, 'De studenten gebruiken de computer om informate op te zoeken over een zelfgekozen onderwerp en maken hierover vervolgens een goed gestructureerde presentatie in Microsoft Powerpoint.', 'Powerpointpresentatie onderwerp naar keuze', false, 11, 3);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (3, 87);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (3, 88);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (3, 89);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (3, 90);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (3, 91);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (3, 92);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 59);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 58);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 57);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 56);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 55);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 54);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 53);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (3, 52);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (4, 'De studenten maken een daguitstap naar Dinant Adventure, waar ze zowel lichamelijke proeven als denkproeven uitvoeren, zowel in teamverband als individueel, in de vorm van een outdoor challenge.', 'Excursie Dinant Adventure', false, 11, 3);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 93);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 94);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 95);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 96);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 97);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 98);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (4, 99);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 59);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 58);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 57);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 56);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 55);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 54);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 53);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (4, 52);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (5, 'De studenten vormen groepen van 4 of 5 personen, kiezen een moderne technologie uit (bv. smartphones, Internet of Things) en maken hierrond een verslag en presentatie, waarbij de nadruk ligt op onderlinge samenwerking en communicatie.', 'Groepswerk moderne technologie', false, 11, 3);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 100);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 101);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 102);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 103);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 104);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 105);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (5, 106);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 59);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 58);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 57);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 56);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 55);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 54);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 53);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 52);
 
 
 
@@ -26204,18 +26268,6 @@ INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id
 --INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 1, 5);
 --INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 2, 5);
 --INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 3, 5);
-
-
--- CourseTopic students
---INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (1, 6);
---INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (2, 6);
-
--- objectives courseTopics
---INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (1, 1);
---INSERT INTO public.objectives_course_topics (objectives, course_topics) VALUES (4, 2);
--- Scores
---INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (1, 'Helemaal Oke', 'V', 1, 1, 1, 1);
---INSERT INTO public.pav_scores (id, remarks, score, week, course_topic_id, objective_id, student_id) VALUES (2, 'Goed gemaakt', 'V', 1, 2, 4, 1);
 
 -- Tasks
 --INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (320, '2016-05-13', 'Dit is wat jullie moeten doen:

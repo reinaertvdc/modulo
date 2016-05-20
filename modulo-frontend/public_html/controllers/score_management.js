@@ -79,12 +79,14 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                     headers: {'X-auth': $cookies.get('auth')}
                 }).success(function (courseTopics) {
                     courseTopics.forEach(function (courseTopic) {
+                        clazz.modules.push(courseTopic);
                         $http({
                             method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + courseTopic.id + '/objectives',
                             headers: {'X-auth': $cookies.get('auth')}
                         }).success(function (objectives) {
                             objectives.forEach(function (objective) {
-                                clazz.modules.push(courseTopic);
+                                console.log(objective);
+                                //clazz.modules.push(courseTopic);
                             });
                         });
                     });

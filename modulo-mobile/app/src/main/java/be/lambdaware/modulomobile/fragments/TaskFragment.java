@@ -74,18 +74,19 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         loadTasks();
     }
 
-    private void loadTasks() {
+    public void loadTasks() {
         restCall = new RestCall(this);
-        restCall.execute(ApiSettings.URL + ":" + ApiSettings.PORT + "/score/id/" + Database.getSelectedUser() + "/tasks");
+        restCall.execute(ApiSettings.URL + ":" + ApiSettings.PORT + "/score/id/" + Database.getSelectedUser().getId() + "/tasks");
     }
 
 
     @Override
     public void onSuccess(String response) throws JSONException {
-        Log.i("Tasks", response);
+
         srSwipeRefreshLayout.setRefreshing(false);
 
         JSONArray JSONArray = new JSONArray(response);
+        Log.i("Tasks", response);
 
         ArrayList<Task> tasks = new ArrayList<>();
         if(JSONArray.length() == 0) {

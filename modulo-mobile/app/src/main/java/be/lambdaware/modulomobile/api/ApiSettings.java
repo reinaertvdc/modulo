@@ -5,6 +5,6 @@ package be.lambdaware.modulomobile.api;
  */
 public class ApiSettings {
 
-    public static final String URL = "http://192.168.1.48";
+    public static final String URL = "http://10.0.2.2";
     public static final int PORT = 8080;
 }

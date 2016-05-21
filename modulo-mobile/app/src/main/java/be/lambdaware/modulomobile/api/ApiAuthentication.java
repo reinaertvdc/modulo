@@ -46,6 +46,7 @@ public class ApiAuthentication {
     }
 
     public static String getAuthenticationHeader() {
+        Log.d("ApiAuthentication", "Retrieving header from preferences: " + base64Authentication);
         return base64Authentication;
     }
 

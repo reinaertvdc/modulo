@@ -59,6 +59,7 @@ public class RestCall extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         try {
+            Log.i("RestCall","Processing : " + response);
             callback.onSuccess(response);
         } catch (JSONException e) {
             e.printStackTrace();

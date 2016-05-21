@@ -49,6 +49,7 @@ MainActivity extends AppCompatActivity implements RestCallback {
     private TaskFragment taskFragment;
     private RestCall getChildrenCall;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +71,18 @@ MainActivity extends AppCompatActivity implements RestCallback {
             loadChildren();
         } else {
             Database.setSelectedUser(ApiAuthentication.getAuthenticatedUser());
+            finishCreateView();
         }
 
+    }
+
+    private void goToLoginActivity() {
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
+
+    private void finishCreateView(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -116,19 +127,25 @@ MainActivity extends AppCompatActivity implements RestCallback {
                 R.string.app_name);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-
-    }
-
-    private void goToLoginActivity() {
-        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(loginIntent);
-        finish();
     }
 
     private void hideMenuItemsByRole() {
         if (ApiAuthentication.getAuthenticatedUser().isStudent()) {
             mNavigationView.getMenu().findItem(R.id.nav_children).setVisible(false);
+        } else {
+            if(Database.getSizeOfChildren() == 1){
+                mNavigationView.getMenu().findItem(R.id.nav_children).setVisible(false);
+            }
         }
+
+//        int last = mNavigationView.getMenu().size();
+//        for(User user : Database.getChildren()){
+//            mNavigationView.getMenu().add(1, last++ , Menu.NONE, user.getFullName()).setIcon(R.drawable.ic_account_circle_black_24dp);
+//        }
+    }
+
+    public void childSelectionChanged() {
+        taskFragment.loadTasks();
     }
 
     public void setUserInfoInHeader() {
@@ -196,6 +213,6 @@ MainActivity extends AppCompatActivity implements RestCallback {
 
         // Default select first child
         Database.setSelectedUser(0);
-        setUserInfoInHeader();
+        finishCreateView();
     }
 }

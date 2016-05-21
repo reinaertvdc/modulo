@@ -56,6 +56,7 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.View
             if (isChecked) {
                 Database.setSelectedUser(position);
                 adapter.notifyDataSetChanged();
+                adapter.mainActivity.childSelectionChanged();
                 adapter.mainActivity.setUserInfoInHeader();
 
             }

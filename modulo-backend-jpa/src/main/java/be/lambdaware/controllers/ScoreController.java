@@ -74,7 +74,7 @@ public class ScoreController {
         return new ResponseEntity<>(bgvScores, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/id/{userId}/all")
+    @RequestMapping(value = "/id/{userId}/mobile")
     public ResponseEntity<?> getAllScores(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long userId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
@@ -90,9 +90,19 @@ public class ScoreController {
         List<PAVScore> pavScores = pavScoreRepo.findAllByStudentInfoOrderByWeekAsc(info);
 
         Certificate certificate = info.getCertificate();
-        HashMap<Object, Object> subcertificates = new HashMap<>();
+        ArrayList<Object> subcertificates = new ArrayList<>();
+        ArrayList<Object> objectives = new ArrayList<>();
+
+        int generalAcquired = 0;
+        int generalOffered = 0;
+        int generalPracticed = 0;
+        int generalScorables = 0;
+        int generalPassed = 0;
+        int generalFailed = 0;
+
         for (SubCertificate subCertificate : certificate.getSubCertificates()) {
             HashMap<Object, Object> subcertificateInfo = new HashMap<>();
+
             int competenceCount = 0;
             int numPassed = 0;
             int totalAqcuired = 0;
@@ -101,60 +111,106 @@ public class ScoreController {
             for (SubCertificateCategory certificateCategory : subCertificate.getSubCertificateCategories()) {
                 for (Competence competence : certificateCategory.getCompetences()) {
                     competenceCount++;
-                    HashMap<Object, Object> competenceInfo = new HashMap<>();
                     int acquiredCount = 0;
-                    int practicedCount = 0;
-                    int offeredCount = 0;
-
-                    if (competence.getCustomName() != null) {
-                        competenceInfo.put("name", competence.getSubCertificateCategory().getName() + " " + competence.getCustomName());
-                    } else {
-                        competenceInfo.put("name", competence.getSubCertificateCategory().getName() + " " + competence.getName());
-                    }
 
                     for (BGVScore bgvScore : bgvScores) {
                         if (bgvScore.getCompetence().equals(competence)) {
                             if (bgvScore.getScore() == ScoreType.A) {
                                 totalOffered++;
-                                offeredCount++;
-                            }
-                            if (bgvScore.getScore() == ScoreType.I) {
+                            } else if (bgvScore.getScore() == ScoreType.I) {
                                 totalPractied++;
-                                practicedCount++;
-                            }
-                            if (bgvScore.getScore() == ScoreType.V) {
+                            } else if (bgvScore.getScore() == ScoreType.V) {
                                 totalAqcuired++;
                                 acquiredCount++;
                             }
                         }
                     }
-                    if (acquiredCount > 0) {
-                        log.info("Match on " + competence.getName() + " " + competence.getSubCertificateCategory().getSubCertificate().getName());
-                        log.info("This competence : " + competence);
-                    }
+                    log.info("Acquired = " + acquiredCount);
 
-                    competenceInfo.put("A", offeredCount);
-                    competenceInfo.put("I", practicedCount);
-                    competenceInfo.put("V", acquiredCount);
-                    if ((int) competenceInfo.get("V") >= 3) {
+                    if (acquiredCount >= 3) {
                         numPassed++;
                     }
-//                    subcertificateInfo.put(competence.getId(), competenceInfo);
                 }
             }
-            subcertificateInfo.put("total", competenceCount);
-            subcertificateInfo.put("passed", numPassed);
-            subcertificateInfo.put("failed", (competenceCount - numPassed));
-            subcertificateInfo.put("total_acquired", totalAqcuired);
-            subcertificateInfo.put("total_practiced", totalPractied);
-            subcertificateInfo.put("total_offered", totalOffered);
-            subcertificates.put(subCertificate.getName(), subcertificateInfo);
+            subcertificateInfo.put("name", subCertificate.getName());
+            subcertificateInfo.put("totalCompetences", competenceCount);
+            subcertificateInfo.put("totalPassed", numPassed);
+            subcertificateInfo.put("totalFailed", (competenceCount - numPassed));
+            subcertificateInfo.put("acquired", totalAqcuired);
+            subcertificateInfo.put("practiced", totalPractied);
+            subcertificateInfo.put("offered", totalOffered);
+            subcertificates.add(subcertificateInfo);
+
+            generalAcquired += totalAqcuired;
+            generalOffered += totalOffered;
+            generalPracticed += totalPractied;
+            generalPassed += numPassed;
+            generalScorables += competenceCount;
+            generalFailed += (competenceCount - numPassed);
         }
 
+        Grade grade = info.getGrade();
+        int objectiveCount = 0;
+        int totalAqcuired = 0;
+        int totalOffered = 0;
+        int totalPractied = 0;
+        int numPassed = 0;
+
+        HashMap<Object, Object> objectiveInfo = new HashMap<>();
+        for (Objective objective : grade.getObjectives()) {
+
+            int acquiredCount = 0;
+
+            for (PAVScore pavScore : pavScores) {
+                if (objective.equals(pavScore.getObjective())) {
+                    if (pavScore.getScore() == ScoreType.A) {
+                        totalOffered++;
+                    } else if (pavScore.getScore() == ScoreType.I) {
+                        totalPractied++;
+                    } else if (pavScore.getScore() == ScoreType.V) {
+                        totalAqcuired++;
+                        acquiredCount++;
+                    }
+                }
+            }
+
+            if (acquiredCount >= 3) {
+                numPassed++;
+            }
+            objectiveCount++;
+
+        }
+
+        generalAcquired += totalAqcuired;
+        generalOffered += totalOffered;
+        generalPracticed += totalPractied;
+        generalPassed += numPassed;
+        generalScorables += objectiveCount;
+        generalFailed += (objectiveCount - numPassed);
+
+        objectiveInfo.put("name", "PAV");
+        objectiveInfo.put("totalCompetences", objectiveCount);
+        objectiveInfo.put("totalPassed", numPassed);
+        objectiveInfo.put("totalFailed", (objectiveCount - numPassed));
+        objectiveInfo.put("acquired", totalAqcuired);
+        objectiveInfo.put("practiced", totalPractied);
+        objectiveInfo.put("offered", totalOffered);
+        objectives.add(objectiveInfo);
+
+        HashMap<Object, Object> general = new HashMap<>();
+        general.put("name", "General");
+        general.put("totalCompetences", generalScorables);
+        general.put("totalPassed", generalPassed);
+        general.put("totalFailed", generalFailed);
+        general.put("acquired", generalAcquired);
+        general.put("practiced", generalPracticed);
+        general.put("offered", generalOffered);
 
         HashMap<Object, Object> response = new HashMap<>();
-        response.put("pav", pavScores);
+//        response.put("pav", pavScores);
         response.put("bgv", subcertificates);
+        response.put("pav", objectives);
+        response.put("general", general);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 

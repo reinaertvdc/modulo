@@ -11,14 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.ScoreListAdapter;
+import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.api.RestCall;
+import be.lambdaware.modulomobile.api.RestCallback;
 import be.lambdaware.modulomobile.models.Score;
 
 
-public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RestCallback {
 
     // This recyclerview will contain all the scores as cards.
     private RecyclerView rvRecylcerView;
@@ -26,6 +35,7 @@ public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     private RecyclerView.LayoutManager layoutManager;
 
     private SwipeRefreshLayout srSwipeRefreshLayout;
+    private RestCall restCall;
 
     @Nullable
     @Override
@@ -39,25 +49,41 @@ public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         rvRecylcerView.setLayoutManager(layoutManager);
 
         ArrayList<Score> data = new ArrayList<>();
-        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
-        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
-        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
-        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
-        data.add(new Score("Bekisting", 50, 20, 30, 25, 1, 24));
-
-        scoreAdapter = new ScoreListAdapter(getContext(),data);
+        scoreAdapter = new ScoreListAdapter(getContext(), data);
         rvRecylcerView.setAdapter(scoreAdapter);
 
         srSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_bgv_refresh_layout);
         srSwipeRefreshLayout.setOnRefreshListener(this);
-
+        loadBgvScores();
         return view;
     }
 
     @Override
     public void onRefresh() {
-        Log.i("BGVFragment","Refreshing list...");
-        //TODO implement refresh from database.
+        Log.i("BGVFragment", "Refreshing list...");
+        loadBgvScores();
+    }
+
+    private void loadBgvScores() {
+        restCall = new RestCall(this);
+        restCall.execute("http://10.0.2.2:8080/score/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/mobile");
+    }
+
+    @Override
+    public void onSuccess(String response) throws JSONException {
         srSwipeRefreshLayout.setRefreshing(false);
+        JSONObject scores = new JSONObject(response);
+        ArrayList<Score> data = new ArrayList<>();
+        JSONArray bgv = scores.getJSONArray("bgv");
+        for (int i = 0; i < bgv.length(); i++) {
+            JSONObject JSONScore = bgv.getJSONObject(i);
+            Gson gson = new Gson();
+            Score score = gson.fromJson(JSONScore.toString(),Score.class);
+            Log.i("Score",score.toString());
+            data.add(score);
+        }
+        scoreAdapter = new ScoreListAdapter(getContext(), data);
+        rvRecylcerView.setAdapter(scoreAdapter);
+
     }
 }

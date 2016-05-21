@@ -65,7 +65,7 @@
                 <TableRow android:padding="12dp">
 
                     <TextView
-                        android:id="@+id/tv_failed"
+                        android:id="@+id/tv_passed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -75,7 +75,7 @@
                         android:textColor="@color/colorGreen" />
 
                     <TextView
-                        android:id="@+id/tv_failed_score"
+                        android:id="@+id/tv_passed_score"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -90,7 +90,7 @@
                     android:padding="12dp">
 
                     <TextView
-                        android:id="@+id/tv_passed"
+                        android:id="@+id/tv_failed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -100,7 +100,7 @@
                         android:textColor="@color/colorRed" />
 
                     <TextView
-                        android:id="@+id/tv_passed_score"
+                        android:id="@+id/tv_failed_score"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -183,7 +183,7 @@
             <TableRow android:padding="12dp">
 
                 <TextView
-                    android:id="@+id/tv_acquired"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5"
@@ -191,6 +191,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_acquired"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"

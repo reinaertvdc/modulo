@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,8 +79,20 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
             holder.tvPassedScore.setText(String.valueOf(score.getTotalPassed()));
             holder.tvFailedScore.setText(String.valueOf(score.getTotalFailed()));
             //TODO update pie chart
-            holder.pcChart.addPieSlice(new PieModel("Niet Behaald", score.getFailedPercentage(), ContextCompat.getColor(context,R.color.colorRed)));
+            holder.pcChart.clearChart();
             holder.pcChart.addPieSlice(new PieModel("Behaald", score.getPassedPercentage(), ContextCompat.getColor(context,R.color.colorGreen)));
+            holder.pcChart.addPieSlice(new PieModel("Niet Behaald", score.getFailedPercentage(), ContextCompat.getColor(context,R.color.colorRed)));
+            holder.pcChart.startAnimation();
+            holder.pcChart.setCurrentItem(0);
+            holder.pcChart.setUsePieRotation(false);
+            holder.pcChart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PieChart chart = (PieChart) v;
+                    chart.setCurrentItem(chart.getCurrentItem() == 1 ? 0 : 1);
+                }
+            });
+            Log.i("Score Chart",holder.pcChart.getCurrentItem()+"!");
 
             holder.tvOffered.setText(String.valueOf(score.getOffered()));
             holder.tvPracticed.setText(String.valueOf(score.getPracticed()));

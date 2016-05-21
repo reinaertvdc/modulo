@@ -24,7 +24,7 @@
         </button>
         <ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="button-cert">
             <li data-ng-repeat="cert in certificates">
-                <a href="" data-ng-click="setSelectedCert(cert)">{{cert.name}}</a>
+                <a href="" data-ng-click="openCertModal(cert)">{{cert.name}}</a>
             </li>
         </ul>
     </div>
@@ -33,7 +33,7 @@
 <div class="form-group">
     <label for="input-birthDate">Geboortedatum</label>
     <input id="input-birthDate" type="text" name="birthDate" class="form-control"
-           data-ng-model="studentInfo.birthDate" title="Geboortedatum" required>
+           data-ng-model="studentInfo.birthDate" title="Geboortedatum" placeholder="YYYY-MM-DD" required>
 </div>
 
 <div class="form-group">

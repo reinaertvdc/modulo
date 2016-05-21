@@ -79,6 +79,19 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         $scope.studentInfo.certificateId = cert.id;
     };
 
+    $scope.openCertModal = function (cert) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/change_modal.html',
+            controller: 'CertModalInstanceCtrl',
+            resolve: {}
+        });
+
+        modalInstance.result.then(function () {
+            $scope.setSelectedCert(cert);
+        });
+    };
+
     //PARENT SELECTION MODAL
     $scope.parents = [];
     $http.get($scope.SERVER_ADDRESS + 'user/role/PARENT', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
@@ -115,6 +128,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     if (paramVal == 'nieuw') {
         $scope.btnText = 'Aanmaken';
         $scope.panelCaption = 'Nieuwe gebruiker aanmaken';
+        $scope.passwordPlaceholder = "Vul een passwoord in";
 
         $http.get($scope.SERVER_ADDRESS + 'grade/all', {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             response.forEach(function (item) {
@@ -140,6 +154,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     // EDIT USER
     else if (paramVal) {
         $scope.btnText = 'Opslaan';
+        $scope.passwordPlaceholder = "Leeg laten indien het passwoord niet veranderd moet worden.";
 
         $http.get($scope.SERVER_ADDRESS + 'user/id/' + paramVal, {headers: {'X-auth': $cookies.get("auth")}}).success(function (response) {
             $scope.basicInfo = response;
@@ -251,6 +266,10 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
                     $scope.createAlertCookie('Gebruiker toegevoegd.');
                     $scope.location.openPage($scope.location.USER_MANAGEMENT);
                 }
+            }).error(function(msg, code){
+                if(code == 400 && msg.message.indexOf("user already exists") > -1){
+                    $scope.createAlertCookie('E-mailadres bestaat al.');
+                }
             });
         } else if (paramVal) {
             $http({
@@ -278,7 +297,11 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
                     $scope.createAlertCookie('Gebruiker bewerkt.');
                     $scope.location.openPage($scope.location.USER_MANAGEMENT);
                 }
-            });
+            }).error(function(msg, code){
+                if(code == 400 && msg.message.indexOf("user already exists") > -1){
+                    $scope.createAlertCookie('E-mailadres bestaat al.');
+                }
+            });;
         }
     }
 });
@@ -315,8 +338,22 @@ app.controller('RoleModalInstanceCtrl', function ($scope, $uibModalInstance) {
 
 app.controller('GradeModalInstanceCtrl', function ($scope, $uibModalInstance) {
     $scope.modalTitle = "Graad aanpassen";
-    $scope.modalBody = "Bent u zeker dat u de graad van deze gebruiker wilt veranderen?\n" +
+    $scope.modalBody = "Bent u zeker dat u de graad van deze gebruiker wilt wijzigen? " +
     "De gebruiker zal uit zijn PAV-klassen worden verwijderd.";
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+
+app.controller('CertModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalTitle = "Certificaat aanpassen";
+    $scope.modalBody = "Bent u zeker dat u het certificaat van deze gebruiker wilt wijzigen? " +
+        "De gebruiker zal uit zijn BGV-klassen worden verwijderd.";
 
     $scope.ok = function () {
         $uibModalInstance.close();

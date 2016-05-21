@@ -31,6 +31,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +47,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.lambdaware.modulomobile.R;
+import be.lambdaware.modulomobile.api.ApiSettings;
+import be.lambdaware.modulomobile.api.RestCall;
+import be.lambdaware.modulomobile.api.RestCallback;
+import be.lambdaware.modulomobile.database.Database;
+import be.lambdaware.modulomobile.models.User;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -67,6 +75,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private RestCall restCall;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -366,14 +377,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 try {
                     Log.i("LoginActivity", "Login success. Writing response and credentials to local storage.");
                     JSONObject userObject = new JSONObject(response);
+
                     SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
                     editor.putString("UserObject", userObject.toString());
                     editor.putString("X-Auth", base64Auth);
                     editor.apply();
 
-                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    finish();
+
+                    goToMain();
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -386,5 +399,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+
+    private void goToMain() {
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+    }
+
+
 }
 

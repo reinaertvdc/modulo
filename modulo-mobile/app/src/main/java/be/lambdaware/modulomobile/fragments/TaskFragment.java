@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,8 +22,10 @@ import java.util.ArrayList;
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.TaskListAdapter;
 import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.api.ApiSettings;
 import be.lambdaware.modulomobile.api.RestCall;
 import be.lambdaware.modulomobile.api.RestCallback;
+import be.lambdaware.modulomobile.database.Database;
 import be.lambdaware.modulomobile.models.Task;
 
 
@@ -35,6 +38,7 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RestCall restCall;
 
     private SwipeRefreshLayout srSwipeRefreshLayout;
+    private TextView tvNotasks;
 
     @Nullable
     @Override
@@ -47,11 +51,14 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         layoutManager = new LinearLayoutManager(getContext());
         rvRecylcerView.setLayoutManager(layoutManager);
 
+
         ArrayList<Task> data = new ArrayList<>();
 
 
         taskAdapter = new TaskListAdapter(getContext(), data);
         rvRecylcerView.setAdapter(taskAdapter);
+
+        tvNotasks = (TextView) view.findViewById(R.id.tv_no_tasks);
 
         srSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_task_refresh_layout);
         srSwipeRefreshLayout.setOnRefreshListener(this);
@@ -69,7 +76,7 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void loadTasks() {
         restCall = new RestCall(this);
-        restCall.execute("http://10.0.2.2:8080/score/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/tasks");
+        restCall.execute(ApiSettings.URL + ":" + ApiSettings.PORT + "/score/id/" + Database.getSelectedUser() + "/tasks");
     }
 
 
@@ -81,6 +88,13 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         JSONArray JSONArray = new JSONArray(response);
 
         ArrayList<Task> tasks = new ArrayList<>();
+        if(JSONArray.length() == 0) {
+            tvNotasks.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            tvNotasks.setVisibility(View.GONE);
+            srSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        }
 
         for (int i = 0; i < JSONArray.length(); i++) {
             JSONObject scoreObject = JSONArray.getJSONObject(i);

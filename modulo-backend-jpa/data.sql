@@ -26179,6 +26179,8 @@ INSERT INTO public.classes (id, name, type, certificate_id, grade_id, teacher_id
 -------------------
 -- COURSE TOPICS --
 -------------------
+
+-- CLASS '7e jaar'
 INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (1, 'De studenten voeren in de klas opzoekwerk uit naar de argumenten voor en tegen abortus. Vervolgens schrijven de studenten een verslag waarin ze deze argumenten tegen elkaar afwegen, hun eigen mening geven en deze motiveren.', 'Onderzoeksverslag abortus', false, 11, 3);
     INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 75);
     INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (1, 76);
@@ -26257,8 +26259,84 @@ INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_
     INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 53);
     INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (5, 52);
 
+-- CLASS '2e graad A'
+----- NORMAL COURSE TOPICS
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (6, 'De studenten leren over typische inkomsten en uitgaven van mensen in hun toekomstige beroepssector. Ze krijgen voorbeeldbudgetten en proberen deze zo goed mogelijk te besteden.', 'Budgetbehering', false, 7, 1);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (6, 10);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (6, 11);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (6, 14);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (6, 21);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (6, 25);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (6, 26);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 10);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 9);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 12);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 15);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 14);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 17);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 20);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (6, 19);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (7, 'De studenten krijgen een basiscursus biologie, evolutieleer, en maken een uitstap naar de Hoge Venen.', 'Natuurkunde', false, 7, 1);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (7, 33);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (7, 35);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (7, 36);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (7, 37);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (7, 38);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 10);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 9);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 12);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 15);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 14);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 17);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 20);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (7, 19);
+----- RESIT COURSE TOPICS
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (8, 'De studenten krijgen extra oefeningen op de regel van drie.', 'Regel van drie', true, 7, 1);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (8, 9);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (8, 9);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (8, 17);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (8, 19);
+INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_id) VALUES (9, 'De studenten krijgen extra oefeningen op het lezen van tabellen en het verwerken van schematische gegevens.', 'Schematische gegevens', true, 7, 1);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (9, 15);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (9, 16);
+    INSERT INTO public.course_topics_objectives (course_topics, objectives) VALUES (9, 17);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (9, 17);
+    INSERT INTO public.course_topic_students (course_topic_id, user_id) VALUES (9, 19);
 
 
+
+
+
+
+-----------
+-- TASKS --
+-----------
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (1, '2016-06-03', 'Dit is wat jullie moeten doen:
+1. Gebruik Wikipedia.
+2. Copy-paste alles.
+3. Sla dat op als een Word document.
+4. Upload naar Modulo.', 'Opstel Martin Luther King', 11);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (2, '2016-06-02', 'Schrijf een kort verslag (max. 1 pagina) over wat je geleerd hebt van de uitstap naar Batibouw.', 'Verslag uitstap Batibouw', 1);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (3, '2016-06-02', 'Schrijf een kort verslag (max. 1 pagina) over wat je geleerd hebt van de uitstap naar Batibouw.', 'Verslag uitstap Batibouw', 2);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (4, '2016-05-31', 'Tijdens de vrije stadszoektocht in Lier moesten jullie op verschillende punten foto''s van jullie zelf nemen om aan te tonen dat jullie er inderdaad geweest zijn, want wij vertrouwen jullie niet. Gelieve deze foto''s hier te uploaden.', 'Insturen foto''s Lier', 7);
+INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (5, '2016-05-30', 'Tijdens de volgende les zullen we met verschillende soorten cement werken. Jullie moeten zelf opzoeken welke soorten cement er bestaan (hint: het zijn er 4), van iedere soort de voor- en nadelen noteren en dit voor het begin van de les insturen.', 'Cementsoorten opzoeken', 1);
+
+
+
+
+
+------------
+-- SCORES --
+------------
+
+-- BGV SCORES
+-- TODO add BGV scores
+
+-- PAV SCORES
+-- TODO add PAV scores
+
+-- TASK SCORES
+-- TODO add task scores
 
 
 
@@ -26268,16 +26346,6 @@ INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_
 --INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (1, '1', 'Goed gedaan', 'V', 1, 5);
 --INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (2, '1', 'Goed gedaan', 'V', 2, 5);
 --INSERT INTO public.bgv_scores (id, week, remarks, score, competence_id, student_id) VALUES (3, '2', 'Dat kan beter', 'I', 3, 5);
-
--- Tasks
---INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (320, '2016-05-13', 'Dit is wat jullie moeten doen:
---1. Gebruik Wikipedia
---2. Copy-paste alles
---3. Sla dat op als een Word document
---4. Upload naar Modulo.', 'Michiels Taak', 4);
---INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (350, '2016-05-06', '', 'Oude taak', 4);
---INSERT INTO public.tasks (id, deadline, description, name, class_id) VALUES (790, '2016-05-28', 'Dit is een taak voor BGV:
---Schrijf een verslag over de uitstap naar Batibouw.', 'BGV taak', 2);
 
 -- Taskscores
 --INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task_id, user_id) VALUES (815, null, '2016-05-28', null, null, 790, 7);
@@ -26292,4 +26360,3 @@ INSERT INTO public.course_topics (id, description, name, resit, clazz_id, grade_
 --INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task_id, user_id) VALUES (825, null, '2016-05-06', null, null, 350, 17);
 --INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task_id, user_id) VALUES (338, null, '2016-05-13', 'Goed zo', 'I', 320, 19);
 --INSERT INTO public.task_scores (id, file_name, graded_date, remarks, score, task_id, user_id) VALUES (826, null, '2016-05-06', null, null, 350, 19);
-

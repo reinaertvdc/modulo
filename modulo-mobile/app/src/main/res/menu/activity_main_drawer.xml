@@ -4,11 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_children"
-            android:icon="@android:drawable/star_on"
+            android:icon="@drawable/ic_group_black_24dp"
             android:title="Kinderen" />
         <item
             android:id="@+id/nav_progress"
-            android:icon="@android:drawable/star_on"
+            android:icon="@drawable/ic_pie_chart_black_24dp"
             android:title="Voortgang" />
         <item
             android:id="@+id/nav_tasks"
@@ -16,7 +16,7 @@
             android:title="Taken" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@android:drawable/star_on"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Afmelden" />
     </group>
 

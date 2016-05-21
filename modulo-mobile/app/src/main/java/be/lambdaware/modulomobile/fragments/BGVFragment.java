@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.ScoreListAdapter;
 import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.api.ApiSettings;
 import be.lambdaware.modulomobile.api.RestCall;
 import be.lambdaware.modulomobile.api.RestCallback;
+import be.lambdaware.modulomobile.database.Database;
 import be.lambdaware.modulomobile.models.Score;
 
 
@@ -60,13 +62,13 @@ public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefres
 
     @Override
     public void onRefresh() {
-        Log.i("BGVFragment", "Refreshing list...");
         loadBgvScores();
     }
 
     private void loadBgvScores() {
+        Log.i("GeneralFragment", "Loading scores for " + Database.getSelectedUser().toString());
         restCall = new RestCall(this);
-        restCall.execute("http://10.0.2.2:8080/score/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/mobile");
+        restCall.execute(ApiSettings.URL+":"+ApiSettings.PORT+"/score/id/" + Database.getSelectedUser().getId() + "/mobile");
     }
 
     @Override

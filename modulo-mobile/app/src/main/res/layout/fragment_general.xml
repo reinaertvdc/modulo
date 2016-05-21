@@ -4,17 +4,22 @@
     android:layout_height="match_parent"
     tools:context=".fragments.GeneralFragment">
 
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_general_score_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
             android:scrollbars="vertical" />
 
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </FrameLayout>

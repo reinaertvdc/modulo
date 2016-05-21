@@ -74,7 +74,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
             html += '<td ng-click="swapEnabled(' + user.id + ')"><span ng-class="getClass(' + user.id + ')"></span></td>';
         }
 
-            html += '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
+        html += '<td class="text-info" ng-click="location.setParameter(location.PARAM_EDIT_USER_ID,' + user.id + ')"><span role="button" class="glyphicon glyphicon-edit"></span></td>';
         if ($cookies.getObject("user").id === user.id) {
             html += '<td><span class="glyphicon glyphicon-remove"></span></td></tr>';
         } else {
@@ -89,7 +89,8 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
     };
 
     $scope.getClass = function (id) {
-            var user = $scope.users.get(id);
+        var user = $scope.users.get(id);
+        if (user != null) {
             if ($cookies.getObject("user").id === user.id) {
                 if (!angular.isUndefined(user) && !user.enabled)
                     return "glyphicon glyphicon-remove-circle";
@@ -102,6 +103,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
                 else
                     return "glyphicon glyphicon-ok-circle text-success";
             }
+        }
     };
 
     $scope.swapEnabled = function (id) {
@@ -119,7 +121,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         }).success(function (response) {
             user.enabled = !user.enabled;
 
-            if(user.enabled)
+            if (user.enabled)
                 $scope.createAlertCookie('Gebruiker actief gezet.');
             else
                 $scope.createAlertCookie('Gebruiker inactief gezet.');
@@ -152,7 +154,7 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
         }, function () {
         });
     };
-    
+
 
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {

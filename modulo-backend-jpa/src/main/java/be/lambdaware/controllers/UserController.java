@@ -531,6 +531,8 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
+        if(userRepo.findByEmail(user.getEmail())!=null) return Responses.USER_ALREADY_EXISTS;
+
         User newUser;
         if(user.getPassword() != null)
              newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
@@ -597,7 +599,12 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
+
         User oldUser = userRepo.findById(newUser.getId());
+
+        if(!newUser.getEmail().equals(oldUser.getEmail())){
+            if(userRepo.findByEmail(newUser.getEmail())!=null) return Responses.USER_ALREADY_EXISTS;
+        }
 
         // If not empty, update password
         if (newUser.getPassword() != null && !newUser.getPassword().equals("")) {

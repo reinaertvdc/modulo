@@ -1,9 +1,12 @@
 package be.lambdaware.controllers;
 
+import be.lambdaware.enums.ClassType;
+import be.lambdaware.enums.UserRole;
 import be.lambdaware.repos.CertificateRepo;
 import be.lambdaware.repos.ClassRepo;
 import be.lambdaware.repos.StudentInfoRepo;
 import be.lambdaware.models.*;
+import be.lambdaware.repos.UserRepo;
 import be.lambdaware.response.Responses;
 import be.lambdaware.security.APIAuthentication;
 import org.apache.log4j.Logger;
@@ -26,6 +29,8 @@ public class CertificateController {
     CertificateRepo certificateRepo;
     @Autowired
     StudentInfoRepo studentInfoRepo;
+    @Autowired
+    UserRepo userRepo;
     @Autowired
     ClassRepo classRepo;
 
@@ -206,6 +211,26 @@ public class CertificateController {
         StudentInfo info = studentInfoRepo.findOne(studentId);
 
         if(info == null) return Responses.STUDENT_INFO_NOT_FOUND;
+        User user = info.getUser();
+
+        if(user.getRole() != UserRole.STUDENT) return  Responses.USER_NOT_STUDENT;
+        List<Clazz> classes = new ArrayList<>();
+
+        for(Clazz clazz: user.getClasses()){
+            if (clazz.getType() == ClassType.BGV){
+                if(clazz.getStudents().contains(user)){
+                    classes.add(clazz);
+                }
+            }
+        }
+
+        for(Clazz clazz: classes){
+            clazz.getStudents().remove(user);
+            classRepo.saveAndFlush(clazz);
+
+            user.getClasses().remove(clazz);
+            userRepo.saveAndFlush(user);
+        }
 
         info.setCertificate(certificate);
 

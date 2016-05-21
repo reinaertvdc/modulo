@@ -1,8 +1,8 @@
 package be.lambdaware.security;
 
-import be.lambdaware.repos.UserRepo;
 import be.lambdaware.enums.UserRole;
 import be.lambdaware.models.User;
+import be.lambdaware.repos.UserRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,10 +16,8 @@ public class APIAuthentication {
 
     @Autowired
     UserRepo userRepo;
-
-    private User authenticatedUser;
-
     Logger log = Logger.getLogger(getClass());
+    private User authenticatedUser;
 
     public boolean checkLogin(String base64Login) {
         // Decode credentials to form email:password
@@ -64,6 +62,10 @@ public class APIAuthentication {
 
     public boolean isTeacher() {
         return authenticatedUser.getRole() == UserRole.TEACHER;
+    }
+
+    public boolean isParent() {
+        return authenticatedUser.getRole() == UserRole.PARENT;
     }
 
     public boolean isStudent() {

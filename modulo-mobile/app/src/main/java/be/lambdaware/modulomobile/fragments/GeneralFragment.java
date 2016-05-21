@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.ScoreListAdapter;
 import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.api.ApiSettings;
 import be.lambdaware.modulomobile.api.RestCall;
 import be.lambdaware.modulomobile.api.RestCallback;
+import be.lambdaware.modulomobile.database.Database;
 import be.lambdaware.modulomobile.models.Score;
 
 
@@ -50,7 +52,7 @@ public class GeneralFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         ArrayList<Score> data = new ArrayList<>();
 
-        scoreAdapter = new ScoreListAdapter(getContext(),data);
+        scoreAdapter = new ScoreListAdapter(getContext(), data);
         rvRecylcerView.setAdapter(scoreAdapter);
 
         srSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_refresh_layout);
@@ -64,13 +66,13 @@ public class GeneralFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        Log.i("GeneralFragment","Refreshing list...");
         loadScores();
     }
 
     private void loadScores() {
+        Log.i("GeneralFragment", "Loading scores for " + Database.getSelectedUser().toString());
         restCall = new RestCall(this);
-        restCall.execute("http://10.0.2.2:8080/score/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/mobile");
+        restCall.execute(ApiSettings.URL+":"+ApiSettings.PORT+"/score/id/" + Database.getSelectedUser().getId() + "/mobile");
     }
 
     @Override
@@ -81,14 +83,14 @@ public class GeneralFragment extends Fragment implements SwipeRefreshLayout.OnRe
         JSONArray JSONarr = scores.getJSONArray("pav");
         JSONObject jsonScore = JSONarr.getJSONObject(0);
         Gson gson = new Gson();
-        Score score = gson.fromJson(jsonScore.toString(),Score.class);
-        Log.i("Score",score.toString());
+        Score score = gson.fromJson(jsonScore.toString(), Score.class);
+        Log.i("Score", score.toString());
         data.add(score);
 
         jsonScore = scores.getJSONObject("general");
         gson = new Gson();
-        score = gson.fromJson(jsonScore.toString(),Score.class);
-        Log.i("Score",score.toString());
+        score = gson.fromJson(jsonScore.toString(), Score.class);
+        Log.i("Score", score.toString());
         data.add(score);
 
         scoreAdapter = new ScoreListAdapter(getContext(), data);

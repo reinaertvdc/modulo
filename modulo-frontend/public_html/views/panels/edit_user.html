@@ -2,6 +2,10 @@
     <!-- TODO finish page -->
     <h3 ng-bind="panelCaption"></h3>
 
+    <uib-alert ng-if="isAlertEmpty()" type="danger" close="removeAlert()">
+        {{getAlert()}}
+    </uib-alert>
+
     <form role="form" data-ng-submit="submitForm()">
         <div class="form-group">
             <label>Role van de gebruiker</label>
@@ -28,7 +32,7 @@
 
             <div class="form-group">
                 <label for="input-password">Wachtwoord</label>
-                <input id="input-password" type="password" name="password" class="form-control" placeholder="Leeg laten indien niet aangepast moet worden"
+                <input id="input-password" type="password" name="password" class="form-control" placeholder="{{passwordPlaceholder}}"
                        data-ng-model="basicInfo.password" title="Wachtwoord voor de gebruiker">
             </div>
 
@@ -63,11 +67,8 @@
 
         <div id="studentInfo" ng-if="basicInfo.role == 'STUDENT'" data-ng-include="'views/panels/student_info.html'"></div>
 
-
         <button type="submit" class="btn btn-success btn-lg btn-block">
             <span class="glyphicon glyphicon-plus-sign"></span> {{btnText}}
         </button>
-
-
     </form>
 </div>

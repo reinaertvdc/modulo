@@ -83,10 +83,10 @@ public class Score {
     }
 
     public float getPassedPercentage() {
-        return ((float)totalPassed / totalCompetences) * 100;
+        return (float) Math.ceil((totalPassed / totalCompetences) * 100);
     }
     public float getFailedPercentage() {
-        return ((float)totalFailed / totalCompetences) * 100;
+        return (float) Math.ceil((totalFailed / totalCompetences) * 100);
     }
 
     @Override

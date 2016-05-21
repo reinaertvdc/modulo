@@ -10,6 +10,7 @@ public class Responses {
     private static final String authHeaderEmpty = "No credentials provided.";
     private static final String loginInvalid = "The provided credentials are incorrect.";
 
+    private static final String userAlreadyExists= "The requested new user already exists.";
     private static final String userNotFound = "The requested user could not be found.";
     private static final String usersNotFound = "The requested users could not be found.";
     private static final String userNotParent = "The requested user is not a parent.";
@@ -82,6 +83,7 @@ public class Responses {
     public static final ResponseEntity<?> LOGIN_INVALID = StringMessage.asEntity(loginInvalid, HttpStatus.FORBIDDEN);
     public static final ResponseEntity<?> UNAUTHORIZED = StringMessage.asEntity(unauthorized, HttpStatus.UNAUTHORIZED);
 
+    public static final ResponseEntity<?> USER_ALREADY_EXISTS = StringMessage.asEntity(userAlreadyExists, HttpStatus.BAD_REQUEST);
     public static final ResponseEntity<?> USER_NOT_FOUND = StringMessage.asEntity(userNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> USERS_NOT_FOUND = StringMessage.asEntity(usersNotFound, HttpStatus.NOT_FOUND);
     public static final ResponseEntity<?> USER_NOT_PARENT = StringMessage.asEntity(userNotParent, HttpStatus.BAD_REQUEST);

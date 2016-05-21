@@ -12,6 +12,7 @@ public class User {
     private String sex;
     private String role;
     private boolean enabled;
+    private boolean selected;
 
     private StudentInfo studentInfo;
 
@@ -113,5 +114,27 @@ public class User {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", role='" + role + '\'' +
+                ", enabled=" + enabled +
+                ", selected=" + selected +
+                '}';
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

@@ -28,5 +28,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="android.studio@android.com" />
+    <TextView
+        android:id="@+id/tv_alias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Alias"
+        android:visibility="invisible"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

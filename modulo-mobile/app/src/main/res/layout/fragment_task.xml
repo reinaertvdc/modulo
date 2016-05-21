@@ -4,10 +4,20 @@
     android:layout_height="match_parent"
     tools:context=".fragments.GeneralFragment">
 
+    <TextView
+        android:id="@+id/tv_no_tasks"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="Je hebt geen taken"/>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_task_refresh_layout"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView

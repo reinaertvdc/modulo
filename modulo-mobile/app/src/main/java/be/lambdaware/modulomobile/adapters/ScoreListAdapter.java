@@ -92,7 +92,6 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.View
                     chart.setCurrentItem(chart.getCurrentItem() == 1 ? 0 : 1);
                 }
             });
-            Log.i("Score Chart",holder.pcChart.getCurrentItem()+"!");
 
             holder.tvOffered.setText(String.valueOf(score.getOffered()));
             holder.tvPracticed.setText(String.valueOf(score.getPracticed()));

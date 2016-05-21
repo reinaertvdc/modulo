@@ -3,7 +3,6 @@ package be.lambdaware.modulomobile.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -16,15 +15,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.api.ApiAuthentication;
+import be.lambdaware.modulomobile.api.ApiSettings;
+import be.lambdaware.modulomobile.api.RestCall;
+import be.lambdaware.modulomobile.api.RestCallback;
+import be.lambdaware.modulomobile.database.Database;
 import be.lambdaware.modulomobile.fragments.ChildSelectFragment;
 import be.lambdaware.modulomobile.fragments.TabFragment;
 import be.lambdaware.modulomobile.fragments.TaskFragment;
 import be.lambdaware.modulomobile.models.User;
 
 public class
-MainActivity extends AppCompatActivity {
+MainActivity extends AppCompatActivity implements RestCallback {
 
 //    private LinearLayout mMainLayout;
 
@@ -37,6 +47,7 @@ MainActivity extends AppCompatActivity {
     private TabFragment tabFragment;
     private ChildSelectFragment childFragment;
     private TaskFragment taskFragment;
+    private RestCall getChildrenCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,13 @@ MainActivity extends AppCompatActivity {
             Log.i("MainActivity", "No valid login! Redirecting...");
             goToLoginActivity();
             return;
+        }
+
+        if (ApiAuthentication.getAuthenticatedUser().isParent()) {
+            Log.i("MainActivity", "Authenticated user is parent. Loading children");
+            loadChildren();
+        } else {
+            Database.setSelectedUser(ApiAuthentication.getAuthenticatedUser());
         }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -113,12 +131,17 @@ MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setUserInfoInHeader() {
+    public void setUserInfoInHeader() {
         View header = mNavigationView.getHeaderView(0);
         TextView tvName = (TextView) header.findViewById(R.id.tv_name);
+        TextView tvAlias = (TextView) header.findViewById(R.id.tv_alias);
         TextView tvMail = (TextView) header.findViewById(R.id.tv_mail);
 
         User user = ApiAuthentication.getAuthenticatedUser();
+        if(user.isParent() && Database.getSelectedUser()!=null){
+            tvAlias.setText("Leerling: "+Database.getSelectedUser().getFullName());
+            tvAlias.setVisibility(View.VISIBLE);
+        }
 
         tvName.setText(user.getFullName());
         tvMail.setText(user.getEmail());
@@ -133,16 +156,13 @@ MainActivity extends AppCompatActivity {
             if (taskFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
                 FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                 xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
-            }
-            else if (childFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
+            } else if (childFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
                 FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                 xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
-            }
-            else if (tabFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
+            } else if (tabFragment.equals(getSupportFragmentManager().findFragmentByTag("fragmentTag"))) {
                 if (tabFragment.getCurrentPage() == 1) {
                     tabFragment.showGeneral();
-                }
-                else {
+                } else {
                     super.onBackPressed();
                 }
             }
@@ -157,28 +177,25 @@ MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void loadChildren() {
+        Database.clearChildren();;
+        getChildrenCall = new RestCall(this);
+        getChildrenCall.execute(ApiSettings.URL + ":" + ApiSettings.PORT + "/user/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/children");
+    }
 
-//    public void addScore(String competenceName, int totalCount, int practicedCount, int acquiredCount) {
-//        View scoreLayout = LayoutInflater.from(this).inflate(R.layout.score_layout, mMainLayout, false);
-//
-//        TextView competenceView = (TextView) scoreLayout.findViewById(R.id.tv_competence);
-//        TextView totalView = (TextView) scoreLayout.findViewById(R.id.tv_total);
-//        TextView practicedView = (TextView) scoreLayout.findViewById(R.id.tv_practiced);
-//        TextView acquiredView = (TextView) scoreLayout.findViewById(R.id.tv_acquired);
-//        PieChart pieView = (PieChart) scoreLayout.findViewById(R.id.pc_chart);
-//
-//        competenceView.setText(competenceName);
-//        totalView.setText(String.valueOf(totalCount));
-//        practicedView.setText(String.valueOf(practicedCount));
-//        acquiredView.setText(String.valueOf(acquiredCount));
-//
-//        int practicedPercentage = (int) (((practicedCount / (double) totalCount)) * 100);
-//        int acquiredPercentage = (int) (((acquiredCount / (double) totalCount)) * 100);
-//
-//        pieView.addPieSlice(new PieModel("I", practicedPercentage, Color.parseColor("#FF0000")));
-//        pieView.addPieSlice(new PieModel("V", acquiredPercentage, Color.parseColor("#00FF00")));
-//
-//
-//        mMainLayout.addView(scoreLayout);
-//    }
+
+    @Override
+    public void onSuccess(String response) throws JSONException {
+        JSONArray JSONChildren = new JSONArray(response);
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+        for (int i = 0; i < JSONChildren.length(); i++) {
+            JSONObject JSONChild = JSONChildren.getJSONObject(i);
+            Database.saveChild(gson.fromJson(JSONChild.toString(), User.class));
+        }
+
+        // Default select first child
+        Database.setSelectedUser(0);
+        setUserInfoInHeader();
+    }
 }

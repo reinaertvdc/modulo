@@ -40,7 +40,6 @@ public class RestCall extends AsyncTask<String, Void, String> {
             httpConnection.setRequestProperty("X-auth", ApiAuthentication.getAuthenticationHeader());
             int status = httpConnection.getResponseCode();
 
-            Log.d("RestCall", "Result of call to " + webAddress + " = " + status);
 
             InputStream in = new BufferedInputStream(httpConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));

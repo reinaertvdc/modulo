@@ -5,11 +5,11 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
     // TODO: set to actual default values
     $scope.studentInfo = {
         birthDate: '1995-07-25',
-        birthPlace: 'leuven',
-        nationality: 'belg',
-        street: 'WAALhostraat',
+        birthPlace: 'Leuven',
+        nationality: 'Belg',
+        street: 'Walhostraat',
         houseNumber: '1',
-        city: 'walshoutem',
+        city: 'Walshoutem',
         postalCode: '3401',
         phoneNumber: '123456',
         emergencyNumber: '123456',
@@ -24,7 +24,7 @@ app.controller('EditUserController', function ($scope, $http, $uibModal, $cookie
         id: null,
         role: 'STUDENT',
         email: 'michiel@test.com',
-        password: 'pass',
+        password: 'password',
         firstName: 'Michiel',
         lastName: 'Vanmunster',
         sex: 'MALE'

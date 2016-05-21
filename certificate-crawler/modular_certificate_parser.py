@@ -140,7 +140,7 @@ class ModularCertificateParser:
         categories = []
         i = 1
         while i <= 5:
-            categories.append(CertificateComponent('Category ' + str(i), self.__get_competences(None)))
+            categories.append(CertificateComponent('Categorie ' + str(i), self.__get_competences(None)))
             i += 1
         return categories
         # TODO debug
@@ -182,7 +182,7 @@ class ModularCertificateParser:
         competences = []
         i = 1
         while i <= 8:
-            competences.append(CertificateComponent('Competence ' + str(i), None))
+            competences.append(CertificateComponent('Competentie ' + str(i), None))
             i += 1
         return competences
 

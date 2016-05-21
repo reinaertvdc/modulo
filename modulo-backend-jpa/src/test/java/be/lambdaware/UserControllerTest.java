@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
     static {
-        System.setProperty("spring.datasource.url", "jdbc:postgresql://localhost:5432/modulo_test");
+        System.setProperty("spring.datasource.url", "jdbc:postgresql://localhost:5433/modulo_test");
     }
 
     @Autowired
@@ -67,9 +67,8 @@ public class UserControllerTest {
     @Test
     public void testGetAll() throws Exception {
         rest.perform(get("/user/all")).andExpect(status().isForbidden());
-
         rest.perform(get("/user/all").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn();
     }
 
     @Test

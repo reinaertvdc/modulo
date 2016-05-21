@@ -88,4 +88,19 @@ public class Score {
     public float getFailedPercentage() {
         return ((float)totalFailed / totalCompetences) * 100;
     }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "name='" + name + '\'' +
+                ", totalCompetences=" + totalCompetences +
+                ", totalPassed=" + totalPassed +
+                ", totalFailed=" + totalFailed +
+                ", offered=" + offered +
+                ", practiced=" + practiced +
+                ", acquired=" + acquired +
+                ", passed %=" + getPassedPercentage() +
+                ", failed %=" + getFailedPercentage() +
+                '}';
+    }
 }

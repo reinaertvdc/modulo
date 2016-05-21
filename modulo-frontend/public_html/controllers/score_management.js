@@ -26,9 +26,9 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         if ($scope.visibleScores.module == null) {
             return;
         }
-        var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
-        var goalIndex = 0;
         if ($scope.visibleScores.schoolClass.type == 'BGV') {
+            var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
+            var goalIndex = 0;
             for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
                 var competences = subCertificateCategories[categoryIndex].competences;
                 for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
@@ -46,7 +46,18 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                 }
             }
         } else {
-
+            for (var objectiveIndex = 0; objectiveIndex < $scope.visibleScores.module.objectives.length; objectiveIndex++) {
+                $scope.studentScoresTable[objectiveIndex] = [];
+                for (var studentIndex = 0; studentIndex < $scope.visibleScores.module.students.length; studentIndex++) {
+                    $scope.studentScoresTable[objectiveIndex][studentIndex] = {};
+                    if (!$scope.visibleScores.module.students[studentIndex].scores[$scope.visibleScores.week]) {
+                        $scope.visibleScores.module.students[studentIndex].scores[$scope.visibleScores.week] = [];
+                    }
+                    $scope.studentScoresTable[objectiveIndex][studentIndex].score = $scope.visibleScores.module.students[studentIndex].scores[$scope.visibleScores.week][$scope.visibleScores.module.objectives[objectiveIndex].id];
+                    $scope.studentScoresTable[objectiveIndex][studentIndex].objective = $scope.visibleScores.module.objectives[objectiveIndex].id;
+                    $scope.studentScoresTable[objectiveIndex][studentIndex].selected = false;
+                }
+            }
         }
     };
 
@@ -73,52 +84,69 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
                         });
                     });
                 });
+                $http({
+                    method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/'+ schoolClass.id +'/students',
+                    headers: {'X-auth': $cookies.get('auth')}
+                }).success(function (students) {
+                    clazz.students = [];
+                    students.forEach(function (student) {
+                        var tempStudent = {};
+                        tempStudent.student = student;
+                        tempStudent.scores = [];
+                        $http({
+                            method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + student.id + '/bgv',
+                            headers: {'X-auth': $cookies.get('auth')}
+                        }).success(function (scores) {
+                            scores.forEach(function (score) {
+                                if (!tempStudent.scores[score.week]) {
+                                    tempStudent.scores[score.week] = [];
+                                }
+                                tempStudent.scores[score.week][score.competence.id] = score;
+                            });
+                        });
+                        clazz.students.push(tempStudent);
+                    })
+                });
             } else {
                 $http({
                     method: 'GET', url: 'http://localhost:8080/class/id/'+ schoolClass.id +'/coursetopics',
                     headers: {'X-auth': $cookies.get('auth')}
                 }).success(function (courseTopics) {
                     courseTopics.forEach(function (courseTopic) {
-                        clazz.modules.push(courseTopic);
+                        $http({
+                            method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + courseTopic.id + '/students',
+                            headers: {'X-auth': $cookies.get('auth')}
+                        }).success(function (students) {
+                            courseTopic.students = [];
+                            students.forEach(function (student) {
+                                var tempStudent = {};
+                                tempStudent.student = student;
+                                tempStudent.scores = [];
+                                $http({
+                                    method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + student.id + '/pav',
+                                    headers: {'X-auth': $cookies.get('auth')}
+                                }).success(function (scores) {
+                                    scores.forEach(function (score) {
+                                        if (!tempStudent.scores[score.week]) {
+                                            tempStudent.scores[score.week] = [];
+                                        }
+                                        tempStudent.scores[score.week][score.objective.id] = score;
+                                    });
+                                });
+                                courseTopic.students.push(tempStudent);
+                            })
+                        });
                         $http({
                             method: 'GET', url: 'http://localhost:8080/coursetopic/id/' + courseTopic.id + '/objectives',
                             headers: {'X-auth': $cookies.get('auth')}
                         }).success(function (objectives) {
-                            objectives.forEach(function (objective) {
-                                console.log(objective);
-                                //clazz.modules.push(courseTopic);
-                            });
+                            courseTopic.objectives = objectives;
                         });
+                        courseTopic.subCertificateCategories = [];
+                        clazz.modules.push(courseTopic);
                     });
                 });
             }
-            $http({
-                method: 'GET', url: $scope.SERVER_ADDRESS + 'class/id/'+ schoolClass.id +'/students',
-                headers: {'X-auth': $cookies.get('auth')}
-            }).success(function (students) {
-                clazz.students = [];
-                students.forEach(function (student) {
-                    var tempStudent = {};
-                    tempStudent.student = student;
-                    tempStudent.scores = [];
-                    $http({
-                        method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + student.id + '/' + clazz.type.toLowerCase(),
-                        headers: {'X-auth': $cookies.get('auth')}
-                    }).success(function (scores) {
-                        scores.forEach(function (score) {
-                            if (!tempStudent.scores[score.week]) {
-                                tempStudent.scores[score.week] = [];
-                            }
-                            if (schoolClass.type == 'BGV') {
-                                tempStudent.scores[score.week][score.competence.id] = score;
-                            } else {
-                                tempStudent.scores[score.week][score.objective.id] = score;
-                            }
-                        });
-                    });
-                    clazz.students.push(tempStudent);
-                })
-            });
             if (clazz.type == 'BGV') {
                 $scope.bgvClasses.push(clazz);
             } else if (clazz.type == 'PAV') {
@@ -165,24 +193,49 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         model.week = $scope.visibleScores.week;
         model.remarks = $scope.comment;
         model = JSON.stringify(model);
-        for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
-            var competences = subCertificateCategories[categoryIndex].competences;
-            for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
-                for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
-                    if ($scope.studentScoresTable[goalIndex][studentIndex].selected) {
-                        $http({
-                            method: 'POST', url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence, data: model,
-                            headers: {'X-auth': $cookies.get("auth")}
-                        }).success(function (response) {});
-                        if (!$scope.studentScoresTable[goalIndex][studentIndex].score) {
-                            $scope.studentScoresTable[goalIndex][studentIndex].score = {};
+        if ($scope.visibleScores.schoolClass.type == 'BGV') {
+            for (var categoryIndex = 0; categoryIndex < subCertificateCategories.length; categoryIndex++) {
+                var competences = subCertificateCategories[categoryIndex].competences;
+                for (var competenceIndex = 0; competenceIndex < competences.length; competenceIndex++) {
+                    for (var studentIndex = 0; studentIndex < $scope.visibleScores.schoolClass.students.length; studentIndex++) {
+                        if ($scope.studentScoresTable[goalIndex][studentIndex].selected) {
+                            $http({
+                                method: 'POST',
+                                url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.visibleScores.schoolClass.students[studentIndex].student.id + '/bgv/' + $scope.studentScoresTable[goalIndex][studentIndex].competence,
+                                data: model,
+                                headers: {'X-auth': $cookies.get("auth")}
+                            }).success(function (response) {
+                            });
+                            if (!$scope.studentScoresTable[goalIndex][studentIndex].score) {
+                                $scope.studentScoresTable[goalIndex][studentIndex].score = {};
+                            }
+                            $scope.studentScoresTable[goalIndex][studentIndex].score.score = $scope.selectedScoreId;
+                            $scope.studentScoresTable[goalIndex][studentIndex].score.remarks = model.remarks;
+                            $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
                         }
-                        $scope.studentScoresTable[goalIndex][studentIndex].score.score = $scope.selectedScoreId;
-                        $scope.studentScoresTable[goalIndex][studentIndex].score.remarks = model.remarks;
-                        $scope.studentScoresTable[goalIndex][studentIndex].selected = false;
+                    }
+                    goalIndex++;
+                }
+            }
+        } else if ($scope.visibleScores.schoolClass.type == 'PAV') {
+            for (var objectiveIndex = 0; objectiveIndex < $scope.visibleScores.module.objectives.length; objectiveIndex++) {
+                for (var studentIndex = 0; studentIndex < $scope.visibleScores.module.students.length; studentIndex++) {
+                    if ($scope.studentScoresTable[objectiveIndex][studentIndex].selected) {
+                        $http({
+                            method: 'POST',
+                            url: $scope.SERVER_ADDRESS + 'score/id/' + $scope.visibleScores.module.students[studentIndex].student.id + '/pav/' + $scope.visibleScores.module.id + '/' + $scope.studentScoresTable[objectiveIndex][studentIndex].objective,
+                            data: model,
+                            headers: {'X-auth': $cookies.get("auth")}
+                        }).success(function (response) {
+                        });
+                        if (!$scope.studentScoresTable[objectiveIndex][studentIndex].score) {
+                            $scope.studentScoresTable[objectiveIndex][studentIndex].score = {};
+                        }
+                        $scope.studentScoresTable[objectiveIndex][studentIndex].score.score = $scope.selectedScoreId;
+                        $scope.studentScoresTable[objectiveIndex][studentIndex].score.remarks = model.remarks;
+                        $scope.studentScoresTable[objectiveIndex][studentIndex].selected = false;
                     }
                 }
-                goalIndex++;
             }
         }
     }

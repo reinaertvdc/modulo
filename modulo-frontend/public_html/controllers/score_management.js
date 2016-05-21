@@ -185,6 +185,32 @@ app.controller('ScoreManagementController', function ($scope, $http, $cookies, $
         $scope.updateTableHeaders();
     }, 200);
 
+    $scope.toggleRow = function(index) {
+        var everythingSelected = true;
+        for (var i = 0; i < $scope.studentScoresTable[index].length; i++) {
+            if (!$scope.studentScoresTable[index][i].selected) {
+                everythingSelected = false;
+                break;
+            }
+        }
+        for (var i = 0; i < $scope.studentScoresTable[index].length; i++) {
+            $scope.studentScoresTable[index][i].selected = !everythingSelected;
+        }
+    };
+
+    $scope.toggleColumn = function(index) {
+        var everythingSelected = true;
+        for (var i = 0; i < $scope.studentScoresTable.length; i++) {
+            if (!$scope.studentScoresTable[i][index].selected) {
+                everythingSelected = false;
+                break;
+            }
+        }
+        for (var i = 0; i < $scope.studentScoresTable.length; i++) {
+            $scope.studentScoresTable[i][index].selected = !everythingSelected;
+        }
+    };
+
     $scope.updateScores = function() {
         var subCertificateCategories = $scope.visibleScores.module.subCertificateCategories;
         var goalIndex = 0;

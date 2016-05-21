@@ -43,8 +43,8 @@
                 <thead style="border-left: 1px solid rgb(221, 211, 211); margin-top: -1px; position: absolute; overflow: hidden; width: 65535px;">
                 <tr style="border-top: 1px solid rgb(221, 211, 211); z-index: -1000;">
                     <th style="background-color: white; display: inline-block; border-left: none; color: white;">.</th>
-                    <th data-ng-if="visibleScores.schoolClass.type == 'BGV'" style="background-color: white; display: inline-block; border-left: none;" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
-                    <th data-ng-if="visibleScores.schoolClass.type == 'PAV'" style="background-color: white; display: inline-block; border-left: none;" data-ng-repeat="student in visibleScores.module.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
+                    <th data-ng-if="visibleScores.schoolClass.type == 'BGV'" style="background-color: white; cursor: pointer; display: inline-block; border-left: none;" data-ng-click="toggleColumn(studentIndex);" data-ng-init="studentIndex = $index;" data-ng-repeat="student in visibleScores.schoolClass.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
+                    <th data-ng-if="visibleScores.schoolClass.type == 'PAV'" style="background-color: white; cursor: pointer; display: inline-block; border-left: none;" data-ng-click="toggleColumn(studentIndex);" data-ng-init="studentIndex = $index;" data-ng-repeat="student in visibleScores.module.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
                 </tr>
                 </thead>
                 <tbody style="visibility: hidden" class="stub-head">
@@ -57,13 +57,13 @@
                 <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories" data-on-finish-render="tableFinished">
                     <tr><td style="background-color: rgba(0, 0, 0, 0.06); font-weight: bold;" colspan="{{visibleScores.schoolClass.students.length + 1}}">{{category.name}}</td></tr>
                     <tr data-ng-repeat="competence in category.competences" data-ng-init="competenceIndex = $index; temp = $parent.$parent.goalIndex; $parent.$parent.goalIndex = $parent.$parent.goalIndex + 1">
-                        <td>{{competence.name}}</td>
+                        <td data-ng-repeat="stub in [1]" style="cursor: pointer;" data-ng-click="toggleRow($parent.temp);">{{competence.name}}</td>
                         <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index;" data-ng-class="{info: studentScoresTable[$parent.temp][scoreIndex].selected == true}" data-ng-mousedown="studentScoresTable[$parent.temp][scoreIndex].selected = !studentScoresTable[$parent.temp][scoreIndex].selected;" data-ng-repeat="student in visibleScores.schoolClass.students">{{studentScoresTable[$parent.temp][scoreIndex].score.score}}</td>
                     </tr>
                 </tbody>
                 <tbody data-ng-if="visibleScores.schoolClass.type == 'PAV'" data-on-finish-render="tableFinished">
                     <tr data-ng-repeat="objective in visibleScores.module.objectives"  data-ng-init="objectiveIndex = $index;">
-                        <td>{{objective.name}}</td>
+                        <td style="cursor: pointer;" data-ng-click="toggleRow(objectiveIndex);">{{objective.name}}</td>
                         <td style="cursor: pointer; vertical-align: middle; text-align: center;" data-ng-init="scoreIndex = $index;" data-ng-class="{info: studentScoresTable[objectiveIndex][scoreIndex].selected == true}" data-ng-mousedown="studentScoresTable[objectiveIndex][scoreIndex].selected = !studentScoresTable[objectiveIndex][scoreIndex].selected;" data-ng-repeat="student in visibleScores.module.students">{{studentScoresTable[objectiveIndex][scoreIndex].score.score}}</td>
                     </tr>
                 </tbody>

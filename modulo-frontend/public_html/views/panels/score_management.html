@@ -54,7 +54,7 @@
                         <th style="height: 100%; padding-top: 0; padding-bottom: 0;" data-ng-if="visibleScores.schoolClass.type == 'PAV'" data-ng-repeat="student in visibleScores.module.students">{{student.student.firstName + ' ' + student.student.lastName}}</th>
                     </tr>
                 </tbody>
-                <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories" data-on-finish-render="tableFinished">
+                <tbody data-ng-repeat="category in visibleScores.module.subCertificateCategories" data-ng-init="$parent.goalIndex = 0;" data-on-finish-render="tableFinished">
                     <tr><td style="background-color: rgba(0, 0, 0, 0.06); font-weight: bold;" colspan="{{visibleScores.schoolClass.students.length + 1}}">{{category.name}}</td></tr>
                     <tr data-ng-repeat="competence in category.competences" data-ng-init="competenceIndex = $index; temp = $parent.$parent.goalIndex; $parent.$parent.goalIndex = $parent.$parent.goalIndex + 1">
                         <td data-ng-repeat="stub in [1]" style="cursor: pointer;" data-ng-click="toggleRow($parent.temp);">{{competence.name}}</td>

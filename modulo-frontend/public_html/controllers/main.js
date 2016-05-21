@@ -301,7 +301,7 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
         }else{
             $scope.loadPages();
         }
-    }
+    };
 
     if ($scope.account.isLoggedIn()) {
         $scope.fillUserAndChildren();

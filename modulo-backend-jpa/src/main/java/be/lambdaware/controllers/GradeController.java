@@ -204,9 +204,6 @@ public class GradeController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-//        if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
-
-        //TODO remove user from PAV-class
 
         Grade grade = gradeRepo.findById(id);
 

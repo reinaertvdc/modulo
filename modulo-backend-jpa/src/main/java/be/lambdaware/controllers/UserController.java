@@ -531,7 +531,12 @@ public class UserController {
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
         if (!authentication.isAdmin()) return Responses.UNAUTHORIZED;
 
-        User newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+        User newUser;
+        if(user.getPassword() != null)
+             newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+        else
+            newUser = new User(user.getEmail(), authentication.SHA512("password"), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+
         newUser.setParent(user.getParent());
         userRepo.saveAndFlush(newUser);
 
@@ -609,6 +614,11 @@ public class UserController {
             oldUser.setParent(null);
         }
 
+        oldUser.setEmail(newUser.getEmail());
+        oldUser.setFirstName(newUser.getFirstName());
+        oldUser.setLastName(newUser.getLastName());
+        oldUser.setSex(newUser.getSex());
+
 
         // If the user's role is being changed
         if(oldUser.getRole() != newUser.getRole()){
@@ -664,6 +674,13 @@ public class UserController {
 
             log.info(String.format("Updated role to %s.",oldUser,newUser.getRole()));
             oldUser.setRole(newUser.getRole());
+        }else{
+            if(oldUser.getRole() == UserRole.STUDENT) {
+                log.info("The user is a student. Update student info.");
+                StudentInfo info = newUser.getStudentInfo();
+                studentInfoRepo.save(info);
+                oldUser.setStudentInfo(info);
+            }
         }
 
         log.info("Saving user " + oldUser);

@@ -82,7 +82,8 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
 
 
 app.controller('RemoveTaskModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    $scope.modalObject = "taak";
+    $scope.modalTitle = "taak";
+    $scope.modalObject = "deze taak";
 
     $scope.ok = function () {
         $uibModalInstance.close();

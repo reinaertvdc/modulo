@@ -173,7 +173,8 @@ app.controller('ListUsersController', function ($scope, $http, $window, $compile
 
 
 app.controller('RemoveUserModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    $scope.modalObject = "gebruiker"
+    $scope.modalTitle = "gebruiker";
+    $scope.modalObject = "deze gebruiker";
 
     $scope.ok = function () {
         $uibModalInstance.close();

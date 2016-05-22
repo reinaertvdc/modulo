@@ -25,7 +25,7 @@ app.controller('ManageClassCourseTopicListController', function ($scope, $http, 
         var html = '<tr id="' + $scope.toElementId(courseTopic.id) + '">' +
             '<td>' + courseTopic.name + '</td>' +
             '<td class="text-info"  ng-click="location.setParameter(location.PARAM_MANAGE_COURSE_TOPIC_ID,'+courseTopic.id+')"><span role="button" class="glyphicon glyphicon-edit"></span></td>' +
-            '<td class="text-danger" ng-click="removeCourseTopicBackend(' +  courseTopic.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
+            '<td class="text-danger" ng-click="openRemoveModal(' +  courseTopic.id + ')"><span role="button" class="glyphicon glyphicon-remove"></span></td>' +
             '</tr>';
 
         var element = document.createElement('tr');
@@ -50,12 +50,36 @@ app.controller('ManageClassCourseTopicListController', function ($scope, $http, 
         var element = document.getElementById($scope.toElementId(id));
         if (element !== null)
             element.parentElement.removeChild(element);
-    }
+    };
 
     // Update the Angular controls that have been added in the HTML
     $scope.refresh = function () {
         $compile(COURSE_TOPIC_LIST_ELEMENT)($scope);
     };
 
-    
+    $scope.openRemoveModal = function (id) {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'views/panels/remove_modal.html',
+            controller: 'RemoveCourseTopicModalInstanceCtrl',
+            resolve: {}
+        });
+        $scope.removeId = id;
+        modalInstance.result.then(function () {
+            $scope.removeCourseTopicBackend($scope.removeId)
+        }, function () {
+        });
+    };
+
+});
+
+app.controller('RemoveCourseTopicModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    $scope.modalObject = "vakthema";
+
+    $scope.ok = function () {
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });

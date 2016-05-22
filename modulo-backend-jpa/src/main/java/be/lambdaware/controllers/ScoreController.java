@@ -301,7 +301,7 @@ public class ScoreController {
         Objective objective = objectiveRepo.findById(objectiveId);
         if (objective == null) return Responses.OBJECTIVE_NOT_FOUND;
 
-        PAVScore newPavScore = new PAVScore(pavScore.getScore(), pavScore.getWeek(), pavScore.getRemarks());
+        PAVScore newPavScore = new PAVScore(pavScore.getScore(), pavScore.getWeek(), pavScore.getRemarks(), courseTopic);
         newPavScore.setObjective(objective);
         newPavScore.setStudentInfo(user.getStudentInfo());
         pavScoreRepo.saveAndFlush(newPavScore);

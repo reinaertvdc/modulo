@@ -220,18 +220,18 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
                     if (competence.id === item.competence.id && i === parseInt(item.week)) {
-                        hulp = '<td id="tableContent" tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Beschrijving: ' + item.remarks +'" >';
-                        hulp += item.score;
+                        hulp = '<td id="tableContent">'+ '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Beschrijving: ' + item.remarks +'">';
+                        hulp += item.score + '</div>';
                         return;
                     }
                 });
                 if(hulp === '')
-                    hulp = '<td></td>'
+                    hulp = '<td></td>';
                 $scope.tableRows += hulp;
                 $scope.tableRows += '</td>';
             }
         }
-        $scope.tableRows += '</tr>'
+        $scope.tableRows += '</tr>';
     };
 
     // PAV

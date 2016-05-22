@@ -2,6 +2,7 @@ package be.lambdaware;
 
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
+import be.lambdaware.models.StudentInfo;
 import be.lambdaware.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.sql.Date;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
     static {
-        System.setProperty("spring.datasource.url", "jdbc:postgresql://localhost:5433/modulo_test");
+        System.setProperty("spring.datasource.url", "jdbc:postgresql://localhost:5432/modulo_test");
     }
 
     @Autowired
@@ -49,41 +52,41 @@ public class UserControllerTest {
     public void testGet() throws Exception {
         rest.perform(get("/user/id/1")).andExpect(status().isForbidden());
 
-        rest.perform(get("/user/id/1").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(get("/user/id/1").header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.email").value("admin@school.be"))
+                .andExpect(jsonPath("$.email").value("pieter.goossens@tihh.be"))
                 .andExpect(jsonPath("$.firstName").value("Pieter"))
-                .andExpect(jsonPath("$.lastName").value("Beheerder"))
+                .andExpect(jsonPath("$.lastName").value("Goossens"))
                 .andExpect(jsonPath("$.role").value("ADMIN"));
 
-        rest.perform(get("/user/id/-1").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(get("/user/id/-1").header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isNotFound());
 
-        rest.perform(get("/user/id/test").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(get("/user/id/test").header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testGetAll() throws Exception {
         rest.perform(get("/user/all")).andExpect(status().isForbidden());
-        rest.perform(get("/user/all").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(get("/user/all").header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk()).andReturn();
     }
 
     @Test
     public void testGetByEmail() throws Exception {
-        rest.perform(get("/user/email/admin@school.be")).andExpect(status().isForbidden());
+        rest.perform(get("/user/email/pieter.goossens@tihh.be")).andExpect(status().isForbidden());
 
-        rest.perform(get("/user/email/admin@school.be").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(get("/user/email/pieter.goossens@tihh.be").header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.email").value("admin@school.be"))
+                .andExpect(jsonPath("$.email").value("pieter.goossens@tihh.be"))
                 .andExpect(jsonPath("$.firstName").value("Pieter"))
-                .andExpect(jsonPath("$.lastName").value("Beheerder"))
+                .andExpect(jsonPath("$.lastName").value("Goossens"))
                 .andExpect(jsonPath("$.role").value("ADMIN"));
 
-        rest.perform(get("/user/email/nomatch@test.com").header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(get("/user/email/nomatch@test.com").header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isNotFound());
     }
 
@@ -103,7 +106,7 @@ public class UserControllerTest {
 
         rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser)).andExpect(status().isForbidden());
 
-        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("jan.vermeulen@hotmail.com"))
                 .andExpect(jsonPath("$.firstName").value("Jan"))
@@ -116,7 +119,7 @@ public class UserControllerTest {
         User getUser = mapper.readValue(jsonUser, User.class);
         rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
 
-        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk());
 
     }
@@ -137,7 +140,7 @@ public class UserControllerTest {
 
         rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser)).andExpect(status().isForbidden());
 
-        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("kris.fit@hotmail.com"))
                 .andExpect(jsonPath("$.firstName").value("Kris"))
@@ -150,7 +153,7 @@ public class UserControllerTest {
         User getUser = mapper.readValue(jsonUser, User.class);
         rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
 
-        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk());
 
     }
@@ -171,7 +174,7 @@ public class UserControllerTest {
 
         rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser)).andExpect(status().isForbidden());
 
-        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("adda.man@hotmail.com"))
                 .andExpect(jsonPath("$.firstName").value("Adda"))
@@ -184,7 +187,98 @@ public class UserControllerTest {
         User getUser = mapper.readValue(jsonUser, User.class);
         rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
 
-        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "YWRtaW5Ac2Nob29sLmJlOnBhc3N3b3Jk"))
+        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
+                .andExpect(status().isOk());
+
+    }
+
+
+    @Test
+    public void AddStudent() throws Exception {
+        User user = new User();
+        user.setRole(UserRole.STUDENT);
+        user.setEmail("alfred.danken@tihh.be");
+        user.setFirstName("Alfred");
+        user.setLastName("Danken");
+        user.setSex(Sex.MALE);
+
+        StudentInfo info = new StudentInfo();
+        info.setBankAccount("BE0123456789");
+        Date date = new Date(1993514);
+        info.setBirthDate(date);
+        info.setBirthPlace("testCity");
+        info.setCity("testCity");
+        info.setEmergencyNumber("00123456321");
+        info.setHouseNumber("26");
+        info.setNationalIdentificationNumber("987654321");
+        info.setNationality("belgische");
+        info.setPhoneNumber("00321654123");
+        info.setPostalCode("4565");
+        info.setStreet("testStreet");
+
+        user.setStudentInfo(info);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String jsonUser = ow.writeValueAsString(user);
+
+        /*jsonUser = "{"+
+                "\"id\":null,"+
+                "\"role\":\"STUDENT\","+
+                "\"email\":\"alfred.danken@tihh.be\","+
+                "\"password\":\"password\","+
+                "\"firstName\":\"Alfred\","+
+                "\"lastName\":\"Danken\","+
+                "\"sex\":\"MALE\","+
+                "\"studentInfo\":{"+
+                    "\"birthDate\":\"1993-05-14\","+
+                    "\"birthPlace\":\"testCity\","+
+                    "\"nationality\":\"belgische\","+
+                    "\"street\":\"testStreet\","+
+                    "\"houseNumber\":\"26\","+
+                    "\"city\":\"testCity\","+
+                    "\"postalCode\":\"4565\","+
+                    "\"phoneNumber\":\"00321654123\","+
+                    "\"emergencyNumber\":\"00123456321\","+
+                    "\"bankAccount\":\"BE0123456789\","+
+                    "\"nationalIdentificationNumber\":\"987654321\""+
+        "}"+
+        "}";*/
+
+//{"id":null,"role":"STUDENT","email":"michiel@test.com","password":"password","firstName":"Michiel","lastName":"Vanmunster","sex":"MALE",
+// "studentInfo":{"birthDate":"1995-07-25","birthPlace":"Leuven","nationality":"Belg","street":"Walhostraat","houseNumber":"1","city":"Walshoutem","postalCode":"3401","phoneNumber":"123456","emergencyNumber":"123456","bankAccount":"999999999","nationalIdentificationNumber":"01234567890","parentId":null,"gradeId":1,"certificateId":1}}"
+        rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser)).andExpect(status().isForbidden());
+
+        MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("alfred.danken@tihh.be"))
+                .andExpect(jsonPath("$.firstName").value("Alfred"))
+                .andExpect(jsonPath("$.lastName").value("Danken"))
+                .andExpect(jsonPath("$.role").value("STUDENT"))
+                .andExpect(jsonPath("$.sex").value("MALE"))
+                .andExpect(jsonPath("$.studentInfo.city").value("testCity"))
+                .andExpect(jsonPath("$.studentInfo.bankAccount").value("BE0123456789"))
+                .andExpect(jsonPath("$.studentInfo.birthDate").value(date.toString()))
+                .andExpect(jsonPath("$.studentInfo.birthPlace").value("testCity"))
+                .andExpect(jsonPath("$.studentInfo.emergencyNumber").value("00123456321"))
+                .andExpect(jsonPath("$.studentInfo.houseNumber").value("26"))
+                .andExpect(jsonPath("$.studentInfo.nationalIdentificationNumber").value("987654321"))
+                .andExpect(jsonPath("$.studentInfo.nationality").value("belgische"))
+                .andExpect(jsonPath("$.studentInfo.phoneNumber").value("00321654123"))
+                .andExpect(jsonPath("$.studentInfo.postalCode").value("4565"))
+                .andExpect(jsonPath("$.studentInfo.street").value("testStreet"))
+                .andReturn();
+
+        jsonUser = result.getResponse().getContentAsString();
+        User getUser = mapper.readValue(jsonUser, User.class);
+
+        rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
+                .andExpect(status().isBadRequest());
+
+        rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
+
+        rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isOk());
 
     }

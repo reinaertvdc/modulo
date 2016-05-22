@@ -74,7 +74,8 @@ app.controller('ManageClassCourseTopicListController', function ($scope, $http, 
 });
 
 app.controller('RemoveCourseTopicModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    $scope.modalObject = "vakthema";
+    $scope.modalTitle = "vakthema";
+    $scope.modalObject = "dit vakthema";
 
     $scope.ok = function () {
         $uibModalInstance.close();

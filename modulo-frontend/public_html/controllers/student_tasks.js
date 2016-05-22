@@ -174,7 +174,8 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
 
 
 app.controller('RemoveUploadModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    $scope.modalObject = "upload";
+    $scope.modalTitle = "upload";
+    $scope.modalObject = "deze upload";
 
     $scope.ok = function () {
         $uibModalInstance.close();

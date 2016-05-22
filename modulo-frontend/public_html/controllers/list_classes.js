@@ -99,7 +99,8 @@ app.controller('ListClassesController', function ($scope , $http, $window, $comp
 });
 
 app.controller('RemoveClassModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    $scope.modalObject = "klas"
+    $scope.modalTitle = "klas";
+    $scope.modalObject = "deze klas"
 
     $scope.ok = function () {
         $uibModalInstance.close();

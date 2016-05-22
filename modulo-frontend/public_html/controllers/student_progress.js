@@ -95,6 +95,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
     };
 
     $scope.getNewContent = function () {
+        $scope.removeTableContent();
         if ($scope.selectedValues.class.type === "PAV") {
             $scope.getScores();
         }else{
@@ -266,8 +267,13 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
                     if (objective.name === item.objective.name && i === parseInt(item.week)) {
-                        hulp = '<td id="tableContent" tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Vakthema: ' + item.courseTopic.name+ ' \nBeschrijving: ' + item.remarks +'">';
-                        hulp += item.score;
+
+                        hulp = '<td id="tableContent">'+ '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Vakthema: ';
+                        if(item.courseTopic != null)
+                             hulp += item.courseTopic.name+ ' \nBeschrijving: ' + item.remarks +'">';
+                        else
+                            hulp +=  'onbekend \nBeschrijving: onbekend">';
+                        hulp += item.score + '</div>';
                     }
                 });
                 if(hulp === '')

@@ -117,6 +117,11 @@ public class UserControllerTest {
 
         jsonUser = result.getResponse().getContentAsString();
         User getUser = mapper.readValue(jsonUser, User.class);
+
+        //try adding a user with an already existing email
+        rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
+                .andExpect(status().isBadRequest());
+
         rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
 
         rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
@@ -151,6 +156,11 @@ public class UserControllerTest {
 
         jsonUser = result.getResponse().getContentAsString();
         User getUser = mapper.readValue(jsonUser, User.class);
+
+        //try adding a user with an already existing email
+        rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
+                .andExpect(status().isBadRequest());
+
         rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
 
         rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
@@ -185,6 +195,11 @@ public class UserControllerTest {
 
         jsonUser = result.getResponse().getContentAsString();
         User getUser = mapper.readValue(jsonUser, User.class);
+
+        //try adding a user with an already existing email
+        rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
+                .andExpect(status().isBadRequest());
+
         rest.perform(delete("/user/id/"+getUser.getId())).andExpect(status().isForbidden());
 
         rest.perform(delete("/user/id/"+getUser.getId()).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
@@ -248,6 +263,7 @@ public class UserControllerTest {
         jsonUser = result.getResponse().getContentAsString();
         User getUser = mapper.readValue(jsonUser, User.class);
 
+        //try adding a user with an already existing email
         rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))
                 .andExpect(status().isBadRequest());
 

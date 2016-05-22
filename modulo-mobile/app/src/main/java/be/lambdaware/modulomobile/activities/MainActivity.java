@@ -82,7 +82,7 @@ MainActivity extends AppCompatActivity implements RestCallback {
         finish();
     }
 
-    private void finishCreateView(){
+    private void finishCreateView() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -103,6 +103,7 @@ MainActivity extends AppCompatActivity implements RestCallback {
                 if (item.getItemId() == R.id.nav_tasks) {
                     FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.containerView, taskFragment, "fragmentTag").commit();
+                    taskFragment.loadTasks();
                 } else if (item.getItemId() == R.id.nav_progress) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView, tabFragment, "fragmentTag").commit();
@@ -133,19 +134,10 @@ MainActivity extends AppCompatActivity implements RestCallback {
         if (ApiAuthentication.getAuthenticatedUser().isStudent()) {
             mNavigationView.getMenu().findItem(R.id.nav_children).setVisible(false);
         } else {
-            if(Database.getSizeOfChildren() == 1){
+            if (Database.getSizeOfChildren() == 1) {
                 mNavigationView.getMenu().findItem(R.id.nav_children).setVisible(false);
             }
         }
-
-//        int last = mNavigationView.getMenu().size();
-//        for(User user : Database.getChildren()){
-//            mNavigationView.getMenu().add(1, last++ , Menu.NONE, user.getFullName()).setIcon(R.drawable.ic_account_circle_black_24dp);
-//        }
-    }
-
-    public void childSelectionChanged() {
-        taskFragment.loadTasks();
     }
 
     public void setUserInfoInHeader() {
@@ -155,8 +147,8 @@ MainActivity extends AppCompatActivity implements RestCallback {
         TextView tvMail = (TextView) header.findViewById(R.id.tv_mail);
 
         User user = ApiAuthentication.getAuthenticatedUser();
-        if(user.isParent() && Database.getSelectedUser()!=null){
-            tvAlias.setText("Leerling: "+Database.getSelectedUser().getFullName());
+        if (user.isParent() && Database.getSelectedUser() != null) {
+            tvAlias.setText("Leerling: " + Database.getSelectedUser().getFullName());
             tvAlias.setVisibility(View.VISIBLE);
         }
 
@@ -195,7 +187,7 @@ MainActivity extends AppCompatActivity implements RestCallback {
     }
 
     private void loadChildren() {
-        Database.clearChildren();;
+        Database.clearChildren();
         getChildrenCall = new RestCall(this);
         getChildrenCall.execute(ApiSettings.URL + ":" + ApiSettings.PORT + "/user/id/" + ApiAuthentication.getAuthenticatedUser().getId() + "/children");
     }

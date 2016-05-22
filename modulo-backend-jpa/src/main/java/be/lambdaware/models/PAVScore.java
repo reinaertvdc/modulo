@@ -49,10 +49,11 @@ public class PAVScore {
 
     }
 
-    public PAVScore(ScoreType score, int week, String remarks) {
+    public PAVScore(ScoreType score, int week, String remarks, CourseTopic courseTopic) {
         this.score = score;
         this.week = week;
         this.remarks = remarks;
+        this.courseTopic = courseTopic;
     }
 
     // ===================================================================================

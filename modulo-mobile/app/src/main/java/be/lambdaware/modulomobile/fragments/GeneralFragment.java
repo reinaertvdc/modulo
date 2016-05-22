@@ -83,15 +83,16 @@ public class GeneralFragment extends Fragment implements SwipeRefreshLayout.OnRe
         JSONArray JSONarr = scores.getJSONArray("pav");
         JSONObject jsonScore = JSONarr.getJSONObject(0);
         Gson gson = new Gson();
-        Score score = gson.fromJson(jsonScore.toString(), Score.class);
-        Log.i("Score", score.toString());
-        data.add(score);
+        Score pavScore = gson.fromJson(jsonScore.toString(), Score.class);
+
 
         jsonScore = scores.getJSONObject("general");
         gson = new Gson();
-        score = gson.fromJson(jsonScore.toString(), Score.class);
-        Log.i("Score", score.toString());
-        data.add(score);
+        Score generalScore = gson.fromJson(jsonScore.toString(), Score.class);
+
+
+        data.add(generalScore);
+        data.add(pavScore);
 
         scoreAdapter = new ScoreListAdapter(getContext(), data);
         rvRecylcerView.setAdapter(scoreAdapter);

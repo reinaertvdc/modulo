@@ -535,9 +535,9 @@ public class UserController {
 
         User newUser;
         if(user.getPassword() != null)
-             newUser = new User(user.getEmail(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+             newUser = new User(user.getEmail().toLowerCase(), authentication.SHA512(user.getPassword()), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
         else
-            newUser = new User(user.getEmail(), authentication.SHA512("password"), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
+            newUser = new User(user.getEmail().toLowerCase(), authentication.SHA512("password"), user.getFirstName(), user.getLastName(), user.getSex(), user.getRole(), true);
 
         newUser.setParent(user.getParent());
         userRepo.saveAndFlush(newUser);
@@ -621,7 +621,7 @@ public class UserController {
             oldUser.setParent(null);
         }
 
-        oldUser.setEmail(newUser.getEmail());
+        oldUser.setEmail(newUser.getEmail().toLowerCase());
         oldUser.setFirstName(newUser.getFirstName());
         oldUser.setLastName(newUser.getLastName());
         oldUser.setSex(newUser.getSex());

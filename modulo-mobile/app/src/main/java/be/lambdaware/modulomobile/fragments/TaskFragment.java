@@ -89,7 +89,7 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Log.i("Tasks", response);
 
         ArrayList<Task> tasks = new ArrayList<>();
-        if(JSONArray.length() == 0) {
+        if (JSONArray.length() == 0) {
             tvNotasks.setVisibility(View.VISIBLE);
             return;
         } else {
@@ -108,29 +108,29 @@ public class TaskFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             String score = scoreObject.getString("score");
             String remarks = scoreObject.getString("remarks");
             String fileName = scoreObject.getString("fileName");
-
             String description = taskObject.getString("description");
 
             Task.TaskStatus status = Task.TaskStatus.EMPTY;
-            if (!fileName.equals("null") && score.equals("null")) {
+            if (!fileName.equals("null") && score.equals("null"))
                 status = Task.TaskStatus.SUBMITTED;
-            }
-            if (!score.equals("null")) {
-                status = Task.TaskStatus.GRADED;
-            }
 
-            if (remarks.equals("null") || remarks.equals("")) remarks = "Geen opmerkingen.";
+            if (!score.equals("null"))
+                status = Task.TaskStatus.GRADED;
+
+
+            if (remarks.equals("null") || remarks.equals(""))
+                remarks = "Geen opmerkingen.";
             if (description.equals("null") || description.equals(""))
                 description = "Geen beschrijving.";
-            if (score.equals("null") || score.equals("")) score = "Geen score.";
-            if (fileName.equals("null") || fileName.equals("")) fileName = "Geen bestand.";
+            if (score.equals("null") || score.equals(""))
+                score = "Geen score.";
+            if (fileName.equals("null") || fileName.equals(""))
+                fileName = "Geen bestand.";
 
             tasks.add(new Task(className + " " + name, deadline, score, remarks, description, status));
         }
-
         taskAdapter = new TaskListAdapter(getContext(), tasks);
         rvRecylcerView.setAdapter(taskAdapter);
-
     }
 
     @Override

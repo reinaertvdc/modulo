@@ -11,7 +11,9 @@ import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.models.User;
 
 /**
- * Created by Hendrik on 13/05/2016.
+ * Author: Hendrik Lievens
+ * Date: 13/05/2016
+ * UHasselt / Software Engineering / 2015 - 2016
  */
 public class ApiAuthentication {
 

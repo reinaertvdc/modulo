@@ -47,7 +47,11 @@ import be.lambdaware.modulomobile.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-
+/**
+ * Author: Hendrik Lievens
+ * Date: 12/05/2016
+ * UHasselt / Software Engineering / 2015 - 2016
+ */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
 
@@ -182,12 +186,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 

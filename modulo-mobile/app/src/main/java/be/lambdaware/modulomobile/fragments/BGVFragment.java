@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import be.lambdaware.modulomobile.R;
 import be.lambdaware.modulomobile.adapters.ScoreListAdapter;
-import be.lambdaware.modulomobile.api.ApiAuthentication;
 import be.lambdaware.modulomobile.api.ApiSettings;
 import be.lambdaware.modulomobile.api.RestCall;
 import be.lambdaware.modulomobile.api.RestCallback;
@@ -31,7 +30,6 @@ import be.lambdaware.modulomobile.models.Score;
 
 public class BGVFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RestCallback {
 
-    // This recyclerview will contain all the scores as cards.
     private RecyclerView rvRecylcerView;
     private RecyclerView.Adapter scoreAdapter;
     private RecyclerView.LayoutManager layoutManager;

@@ -20,7 +20,10 @@
     <string name="error_field_required">Dit veld is verplicht</string>
     <string name="permission_rationale">"Toegang tot contacten is vereist."</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="total">Totaal</string>
+    <string name="no_submissions">Geen inzending</string>
+    <string name="score">"Score: %s"</string>
+    <string name="passed">Behaald</string>
+    <string name="failed">Niet Behaald</string>
 </resources>

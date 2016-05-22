@@ -223,31 +223,6 @@ public class UserControllerTest {
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String jsonUser = ow.writeValueAsString(user);
 
-        /*jsonUser = "{"+
-                "\"id\":null,"+
-                "\"role\":\"STUDENT\","+
-                "\"email\":\"alfred.danken@tihh.be\","+
-                "\"password\":\"password\","+
-                "\"firstName\":\"Alfred\","+
-                "\"lastName\":\"Danken\","+
-                "\"sex\":\"MALE\","+
-                "\"studentInfo\":{"+
-                    "\"birthDate\":\"1993-05-14\","+
-                    "\"birthPlace\":\"testCity\","+
-                    "\"nationality\":\"belgische\","+
-                    "\"street\":\"testStreet\","+
-                    "\"houseNumber\":\"26\","+
-                    "\"city\":\"testCity\","+
-                    "\"postalCode\":\"4565\","+
-                    "\"phoneNumber\":\"00321654123\","+
-                    "\"emergencyNumber\":\"00123456321\","+
-                    "\"bankAccount\":\"BE0123456789\","+
-                    "\"nationalIdentificationNumber\":\"987654321\""+
-        "}"+
-        "}";*/
-
-//{"id":null,"role":"STUDENT","email":"michiel@test.com","password":"password","firstName":"Michiel","lastName":"Vanmunster","sex":"MALE",
-// "studentInfo":{"birthDate":"1995-07-25","birthPlace":"Leuven","nationality":"Belg","street":"Walhostraat","houseNumber":"1","city":"Walshoutem","postalCode":"3401","phoneNumber":"123456","emergencyNumber":"123456","bankAccount":"999999999","nationalIdentificationNumber":"01234567890","parentId":null,"gradeId":1,"certificateId":1}}"
         rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser)).andExpect(status().isForbidden());
 
         MvcResult result = rest.perform(post("/user/").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonUser).header("X-Auth", "cGlldGVyLmdvb3NzZW5zQHRpaGguYmU6cGFzc3dvcmQ="))

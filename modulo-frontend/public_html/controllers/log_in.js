@@ -1,5 +1,4 @@
 app.controller('LogInController', function ($scope, $http, $base64, $cookies) {
-    // TODO finish controller
     $scope.formData = {};
     $scope.submitForm = function () {
         var auth = $scope.formData.email + ":" + $scope.formData.password;

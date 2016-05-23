@@ -1,5 +1,4 @@
 app.controller('ManageClassDetailsController', function ($scope, $http, $cookies) {
-    // TODO implement controller
     $scope.classId = $scope.location.getParameter($scope.location.PARAM_MANAGE_CLASS_ID);
 
     $scope.class = {

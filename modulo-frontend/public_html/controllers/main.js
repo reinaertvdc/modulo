@@ -1,5 +1,4 @@
 app.controller('MainController', function ($scope, $location, $base64, $cookies, $http) {
-    // TODO finish controller
     $scope.SERVER_ADDRESS = 'http://localhost:8080/';
 
     $scope.loadPages = function(){

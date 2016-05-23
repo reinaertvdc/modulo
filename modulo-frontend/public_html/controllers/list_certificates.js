@@ -1,9 +1,4 @@
-/**
- * Created by martijn on 14/04/16.
- */
 app.controller('ListCertificatesController', function ($scope, $cookies, $http, $window, $compile) {
-    // TODO implement controller
-    //TODO test data vervangen door effectieve data
     const CERTIFICATES_LIST_ITEM_PREFIX = 'certificates-list-item-';
     const CERTIFICATES_LIST_ELEMENT = document.getElementById('table-certificates-list-body');
 

@@ -3,8 +3,28 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
     const SCORES_LIST_ELEMENT = document.getElementById('table-scores-list-body');
 
     $scope.scores = new Map();
+    $scope.originalScores = new Map();
     $scope.removeId;
 
+    $scope.searchScores = function () {
+        // make $scope.scores the original scores
+        $scope.scores = new Map($scope.originalScores);
+        $scope.originalScores.forEach(function (item) {
+            $scope.addScore(item.scoreObj);
+        });
+
+        if ($scope.searchKeyword) {
+            var search = $scope.searchKeyword.toLowerCase();
+
+            // remove all the tasks that don't match
+            $scope.scores.forEach(function (item) {
+
+                if (item.scoreObj.task.name.toLowerCase().indexOf(search) < 0)
+                    $scope.removeTaskFrontend(item.scoreObj.id);
+            });
+        }
+        $scope.refresh();
+    };
 
     $scope.toElementId = function (id) {
         return SCORES_LIST_ITEM_PREFIX + id;
@@ -199,6 +219,8 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             response.forEach(function (item) {
                 $scope.addScore(item);
             });
+
+            $scope.originalScores = new Map($scope.scores);
             $scope.refresh();
         });
     };

@@ -183,6 +183,7 @@ public class ClassController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User teacher = userRepo.findById(teacherId);
 
@@ -211,6 +212,7 @@ public class ClassController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         User teacher = userRepo.findById(teacherId);
 
@@ -239,6 +241,7 @@ public class ClassController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
@@ -263,6 +266,7 @@ public class ClassController {
     public ResponseEntity<?> addStudentsFromClassByCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long certificateId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
@@ -302,6 +306,7 @@ public class ClassController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
@@ -348,6 +353,7 @@ public class ClassController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
@@ -366,6 +372,7 @@ public class ClassController {
 
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;
@@ -391,6 +398,7 @@ public class ClassController {
     public ResponseEntity<?> deleteStudentsFromClassByCertificate(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, @PathVariable long id, @PathVariable long certificateId) {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
+        if (!authentication.isTeacher()) return Responses.UNAUTHORIZED;
 
         Clazz clazz = classRepo.findById(id);
         if (clazz == null) return Responses.CLASS_NOT_FOUND;

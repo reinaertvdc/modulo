@@ -113,7 +113,7 @@ public class TaskController {
     public ResponseEntity<?> downloadFile(@RequestHeader(name = "X-auth", defaultValue = "empty") String auth, HttpServletResponse response, @PathVariable long taskScoreId) throws IOException {
         if (auth.equals("empty")) return Responses.AUTH_HEADER_EMPTY;
         if (!authentication.checkLogin(auth)) return Responses.LOGIN_INVALID;
-        if (!(authentication.isTeacher() || authentication.isStudent())) return Responses.UNAUTHORIZED;
+        if (!(authentication.isTeacher() || authentication.isStudent() || authentication.isParent())) return Responses.UNAUTHORIZED;
 
         TaskScore score = taskScoreRepo.findById(taskScoreId);
         if (score == null) return Responses.TASKSCORE_NOT_FOUND;

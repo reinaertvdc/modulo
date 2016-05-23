@@ -11,6 +11,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
     };
 
     $scope.addScore = function (score) {
+        $scope.removeTaskFrontend(score.id);
         var scoreObj = {'scoreObj': score, 'opened': false, 'fd': null, 'filenameStr': ''};
         $scope.scores.set(score.id, scoreObj);
 
@@ -26,7 +27,6 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             '<td>' + score.task.clazz.name + '</td>';
 
         // check upload and deadline
-
         if (score.fileName == null && (new Date() < new Date(score.task.deadline)))
             html += '<td class="text-danger"><strong>' + score.task.deadline + '</strong></td>';
         else
@@ -36,7 +36,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
         if (score.fileName == null || score.fileName == '') {
             html += '<td><div class="row"> ' +
                 '<em class="col-xs-7 text-muted">{{getFilenameStr(' + score.id + ')}}</em>';
-            if (new Date() < new Date(score.task.deadline)) {  // before deadline -> enable 'upload'
+            if ($cookies.getObject("user").role === UserType.STUDENT  &&  new Date() < new Date(score.task.deadline)) {  // before deadline -> enable 'upload'
                 html += '<span class="col-xs-2" align="center" input-group-btn"><span class=" btn btn-primary btn-file btn-sm">•••' +
                     '<input type="file" onchange="angular.element(this).scope().setFile(' + score.id + ',this.files[0])"/></span></span>' +
                     '<span role="button" ng-show="isVisible(' + score.id + ')" class="text-info glyphicon glyphicon-upload col-xs-2" ng-click="uploadFile(' + score.id + ')"></span>';
@@ -48,7 +48,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
             html += '<td><div class="row"> ' +
                 '<em class="col-xs-7 text-muted">' + score.fileName + '</em>' +
                 '<span align="center" role="button" class="text-info glyphicon glyphicon-download col-xs-2" ng-click="downloadFile(' + score.id + ')"></span>';
-            if (new Date() < new Date(score.task.deadline))  // before deadline -> enable 'remove'
+            if ($cookies.getObject("user").role === UserType.STUDENT  &&  new Date() < new Date(score.task.deadline))  // before deadline -> enable 'remove'
                 html += '<span role="button" class="text-danger glyphicon glyphicon-remove col-xs-2" ng-click="openRemoveModal(' + score.id + ')"></span>';
             html += '</div></td>';
         }
@@ -63,7 +63,7 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
 
         // task description
         if (score.task.description != null && score.task.description != "")
-            html += '<tr></tr><tr ng-show="scores.get(' + score.id + ').opened"><td></td><td colspan="5"><pre>' + score.task.description + '</pre></td></tr>';
+            html += '<tr id="' + $scope.toElementId(score.id) + '"></tr><tr id="' + $scope.toElementId(score.id) + '" ng-show="scores.get(' + score.id + ').opened"><td></td><td colspan="5"><pre>' + score.task.description + '</pre></td></tr>';
 
         html += '</tr>';
         var element = document.createElement('tr');
@@ -77,6 +77,8 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
     };
 
     $scope.getOpenedClass = function (id) {
+        if($scope.scores.get(id) == undefined)
+            return;
         if ($scope.scores.get(id).opened)
             return 'glyphicon glyphicon-chevron-down';
         else
@@ -136,10 +138,14 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
     };
 
     $scope.getFilenameStr = function (id) {
+        if($scope.scores.get(id) == undefined)
+            return;
         return $scope.scores.get(id).filenameStr;
     };
 
     $scope.isVisible = function (id) {
+        if($scope.scores.get(id) == undefined)
+            return;
         return $scope.scores.get(id).fd != null;
     };
 
@@ -159,17 +165,61 @@ app.controller('StudentTasksController', function ($scope, $http, $window, $comp
     };
 
 
-    // ACTUAL ACTIONS ON LOADED PAGE
-    // get all tasks associated with current student
-    $http({
-        method: 'GET', url: $scope.SERVER_ADDRESS + 'score/id/' + $cookies.getObject("user").id + '/tasks',
-        headers: {'X-auth': $cookies.get("auth")}
-    }).success(function (response) {
-        response.forEach(function (item) {
-            $scope.addScore(item);
+    $scope.removeTaskFrontend = function (id) {
+        $scope.scores.delete(id);
+        var element = document.getElementById($scope.toElementId(id));
+        while (element != null) {
+            element.parentElement.removeChild(element);
+            element = document.getElementById($scope.toElementId(id));
+        }
+    };
+    $scope.removeTasksFrontend = function () {
+        while (SCORES_LIST_ELEMENT.firstChild)
+            SCORES_LIST_ELEMENT.removeChild(SCORES_LIST_ELEMENT.firstChild);
+        $scope.scores.clear();
+    };
+
+    // get all tasks associated with student
+    $scope.loadTasks = function () {
+        // create requestURL
+        var requestURL = $scope.SERVER_ADDRESS + 'score/id/';
+        if ($cookies.getObject("user").role === UserType.STUDENT)
+            requestURL += $cookies.getObject('user').id;
+        else if ($cookies.getObject("user").role === UserType.PARENT && $cookies.getObject("child") != null)
+            requestURL += $cookies.getObject("child").id;
+        else
+            requestURL += $cookies.getObject('user').id;
+        requestURL += '/tasks';
+
+        // make request
+        $http({
+            method: 'GET', url: requestURL,
+            headers: {'X-auth': $cookies.get("auth")}
+        }).success(function (response) {
+            response.forEach(function (item) {
+                $scope.addScore(item);
+            });
+            $scope.refresh();
         });
-        $scope.refresh();
+    };
+
+
+    // ACTUAL ACTIONS ON LOADED PAGE
+    $scope.removeTasksFrontend();
+    $scope.loadTasks();
+
+    $scope.$watch(function () {
+        if ($cookies.getObject("child") != undefined) {
+            return $cookies.getObject("child").id;
+        } else
+            return;
+    }, function (newValue) {
+        if ($cookies.getObject("child") != undefined) {
+            $scope.removeTasksFrontend();
+            $scope.loadTasks();
+        }
     });
+
 });
 
 

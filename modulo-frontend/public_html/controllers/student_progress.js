@@ -221,8 +221,8 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             for (i = 0; i < WEEKS; i++) {
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
-                    if (competence.id === item.competence.id && i === parseInt(item.week)) {
-                        hulp = '<td id="tableContent">' + '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Beschrijving: ' + item.remarks + '">';
+                    if (competence.id === item.competence.id && i === parseInt(item.week)-1) {
+                        hulp = '<td id="tableContent">'+ '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Beschrijving: ' + item.remarks +'">';
                         hulp += item.score + '</div>';
                         return;
                     }
@@ -257,7 +257,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
     $scope.createPAVRow = function (objective) {
         $scope.tableRows += '<tr>' +
             '<td  class="fixed">' + objective.name + '</td>';
-
+        
         if ($scope.scores === null) {
             for (i = 0; i < WEEKS; i++) {
                 $scope.tableRows += '<td></td>';
@@ -267,7 +267,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             for (i = 0; i < WEEKS; i++) {
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
-                    if (objective.name === item.objective.name && i === parseInt(item.week)) {
+                    if (objective.name === item.objective.name && i === parseInt(item.week)-1) {
 
                         hulp = '<td id="tableContent">' + '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Vakthema: ';
                         if (item.courseTopic != null)

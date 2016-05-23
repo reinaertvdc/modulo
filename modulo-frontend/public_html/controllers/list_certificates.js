@@ -6,7 +6,7 @@ app.controller('ListCertificatesController', function ($scope, $cookies, $http, 
     $scope.originalCertificates = new Map();
 
     $scope.searchCertificates = function () {
-        // make $scope.users the original certificates
+        // make $scope.tasks the original certificates
         $scope.certificates = new Map($scope.originalCertificates);
         $scope.originalCertificates.forEach(function (item) {
             $scope.addCertificate(item);

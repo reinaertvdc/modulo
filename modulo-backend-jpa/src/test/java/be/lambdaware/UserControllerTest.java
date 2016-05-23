@@ -1,7 +1,9 @@
 package be.lambdaware;
 
+import be.lambdaware.enums.ClassType;
 import be.lambdaware.enums.Sex;
 import be.lambdaware.enums.UserRole;
+import be.lambdaware.models.Clazz;
 import be.lambdaware.models.StudentInfo;
 import be.lambdaware.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -28,7 +28,7 @@ public class APIAuthentication {
         String hashedPassword = SHA512(password);
 
         User user = userRepo.findByEmail(email);
-        if ((user != null) && (user.getPassword().equals(hashedPassword))) {
+        if ((user != null) && (user.getPassword().equals(hashedPassword)) && user.isEnabled()) {
             authenticatedUser = user;
             return true;
         } else

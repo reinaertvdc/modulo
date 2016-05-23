@@ -1,5 +1,4 @@
 app.controller('MainController', function ($scope, $location, $base64, $cookies, $http) {
-    // TODO finish controller
     $scope.SERVER_ADDRESS = 'http://localhost:8080/';
 
     $scope.loadPages = function(){
@@ -38,8 +37,8 @@ app.controller('MainController', function ($scope, $location, $base64, $cookies,
                     return 'views/panels/list_tasks.html';
             } else
 
-            // student
-            if ($cookies.getObject('user').role === UserType.STUDENT) {
+            // student or parent
+            if ($cookies.getObject('user').role === UserType.STUDENT  ||  $cookies.getObject('user').role === UserType.PARENT) {
                 return 'views/panels/student_tasks.html';
             }
         };

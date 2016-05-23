@@ -7,7 +7,6 @@ updateTableHeaders = function() {
 };
 
 app.controller('ScoreManagementController', function ($scope, $http, $cookies, $window) {
-    // TODO implement controller
     $scope.bgvClasses = [];
     $scope.pavClasses = [];
 

@@ -1,6 +1,4 @@
 app.controller('NewClassController', function ($scope, $http, $cookies) {
-        // TODO implement controller
-
     $scope.classType = $scope.location.getParameter($scope.location.PARAM_CLASS_TYPE);
     $scope.studentsToAdd = [];
 

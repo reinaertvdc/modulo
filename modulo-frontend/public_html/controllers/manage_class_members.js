@@ -1,5 +1,4 @@
 app.controller('ManageClassMembersController', function ($scope, $http, $cookies) {
-    // TODO implement controller
     $scope.students = new Map();
     $scope.studentsInClass = [];
     $scope.jsonStudents = "";

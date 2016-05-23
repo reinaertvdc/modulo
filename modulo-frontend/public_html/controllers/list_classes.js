@@ -1,6 +1,4 @@
 app.controller('ListClassesController', function ($scope , $http, $window, $compile, $uibModal, $cookies) {
-    // TODO implement controller
-
     const CLASS_LIST_ITEM_PREFIX = 'class-list-item-';
     const PAVCLASS_LIST_ELEMENT = document.getElementById('table-pav-class-list-body');
     const BGVCLASS_LIST_ELEMENT = document.getElementById('table-bgv-class-list-body');

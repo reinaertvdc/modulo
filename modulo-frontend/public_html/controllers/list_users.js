@@ -1,5 +1,4 @@
 app.controller('ListUsersController', function ($scope, $http, $window, $compile, $uibModal, $cookies) {
-    // TODO finish controller
     const USER_LIST_ITEM_PREFIX = 'user-list-item-';
     const USER_LIST_ELEMENT = document.getElementById('table-user-list-body');
 

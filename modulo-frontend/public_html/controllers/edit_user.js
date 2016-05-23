@@ -1,8 +1,6 @@
 app.controller('EditUserController', function ($scope, $http, $uibModal, $cookies) {
     var paramVal = $scope.location.getParameter($scope.location.PARAM_EDIT_USER_ID);
-
-
-    // TODO: set to actual default values
+    
     $scope.studentInfo = {
         birthDate: '1995-07-25',
         birthPlace: 'Leuven',

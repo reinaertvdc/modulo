@@ -1,5 +1,4 @@
 app.controller('ManageClassController', function ($scope) {
-    // TODO implement controller
     $scope.classType = $scope.location.getParameter($scope.location.PARAM_CLASS_TYPE);
 
     $scope.Tab = Object.freeze({

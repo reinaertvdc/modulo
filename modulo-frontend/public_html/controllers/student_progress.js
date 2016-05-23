@@ -15,15 +15,15 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.loadClassData = function () {
         var requestURL = "";
-        if($cookies.getObject("user").role === UserType.STUDENT){
+        if ($cookies.getObject("user").role === UserType.STUDENT) {
             $scope.selectedValues.student = $cookies.getObject("user");
             requestURL = $scope.SERVER_ADDRESS + '/user/id/' + $cookies.getObject('user').id + '/classes';
-        }else if($cookies.getObject("user").role === UserType.PARENT){
-            if($cookies.getObject("child") != null) {
+        } else if ($cookies.getObject("user").role === UserType.PARENT) {
+            if ($cookies.getObject("child") != null) {
                 requestURL = $scope.SERVER_ADDRESS + '/user/id/' + $cookies.getObject("child").id + '/classes';
                 $scope.selectedValues.student = $cookies.getObject("child");
             }
-        }else{
+        } else {
             requestURL = $scope.SERVER_ADDRESS + '/user/id/' + $cookies.getObject('user').id + '/teaching';
         }
         $http({
@@ -40,12 +40,13 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.loadClassData();
 
-    $scope.$watch(function() { if($cookies.getObject("child") != undefined) {
-                                    return $cookies.getObject("child").id;
-                                }else
-                                    return;
-                                }, function(newValue) {
-        if($cookies.getObject("child") != undefined) {
+    $scope.$watch(function () {
+        if ($cookies.getObject("child") != undefined) {
+            return $cookies.getObject("child").id;
+        } else
+            return;
+    }, function (newValue) {
+        if ($cookies.getObject("child") != undefined) {
             $scope.refreshValues();
             $scope.loadClassData();
         }
@@ -67,19 +68,19 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.selectedClass = clazz.name;
         $scope.selectedValues.class = clazz;
 
-        if(clazz.type === "BGV") {
+        if (clazz.type === "BGV") {
             document.getElementById("subcertificateForm").style.display = "inline-block";
             $scope.loadCertificates($scope.selectedValues.class.id)
-        }else{
+        } else {
             $scope.subcertificates = {};
             $scope.selectedValues.subcertificate = null;
             document.getElementById("subcertificateForm").style.display = "none";
         }
 
-        if($cookies.getObject("user").role === UserType.TEACHER) {
+        if ($cookies.getObject("user").role === UserType.TEACHER) {
             $scope.loadStudents(clazz.id);
             document.getElementById("studentForm").style.display = "inline-block";
-        }else
+        } else
             $scope.getNewContent();
 
 
@@ -98,8 +99,8 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.removeTableContent();
         if ($scope.selectedValues.class.type === "PAV") {
             $scope.getScores();
-        }else{
-            if($scope.selectedValues.subcertificate !== null)
+        } else {
+            if ($scope.selectedValues.subcertificate !== null)
                 $scope.getScores();
         }
     };
@@ -182,7 +183,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
         $scope.tableRows = "";
 
         $scope.goals.forEach(function (category) {
-            if(category.name !== "ROOT") {
+            if (category.name !== "ROOT") {
                 $scope.createCategoryRow(category.name);
             }
 
@@ -202,7 +203,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
 
     $scope.createCategoryRow = function (name) {
         $scope.tableRows += '<tr>' +
-            '<td colspan="{{'+WEEKS+1+'}}" style="background-color: rgba(0,0,0,0.06); font-weight: bold; text-align: left;">' + name + '</td>';
+            '<td colspan="{{' + WEEKS + 1 + '}}" style="background-color: rgba(0,0,0,0.06); font-weight: bold; text-align: left;">' + name + '</td>';
 
         $scope.tableRows += '</tr>'
     };
@@ -220,13 +221,13 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             for (i = 0; i < WEEKS; i++) {
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
-                    if (competence.id === item.competence.id && i === parseInt(item.week)) {
+                    if (competence.id === item.competence.id && i === parseInt(item.week)-1) {
                         hulp = '<td id="tableContent">'+ '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Beschrijving: ' + item.remarks +'">';
                         hulp += item.score + '</div>';
                         return;
                     }
                 });
-                if(hulp === '')
+                if (hulp === '')
                     hulp = '<td></td>';
                 $scope.tableRows += hulp;
                 $scope.tableRows += '</td>';
@@ -266,17 +267,17 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
             for (i = 0; i < WEEKS; i++) {
                 var hulp = '';
                 $scope.scores.forEach(function (item) {
-                    if (objective.name === item.objective.name && i === parseInt(item.week)) {
+                    if (objective.name === item.objective.name && i === parseInt(item.week)-1) {
 
-                        hulp = '<td id="tableContent">'+ '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Vakthema: ';
-                        if(item.courseTopic != null)
-                             hulp += item.courseTopic.name+ ' \nBeschrijving: ' + item.remarks +'">';
+                        hulp = '<td id="tableContent">' + '<div tooltip-class="customClass" tooltip-placement="top" uib-tooltip="Vakthema: ';
+                        if (item.courseTopic != null)
+                            hulp += item.courseTopic.name + ' \nBeschrijving: ' + item.remarks + '">';
                         else
-                            hulp +=  'onbekend \nBeschrijving: onbekend">';
+                            hulp += 'onbekend \nBeschrijving: onbekend">';
                         hulp += item.score + '</div>';
                     }
                 });
-                if(hulp === '')
+                if (hulp === '')
                     hulp = '<td></td>';
                 $scope.tableRows += hulp;
                 $scope.tableRows += '</td>';
@@ -292,7 +293,7 @@ app.controller('StudentProgressController', function ($scope, $http, $cookies, $
                 headers: {'X-auth': $cookies.get("auth")}
             }).success(function (response) {
                 $http({
-                    method: 'GET', url: $scope.SERVER_ADDRESS + 'grade/id/' + response.id+ '/objectives',
+                    method: 'GET', url: $scope.SERVER_ADDRESS + 'grade/id/' + response.id + '/objectives',
                     headers: {'X-auth': $cookies.get("auth")}
                 }).success(function (response) {
                     $scope.goals = response;

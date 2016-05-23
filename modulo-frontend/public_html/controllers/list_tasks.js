@@ -6,6 +6,24 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
     $scope.originalTasks = new Map();
     $scope.removeId;
 
+    $scope.searchTasks = function () {
+        // make $scope.tasks the original tasks
+        $scope.tasks = new Map($scope.originalTasks);
+        $scope.originalTasks.forEach(function (item) {
+            $scope.addTask(item);
+        });
+
+        if ($scope.searchKeyword) {
+            var search = $scope.searchKeyword.toLowerCase();
+
+            // remove all the tasks that don't match
+            $scope.tasks.forEach(function (item) {
+                if (item.name.toLowerCase().indexOf(search) < 0)
+                    $scope.removeTaskFrontend(item.id);
+            });
+        }
+        $scope.refresh();
+    };
 
     $scope.toElementId = function (id) {
         return TASK_LIST_ITEM_PREFIX + id;
@@ -76,6 +94,8 @@ app.controller('ListTasksController', function ($scope, $http, $window, $compile
         response.forEach(function (item) {
             $scope.addTask(item);
         });
+
+        $scope.originalTasks = new Map($scope.tasks);
         $scope.refresh();
     });
 });

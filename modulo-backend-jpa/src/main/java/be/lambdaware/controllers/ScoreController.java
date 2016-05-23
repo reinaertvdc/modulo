@@ -125,8 +125,6 @@ public class ScoreController {
                             }
                         }
                     }
-                    log.info("Acquired = " + acquiredCount);
-
                     if (acquiredCount >= 3) {
                         numPassed++;
                     }

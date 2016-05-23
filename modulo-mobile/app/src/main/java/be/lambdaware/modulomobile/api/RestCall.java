@@ -1,8 +1,6 @@
 package be.lambdaware.modulomobile.api;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -15,12 +13,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by Hendrik on 13/05/2016.
+ * Author: Hendrik Lievens
+ * Date: 13/05/2016
+ * UHasselt / Software Engineering / 2015 - 2016
  */
 public class RestCall extends AsyncTask<String, Void, String> {
 
+    /**
+     * When this call is finished, callback.onSuccess will be called. Mostly, an activity or fragment
+     * will be set as callback so the View's can be manipulated with the new data.
+     */
     private RestCallback callback;
-
     private HttpURLConnection httpConnection;
 
     public RestCall(RestCallback callback) {
@@ -32,15 +35,15 @@ public class RestCall extends AsyncTask<String, Void, String> {
 
         String webAddress = params[0];
         StringBuilder webResponse = new StringBuilder();
-        Log.i("REST","Executing request to : " + webAddress);
+        Log.i("REST", "Executing request to : " + webAddress);
 
         try {
+            // Connect to backend and set required header
             URL url = new URL(webAddress);
             httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestProperty("X-auth", ApiAuthentication.getAuthenticationHeader());
-            int status = httpConnection.getResponseCode();
 
-
+            // Read response
             InputStream in = new BufferedInputStream(httpConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -52,14 +55,17 @@ public class RestCall extends AsyncTask<String, Void, String> {
         } finally {
             httpConnection.disconnect();
         }
-
         return webResponse.toString();
     }
 
     @Override
+    /**
+     * Tries to parse the response to validate if we got a valid JSON response. If this is the case,
+     * the response will be passed to the callback's onSucces() function.
+     */
     protected void onPostExecute(String response) {
         try {
-            Log.i("RestCall","Processing : " + response);
+            Log.i("RestCall", "Processing : " + response);
             callback.onSuccess(response);
         } catch (JSONException e) {
             e.printStackTrace();

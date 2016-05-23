@@ -1,55 +1,68 @@
 package be.lambdaware.modulomobile.database;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import be.lambdaware.modulomobile.models.User;
 
 /**
- * Created by Hendrik on 21/05/2016.
+ * Author: Hendrik Lievens
+ * Date: 21/05/2016
+ * UHasselt / Software Engineering / 2015 - 2016
  */
 public class Database {
 
     private static ArrayList<User> children = new ArrayList<>();
-    private static int selectedIndex;
     private static User selectedUser;
 
     public static User getSelectedUser() {
         return selectedUser;
     }
 
+    /**
+     * Sets the selected User, based on an 0-index.
+     * @param index the index of the User to select.
+     */
     public static void setSelectedUser(int index) {
         //disable old user
-        if(selectedUser!=null)
+        if (selectedUser != null)
             selectedUser.setSelected(false);
         // set new user
-        selectedIndex = index;
         selectedUser = children.get(index);
         selectedUser.setSelected(true);
-        Log.i("Database", "Currently selected user: " +selectedUser.toString());
     }
 
+    /**
+     * Sets the selected User
+     * @param user The currently selected user.
+     */
     public static void setSelectedUser(User user) {
         //disable old user
-        if(selectedUser!=null)
+        if (selectedUser != null)
             selectedUser.setSelected(false);
         // set new user
         selectedUser = user;
         selectedUser.setSelected(true);
-        Log.i("Database", "Currently selected user: " +selectedUser.toString());
     }
 
-    public static void saveChild(User user) {
-        Log.i("Database", "Saving " + user.toString());
-        children.add(user);
+    /**
+     * Adds a child to the database
+     * @param child The child to save to the list.
+     */
+    public static void saveChild(User child) {
+        children.add(child);
     }
 
+    /**
+     * Clears the current list of children.
+     */
     public static void clearChildren() {
         children.clear();
-        ;
     }
 
+    /**
+     * Returns how many children are currently in the list.
+     * @return the amount of children a parent has.
+     */
     public static int getSizeOfChildren() {
         return children.size();
     }

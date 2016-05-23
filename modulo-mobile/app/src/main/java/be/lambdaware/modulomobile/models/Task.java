@@ -3,7 +3,9 @@ package be.lambdaware.modulomobile.models;
 import java.sql.Date;
 
 /**
- * Created by hendrik on 13/05/16.
+ * Author: Hendrik Lievens
+ * Date: 13/05/2016
+ * UHasselt / Software Engineering / 2015 - 2016
  */
 public class Task {
 

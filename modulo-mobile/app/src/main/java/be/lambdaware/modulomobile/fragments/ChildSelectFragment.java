@@ -30,14 +30,12 @@ import be.lambdaware.modulomobile.database.Database;
 import be.lambdaware.modulomobile.models.User;
 
 
-public class ChildSelectFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ChildSelectFragment extends Fragment {
 
     // This recyclerview will contain all the scores as cards.
     private RecyclerView rvRecylcerView;
     private RecyclerView.Adapter childAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
-
     private RestCall restCall;
 
     @Nullable
@@ -57,10 +55,6 @@ public class ChildSelectFragment extends Fragment implements SwipeRefreshLayout.
         return view;
     }
 
-    @Override
-    public void onRefresh() {
-//        loadChildren();
-    }
 
     @Override
     public String toString() {
